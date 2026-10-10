@@ -19,8 +19,9 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🔴 **"Now" highlight** for events in progress, past events faded, multi-day events labelled *Day 2/3*
 - 📱 **Responsive** – adapts to the card's width, works in Sections and Masonry dashboards
 - 🌍 Dates and times follow your HA language and 12/24-hour profile setting
-- 🌗 Uses your HA theme, light and dark
-- Zero dependencies, one file, visual editor included
+- 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
+- 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
+- Zero dependencies, one file
 
 ## Requirements
 
@@ -128,6 +129,7 @@ max_height: 640px
 | `event_types` | list | built-in five | Types offered in the add-event dropdown – see *Event types* |
 | `default_event_type` | string | `standard` | Type pre-selected when adding an event |
 | `weather_entity` | string | – | Weather entity for current conditions and daily forecast |
+| `theme` | `auto` \| `nordic` \| `sunset` \| `forest` \| `midnight` \| `graphite` | `auto` | Colour scheme – see *Themes* |
 | `title` | string | – | Shown above the date in the header |
 | `default_view` | `agenda` \| `week` \| `month` | `agenda` | View shown when the dashboard loads |
 | `days_to_show` | number | `7` | Number of days in Agenda view |
@@ -225,7 +227,32 @@ default_event_type: standard
 
 The **Repeat** dropdown offers every day / week / 2 weeks / month / year. Repeating events are created through Home Assistant's calendar API with a recurrence rule. Local Calendar and Google Calendar support this; if a calendar's integration doesn't, the card shows the error and you can save it as a one-off instead.
 
-> The visual editor manages a simple list of calendar entities. For people, colours, birthdays, holidays and countdowns, switch to the code editor and use the object form shown above.
+### Themes
+
+| Theme | Look |
+|---|---|
+| `auto` | Follows your Home Assistant theme (default) |
+| `nordic` | Light, cool slate with a blue accent |
+| `sunset` | Warm cream with a coral accent |
+| `forest` | Soft sage with a deep green accent |
+| `midnight` | Dark navy with a sky-blue accent |
+| `graphite` | Dark charcoal with an amber accent |
+
+Each theme also has a matching calendar colour palette, used for any calendar without its own `color`.
+
+```yaml
+theme: midnight
+```
+
+### Visual editor
+
+Everything except countdowns and custom event types can be set in the visual editor:
+
+- **Theme** – tap a preview tile
+- **Calendars** – for each calendar pick the entity, then give it a **display name**, tap the colour dot to change its **colour**, link a **person** for their photo, and set the **calendar type** (Events, Birthdays, Holidays). Reorder with the arrows, remove with the bin, add more with **Add calendar**
+- **Display** – title, weather, default view, week start, time format and more
+
+Countdowns and `event_types` are kept when you use the visual editor – edit them in the code editor.
 
 ## Using it
 
