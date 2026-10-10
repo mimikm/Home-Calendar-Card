@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.6.1";
+const CARD_VERSION = "1.6.3";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -63,7 +63,10 @@ const themePalette = (t) => THEMES[t]?.palette || DEFAULT_COLORS;
 const DEFAULT_TYPES = [
   { id: "standard", name: "Standard", icon: "" },
   { id: "holiday", name: "Holiday", icon: "mdi:beach", style: "banner", all_day: true, countdown: true },
-  { id: "birthday", name: "Birthday", icon: "mdi:cake-variant", style: "birthday", all_day: true, repeat: "yearly" },
+  { id: "birthday", name: "Birthday", icon: "mdi:cake-variant", style: "birthday", all_day: true, repeat: "yearly",
+    countdown: true, countdown_limit: 2, countdown_calendars: true },
+  { id: "anniversary", name: "Anniversary", icon: "mdi:heart", style: "anniversary", all_day: true, repeat: "yearly",
+    countdown: true, countdown_calendars: true },
   { id: "work", name: "Work event", icon: "mdi:briefcase-outline" },
   { id: "dhs", name: "DHS", icon: "mdi:tag-outline" },
 ];
@@ -75,6 +78,11 @@ const toRrule = (r) => {
   if (!r) return "";
   const v = String(r).toLowerCase();
   return { daily: "FREQ=DAILY", weekly: "FREQ=WEEKLY", fortnightly: "FREQ=WEEKLY;INTERVAL=2", monthly: "FREQ=MONTHLY", yearly: "FREQ=YEARLY" }[v] || String(r);
+};
+const ordinal = (n) => {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
 const TAG_RE = /(^|\s)#([a-z0-9_-]+)(?=\s|$)/gi;
 
@@ -147,7 +155,7 @@ class HomeCalendarCard extends HTMLElement {
         const pal = themePalette(config.theme);
         o.color = o.color || pal[i % pal.length];
         const t = String(o.type || "events").toLowerCase();
-        o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : "events";
+        o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : t.startsWith("anniversar") ? "anniversary" : "events";
         return o;
       })
       .filter((c) => c.entity);
@@ -316,7 +324,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!ent) { box.hidden = true; box.innerHTML = ""; this._todoKey = null; return; }
     const people = this._todoPeople();
     const feats = this._features(ent);
-    const key = JSON.stringify([ent, feats, this._config.todo_title, people.map((c) => [c.entity, this._calName(c), c.color])]);
+    const key = JSON.stringify([ent, feats, this._config.todo_title, this._config.todo_autohide, people.map((c) => [c.entity, this._calName(c), c.color])]);
     if (key === this._todoKey) return;
     this._todoKey = key;
     box.hidden = false;
@@ -327,10 +335,11 @@ class HomeCalendarCard extends HTMLElement {
     const canAdd = !this._hass || !this._hass.states[ent] || (feats & 1);
     const chip = (entity, label, color, av) => `<button type="button" class="chip ${this._todoWho === entity ? "sel" : ""}" style="--c:${esc(color)}" data-action="todo-who" data-entity="${esc(entity)}">${av || `<span class="dot"></span>`}${esc(label)}</button>`;
     box.innerHTML = `
-      <div class="todo-head">
+      <div class="todo-head" ${this._todoAutohide() ? `data-action="todo-toggle" role="button" title="Show / hide the to-do list"` : ""}>
         <ha-icon icon="mdi:checkbox-marked-circle-outline"></ha-icon>
         <span class="todo-title">${esc(this._config.todo_title || "To-do")}</span>
         <span class="todo-count"></span>
+        ${this._todoAutohide() ? `<ha-icon class="todo-chev" icon="mdi:chevron-down"></ha-icon>` : ""}
       </div>
       <div class="todo-err"></div>
       <div class="todo-list"></div>
@@ -350,7 +359,40 @@ class HomeCalendarCard extends HTMLElement {
       form.addEventListener("submit", (e) => { e.preventDefault(); this._addTodo(); });
       form.addEventListener("keydown", (e) => e.stopPropagation()); // don't trigger HA shortcuts while typing
     }
+    this._applyTodoState();
     this._renderTodoList();
+  }
+
+  // Auto-hide: seconds of inactivity before the list folds away (0 = off).
+  _todoAutohide() {
+    const a = this._config?.todo_autohide;
+    if (a === true) return 30;
+    const n = Number(a);
+    return n > 0 ? n : 0;
+  }
+
+  _applyTodoState() {
+    const box = this._todoBox;
+    if (!box) return;
+    const auto = this._todoAutohide();
+    if (!auto) this._todoOpen = true;
+    else if (!this._todoAutoPrev) this._todoOpen = false; // auto-hide just switched on: start folded
+    this._todoAutoPrev = auto;
+    box.classList.toggle("autohide", !!auto);
+    box.classList.toggle("collapsed", !!auto && !this._todoOpen);
+  }
+
+  _todoActivity() {
+    const auto = this._todoAutohide();
+    clearTimeout(this._todoHideTimer);
+    if (!auto || !this._todoOpen) return;
+    this._todoHideTimer = setTimeout(() => {
+      const t = this._todoBox?.querySelector("#t-text");
+      // don't fold away while someone is typing a task
+      if (t && (t.value || this.shadowRoot.activeElement === t)) { this._todoActivity(); return; }
+      this._todoOpen = false;
+      this._applyTodoState();
+    }, auto * 1000);
   }
 
   _dueChip(t) {
@@ -532,9 +574,9 @@ class HomeCalendarCard extends HTMLElement {
     }).trim();
     let summary = strip(e.summary);
     const description = strip(e.description);
-    const typeId = tagged || (cal.type === "birthday" ? "birthday" : cal.type === "holiday" ? "holiday" : "standard");
+    const typeId = tagged || (["birthday", "holiday", "anniversary"].includes(cal.type) ? cal.type : "standard");
     let age = null;
-    if (this._typeById(typeId).style === "birthday") {
+    if (["birthday", "anniversary"].includes(this._typeById(typeId).style)) {
       const m = `${summary} ${description}`.match(/\b(19\d{2}|20\d{2})\b/);
       const a = m ? start.getFullYear() - Number(m[1]) : 0;
       if (a > 0 && a < 130) age = a;
@@ -566,7 +608,15 @@ class HomeCalendarCard extends HTMLElement {
 
   _isBanner(ev) { return this._ty(ev).style === "banner"; }
 
-  _isBday(ev) { return this._ty(ev).style === "birthday"; }
+  // Birthdays and anniversaries: all-day, yearly, with an age/years count.
+  _isBday(ev) { return ["birthday", "anniversary"].includes(this._ty(ev).style); }
+
+  _yearlyLabel(ev, short = false) {
+    const anniv = this._ty(ev).style === "anniversary";
+    const name = anniv ? "Anniversary" : "Birthday";
+    if (short || !ev.age) return name;
+    return anniv ? `${ordinal(ev.age)} anniversary` : `Birthday · turns ${ev.age}`;
+  }
 
   _typeIcon(ev) { return this._ty(ev).icon || ""; }
 
@@ -623,18 +673,31 @@ class HomeCalendarCard extends HTMLElement {
         return null;
       }
     }));
-    // Events whose type has `countdown: true` (e.g. holidays) get a countdown automatically.
+    // Events whose type has `countdown: true` get a countdown automatically.
+    //  - countdown_limit: only the next N events of that type (birthdays: next 2)
+    //  - countdown_days: only events within N days (per type; default = card's countdown_days)
+    //  - countdown_calendars: also count events from calendars of that type, not just tagged events
     if (cdTypes.length) {
       const seen = new Set(out.filter(Boolean).map((c) => c.ev && `${c.ev.uid}|${c.start.getTime()}`));
       const auto = await Promise.all(this._calendars.filter((c) => this._hass.states[c.entity] && !this._hidden.has(c.entity)).map(async (cal) => {
         try {
-          return (await look(cal.entity)).map((e) => this._normalize(e, cal))
-            .filter((ev) => ev.tagged && cdTypes.includes(ev.type) && ev.end > now);
+          return (await look(cal.entity)).map((e) => this._normalize(e, cal)).filter((ev) => {
+            if (!cdTypes.includes(ev.type) || ev.end <= now) return false;
+            const ty = this._ty(ev);
+            if (!ev.tagged && !ty.countdown_calendars) return false;
+            const days = Number(ty.countdown_days);
+            return !(days > 0 && startOfDay(ev.start) > addDays(today, days));
+          });
         } catch (e) { return []; }
       }));
-      auto.flat().forEach((ev) => {
+      const perType = {};
+      auto.flat().sort((a, b) => a.start - b.start).forEach((ev) => {
         const k = `${ev.uid}|${ev.start.getTime()}`;
         if (seen.has(k)) return;
+        const limit = Number(this._ty(ev).countdown_limit);
+        perType[ev.type] = perType[ev.type] || out.filter((c) => c?.ev?.type === ev.type).length;
+        if (limit > 0 && perType[ev.type] >= limit) return;
+        perType[ev.type] += 1;
         seen.add(k);
         out.push({ name: ev.summary, start: ev.start, end: ev.end, icon: this._typeIcon(ev), color: ev.cal.color, ev });
       });
@@ -658,7 +721,7 @@ class HomeCalendarCard extends HTMLElement {
         <div class="cd-top"><span class="cd-icon"><ha-icon icon="${esc(cd.icon || "mdi:timer-sand")}"></ha-icon></span>
         <span class="cd-num">${num}${unit ? `<span>${unit}</span>` : ""}</span></div>
         <div class="cd-name">${esc(cd.name)}</div>
-        <div class="cd-date">${esc(f.format(cd.start))}</div>
+        <div class="cd-date">${esc(f.format(cd.start))}${cd.ev?.age && this._isBday(cd.ev) ? ` · ${esc(this._ty(cd.ev).style === "anniversary" ? ordinal(cd.ev.age) : `turns ${cd.ev.age}`)}` : ""}</div>
       </div>`;
     }).join("")}</div>`;
   }
@@ -676,6 +739,7 @@ class HomeCalendarCard extends HTMLElement {
       return `<span class="av ${cls}" ${style}>${esc(ini)}</span>`;
     }
     if (cal.type === "birthday") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:cake-variant"></ha-icon></span>`;
+    if (cal.type === "anniversary") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:heart"></ha-icon></span>`;
     return "";
   }
 
@@ -805,6 +869,7 @@ class HomeCalendarCard extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="inner"><div class="wrap"></div><div class="todo" hidden></div></div><div class="fs-ctl"></div><div class="hcc-toast"></div></ha-card><dialog></dialog>`;
     this._main = this.shadowRoot.querySelector(".wrap");
     this._todoBox = this.shadowRoot.querySelector(".todo");
+    ["pointerdown", "keydown", "input", "focusin"].forEach((ev) => this._todoBox.addEventListener(ev, () => this._todoActivity()));
     this._inner = this.shadowRoot.querySelector(".inner");
     this._dlg = this.shadowRoot.querySelector("dialog");
     this.shadowRoot.addEventListener("click", (e) => this._onClick(e));
@@ -877,7 +942,10 @@ class HomeCalendarCard extends HTMLElement {
       if (fromResize) this._render();
     }
     this._inner.classList.toggle("has-todo", !!this._config.todo_entity);
-    this._inner.classList.toggle("todo-bottom", this._config.todo_position === "bottom");
+    let pos = String(this._config.todo_position || "auto").toLowerCase();
+    if (pos === "side") pos = "right";
+    if (!["top", "bottom", "left", "right"].includes(pos)) pos = mode === "card" ? "bottom" : "right";
+    ["top", "bottom", "left", "right"].forEach((p) => this._inner.classList.toggle(`pos-${p}`, p === pos));
   }
 
   _renderFsControls() {
@@ -1010,7 +1078,7 @@ class HomeCalendarCard extends HTMLElement {
     const past = ev.end <= now;
     const bday = this._isBday(ev);
     const icon = this._typeIcon(ev);
-    const label = bday ? `Birthday${ev.age ? ` · turns ${ev.age}` : ""}` : this._timeLabel(ev, day);
+    const label = bday ? this._yearlyLabel(ev) : this._timeLabel(ev, day);
     return `<div class="ev ${live ? "live" : ""} ${past ? "past" : ""} ${bday ? "bday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
       <div class="bar"></div>
       <div class="ev-body">
@@ -1062,7 +1130,7 @@ class HomeCalendarCard extends HTMLElement {
         </button>
         <div class="wevs">${this._holidaysOn(d).map((ev) => `<div class="whol" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">${esc(ev.summary)}</div>`).join("")}${evs.map((ev) => `
           <div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
-            <div class="t"><span class="short">${esc(this._isBday(ev) ? "Birthday" : this._shortLabel(ev, d))}</span><span class="full">${esc(this._isBday(ev) ? "Birthday" : this._timeLabel(ev, d))}</span></div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
+            <div class="t"><span class="short">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</span><span class="full">${esc(this._isBday(ev) ? this._yearlyLabel(ev) : this._timeLabel(ev, d))}</span></div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
           </div>`).join("")}</div>
       </div>`;
     }
@@ -1125,7 +1193,7 @@ class HomeCalendarCard extends HTMLElement {
         <button class="icon" data-action="close" title="Close"><ha-icon icon="mdi:close"></ha-icon></button>
       </div>
       <div class="dlg-body">
-        <div class="row"><ha-icon icon="mdi:clock-outline"></ha-icon><div>${esc(this._whenText(ev))}${ev.age ? `<div class="muted">Turns ${ev.age} 🎂</div>` : ""}${ev.rrule || ev.recurrence_id ? `<div class="muted">Repeating event</div>` : ""}</div></div>
+        <div class="row"><ha-icon icon="mdi:clock-outline"></ha-icon><div>${esc(this._whenText(ev))}${ev.age ? `<div class="muted">${this._ty(ev).style === "anniversary" ? `${ordinal(ev.age)} anniversary 💍` : `Turns ${ev.age} 🎂`}</div>` : ""}${ev.rrule || ev.recurrence_id ? `<div class="muted">Repeating event</div>` : ""}</div></div>
         ${ev.type !== "standard" ? `<div class="row"><ha-icon icon="${esc(this._typeIcon(ev) || "mdi:tag-outline")}" style="color:${esc(ev.cal.color)}"></ha-icon><div>${esc(this._ty(ev).name || ev.type)}</div></div>` : ""}
         ${ev.location ? `<div class="row"><ha-icon icon="mdi:map-marker-outline"></ha-icon><a href="${mapUrl}" target="_blank" rel="noopener">${esc(ev.location)}</a></div>` : ""}
         <div class="row"><ha-icon icon="mdi:calendar-blank-outline"></ha-icon><div class="cal-line">${this._avatar(ev.cal, "sm") || `<span class="cal-dot" style="--c:${esc(ev.cal.color)}"></span>`}${esc(this._calName(ev.cal))}</div></div>
@@ -1508,6 +1576,11 @@ class HomeCalendarCard extends HTMLElement {
         break;
       case "close":
         this._closeDialog();
+        break;
+      case "todo-toggle":
+        this._todoOpen = !this._todoOpen;
+        this._applyTodoState();
+        this._todoActivity();
         break;
       case "todo-who":
         this._todoWho = el.dataset.entity;
@@ -1897,12 +1970,48 @@ dialog { zoom: var(--hcc-zoom, 1); }
   .view-week { overflow: auto !important; }
   .week { height: auto !important; }
 }
-/* to-do as a sidebar on wide screens */
-@media (min-width: 1100px) {
-  :host([layout="fill"]) .inner.has-todo:not(.todo-bottom), :host([layout="fullscreen"]) .inner.has-todo:not(.todo-bottom) { flex-direction: row; gap: 24px; }
-  :host([layout="fill"]) .inner.has-todo:not(.todo-bottom) .todo, :host([layout="fullscreen"]) .inner.has-todo:not(.todo-bottom) .todo {
-    width: 360px; max-height: none; border-top: none; border-left: 1px solid var(--hcc-line); padding: 0 0 0 24px; }
+/* to-do position: top / bottom / left / right */
+ha-card { container: hcc / inline-size; }
+.inner.pos-top .todo { order: -1; margin: 0 0 16px; padding: 0 0 14px; border-top: none; border-bottom: 1px solid var(--hcc-line); }
+:host([layout="fill"]) .inner.pos-top .todo, :host([layout="fullscreen"]) .inner.pos-top .todo { margin: 0; }
+@container hcc (min-width: 900px) {
+  .inner.has-todo.pos-left, .inner.has-todo.pos-right { display: flex; flex-direction: row; align-items: stretch; gap: 24px; }
+  .inner.has-todo.pos-left > .wrap, .inner.has-todo.pos-right > .wrap { flex: 1; min-width: 0; }
+  .inner.pos-left > .todo, .inner.pos-right > .todo { width: 350px; flex: none; margin: 0; border-top: none; max-height: none; transition: width .25s; }
+  .inner.pos-right > .todo { border-left: 1px solid var(--hcc-line); padding: 0 0 0 24px; }
+  .inner.pos-left > .todo { order: -1; border-right: 1px solid var(--hcc-line); padding: 0 24px 0 0; }
+  /* collapsed side panel = slim vertical tab */
+  .inner.pos-left > .todo.collapsed, .inner.pos-right > .todo.collapsed { width: 44px; }
+  .inner.pos-right > .todo.collapsed { padding-left: 12px; }
+  .inner.pos-left > .todo.collapsed { padding-right: 12px; }
+  .inner.pos-left > .todo.collapsed .todo-head, .inner.pos-right > .todo.collapsed .todo-head { flex-direction: column; gap: 10px; margin: 0; padding: 8px 0; height: 100%; justify-content: flex-start; }
+  .inner.pos-left > .todo.collapsed .todo-title, .inner.pos-right > .todo.collapsed .todo-title { writing-mode: vertical-rl; transform: rotate(180deg); }
+  .inner.pos-right > .todo .todo-chev { transform: rotate(-90deg); }
+  .inner.pos-right > .todo.collapsed .todo-chev { transform: rotate(90deg); }
+  .inner.pos-left > .todo .todo-chev { transform: rotate(90deg); }
+  .inner.pos-left > .todo.collapsed .todo-chev { transform: rotate(-90deg); }
 }
+/* top / bottom in full-page layouts: one compact horizontal strip */
+:host([layout="fill"]) .inner.pos-top > .todo, :host([layout="fill"]) .inner.pos-bottom > .todo,
+:host([layout="fullscreen"]) .inner.pos-top > .todo, :host([layout="fullscreen"]) .inner.pos-bottom > .todo { max-height: 34%; }
+:host([layout="fill"]) .inner.pos-top .todo-list, :host([layout="fill"]) .inner.pos-bottom .todo-list,
+:host([layout="fullscreen"]) .inner.pos-top .todo-list, :host([layout="fullscreen"]) .inner.pos-bottom .todo-list {
+  grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(250px, 320px); overflow-x: auto; overflow-y: auto; margin-bottom: 10px; }
+:host([layout="fill"]) .inner.pos-top .todo-add, :host([layout="fill"]) .inner.pos-bottom .todo-add,
+:host([layout="fullscreen"]) .inner.pos-top .todo-add, :host([layout="fullscreen"]) .inner.pos-bottom .todo-add { flex-direction: row; flex-wrap: wrap; align-items: center; }
+:host([layout="fill"]) .inner.pos-top .todo-row, :host([layout="fill"]) .inner.pos-bottom .todo-row,
+:host([layout="fullscreen"]) .inner.pos-top .todo-row, :host([layout="fullscreen"]) .inner.pos-bottom .todo-row { flex: 1 1 460px; }
+/* auto-hide */
+.todo.autohide .todo-head { cursor: pointer; user-select: none; border-radius: 12px; padding: 4px 6px; margin-left: -6px; margin-right: -6px; }
+.todo.autohide .todo-head:hover { background: var(--hcc-soft); }
+.todo-chev { margin-left: auto; color: var(--hcc-muted); transition: transform .25s; }
+.todo.collapsed .todo-chev { transform: rotate(180deg); }
+.inner.pos-top > .todo.collapsed .todo-chev { transform: none; }
+.inner.pos-top > .todo:not(.collapsed) .todo-chev { transform: rotate(180deg); }
+.todo.collapsed .todo-list, .todo.collapsed .todo-add, .todo.collapsed .todo-err { display: none !important; }
+.todo.collapsed .todo-head { margin-bottom: 0; }
+.inner.pos-top > .todo.collapsed { padding-bottom: 10px; }
+.todo.collapsed .todo-count:empty { display: none; }
 /* full-screen controls & toast */
 .fs-ctl { position: absolute; right: 10px; top: 10px; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--hcc-bg);
   box-shadow: 0 2px 10px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 4; zoom: var(--hcc-zoom, 1); }
@@ -1926,6 +2035,10 @@ const GENERAL_SCHEMA = [
   { type: "grid", name: "", schema: [
     { name: "todo_entity", selector: { entity: { domain: "todo" } } },
     { name: "todo_title", selector: { text: {} } },
+    { name: "todo_position", selector: { select: { mode: "dropdown", options: [
+      { value: "auto", label: "Automatic" }, { value: "top", label: "Top" }, { value: "bottom", label: "Bottom" },
+      { value: "left", label: "Left" }, { value: "right", label: "Right" }] } } },
+    { name: "todo_autohide", selector: { number: { min: 0, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } },
   ] },
   {
     type: "grid", name: "", schema: [
@@ -1952,7 +2065,7 @@ const GENERAL_SCHEMA = [
   ] },
 ];
 const GENERAL_LABELS = {
-  title: "Title", weather_entity: "Weather entity", layout: "Layout", keep_awake: "Keep screen awake", todo_entity: "To-do list (optional)", todo_title: "To-do heading", default_view: "Default view", days_to_show: "Days in agenda",
+  title: "Title", weather_entity: "Weather entity", layout: "Layout", keep_awake: "Keep screen awake", todo_entity: "To-do list (optional)", todo_title: "To-do heading", todo_position: "To-do position", todo_autohide: "To-do auto-hide after (0 = off)", default_view: "Default view", days_to_show: "Days in agenda",
   first_day_of_week: "First day of week", time_format: "Time format", show_header: "Show date & weather header",
   allow_add: "Allow adding events", allow_delete: "Allow deleting events", show_empty_days: "Show days without events", max_height: "Max height (e.g. 600px)",
 };
@@ -1964,7 +2077,7 @@ const CAL_SCHEMA = [
   { type: "grid", name: "", schema: [
     { name: "person", selector: { entity: { domain: "person" } } },
     { name: "type", selector: { select: { mode: "dropdown", options: [
-      { value: "events", label: "Events" }, { value: "birthday", label: "Birthdays" }, { value: "holiday", label: "Holidays (day banner)" }] } } },
+      { value: "events", label: "Events" }, { value: "birthday", label: "Birthdays" }, { value: "anniversary", label: "Anniversaries" }, { value: "holiday", label: "Holidays (day banner)" }] } } },
   ] },
 ];
 const CAL_LABELS = { entity: "Calendar", name: "Display name", person: "Person (shows their photo)", type: "Calendar type" };
