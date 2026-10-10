@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.2.0";
+const CARD_VERSION = "1.3.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -25,6 +25,38 @@ const WX_COLOR = {
   snowy: "#90CAF9", "snowy-rainy": "#64B5F6", hail: "#81D4FA", windy: "#4DB6AC", "windy-variant": "#4DB6AC",
   exceptional: "#EF5350",
 };
+
+// Colour themes. "auto" follows the Home Assistant theme.
+const THEMES = {
+  auto: { name: "Home Assistant" },
+  nordic: {
+    name: "Nordic", dark: false,
+    vars: { bg: "#F8FAFC", text: "#1E293B", muted: "#64748B", line: "rgba(100,116,139,.18)", soft: "rgba(100,116,139,.08)", accent: "#3B82F6", onAccent: "#FFFFFF" },
+    palette: ["#3B82F6", "#EF4444", "#10B981", "#F59E0B", "#8B5CF6", "#06B6D4", "#EC4899", "#F97316"],
+  },
+  sunset: {
+    name: "Sunset", dark: false,
+    vars: { bg: "#FFF8F1", text: "#3D2C29", muted: "#8C6E63", line: "rgba(140,110,99,.2)", soft: "rgba(232,121,77,.08)", accent: "#E8794D", onAccent: "#FFFFFF" },
+    palette: ["#E8794D", "#D9485F", "#E0A030", "#6F9A73", "#8E6C8A", "#4F8A8B", "#C0587E", "#B5651D"],
+  },
+  forest: {
+    name: "Forest", dark: false,
+    vars: { bg: "#F3F6F1", text: "#1F2D24", muted: "#5F7366", line: "rgba(95,115,102,.2)", soft: "rgba(61,122,79,.08)", accent: "#3D7A4F", onAccent: "#FFFFFF" },
+    palette: ["#3D7A4F", "#B5523B", "#C99A2E", "#4A7FA7", "#7B5EA7", "#2E8B8B", "#B4637A", "#8A6D3B"],
+  },
+  midnight: {
+    name: "Midnight", dark: true,
+    vars: { bg: "#0F172A", text: "#E2E8F0", muted: "#94A3B8", line: "rgba(148,163,184,.18)", soft: "rgba(148,163,184,.08)", accent: "#38BDF8", onAccent: "#0F172A" },
+    palette: ["#38BDF8", "#F472B6", "#34D399", "#FBBF24", "#A78BFA", "#FB7185", "#2DD4BF", "#FB923C"],
+  },
+  graphite: {
+    name: "Graphite", dark: true,
+    vars: { bg: "#1C1C1E", text: "#F2F2F7", muted: "#98989F", line: "rgba(255,255,255,.12)", soft: "rgba(255,255,255,.06)", accent: "#FF9F0A", onAccent: "#1C1C1E" },
+    palette: ["#FF9F0A", "#0A84FF", "#30D158", "#FF453A", "#BF5AF2", "#64D2FF", "#FF375F", "#FFD60A"],
+  },
+};
+const THEME_VARS = { bg: "--hcc-bg", text: "--hcc-text", muted: "--hcc-muted", line: "--hcc-line", soft: "--hcc-soft", accent: "--hcc-accent", onAccent: "--hcc-on-accent" };
+const themePalette = (t) => THEMES[t]?.palette || DEFAULT_COLORS;
 
 // Built-in event types. Override or extend with `event_types` in the card config.
 // The type is stored on the event as a tag (e.g. "#work") in its description.
@@ -65,7 +97,7 @@ const parseDate = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").m
 const sameDay = (a, b) => dayKey(a) === dayKey(b);
 const round = (n) => (n == null || isNaN(n) ? "–" : Math.round(Number(n)));
 const wxIcon = (c) => WX_ICON[c] || "mdi:weather-partly-cloudy";
-const wxColor = (c) => WX_COLOR[c] || "var(--secondary-text-color)";
+const wxColor = (c) => WX_COLOR[c] || "var(--hcc-muted)";
 const wxName = (c) => ({ partlycloudy: "partly cloudy", "clear-night": "clear", "lightning-rainy": "thunderstorms",
   "snowy-rainy": "sleet", "windy-variant": "windy" }[c] || String(c || "").replace(/-/g, " "));
 
@@ -95,39 +127,7 @@ class HomeCalendarCard extends HTMLElement {
     return cfg;
   }
 
-  static getConfigForm() {
-    const labels = {
-      title: "Title", calendars: "Calendars", weather_entity: "Weather entity", default_view: "Default view",
-      days_to_show: "Days in agenda", first_day_of_week: "First day of week", time_format: "Time format",
-      show_empty_days: "Show days without events", allow_add: "Allow adding events", show_header: "Show date & weather header",
-      max_height: "Max height (e.g. 600px)",
-    };
-    return {
-      schema: [
-        { name: "title", selector: { text: {} } },
-        { name: "calendars", required: true, selector: { entity: { domain: "calendar", multiple: true } } },
-        { name: "weather_entity", selector: { entity: { domain: "weather" } } },
-        {
-          type: "grid", name: "", schema: [
-            { name: "default_view", selector: { select: { mode: "dropdown", options: [
-              { value: "agenda", label: "Agenda" }, { value: "week", label: "Week" }, { value: "month", label: "Month" }] } } },
-            { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
-            { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [
-              { value: "monday", label: "Monday" }, { value: "sunday", label: "Sunday" }, { value: "saturday", label: "Saturday" }] } } },
-            { name: "time_format", selector: { select: { mode: "dropdown", options: [
-              { value: "auto", label: "From HA profile" }, { value: "24h", label: "24 hour" }, { value: "12h", label: "12 hour" }] } } },
-          ],
-        },
-        { type: "grid", name: "", schema: [
-          { name: "show_header", selector: { boolean: {} } },
-          { name: "allow_add", selector: { boolean: {} } },
-          { name: "show_empty_days", selector: { boolean: {} } },
-          { name: "max_height", selector: { text: {} } },
-        ] },
-      ],
-      computeLabel: (s) => labels[s.name] ?? s.name,
-    };
-  }
+  static getConfigElement() { return document.createElement("home-calendar-card-editor"); }
 
   setConfig(config) {
     if (!config || !Array.isArray(config.calendars) || !config.calendars.length) {
@@ -143,7 +143,8 @@ class HomeCalendarCard extends HTMLElement {
     this._calendars = config.calendars
       .map((c, i) => {
         const o = typeof c === "string" ? { entity: c } : { ...c };
-        o.color = o.color || DEFAULT_COLORS[i % DEFAULT_COLORS.length];
+        const pal = themePalette(config.theme);
+        o.color = o.color || pal[i % pal.length];
         const t = String(o.type || "events").toLowerCase();
         o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : "events";
         return o;
@@ -588,9 +589,22 @@ class HomeCalendarCard extends HTMLElement {
     this._built = true;
   }
 
+  _applyTheme() {
+    const key = THEMES[this._config.theme] ? this._config.theme : "auto";
+    if (key === this._themeKey) return;
+    this._themeKey = key;
+    const t = THEMES[key];
+    Object.entries(THEME_VARS).forEach(([k, cssVar]) => {
+      if (t.vars) this.style.setProperty(cssVar, t.vars[k]); else this.style.removeProperty(cssVar);
+    });
+    if (t.vars) this.style.setProperty("color-scheme", t.dark ? "dark" : "light"); else this.style.removeProperty("color-scheme");
+    this.setAttribute("data-theme", key);
+  }
+
   _render() {
     if (!this._config) return;
     if (!this._built) this._build();
+    this._applyTheme();
     const c = this._config;
     const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._renderAgenda();
     const maxH = c.max_height ? ` style="max-height:${esc(c.max_height)};overflow:auto"` : "";
@@ -1130,10 +1144,11 @@ class HomeCalendarCard extends HTMLElement {
 
 const STYLES = `
 :host { display: block; --hcc-accent: var(--primary-color, #03a9f4); --hcc-muted: var(--secondary-text-color, #727272);
+  --hcc-text: var(--primary-text-color, #212121);
   --hcc-line: var(--divider-color, rgba(127,127,127,.2)); --hcc-soft: rgba(127,127,127,.08);
   --hcc-bg: var(--ha-card-background, var(--card-background-color, #fff)); --hcc-on-accent: var(--text-primary-color, #fff); }
-ha-card { padding: 16px; overflow: hidden; }
-.wrap { container-type: inline-size; color: var(--primary-text-color); }
+ha-card { padding: 16px; overflow: hidden; background: var(--hcc-bg); color: var(--hcc-text); }
+.wrap { container-type: inline-size; color: var(--hcc-text); }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; margin: 0; text-align: inherit; }
 ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 
@@ -1153,7 +1168,7 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
 .seg { display: inline-flex; background: var(--hcc-soft); border-radius: 10px; padding: 3px; }
 .seg button { padding: 6px 12px; border-radius: 8px; font-size: .85rem; font-weight: 600; color: var(--hcc-muted); transition: all .15s; }
-.seg button.on { background: var(--hcc-bg); color: var(--primary-text-color); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+.seg button.on { background: var(--hcc-bg); color: var(--hcc-text); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
 .nav { display: flex; align-items: center; gap: 2px; flex: 1; min-width: 0; }
 .icon { width: 34px; height: 34px; border-radius: 50%; display: inline-grid; place-items: center; flex: none; transition: background .15s; }
 .icon:hover { background: var(--hcc-soft); }
@@ -1205,16 +1220,16 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .head-l { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
 .hols { display: flex; flex-wrap: wrap; gap: 4px; }
 .hol { display: inline-flex; align-items: center; gap: 4px; font-size: .72rem; font-weight: 700; padding: 2px 9px 2px 7px; border-radius: 999px; cursor: pointer;
-  background: color-mix(in srgb, var(--c) 16%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--primary-text-color)); }
+  background: color-mix(in srgb, var(--c) 16%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--hcc-text)); }
 .hol ha-icon { --mdc-icon-size: 13px; }
 .ev.bday { background: linear-gradient(90deg, color-mix(in srgb, var(--c) 20%, transparent), color-mix(in srgb, var(--c) 5%, transparent)); }
 .ev-title ha-icon, .wev .s ha-icon { --mdc-icon-size: 16px; color: var(--c); margin-right: 5px; vertical-align: -3px; display: inline-block; }
 .wev .s ha-icon { --mdc-icon-size: 13px; margin-right: 3px; }
 .wev.allday .s ha-icon { color: #fff; }
 .whol { font-size: .66rem; font-weight: 700; text-align: center; padding: 3px 4px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  background: color-mix(in srgb, var(--c) 18%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--primary-text-color)); }
+  background: color-mix(in srgb, var(--c) 18%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--hcc-text)); }
 .mcell.has-hol { background: color-mix(in srgb, var(--hol) 12%, transparent); }
-.mhol { font-size: .62rem; font-weight: 700; padding: 0 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 75%, var(--primary-text-color)); }
+.mhol { font-size: .62rem; font-weight: 700; padding: 0 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 75%, var(--hcc-text)); }
 .mcake { --mdc-icon-size: 11px; color: var(--c); }
 .ev-cal { display: flex; align-items: center; gap: 6px; }
 
@@ -1337,7 +1352,7 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 
 /* dialog */
 dialog { border: none; padding: 0; border-radius: 22px; width: min(460px, calc(100vw - 24px)); max-height: min(720px, calc(100vh - 32px));
-  background: var(--hcc-bg); color: var(--primary-text-color); box-shadow: 0 24px 70px rgba(0,0,0,.35); overflow: hidden; }
+  background: var(--hcc-bg); color: var(--hcc-text); box-shadow: 0 24px 70px rgba(0,0,0,.35); overflow: hidden; }
 dialog[open] { display: flex; flex-direction: column; animation: pop .18s ease-out; }
 @keyframes pop { from { transform: translateY(10px) scale(.98); opacity: 0; } }
 dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
@@ -1353,7 +1368,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
 .muted { font-size: .8rem; color: var(--hcc-muted); }
 .cap { text-transform: capitalize; }
 .cal-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--c); margin-right: 6px; }
-.desc { white-space: pre-wrap; word-break: break-word; color: var(--secondary-text-color); }
+.desc { white-space: pre-wrap; word-break: break-word; color: var(--hcc-muted); }
 .dlg-foot { display: flex; gap: 8px; padding: 12px 16px 16px; border-top: 1px solid var(--hcc-line); align-items: center; }
 .sp { flex: 1; }
 .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 999px; font-weight: 700; font-size: .9rem; transition: background .15s; }
@@ -1366,7 +1381,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
 .form { --c: var(--hcc-accent); }
 .dlg-foot .btn.primary { background: var(--hcc-accent); }
 .inp { width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--hcc-line); background: var(--hcc-soft);
-  color: var(--primary-text-color); font: inherit; outline: none; transition: border-color .15s; min-width: 0; }
+  color: var(--hcc-text); font: inherit; outline: none; transition: border-color .15s; min-width: 0; }
 .inp:focus { border-color: var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 20%, transparent); }
 textarea.inp { resize: vertical; }
 #f-title { font-size: 1.15rem; font-weight: 600; border-left: 4px solid var(--c); }
@@ -1390,7 +1405,7 @@ textarea.inp { resize: vertical; }
 .sel-wrap select { appearance: none; -webkit-appearance: none; padding-left: 36px; padding-right: 30px; cursor: pointer;
   background-image: linear-gradient(45deg, transparent 50%, var(--hcc-muted) 50%), linear-gradient(135deg, var(--hcc-muted) 50%, transparent 50%);
   background-position: calc(100% - 17px) 55%, calc(100% - 12px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
-.sel-wrap select option { background: var(--hcc-bg); color: var(--primary-text-color); }
+.sel-wrap select option { background: var(--hcc-bg); color: var(--hcc-text); }
 .mev.allday .mcake { color: #fff; }
 .f-wx { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--hcc-muted); padding: 8px 12px; border-radius: 12px; background: var(--hcc-soft); }
 .f-wx:empty { display: none; }
@@ -1398,6 +1413,250 @@ textarea.inp { resize: vertical; }
 .f-err { color: var(--error-color, #db4437); font-size: .85rem; font-weight: 600; }
 .f-err:empty { display: none; }
 `;
+
+
+/* ===================================================================== editor */
+
+const GENERAL_SCHEMA = [
+  { name: "title", selector: { text: {} } },
+  { name: "weather_entity", selector: { entity: { domain: "weather" } } },
+  {
+    type: "grid", name: "", schema: [
+      { name: "default_view", selector: { select: { mode: "dropdown", options: [
+        { value: "agenda", label: "Agenda" }, { value: "week", label: "Week" }, { value: "month", label: "Month" }] } } },
+      { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
+      { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [
+        { value: "monday", label: "Monday" }, { value: "sunday", label: "Sunday" }, { value: "saturday", label: "Saturday" }] } } },
+      { name: "time_format", selector: { select: { mode: "dropdown", options: [
+        { value: "auto", label: "From HA profile" }, { value: "24h", label: "24 hour" }, { value: "12h", label: "12 hour" }] } } },
+    ],
+  },
+  { type: "grid", name: "", schema: [
+    { name: "show_header", selector: { boolean: {} } },
+    { name: "allow_add", selector: { boolean: {} } },
+    { name: "show_empty_days", selector: { boolean: {} } },
+    { name: "max_height", selector: { text: {} } },
+  ] },
+];
+const GENERAL_LABELS = {
+  title: "Title", weather_entity: "Weather entity", default_view: "Default view", days_to_show: "Days in agenda",
+  first_day_of_week: "First day of week", time_format: "Time format", show_header: "Show date & weather header",
+  allow_add: "Allow adding events", show_empty_days: "Show days without events", max_height: "Max height (e.g. 600px)",
+};
+const CAL_SCHEMA = [
+  { type: "grid", name: "", schema: [
+    { name: "entity", required: true, selector: { entity: { domain: "calendar" } } },
+    { name: "name", selector: { text: {} } },
+  ] },
+  { type: "grid", name: "", schema: [
+    { name: "person", selector: { entity: { domain: "person" } } },
+    { name: "type", selector: { select: { mode: "dropdown", options: [
+      { value: "events", label: "Events" }, { value: "birthday", label: "Birthdays" }, { value: "holiday", label: "Holidays (day banner)" }] } } },
+  ] },
+];
+const CAL_LABELS = { entity: "Calendar", name: "Display name", person: "Person (shows their photo)", type: "Calendar type" };
+
+const EDITOR_STYLES = `
+:host { display: block; }
+.sec { margin-bottom: 22px; }
+.h { font-weight: 600; font-size: 1rem; margin: 0 0 4px; }
+.sub { font-size: .82rem; color: var(--secondary-text-color); margin: 0 0 10px; }
+.themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+.th { position: relative; border-radius: 12px; padding: 10px; cursor: pointer; border: 2px solid var(--divider-color); background: var(--tbg); color: var(--ttx);
+  text-align: left; font: inherit; transition: transform .12s, border-color .12s; }
+.th:hover { transform: translateY(-1px); }
+.th.sel { border-color: var(--primary-color); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 30%, transparent); }
+.th .bar { height: 7px; border-radius: 4px; background: var(--tac); width: 55%; margin-bottom: 7px; }
+.th .dots { display: flex; gap: 3px; margin-bottom: 7px; }
+.th .dots span { width: 11px; height: 11px; border-radius: 50%; }
+.th .nm { font-size: .8rem; font-weight: 600; }
+.th .tick { position: absolute; top: 6px; right: 6px; --mdc-icon-size: 18px; color: var(--primary-color); }
+.cal { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 12px 8px 4px 12px;
+  border: 1px solid var(--divider-color); border-radius: 12px; margin-bottom: 10px; }
+.sw { width: 32px; height: 32px; border-radius: 50%; position: relative; overflow: hidden; cursor: pointer; margin-top: 10px;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.12); display: block; }
+.sw input { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); opacity: 0; cursor: pointer; border: 0; padding: 0; }
+.btns { display: flex; flex-direction: column; }
+.ib { background: none; border: none; color: var(--secondary-text-color); cursor: pointer; padding: 6px; border-radius: 50%; display: grid; place-items: center; }
+.ib:hover { background: rgba(127,127,127,.15); }
+.ib:disabled { opacity: .3; cursor: default; background: none; }
+.ib ha-icon { --mdc-icon-size: 20px; }
+.addcal { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--primary-color);
+  background: none; color: var(--primary-color); font: inherit; font-weight: 600; cursor: pointer; }
+.addcal:hover { background: color-mix(in srgb, var(--primary-color) 10%, transparent); }
+.note { font-size: .8rem; color: var(--secondary-text-color); margin-top: 10px; }
+`;
+
+class HomeCalendarCardEditor extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._forms = [];
+  }
+
+  set hass(hass) {
+    this._hass = hass;
+    this._forms.forEach((f) => { f.hass = hass; });
+  }
+
+  setConfig(config) {
+    const json = JSON.stringify(config);
+    this._config = { ...config };
+    if (json === this._lastJson) return; // our own change coming back – keep focus, don't rebuild
+    this._lastJson = json;
+    this._ready().then(() => this._render());
+  }
+
+  async _ready() {
+    if (customElements.get("ha-form")) return;
+    try {
+      const helpers = await window.loadCardHelpers?.();
+      const c = await helpers?.createCardElement({ type: "entities", entities: [] });
+      await c?.constructor?.getConfigElement?.();
+    } catch (e) { /* ignore */ }
+    await Promise.race([customElements.whenDefined("ha-form"), new Promise((r) => setTimeout(r, 3000))]);
+  }
+
+  _cals() { return (this._config.calendars || []).map((c) => (typeof c === "string" ? { entity: c } : { ...c })); }
+
+  _emit(config, rerender = false) {
+    const clean = { ...config };
+    if (Array.isArray(clean.calendars)) {
+      clean.calendars = clean.calendars.map((c) => {
+        const o = {};
+        Object.entries(c).forEach(([k, v]) => { if (v !== "" && v != null && !(k === "type" && v === "events")) o[k] = v; });
+        if (!("entity" in o)) o.entity = "";
+        return Object.keys(o).length === 1 && o.entity ? o.entity : o;
+      });
+    }
+    this._config = clean;
+    this._lastJson = JSON.stringify(clean);
+    this.dispatchEvent(new CustomEvent("config-changed", { detail: { config: clean }, bubbles: true, composed: true }));
+    if (rerender) this._render();
+  }
+
+  _themeTile(key) {
+    const t = THEMES[key];
+    const v = t.vars || { bg: "var(--card-background-color, #fff)", text: "var(--primary-text-color)", accent: "var(--primary-color)" };
+    const sel = (this._config.theme || "auto") === key;
+    return `<button class="th ${sel ? "sel" : ""}" data-act="theme" data-theme="${key}" style="--tbg:${v.bg};--ttx:${v.text};--tac:${v.accent}">
+      ${sel ? `<ha-icon class="tick" icon="mdi:check-circle"></ha-icon>` : ""}
+      <div class="bar"></div>
+      <div class="dots">${themePalette(key).slice(0, 5).map((c) => `<span style="background:${c}"></span>`).join("")}</div>
+      <div class="nm">${esc(t.name)}</div>
+    </button>`;
+  }
+
+  _render() {
+    if (!this._config) return;
+    const cals = this._cals();
+    const pal = themePalette(this._config.theme);
+    this._forms = [];
+    this.shadowRoot.innerHTML = `<style>${EDITOR_STYLES}</style>
+      <div class="sec">
+        <div class="h">Theme</div>
+        <div class="sub">Colour scheme for the card. "Home Assistant" follows your dashboard theme.</div>
+        <div class="themes">${Object.keys(THEMES).map((k) => this._themeTile(k)).join("")}</div>
+      </div>
+      <div class="sec">
+        <div class="h">Calendars</div>
+        <div class="sub">Pick each calendar, give it a name and colour, and optionally link it to a person.</div>
+        <div class="cals">${cals.map((c, i) => {
+          const col = /^#[0-9a-f]{6}$/i.test(c.color || "") ? c.color : pal[i % pal.length];
+          return `<div class="cal">
+            <label class="sw" title="Colour" style="background:${esc(c.color || col)}"><input type="color" data-i="${i}" value="${col}"></label>
+            <div class="slot" data-i="${i}"></div>
+            <div class="btns">
+              <button class="ib" data-act="up" data-i="${i}" title="Move up" ${i === 0 ? "disabled" : ""}><ha-icon icon="mdi:arrow-up"></ha-icon></button>
+              <button class="ib" data-act="down" data-i="${i}" title="Move down" ${i === cals.length - 1 ? "disabled" : ""}><ha-icon icon="mdi:arrow-down"></ha-icon></button>
+              <button class="ib" data-act="del" data-i="${i}" title="Remove"><ha-icon icon="mdi:delete-outline"></ha-icon></button>
+            </div>
+          </div>`;
+        }).join("")}</div>
+        <button class="addcal" data-act="add"><ha-icon icon="mdi:plus"></ha-icon>Add calendar</button>
+      </div>
+      <div class="sec">
+        <div class="h">Display</div>
+        <div class="slot-general"></div>
+        <div class="note">Countdowns and custom event types are set in the code editor – see the README.</div>
+      </div>`;
+
+    this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
+      const i = Number(slot.dataset.i);
+      const c = cals[i];
+      const f = this._makeForm(CAL_SCHEMA, { entity: c.entity || "", name: c.name || "", person: c.person || "", type: c.type || "events" },
+        (s) => CAL_LABELS[s.name] ?? s.name,
+        (s) => {
+          if (s.name !== "name") return undefined;
+          const ent = this._cals()[i]?.entity;
+          const fn = ent && this._hass?.states[ent]?.attributes?.friendly_name;
+          return fn ? `Leave empty to use “${fn}”` : undefined;
+        });
+      f.addEventListener("value-changed", (ev) => {
+        ev.stopPropagation();
+        f.data = ev.detail.value; // keep the form in sync, since we don't rebuild it
+        const list = this._cals();
+        list[i] = { ...list[i], ...ev.detail.value };
+        this._emit({ ...this._config, calendars: list });
+      });
+      slot.appendChild(f);
+    });
+
+    const gen = this._makeForm(GENERAL_SCHEMA, this._config, (s) => GENERAL_LABELS[s.name] ?? s.name);
+    gen.addEventListener("value-changed", (ev) => {
+      ev.stopPropagation();
+      gen.data = ev.detail.value;
+      const next = { ...this._config, ...ev.detail.value };
+      Object.keys(GENERAL_LABELS).forEach((k) => { if (next[k] === "" || next[k] == null) delete next[k]; });
+      this._emit(next);
+    });
+    this.shadowRoot.querySelector(".slot-general").appendChild(gen);
+
+    this.shadowRoot.querySelectorAll('input[type="color"]').forEach((inp) => {
+      inp.addEventListener("input", () => { inp.parentElement.style.background = inp.value; });
+      inp.addEventListener("change", () => {
+        const list = this._cals();
+        list[Number(inp.dataset.i)].color = inp.value.toUpperCase();
+        this._emit({ ...this._config, calendars: list });
+      });
+    });
+    this.shadowRoot.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => this._action(b)));
+  }
+
+  _makeForm(schema, data, computeLabel, computeHelper) {
+    const f = document.createElement("ha-form");
+    f.hass = this._hass;
+    f.schema = schema;
+    f.data = data;
+    f.computeLabel = computeLabel;
+    if (computeHelper) f.computeHelper = computeHelper;
+    this._forms.push(f);
+    return f;
+  }
+
+  _action(b) {
+    const list = this._cals();
+    const i = Number(b.dataset.i);
+    switch (b.dataset.act) {
+      case "theme": {
+        const next = { ...this._config };
+        if (b.dataset.theme === "auto") delete next.theme; else next.theme = b.dataset.theme;
+        this._emit(next, true);
+        return;
+      }
+      case "add": list.push({ entity: "" }); break;
+      case "del": list.splice(i, 1); break;
+      case "up": if (i > 0) [list[i - 1], list[i]] = [list[i], list[i - 1]]; break;
+      case "down": if (i < list.length - 1) [list[i + 1], list[i]] = [list[i], list[i + 1]]; break;
+      default: return;
+    }
+    this._emit({ ...this._config, calendars: list }, true);
+  }
+}
+
+if (!customElements.get("home-calendar-card-editor")) {
+  customElements.define("home-calendar-card-editor", HomeCalendarCardEditor);
+}
 
 if (!customElements.get("home-calendar-card")) {
   customElements.define("home-calendar-card", HomeCalendarCard);
