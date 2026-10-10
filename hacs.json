@@ -1,0 +1,6 @@
+{
+  "name": "Home Calendar Card",
+  "filename": "home-calendar-card.js",
+  "render_readme": true,
+  "homeassistant": "2024.1.0"
+}
