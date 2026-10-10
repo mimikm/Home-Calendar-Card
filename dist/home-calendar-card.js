@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.4.0";
+const CARD_VERSION = "1.5.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -214,6 +214,11 @@ class HomeCalendarCard extends HTMLElement {
 
   connectedCallback() {
     this._today = dayKey(new Date());
+    this._onResize = () => { cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(() => this._applyLayout(true)); };
+    this._onVis = () => this._keepAwake();
+    window.addEventListener("resize", this._onResize);
+    document.addEventListener("visibilitychange", this._onVis);
+    this._keepAwake();
     this._tick = setInterval(() => {
       const k = dayKey(new Date());
       if (k !== this._today) {
@@ -239,6 +244,9 @@ class HomeCalendarCard extends HTMLElement {
   disconnectedCallback() {
     clearInterval(this._tick);
     clearInterval(this._refresh);
+    window.removeEventListener("resize", this._onResize);
+    document.removeEventListener("visibilitychange", this._onVis);
+    if (this._wakeLock) { this._wakeLock.release().catch(() => {}); this._wakeLock = null; }
     clearTimeout(this._refetchTimer);
     this._unsubscribeWeather();
     this._unsubscribeTodo();
@@ -428,10 +436,7 @@ class HomeCalendarCard extends HTMLElement {
     try {
       if (remove) await this._hass.callService("todo", "remove_item", { item: [uid] }, { entity_id: ent });
       else await this._hass.callService("todo", "update_item", { item: uid, status: "completed" }, { entity_id: ent });
-      this.dispatchEvent(new CustomEvent("hass-notification", {
-        detail: { message: `Done: ${t.summary}`, action: { text: "Undo", action: () => this._todoUndo(uid, raw, remove) } },
-        bubbles: true, composed: true,
-      }));
+      this._notify(`Done: ${t.summary}`, { text: "Undo", action: () => this._todoUndo(uid, raw, remove) });
       if (!this._todoLive) this._loadTodos();
     } catch (e) {
       this._pendingDone.delete(uid);
@@ -797,11 +802,22 @@ class HomeCalendarCard extends HTMLElement {
   /* ------------------------------------------------------------- rendering */
 
   _build() {
-    this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="wrap"></div><div class="todo" hidden></div></ha-card><dialog></dialog>`;
+    this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="inner"><div class="wrap"></div><div class="todo" hidden></div></div><div class="fs-ctl"></div><div class="hcc-toast"></div></ha-card><dialog></dialog>`;
     this._main = this.shadowRoot.querySelector(".wrap");
     this._todoBox = this.shadowRoot.querySelector(".todo");
+    this._inner = this.shadowRoot.querySelector(".inner");
     this._dlg = this.shadowRoot.querySelector("dialog");
     this.shadowRoot.addEventListener("click", (e) => this._onClick(e));
+    // Full-screen controls stay hidden until someone moves the mouse or touches the screen.
+    const reveal = () => {
+      if (this._mode !== "fullscreen") return;
+      const c = this.shadowRoot.querySelector(".fs-ctl");
+      c.classList.add("show");
+      clearTimeout(this._fsHide);
+      this._fsHide = setTimeout(() => c.classList.remove("show"), 3000);
+    };
+    this.shadowRoot.addEventListener("pointermove", reveal);
+    this.shadowRoot.addEventListener("pointerdown", reveal);
     this._dlg.addEventListener("change", (e) => this._onFormChange(e));
     this._dlg.addEventListener("keydown", (e) => {
       // Keep HA's global keyboard shortcuts from firing while typing in the form.
@@ -810,6 +826,89 @@ class HomeCalendarCard extends HTMLElement {
     });
     this._dlg.addEventListener("close", () => { this._dlg.innerHTML = ""; this._curEv = null; });
     this._built = true;
+  }
+
+  /* ---------------------------------------------------------------- layout */
+
+  _inEditor() {
+    if (this.preview || this.editMode) return true;
+    try { if (new URLSearchParams(location.search).get("edit") === "1") return true; } catch (e) { /* ignore */ }
+    let n = this;
+    for (let i = 0; i < 40 && n; i++) {
+      const tag = n.localName || "";
+      if (tag === "hui-card-preview" || tag === "hui-dialog-edit-card" || tag === "hui-card-edit-mode" || tag === "hui-card-options") return true;
+      n = n.parentNode || n.host;
+    }
+    return false;
+  }
+
+  _computeMode() {
+    const want = String(this._config.layout || "card").toLowerCase();
+    if (want !== "fill" && want !== "fullscreen") return "card";
+    if (this._inEditor()) return "card"; // never cover the screen while editing the dashboard
+    if (want === "fullscreen") {
+      let off = false;
+      try { off = sessionStorage.getItem("home-calendar-card:fs-off") === "1"; } catch (e) { /* ignore */ }
+      return off ? "fill" : "fullscreen";
+    }
+    return "fill";
+  }
+
+  _zoom(mode) {
+    const s = this._config.scale;
+    if (s != null && s !== "auto" && s !== "") return Math.max(0.5, Math.min(3, Number(s) || 1));
+    if (mode === "card") return 1;
+    const z = Math.min(window.innerWidth / 1440, window.innerHeight / 860);
+    return Math.round(Math.max(1, Math.min(2.5, z)) * 100) / 100;
+  }
+
+  _applyLayout(fromResize = false) {
+    if (!this._inner) return;
+    const mode = this._computeMode();
+    const zoom = this._zoom(mode);
+    const changed = mode !== this._mode || zoom !== this._zoomVal;
+    this._mode = mode;
+    this._zoomVal = zoom;
+    if (changed) {
+      this.setAttribute("layout", mode);
+      this.style.setProperty("--hcc-zoom", String(zoom));
+      this._keepAwake();
+      this._renderFsControls();
+      if (fromResize) this._render();
+    }
+    this._inner.classList.toggle("has-todo", !!this._config.todo_entity);
+    this._inner.classList.toggle("todo-bottom", this._config.todo_position === "bottom");
+  }
+
+  _renderFsControls() {
+    const box = this.shadowRoot.querySelector(".fs-ctl");
+    if (!box) return;
+    if (this._mode !== "fullscreen") { box.innerHTML = ""; return; }
+    const isFs = !!document.fullscreenElement;
+    box.innerHTML = `
+      ${document.fullscreenEnabled ? `<button class="icon" data-action="browser-fs" title="${isFs ? "Exit browser full screen" : "Browser full screen"}"><ha-icon icon="${isFs ? "mdi:fullscreen-exit" : "mdi:fullscreen"}"></ha-icon></button>` : ""}
+      <button class="icon" data-action="fs-off" title="Show Home Assistant (until reload)"><ha-icon icon="mdi:dock-window"></ha-icon></button>`;
+  }
+
+  async _keepAwake() {
+    const want = this._config?.keep_awake ?? (this._mode === "fullscreen" || this._mode === "fill");
+    if (!want || !this.isConnected) {
+      if (this._wakeLock) { this._wakeLock.release().catch(() => {}); this._wakeLock = null; }
+      return;
+    }
+    if (this._wakeLock || !navigator.wakeLock || document.visibilityState !== "visible") return;
+    try {
+      this._wakeLock = await navigator.wakeLock.request("screen");
+      this._wakeLock.addEventListener("release", () => { this._wakeLock = null; });
+    } catch (e) { /* not allowed (needs HTTPS) – ignore */ }
+  }
+
+  async _browserFullscreen() {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await document.documentElement.requestFullscreen({ navigationUI: "hide" });
+    } catch (e) { /* ignore */ }
+    setTimeout(() => this._renderFsControls(), 300);
   }
 
   _applyTheme() {
@@ -828,6 +927,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!this._config) return;
     if (!this._built) this._build();
     this._applyTheme();
+    this._applyLayout();
     if (this._todoKey === null || this._todoKey === undefined || this._hass) this._buildTodo();
     const c = this._config;
     const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._renderAgenda();
@@ -881,6 +981,7 @@ class HomeCalendarCard extends HTMLElement {
         <button class="icon" data-action="next" title="Next"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
         <span class="range">${esc(this._rangeLabel())}</span>
       </div>
+      ${this._config.layout === "fullscreen" && this._mode === "fill" && !this._inEditor() ? `<button class="icon" data-action="fs-on" title="Back to full screen"><ha-icon icon="mdi:fullscreen"></ha-icon></button>` : ""}
       ${canAdd ? `<button class="add" data-action="add"><ha-icon icon="mdi:plus"></ha-icon><span>Event</span></button>` : ""}
     </div>`;
   }
@@ -972,7 +1073,7 @@ class HomeCalendarCard extends HTMLElement {
     const { start, days } = this._range();
     const month = this._anchor.getMonth();
     const today = dayKey(new Date());
-    const max = Math.max(1, Number(this._config.max_events_per_day) || 3);
+    const max = Math.max(1, Number(this._config.max_events_per_day) || (this._mode === "card" ? 3 : 6));
     const wdFmt = this._fmt({ weekday: "short" });
     let out = `<div class="month"><div class="mhead">`;
     for (let i = 0; i < 7; i++) out += `<div>${esc(wdFmt.format(addDays(start, i)))}</div>`;
@@ -1286,14 +1387,31 @@ class HomeCalendarCard extends HTMLElement {
     }
   }
 
-  _toast(message) {
-    this.dispatchEvent(new CustomEvent("hass-notification", { detail: { message }, bubbles: true, composed: true }));
+  _toast(message) { this._notify(message); }
+
+  _notify(message, action) {
+    if (this._mode !== "fullscreen") {
+      const detail = action ? { message, action } : { message };
+      this.dispatchEvent(new CustomEvent("hass-notification", { detail, bubbles: true, composed: true }));
+      return;
+    }
+    // HA's own toast would be hidden under the full-screen card, so show our own.
+    const el = this.shadowRoot.querySelector(".hcc-toast");
+    clearTimeout(this._toastTimer);
+    el.innerHTML = `<span>${esc(message)}</span>${action ? `<button class="toast-btn">${esc(action.text)}</button>` : ""}`;
+    el.classList.add("on");
+    if (action) el.querySelector(".toast-btn").onclick = () => { el.classList.remove("on"); action.action(); };
+    this._toastTimer = setTimeout(() => el.classList.remove("on"), action ? 6000 : 3500);
   }
 
   /* ---------------------------------------------------------------- events */
 
   _onClick(e) {
     if (e.target === this._dlg) { this._closeDialog(); return; } // backdrop
+    if (this._mode === "fullscreen" && this._config.browser_fullscreen && !document.fullscreenElement && document.fullscreenEnabled
+      && !e.composedPath().some((n) => n.dataset?.action === "browser-fs")) {
+      document.documentElement.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+    }
     const el = e.composedPath().find((n) => n instanceof HTMLElement && n.dataset && n.dataset.action);
     if (!el) return;
     const { action } = el.dataset;
@@ -1365,6 +1483,17 @@ class HomeCalendarCard extends HTMLElement {
       case "todo-done":
         this._todoDone(el.dataset.uid);
         break;
+      case "browser-fs":
+        this._browserFullscreen();
+        break;
+      case "fs-off":
+        try { sessionStorage.setItem("home-calendar-card:fs-off", "1"); } catch (err) { /* ignore */ }
+        this._render();
+        break;
+      case "fs-on":
+        try { sessionStorage.removeItem("home-calendar-card:fs-off"); } catch (err) { /* ignore */ }
+        this._render();
+        break;
       case "more-info":
         this.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: el.dataset.entity }, bubbles: true, composed: true }));
         break;
@@ -1378,7 +1507,7 @@ const STYLES = `
   --hcc-text: var(--primary-text-color, #212121);
   --hcc-line: var(--divider-color, rgba(127,127,127,.2)); --hcc-soft: rgba(127,127,127,.08);
   --hcc-bg: var(--ha-card-background, var(--card-background-color, #fff)); --hcc-on-accent: var(--text-primary-color, #fff); }
-ha-card { padding: 16px; overflow: hidden; background: var(--hcc-bg); color: var(--hcc-text); }
+ha-card { padding: 16px; overflow: hidden; background: var(--hcc-bg); color: var(--hcc-text); position: relative; }
 .wrap { container-type: inline-size; color: var(--hcc-text); }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; margin: 0; text-align: inherit; }
 ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
@@ -1693,6 +1822,58 @@ textarea.inp { resize: vertical; }
   .todo-row #t-text { flex-basis: 100%; }
   .todo-row #t-due { flex: 1; width: auto; }
 }
+
+/* ---------- full page layouts (layout: fill / fullscreen) ---------- */
+.inner { zoom: var(--hcc-zoom, 1); }
+dialog { zoom: var(--hcc-zoom, 1); }
+:host([layout="fill"]) ha-card {
+  height: calc(100dvh - var(--header-height, 56px) - env(safe-area-inset-top, 0px)); border-radius: 0; }
+:host([layout="fullscreen"]) ha-card {
+  position: fixed; inset: 0; z-index: 7; width: 100vw; height: 100dvh; border-radius: 0; border: none; box-shadow: none; }
+:host([layout="fill"]) ha-card, :host([layout="fullscreen"]) ha-card { box-sizing: border-box; padding: 0; overflow: hidden; }
+:host([layout="fill"]) .inner, :host([layout="fullscreen"]) .inner {
+  height: 100%; box-sizing: border-box; padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+:host([layout="fill"]) .wrap, :host([layout="fullscreen"]) .wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+:host([layout="fill"]) .wrap > .body, :host([layout="fullscreen"]) .wrap > .body { flex: 1; min-height: 0; overflow: auto; max-height: none !important; }
+:host([layout="fill"]) .todo, :host([layout="fullscreen"]) .todo { flex: none; max-height: 40%; margin-top: 0; display: flex; flex-direction: column; min-height: 0; }
+:host([layout="fill"]) .todo[hidden], :host([layout="fullscreen"]) .todo[hidden] { display: none; }
+:host([layout="fill"]) .todo-list, :host([layout="fullscreen"]) .todo-list { flex: 1; min-height: 0; overflow: auto; align-content: start; }
+/* month fills the height */
+:host([layout="fill"]) .view-month, :host([layout="fullscreen"]) .view-month { overflow: hidden; }
+:host([layout="fill"]) .month, :host([layout="fullscreen"]) .month { height: 100%; display: flex; flex-direction: column; }
+:host([layout="fill"]) .mgrid, :host([layout="fullscreen"]) .mgrid { flex: 1; min-height: 0; grid-auto-rows: minmax(0, 1fr); }
+:host([layout="fill"]) .mcell, :host([layout="fullscreen"]) .mcell { min-height: 0; }
+/* week columns fill the height */
+:host([layout="fill"]) .view-week, :host([layout="fullscreen"]) .view-week { overflow: hidden; }
+:host([layout="fill"]) .week, :host([layout="fullscreen"]) .week { height: 100%; }
+:host([layout="fill"]) .wcol, :host([layout="fullscreen"]) .wcol { min-height: 0; overflow: hidden; }
+:host([layout="fill"]) .wevs, :host([layout="fullscreen"]) .wevs { flex: 1; min-height: 0; overflow: auto; }
+/* agenda flows into columns on wide screens */
+:host([layout="fill"]) .view-agenda, :host([layout="fullscreen"]) .view-agenda {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); column-gap: 28px; align-content: start; }
+:host([layout="fill"]) .view-agenda .aday, :host([layout="fullscreen"]) .view-agenda .aday { border-top: 1px solid var(--hcc-line); padding-top: 12px; }
+@container (max-width: 600px) {
+  .view-week { overflow: auto !important; }
+  .week { height: auto !important; }
+}
+/* to-do as a sidebar on wide screens */
+@media (min-width: 1100px) {
+  :host([layout="fill"]) .inner.has-todo:not(.todo-bottom), :host([layout="fullscreen"]) .inner.has-todo:not(.todo-bottom) { flex-direction: row; gap: 24px; }
+  :host([layout="fill"]) .inner.has-todo:not(.todo-bottom) .todo, :host([layout="fullscreen"]) .inner.has-todo:not(.todo-bottom) .todo {
+    width: 360px; max-height: none; border-top: none; border-left: 1px solid var(--hcc-line); padding: 0 0 0 24px; }
+}
+/* full-screen controls & toast */
+.fs-ctl { position: absolute; right: 10px; top: 10px; display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--hcc-bg);
+  box-shadow: 0 2px 10px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 4; zoom: var(--hcc-zoom, 1); }
+.fs-ctl.show, .fs-ctl:hover, .fs-ctl:focus-within { opacity: 1; pointer-events: auto; }
+.fs-ctl:empty { display: none; }
+.fs-ctl .icon { background: var(--hcc-soft); }
+.hcc-toast { position: absolute; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 3; zoom: var(--hcc-zoom, 1);
+  display: flex; align-items: center; gap: 14px; padding: 10px 12px 10px 18px; border-radius: 12px; background: #323232; color: #fff; font-size: .9rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3); transition: opacity .2s, transform .2s; }
+.hcc-toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.toast-btn { color: var(--hcc-accent); font-weight: 700; text-transform: uppercase; font-size: .8rem; padding: 6px 8px; border-radius: 6px; }
+.toast-btn:hover { background: rgba(255,255,255,.1); }
 `;
 
 
@@ -1717,6 +1898,11 @@ const GENERAL_SCHEMA = [
     ],
   },
   { type: "grid", name: "", schema: [
+    { name: "layout", selector: { select: { mode: "dropdown", options: [
+      { value: "card", label: "Card (normal)" }, { value: "fill", label: "Fill page (panel view)" }, { value: "fullscreen", label: "Full screen (wall display)" }] } } },
+    { name: "keep_awake", selector: { boolean: {} } },
+  ] },
+  { type: "grid", name: "", schema: [
     { name: "show_header", selector: { boolean: {} } },
     { name: "allow_add", selector: { boolean: {} } },
     { name: "show_empty_days", selector: { boolean: {} } },
@@ -1724,7 +1910,7 @@ const GENERAL_SCHEMA = [
   ] },
 ];
 const GENERAL_LABELS = {
-  title: "Title", weather_entity: "Weather entity", todo_entity: "To-do list (optional)", todo_title: "To-do heading", default_view: "Default view", days_to_show: "Days in agenda",
+  title: "Title", weather_entity: "Weather entity", layout: "Layout", keep_awake: "Keep screen awake", todo_entity: "To-do list (optional)", todo_title: "To-do heading", default_view: "Default view", days_to_show: "Days in agenda",
   first_day_of_week: "First day of week", time_format: "Time format", show_header: "Show date & weather header",
   allow_add: "Allow adding events", show_empty_days: "Show days without events", max_height: "Max height (e.g. 600px)",
 };
