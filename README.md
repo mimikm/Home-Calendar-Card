@@ -19,6 +19,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🔴 **"Now" highlight** for events in progress, past events faded, multi-day events labelled *Day 2/3*
 - 📱 **Responsive** – adapts to the card's width, works in Sections and Masonry dashboards
 - 🌍 Dates and times follow your HA language and 12/24-hour profile setting
+- ✅ **Shared to-do list** – tasks grouped by person (using your calendar names), optional due date, anyone can add, tick to complete (with Undo); updates live on every device
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
 - Zero dependencies, one file
@@ -129,6 +130,9 @@ max_height: 640px
 | `event_types` | list | built-in five | Types offered in the add-event dropdown – see *Event types* |
 | `default_event_type` | string | `standard` | Type pre-selected when adding an event |
 | `weather_entity` | string | – | Weather entity for current conditions and daily forecast |
+| `todo_entity` | string | – | A `todo.*` entity to show the shared to-do list – see *To-do list* |
+| `todo_title` | string | `To-do` | Heading above the to-do list |
+| `todo_on_done` | `complete` \| `remove` | `complete` | What ticking a task does: mark it completed (kept in HA's history) or delete it |
 | `theme` | `auto` \| `nordic` \| `sunset` \| `forest` \| `midnight` \| `graphite` | `auto` | Colour scheme – see *Themes* |
 | `title` | string | – | Shown above the date in the header |
 | `default_view` | `agenda` \| `week` \| `month` | `agenda` | View shown when the dashboard loads |
@@ -226,6 +230,25 @@ default_event_type: standard
 ### Repeating events
 
 The **Repeat** dropdown offers every day / week / 2 weeks / month / year. Repeating events are created through Home Assistant's calendar API with a recurrence rule. Local Calendar and Google Calendar support this; if a calendar's integration doesn't, the card shows the error and you can save it as a one-off instead.
+
+### To-do list
+
+A shared family to-do list below the calendar, grouped by person.
+
+1. Create a list: **Settings → Devices & services → Add integration → Local To-do**, e.g. *Family*. (Any to-do integration works – Google Tasks, Todoist, etc.)
+2. Set it on the card:
+
+```yaml
+todo_entity: todo.family
+```
+
+- **People come from your calendars** – every calendar of type *Events* is a person you can assign tasks to, using the display name you gave it (e.g. *Dom*, *Kasia*, *Family*). There's also an **Everyone** option.
+- **Add a task** – type it, optionally pick a due date, tap the person and press **+** (or Enter). Anyone using the dashboard can add.
+- **Tick to finish** – the task is marked done and disappears from the list. An **Undo** button appears for a few seconds.
+- **Due dates** – shown as *Today*, *Tomorrow* or the date; overdue tasks turn red.
+- **Live** – changes made on another phone or in HA's own To-do page show up instantly.
+
+How it's stored: the person is saved in the task's description as `For: Dom`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Dom]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
 
 ### Themes
 
