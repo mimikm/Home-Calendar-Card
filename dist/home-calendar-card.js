@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.1.0";
+const CARD_VERSION = "1.2.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -26,6 +26,26 @@ const WX_COLOR = {
   exceptional: "#EF5350",
 };
 
+// Built-in event types. Override or extend with `event_types` in the card config.
+// The type is stored on the event as a tag (e.g. "#work") in its description.
+const DEFAULT_TYPES = [
+  { id: "standard", name: "Standard", icon: "" },
+  { id: "holiday", name: "Holiday", icon: "mdi:beach", style: "banner", all_day: true, countdown: true },
+  { id: "birthday", name: "Birthday", icon: "mdi:cake-variant", style: "birthday", all_day: true, repeat: "yearly" },
+  { id: "work", name: "Work event", icon: "mdi:briefcase-outline" },
+  { id: "dhs", name: "DHS", icon: "mdi:tag-outline" },
+];
+const REPEATS = [
+  ["", "Does not repeat"], ["FREQ=DAILY", "Every day"], ["FREQ=WEEKLY", "Every week"],
+  ["FREQ=WEEKLY;INTERVAL=2", "Every 2 weeks"], ["FREQ=MONTHLY", "Every month"], ["FREQ=YEARLY", "Every year"],
+];
+const toRrule = (r) => {
+  if (!r) return "";
+  const v = String(r).toLowerCase();
+  return { daily: "FREQ=DAILY", weekly: "FREQ=WEEKLY", fortnightly: "FREQ=WEEKLY;INTERVAL=2", monthly: "FREQ=MONTHLY", yearly: "FREQ=YEARLY" }[v] || String(r);
+};
+const TAG_RE = /(^|\s)#([a-z0-9_-]+)(?=\s|$)/gi;
+
 // Calendar entity feature flags (homeassistant.components.calendar.CalendarEntityFeature)
 const FEATURE_CREATE = 1;
 const FEATURE_DELETE = 2;
@@ -34,6 +54,11 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 const pad = (n) => String(n).padStart(2, "0");
 const dayKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const timeKey = (d) => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const isoLocal = (d) => {
+  const o = -d.getTimezoneOffset();
+  const a = Math.abs(o);
+  return `${dayKey(d)}T${timeKey(d)}:00${o >= 0 ? "+" : "-"}${pad(Math.floor(a / 60))}:${pad(a % 60)}`;
+};
 const startOfDay = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const parseDate = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
@@ -124,6 +149,14 @@ class HomeCalendarCard extends HTMLElement {
         return o;
       })
       .filter((c) => c.entity);
+    const defs = Object.fromEntries(DEFAULT_TYPES.map((t) => [t.id, t]));
+    this._types = Array.isArray(config.event_types) && config.event_types.length
+      ? config.event_types.map((t) => {
+        const o = typeof t === "string" ? { id: t } : { ...t };
+        o.id = String(o.id || o.name || "").toLowerCase().replace(/[^a-z0-9_-]+/g, "_");
+        return { ...(defs[o.id] || { name: o.id, icon: "mdi:tag-outline" }), ...o };
+      }).filter((t) => t.id)
+      : DEFAULT_TYPES.map((t) => ({ ...t }));
     this._storeKey = "home-calendar-card:" + this._calendars.map((c) => c.entity).join(",");
     try {
       const saved = JSON.parse(localStorage.getItem(this._storeKey) || "{}");
@@ -261,18 +294,27 @@ class HomeCalendarCard extends HTMLElement {
     const start = allDay ? parseDate(e.start.date) : new Date(e.start?.dateTime || e.start);
     let end = e.end ? (allDay ? parseDate(e.end.date) : new Date(e.end.dateTime || e.end)) : null;
     if (!end || isNaN(end)) end = allDay ? addDays(start, 1) : start;
+    // Event type: a "#tag" in the title/description wins, otherwise the calendar's type.
+    let tagged = null;
+    const strip = (txt) => String(txt || "").replace(TAG_RE, (m, sp, t) => {
+      const ty = this._typeById(t, true);
+      if (!ty) return m;
+      tagged = tagged || ty.id;
+      return sp;
+    }).trim();
+    let summary = strip(e.summary);
+    const description = strip(e.description);
+    const typeId = tagged || (cal.type === "birthday" ? "birthday" : cal.type === "holiday" ? "holiday" : "standard");
     let age = null;
-    if (cal.type === "birthday") {
-      const m = `${e.summary || ""} ${e.description || ""}`.match(/\b(19\d{2}|20\d{2})\b/);
+    if (this._typeById(typeId).style === "birthday") {
+      const m = `${summary} ${description}`.match(/\b(19\d{2}|20\d{2})\b/);
       const a = m ? start.getFullYear() - Number(m[1]) : 0;
       if (a > 0 && a < 130) age = a;
+      summary = summary.replace(/\s*[([]?\b(19|20)\d{2}\b[)\]]?/, "").trim() || summary;
     }
-    const summary = cal.type === "birthday" && e.summary
-      ? e.summary.replace(/\s*[([]?\b(19|20)\d{2}\b[)\]]?/, "").trim() || e.summary
-      : e.summary;
     return {
-      age,
-      id: `e${++EV_SEQ}`, summary: summary || "(No title)", description: e.description || "",
+      age, type: typeId, tagged: !!tagged,
+      id: `e${++EV_SEQ}`, summary: summary || "(No title)", description,
       location: e.location || "", uid: e.uid, recurrence_id: e.recurrence_id, rrule: e.rrule,
       allDay, start, end, cal,
     };
@@ -286,25 +328,47 @@ class HomeCalendarCard extends HTMLElement {
       && (ev.end > s || (ev.end.getTime() === ev.start.getTime() && ev.start >= s)));
   }
 
-  _eventsOn(day) { return this._onDay(day).filter((ev) => ev.cal.type !== "holiday"); }
+  _typeById(id, strict = false) {
+    const k = String(id || "").toLowerCase();
+    return this._types?.find((t) => t.id === k) || DEFAULT_TYPES.find((t) => t.id === k)
+      || (strict ? null : DEFAULT_TYPES[0]);
+  }
 
-  _holidaysOn(day) { return this._onDay(day).filter((ev) => ev.cal.type === "holiday"); }
+  _ty(ev) { return this._typeById(ev.type); }
+
+  _isBanner(ev) { return this._ty(ev).style === "banner"; }
+
+  _isBday(ev) { return this._ty(ev).style === "birthday"; }
+
+  _typeIcon(ev) { return this._ty(ev).icon || ""; }
+
+  _eventsOn(day) { return this._onDay(day).filter((ev) => !this._isBanner(ev)); }
+
+  _holidaysOn(day) { return this._onDay(day).filter((ev) => this._isBanner(ev)); }
 
   _holidayTags(day) {
     return this._holidaysOn(day).map((ev) => `<span class="hol" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
-      <ha-icon icon="${esc(ev.cal.icon || "mdi:party-popper")}"></ha-icon>${esc(ev.summary)}</span>`).join("");
+      <ha-icon icon="${esc((ev.tagged ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper")}"></ha-icon>${esc(ev.summary)}</span>`).join("");
   }
 
   /* ------------------------------------------------------------ countdowns */
 
   async _fetchCountdowns() {
     const list = (this._config?.countdowns || []).map((c) => (typeof c === "string" ? { calendar: c } : { ...c }));
-    if (!list.length || !this._hass) { this._countdowns = []; return; }
+    const cdTypes = (this._types || []).filter((t) => t.countdown).map((t) => t.id);
+    if ((!list.length && !cdTypes.length) || !this._hass) { this._countdowns = []; return; }
     const id = (this._cdId = (this._cdId || 0) + 1);
     const now = new Date();
     const today = startOfDay(now);
     const end = addDays(today, Math.max(7, Number(this._config.countdown_days) || 365));
     const cache = {};
+    const look = (ent) => {
+      if (!cache[ent]) {
+        cache[ent] = this._hass.callApi("GET",
+          `calendars/${ent}?start=${encodeURIComponent(today.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
+      }
+      return cache[ent];
+    };
     const out = await Promise.all(list.map(async (cd) => {
       const cal = this._calendars.find((c) => c.entity === cd.calendar);
       const color = cd.color || cal?.color || "var(--hcc-accent)";
@@ -318,11 +382,7 @@ class HomeCalendarCard extends HTMLElement {
       }
       if (!cd.calendar || !this._hass.states[cd.calendar]) return null;
       try {
-        if (!cache[cd.calendar]) {
-          cache[cd.calendar] = this._hass.callApi("GET",
-            `calendars/${cd.calendar}?start=${encodeURIComponent(today.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
-        }
-        const evs = (await cache[cd.calendar]).map((e) => this._normalize(e, cal || { entity: cd.calendar, color }));
+        const evs = (await look(cd.calendar)).map((e) => this._normalize(e, cal || { entity: cd.calendar, color }));
         let re = null;
         if (cd.match) {
           try { re = new RegExp(cd.match, "i"); } catch (e) { re = { test: (t) => t.toLowerCase().includes(String(cd.match).toLowerCase()) }; }
@@ -335,6 +395,22 @@ class HomeCalendarCard extends HTMLElement {
         return null;
       }
     }));
+    // Events whose type has `countdown: true` (e.g. holidays) get a countdown automatically.
+    if (cdTypes.length) {
+      const seen = new Set(out.filter(Boolean).map((c) => c.ev && `${c.ev.uid}|${c.start.getTime()}`));
+      const auto = await Promise.all(this._calendars.filter((c) => this._hass.states[c.entity] && !this._hidden.has(c.entity)).map(async (cal) => {
+        try {
+          return (await look(cal.entity)).map((e) => this._normalize(e, cal))
+            .filter((ev) => ev.tagged && cdTypes.includes(ev.type) && ev.end > now);
+        } catch (e) { return []; }
+      }));
+      auto.flat().forEach((ev) => {
+        const k = `${ev.uid}|${ev.start.getTime()}`;
+        if (seen.has(k)) return;
+        seen.add(k);
+        out.push({ name: ev.summary, start: ev.start, end: ev.end, icon: this._typeIcon(ev), color: ev.cal.color, ev });
+      });
+    }
     if (id !== this._cdId) return;
     this._countdowns = out.filter(Boolean).sort((a, b) => a.start - b.start).slice(0, Number(this._config.max_countdowns) || 8);
     this._render();
@@ -593,13 +669,14 @@ class HomeCalendarCard extends HTMLElement {
     const now = new Date();
     const live = !ev.allDay && ev.start <= now && ev.end > now;
     const past = ev.end <= now;
-    const bday = ev.cal.type === "birthday";
+    const bday = this._isBday(ev);
+    const icon = this._typeIcon(ev);
     const label = bday ? `Birthday${ev.age ? ` · turns ${ev.age}` : ""}` : this._timeLabel(ev, day);
     return `<div class="ev ${live ? "live" : ""} ${past ? "past" : ""} ${bday ? "bday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
       <div class="bar"></div>
       <div class="ev-body">
         <div class="ev-time">${live ? `<span class="pulse"></span>Now · ` : ""}${esc(label)}</div>
-        <div class="ev-title">${bday ? `<ha-icon icon="mdi:cake-variant"></ha-icon>` : ""}${esc(ev.summary)}</div>
+        <div class="ev-title">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}${esc(ev.summary)}</div>
         ${ev.location ? `<div class="ev-sub"><ha-icon icon="mdi:map-marker-outline"></ha-icon><span>${esc(ev.location)}</span></div>` : ""}
       </div>
       ${this._calendars.length > 1 ? `<div class="ev-cal">${this._avatar(ev.cal)}<span class="ev-cal-name">${esc(this._calName(ev.cal))}</span></div>` : ""}
@@ -645,8 +722,8 @@ class HomeCalendarCard extends HTMLElement {
           ${this._wxBadge(d, true)}
         </button>
         <div class="wevs">${this._holidaysOn(d).map((ev) => `<div class="whol" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">${esc(ev.summary)}</div>`).join("")}${evs.map((ev) => `
-          <div class="wev ${ev.allDay ? "allday" : ""} ${ev.cal.type === "birthday" ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
-            <div class="t"><span class="short">${esc(ev.cal.type === "birthday" ? "Birthday" : this._shortLabel(ev, d))}</span><span class="full">${esc(ev.cal.type === "birthday" ? "Birthday" : this._timeLabel(ev, d))}</span></div><div class="s">${ev.cal.type === "birthday" ? `<ha-icon icon="mdi:cake-variant"></ha-icon>` : ""}${esc(ev.summary)}</div>
+          <div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
+            <div class="t"><span class="short">${esc(this._isBday(ev) ? "Birthday" : this._shortLabel(ev, d))}</span><span class="full">${esc(this._isBday(ev) ? "Birthday" : this._timeLabel(ev, d))}</span></div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
           </div>`).join("")}</div>
       </div>`;
     }
@@ -672,8 +749,8 @@ class HomeCalendarCard extends HTMLElement {
         <div class="mtop"><span class="mdn">${d.getDate()}</span>${f ? `<span class="mwx"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><b>${round(f.temperature)}°</b></span>` : ""}</div>
         ${hol ? `<div class="mhol" style="--c:${esc(hol.cal.color)}" title="${esc(hol.summary)}">${esc(hol.summary)}</div>` : ""}
         <div class="mevs">${evs.slice(0, max).map((ev) => `
-          <div class="mev ${ev.allDay && ev.cal.type !== "birthday" ? "allday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
-            ${ev.cal.type === "birthday" ? `<ha-icon class="mcake" icon="mdi:cake-variant"></ha-icon>` : `<span class="mdot"></span>`}<span class="mtxt">${esc(ev.summary)}</span>
+          <div class="mev ${ev.allDay && !this._isBday(ev) ? "allday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
+            ${this._typeIcon(ev) ? `<ha-icon class="mcake" icon="${esc(this._typeIcon(ev))}"></ha-icon>` : `<span class="mdot"></span>`}<span class="mtxt">${esc(ev.summary)}</span>
           </div>`).join("")}
           ${more > 0 ? `<div class="more">+${more}</div>` : ""}</div>
       </div>`;
@@ -707,6 +784,7 @@ class HomeCalendarCard extends HTMLElement {
       </div>
       <div class="dlg-body">
         <div class="row"><ha-icon icon="mdi:clock-outline"></ha-icon><div>${esc(this._whenText(ev))}${ev.age ? `<div class="muted">Turns ${ev.age} 🎂</div>` : ""}${ev.rrule || ev.recurrence_id ? `<div class="muted">Repeating event</div>` : ""}</div></div>
+        ${ev.type !== "standard" ? `<div class="row"><ha-icon icon="${esc(this._typeIcon(ev) || "mdi:tag-outline")}" style="color:${esc(ev.cal.color)}"></ha-icon><div>${esc(this._ty(ev).name || ev.type)}</div></div>` : ""}
         ${ev.location ? `<div class="row"><ha-icon icon="mdi:map-marker-outline"></ha-icon><a href="${mapUrl}" target="_blank" rel="noopener">${esc(ev.location)}</a></div>` : ""}
         <div class="row"><ha-icon icon="mdi:calendar-blank-outline"></ha-icon><div class="cal-line">${this._avatar(ev.cal, "sm") || `<span class="cal-dot" style="--c:${esc(ev.cal.color)}"></span>`}${esc(this._calName(ev.cal))}</div></div>
         ${f ? `<div class="row"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><div>${this._forecastText(f)}</div></div>` : ""}
@@ -765,6 +843,7 @@ class HomeCalendarCard extends HTMLElement {
     this._addDur = 3600e3;
     this._addCal = (cals.find((c) => !this._hidden.has(c.entity)) || cals[0]).entity;
     const selColor = cals.find((c) => c.entity === this._addCal).color;
+    const defType = this._types.find((t) => t.id === (this._config.default_event_type || "standard")) || this._types[0];
     this._openDialog(`
       <div class="dlg-head">
         <div class="dlg-title">New event</div>
@@ -772,6 +851,16 @@ class HomeCalendarCard extends HTMLElement {
       </div>
       <div class="dlg-body form" style="--c:${esc(selColor)}">
         <input id="f-title" class="inp" placeholder="Add title" autocomplete="off">
+        <div class="sel-row">
+          <label class="sel"><span class="lbl">Type</span>
+            <span class="sel-wrap"><ha-icon id="f-type-icon" icon="${esc(defType.icon || "mdi:calendar-blank-outline")}"></ha-icon>
+            <select id="f-type" class="inp">${this._types.map((t) => `<option value="${esc(t.id)}" ${t.id === defType.id ? "selected" : ""}>${esc(t.name || t.id)}</option>`).join("")}</select></span>
+          </label>
+          <label class="sel"><span class="lbl">Repeat</span>
+            <span class="sel-wrap"><ha-icon icon="mdi:repeat"></ha-icon>
+            <select id="f-rep" class="inp">${REPEATS.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select></span>
+          </label>
+        </div>
         <div>
           <div class="lbl">Calendar</div>
           <div class="cal-pick">${cals.map((c) => `
@@ -792,6 +881,7 @@ class HomeCalendarCard extends HTMLElement {
         <button class="btn" data-action="close">Cancel</button>
         <button class="btn primary" data-action="save">Save</button>
       </div>`);
+    this._applyType(defType);
     this._updateAddWeather();
     setTimeout(() => this._dlg.querySelector("#f-title")?.focus(), 50);
   }
@@ -812,9 +902,25 @@ class HomeCalendarCard extends HTMLElement {
     return isNaN(d) ? null : d;
   }
 
+  _applyType(ty) {
+    if (!ty || !this._q(".form")) return;
+    const ad = this._q("#f-allday");
+    ad.checked = !!ty.all_day;
+    this._q(".form").classList.toggle("allday", ad.checked);
+    if (ad.checked) {
+      const s = this._formStart();
+      const en = this._formEnd();
+      if (s && en && en < s) this._q("#f-ed").value = dayKey(s);
+    }
+    this._q("#f-rep").value = REPEATS.some(([v]) => v === toRrule(ty.repeat)) ? toRrule(ty.repeat) : "";
+    this._q("#f-type-icon").setAttribute("icon", ty.icon || "mdi:calendar-blank-outline");
+    this._q(".form").classList.toggle("typed", !!ty.icon);
+  }
+
   _onFormChange(e) {
     const id = e.target.id;
     if (!id || !this._q(".form")) return;
+    if (id === "f-type") this._applyType(this._typeById(e.target.value));
     if (id === "f-allday") {
       this._q(".form").classList.toggle("allday", e.target.checked);
       const s = this._formStart();
@@ -879,7 +985,10 @@ class HomeCalendarCard extends HTMLElement {
       data.end_date_time = `${ed} ${et}:00`;
     }
     const loc = this._q("#f-loc").value.trim();
-    const desc = this._q("#f-desc").value.trim();
+    const ty = this._typeById(this._q("#f-type")?.value);
+    const tag = ty && ty.id !== "standard" ? `#${ty.id}` : "";
+    const desc = [this._q("#f-desc").value.trim(), tag].filter(Boolean).join("\n\n");
+    const rrule = this._q("#f-rep")?.value || "";
     if (loc) data.location = loc;
     if (desc) data.description = desc;
 
@@ -887,7 +996,20 @@ class HomeCalendarCard extends HTMLElement {
     btn.disabled = true;
     btn.textContent = "Saving…";
     try {
-      await this._hass.callService("calendar", "create_event", data, { entity_id: this._addCal });
+      if (rrule) {
+        // Repeating events go through the websocket API, which supports RRULE.
+        const event = { summary: data.summary, rrule };
+        if (allDay) { event.dtstart = data.start_date; event.dtend = data.end_date; }
+        else {
+          event.dtstart = isoLocal(new Date(`${sd}T${this._q("#f-st").value}`));
+          event.dtend = isoLocal(new Date(`${ed}T${this._q("#f-et").value}`));
+        }
+        if (data.location) event.location = data.location;
+        if (data.description) event.description = data.description;
+        await this._hass.callWS({ type: "calendar/event/create", entity_id: this._addCal, event });
+      } else {
+        await this._hass.callService("calendar", "create_event", data, { entity_id: this._addCal });
+      }
       this._closeDialog();
       this._toast(`Added “${title}”`);
       // Some integrations (e.g. CalDAV) take a moment before the new event is listed.
@@ -1252,7 +1374,7 @@ textarea.inp { resize: vertical; }
 .cal-pick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .cal-pick .chip { opacity: .6; background: none; border-color: var(--hcc-line); padding: 6px 12px 6px 10px; }
 .cal-pick .chip.sel { opacity: 1; background: color-mix(in srgb, var(--c) 18%, transparent); border-color: var(--c); font-weight: 700; }
-.dt { display: grid; grid-template-columns: 58px minmax(0, 1fr) 128px; gap: 8px; align-items: center; }
+.dt { display: grid; grid-template-columns: 58px minmax(0, 1fr) 136px; gap: 8px; align-items: center; }
 .form.allday .dt { grid-template-columns: 58px minmax(0, 1fr); }
 .form.allday .dt input[type=time] { display: none; }
 .switch { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: .92rem; font-weight: 500; user-select: none; position: relative; width: fit-content; }
@@ -1261,6 +1383,15 @@ textarea.inp { resize: vertical; }
 .track::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
 .switch input:checked + .track { background: var(--c); }
 .switch input:checked + .track::after { transform: translateX(16px); }
+.sel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sel { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.sel-wrap { position: relative; display: block; }
+.sel-wrap ha-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); --mdc-icon-size: 18px; color: var(--c); pointer-events: none; }
+.sel-wrap select { appearance: none; -webkit-appearance: none; padding-left: 36px; padding-right: 30px; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--hcc-muted) 50%), linear-gradient(135deg, var(--hcc-muted) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 55%, calc(100% - 12px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
+.sel-wrap select option { background: var(--hcc-bg); color: var(--primary-text-color); }
+.mev.allday .mcake { color: #fff; }
 .f-wx { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--hcc-muted); padding: 8px 12px; border-radius: 12px; background: var(--hcc-soft); }
 .f-wx:empty { display: none; }
 .f-wx ha-icon { --mdc-icon-size: 22px; }
