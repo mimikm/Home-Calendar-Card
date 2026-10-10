@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.5.0";
+const CARD_VERSION = "1.6.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -1112,8 +1112,11 @@ class HomeCalendarCard extends HTMLElement {
 
   _openEvent(ev) {
     this._curEv = ev;
-    this._delArmed = false;
-    const canDel = ev.uid && (this._features(ev.cal.entity) & FEATURE_DELETE);
+    const allowDel = this._config.allow_delete !== false;
+    const canDel = allowDel && ev.uid && (this._features(ev.cal.entity) & FEATURE_DELETE);
+    const delNote = allowDel && !canDel
+      ? (ev.uid ? "This calendar can't delete events from Home Assistant." : "This event can't be deleted from here.")
+      : "";
     const f = this._forecast[dayKey(ev.start)];
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.location)}`;
     this._openDialog(`
@@ -1132,9 +1135,35 @@ class HomeCalendarCard extends HTMLElement {
       </div>
       <div class="dlg-foot">
         ${canDel ? `<button class="btn danger" data-action="delete"><ha-icon icon="mdi:delete-outline"></ha-icon><span>Delete</span></button>` : ""}
+        ${delNote ? `<span class="del-note"><ha-icon icon="mdi:lock-outline"></ha-icon>${esc(delNote)}</span>` : ""}
         <span class="sp"></span>
         <button class="btn" data-action="close">Close</button>
       </div>`);
+  }
+
+  _isRecurring(ev) { return !!(ev.recurrence_id || ev.rrule); }
+
+  _askDelete() {
+    const ev = this._curEv;
+    if (!ev) return;
+    const foot = this._q(".dlg-foot");
+    const rec = this._isRecurring(ev);
+    foot.classList.add("confirm");
+    foot.innerHTML = rec ? `
+      <div class="del-q"><ha-icon icon="mdi:delete-alert-outline"></ha-icon>Delete repeating event</div>
+      <div class="del-opts">
+        <button class="btn danger-fill" data-action="delete-do" data-scope="one">This event</button>
+        <button class="btn danger-line" data-action="delete-do" data-scope="future">This and following</button>
+        <button class="btn danger-line" data-action="delete-do" data-scope="all">All events</button>
+        <span class="sp"></span>
+        <button class="btn" data-action="delete-cancel">Cancel</button>
+      </div>` : `
+      <div class="del-q"><ha-icon icon="mdi:delete-alert-outline"></ha-icon>Delete “${esc(ev.summary)}”? This can't be undone.</div>
+      <div class="del-opts">
+        <span class="sp"></span>
+        <button class="btn" data-action="delete-cancel">Cancel</button>
+        <button class="btn danger-fill" data-action="delete-do" data-scope="one">Delete</button>
+      </div>`;
   }
 
   _forecastText(f) {
@@ -1362,27 +1391,25 @@ class HomeCalendarCard extends HTMLElement {
     }
   }
 
-  async _deleteEvent() {
+  async _deleteEvent(scope = "one") {
     const ev = this._curEv;
     if (!ev) return;
-    const btn = this._q('[data-action="delete"]');
-    if (!this._delArmed) {
-      this._delArmed = true;
-      btn.classList.add("armed");
-      btn.querySelector("span").textContent = ev.recurrence_id ? "Delete this occurrence?" : "Tap again to delete";
-      return;
-    }
-    btn.disabled = true;
+    this._dlg.querySelectorAll('[data-action^="delete"]').forEach((b) => { b.disabled = true; });
     try {
       const msg = { type: "calendar/event/delete", entity_id: ev.cal.entity, uid: ev.uid };
-      if (ev.recurrence_id) msg.recurrence_id = ev.recurrence_id;
+      if (this._isRecurring(ev) && scope !== "all" && ev.recurrence_id) {
+        msg.recurrence_id = ev.recurrence_id;
+        if (scope === "future") msg.recurrence_range = "THISANDFUTURE";
+      }
       await this._hass.callWS(msg);
       this._closeDialog();
-      this._toast(`Deleted “${ev.summary}”`);
+      this._toast(scope === "all" ? `Deleted all “${ev.summary}” events`
+        : scope === "future" ? `Deleted “${ev.summary}” from ${this._fmt({ day: "numeric", month: "short" }).format(ev.start)} on`
+          : `Deleted “${ev.summary}”`);
       this._fetchEvents();
       this._fetchCountdowns();
     } catch (err) {
-      btn.disabled = false;
+      this._dlg.querySelectorAll('[data-action^="delete"]').forEach((b) => { b.disabled = false; });
       this._setFormError(err?.message || "Could not delete the event.");
     }
   }
@@ -1471,7 +1498,13 @@ class HomeCalendarCard extends HTMLElement {
         this._saveEvent();
         break;
       case "delete":
-        this._deleteEvent();
+        this._askDelete();
+        break;
+      case "delete-do":
+        this._deleteEvent(el.dataset.scope);
+        break;
+      case "delete-cancel":
+        if (this._curEv) this._openEvent(this._curEv);
         break;
       case "close":
         this._closeDialog();
@@ -1737,7 +1770,15 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
 .btn.primary:hover { filter: brightness(1.08); }
 .btn:disabled { opacity: .55; cursor: default; }
 .btn.danger { color: var(--error-color, #db4437); padding-left: 12px; }
-.btn.danger.armed { background: var(--error-color, #db4437); color: #fff; }
+.btn.danger-fill { background: var(--error-color, #db4437); color: #fff; }
+.btn.danger-fill:hover { filter: brightness(1.08); background: var(--error-color, #db4437); }
+.btn.danger-line { color: var(--error-color, #db4437); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--error-color, #db4437) 50%, transparent); }
+.dlg-foot.confirm { flex-direction: column; align-items: stretch; gap: 10px; background: color-mix(in srgb, var(--error-color, #db4437) 7%, transparent); }
+.del-q { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .92rem; }
+.del-q ha-icon { color: var(--error-color, #db4437); --mdc-icon-size: 20px; }
+.del-opts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.del-note { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--hcc-muted); }
+.del-note ha-icon { --mdc-icon-size: 15px; }
 .form { --c: var(--hcc-accent); }
 .dlg-foot .btn.primary { background: var(--hcc-accent); }
 .inp { width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--hcc-line); background: var(--hcc-soft);
@@ -1905,6 +1946,7 @@ const GENERAL_SCHEMA = [
   { type: "grid", name: "", schema: [
     { name: "show_header", selector: { boolean: {} } },
     { name: "allow_add", selector: { boolean: {} } },
+    { name: "allow_delete", selector: { boolean: {} } },
     { name: "show_empty_days", selector: { boolean: {} } },
     { name: "max_height", selector: { text: {} } },
   ] },
@@ -1912,7 +1954,7 @@ const GENERAL_SCHEMA = [
 const GENERAL_LABELS = {
   title: "Title", weather_entity: "Weather entity", layout: "Layout", keep_awake: "Keep screen awake", todo_entity: "To-do list (optional)", todo_title: "To-do heading", default_view: "Default view", days_to_show: "Days in agenda",
   first_day_of_week: "First day of week", time_format: "Time format", show_header: "Show date & weather header",
-  allow_add: "Allow adding events", show_empty_days: "Show days without events", max_height: "Max height (e.g. 600px)",
+  allow_add: "Allow adding events", allow_delete: "Allow deleting events", show_empty_days: "Show days without events", max_height: "Max height (e.g. 600px)",
 };
 const CAL_SCHEMA = [
   { type: "grid", name: "", schema: [
