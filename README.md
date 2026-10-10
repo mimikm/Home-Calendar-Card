@@ -8,7 +8,8 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 
 - 📅 **Three views** – Agenda (grouped by day), Week (7 columns, stacks on phones) and Month (grid, dots on phones)
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
-- ➕ **Add events** – title, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
+- ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
+- 🏷️ **Event types** – Standard, Holiday, Birthday, Work event and DHS out of the box (fully customisable), each with its own icon and behaviour
 - 🗑️ **Delete events** – on calendars that support it (tap twice to confirm; recurring events delete only that occurrence)
 - 👨‍👩‍👧 **One calendar per person** – link a calendar to a `person` entity to show their profile photo (or initials) on chips and events, plus a shared family calendar
 - 🎂 **Birthdays** – birthday calendars get a cake icon and "turns 36" when the birth year is in the event
@@ -124,6 +125,8 @@ max_height: 640px
 | `countdowns` | list | – | Countdown cards shown under the header – see *Countdowns* |
 | `countdown_days` | number | `365` | How far ahead calendar-based countdowns look |
 | `max_countdowns` | number | `8` | Maximum countdown cards shown |
+| `event_types` | list | built-in five | Types offered in the add-event dropdown – see *Event types* |
+| `default_event_type` | string | `standard` | Type pre-selected when adding an event |
 | `weather_entity` | string | – | Weather entity for current conditions and daily forecast |
 | `title` | string | – | Shown above the date in the header |
 | `default_view` | `agenda` \| `week` \| `month` | `agenda` | View shown when the dashboard loads |
@@ -169,6 +172,58 @@ Each countdown is either a fixed date or the **next matching event** from a cale
 | `color` | Card colour (defaults to the calendar's colour) |
 
 Countdowns are sorted soonest first and disappear once the date has passed (yearly ones roll over automatically). Tap a calendar countdown to open the event.
+
+Events added with the **Holiday** type get a countdown automatically – no config needed.
+
+### Event types
+
+When adding an event you pick a **Type** from a dropdown. The built-in types are:
+
+| Type | Icon | What it does |
+|---|---|---|
+| Standard | – | A normal event |
+| Holiday | 🏖 `mdi:beach` | All-day by default, shown as a banner on each day of the trip, gets an automatic countdown |
+| Birthday | 🎂 `mdi:cake-variant` | All-day, repeats every year, shows *turns X* if you add the birth year to the title, e.g. `Mum (1962)` |
+| Work event | 💼 `mdi:briefcase-outline` | Briefcase icon on the event |
+| DHS | 🏷 `mdi:tag-outline` | Tag icon on the event |
+
+**How it's stored:** calendars in Home Assistant don't have a "type" field, so the card adds a tag such as `#work` to the end of the event's description. The card hides the tag and shows the icon instead. This also works the other way round – type `#holiday`, `#birthday`, `#work` or `#dhs` into the description (or title) of an event in Google or Apple Calendar and the card will pick it up.
+
+**Customise the list** with `event_types`. Built-in types keep their defaults, so you only need to set what you want to change, and you can add your own:
+
+```yaml
+event_types:
+  - standard
+  - holiday
+  - birthday
+  - id: work
+    name: Work
+  - id: dhs
+    name: DHS
+    icon: mdi:home-heart        # pick any MDI icon
+  - id: school
+    name: School
+    icon: mdi:school
+  - id: appointment
+    name: Appointment
+    icon: mdi:stethoscope
+    countdown: true
+default_event_type: standard
+```
+
+| Type option | Description |
+|---|---|
+| `id` | Short name used for the tag, e.g. `school` → `#school` |
+| `name` | Name shown in the dropdown |
+| `icon` | MDI icon shown on events of this type |
+| `style` | `banner` (shown like a holiday) or `birthday` (cake style, *turns X*) |
+| `all_day` | `true` to switch on All day when this type is picked |
+| `repeat` | Default repeat when picked: `daily`, `weekly`, `fortnightly`, `monthly`, `yearly` |
+| `countdown` | `true` to show a countdown card for upcoming events of this type |
+
+### Repeating events
+
+The **Repeat** dropdown offers every day / week / 2 weeks / month / year. Repeating events are created through Home Assistant's calendar API with a recurrence rule. Local Calendar and Google Calendar support this; if a calendar's integration doesn't, the card shows the error and you can save it as a one-off instead.
 
 > The visual editor manages a simple list of calendar entities. For people, colours, birthdays, holidays and countdowns, switch to the code editor and use the object form shown above.
 
