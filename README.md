@@ -27,7 +27,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 📅 **Three views** – Agenda (grouped by day), Week (7 columns, stacks on phones) and Month (grid, dots on phones)
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
 - ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
-- 🏷️ **Event types** – Standard, Holiday, Birthday, Work event and DHS out of the box (fully customisable), each with its own icon and behaviour
+- 🏷️ **Event types** – Standard, Holiday, Birthday, Anniversary, Work event and DHS out of the box (fully customisable), each with its own icon and behaviour
 - 🗑️ **Delete events** – tap an event → **Delete**, with a confirmation; repeating events let you delete *this event*, *this and following* or *all events*
 - 👨‍👩‍👧 **One calendar per person** – link a calendar to a `person` entity to show their profile photo (or initials) on chips and events, plus a shared family calendar
 - 🎂 **Birthdays** – birthday calendars get a cake icon and "turns 36" when the birth year is in the event
@@ -94,11 +94,11 @@ calendars:
     name: Family
     color: "#4285F4"
   # one calendar per person – photo comes from the person entity
-  - entity: calendar.dom
-    person: person.dom
+  - entity: calendar.oliver
+    person: person.oliver
     color: "#EA4335"
-  - entity: calendar.kasia_icloud
-    person: person.kasia
+  - entity: calendar.emma_icloud
+    person: person.emma
     color: "#34A853"
   - entity: calendar.kids
     name: Kids
@@ -156,7 +156,8 @@ max_height: 640px
 | `scale` | `auto` \| number | `auto` | Text/UI size in `fill`/`fullscreen` (`auto` grows with the screen, e.g. `1.5` = 150%) |
 | `keep_awake` | boolean | `true` in fill/fullscreen | Stop the screen from sleeping while the card is shown |
 | `browser_fullscreen` | boolean | `false` | In `fullscreen`, the first tap also switches the browser to true full screen (hides the address bar) |
-| `todo_position` | `side` \| `bottom` | `side` | Where the to-do list goes in fill/fullscreen on wide screens |
+| `todo_position` | `auto` \| `top` \| `bottom` \| `left` \| `right` | `auto` | Where the to-do list sits. `auto` = bottom for a normal card, right in fill/fullscreen |
+| `todo_autohide` | `false` \| `true` \| seconds | `false` | Fold the to-do list away into a slim bar/tab; tap to open; it folds again after this many seconds without use (`true` = 30) |
 | `theme` | `auto` \| `nordic` \| `sunset` \| `forest` \| `midnight` \| `graphite` | `auto` | Colour scheme – see *Themes* |
 | `title` | string | – | Shown above the date in the header |
 | `default_view` | `agenda` \| `week` \| `month` | `agenda` | View shown when the dashboard loads |
@@ -182,9 +183,11 @@ max_height: 640px
 | `person` | A `person.*` entity – shows their profile picture (or initials) on chips and events |
 | `picture` | Image URL to use instead of a person's picture, e.g. `/local/kids.png` |
 | `icon` | MDI icon shown as the badge when there's no picture, e.g. `mdi:human-child` |
-| `type` | `events` (default), `birthday` or `holiday` |
+| `type` | `events` (default), `birthday`, `anniversary` or `holiday` |
 
 **`type: birthday`** – events show a 🎂 icon and "Birthday". If the event title or description contains a birth year (e.g. *Anna (1990)*), the card shows *turns 36* and hides the year from the title.
+
+**`type: anniversary`** – events show a ❤️ icon and "Anniversary". With a year in the title (e.g. *Wedding (2014)*) the card shows *12th anniversary*.
 
 **`type: holiday`** – events appear as a coloured banner next to the day (and tint the day in Month view) rather than as an event row.
 
@@ -204,7 +207,27 @@ Each countdown is either a fixed date or the **next matching event** from a cale
 
 Countdowns are sorted soonest first and disappear once the date has passed (yearly ones roll over automatically). Tap a calendar countdown to open the event.
 
-Events added with the **Holiday** type get a countdown automatically – no config needed.
+**Automatic countdowns – no config needed:**
+
+| Type | Automatic countdown |
+|---|---|
+| Birthday | The **next 2** upcoming birthdays, with the age (*turns 10*) – from birthday calendars and from events added with the Birthday type |
+| Anniversary | Every upcoming anniversary, with the count (*12th*) |
+| Holiday | Every upcoming event added with the Holiday type (bank-holiday calendars are not counted down) |
+
+Change this per type with `event_types` – for example show the next 3 birthdays, only within the next 30 days, or turn birthday countdowns off:
+
+```yaml
+event_types:
+  - standard
+  - holiday
+  - id: birthday
+    countdown_limit: 3     # next 3 birthdays
+    countdown_days: 30     # only within the next 30 days
+  - anniversary
+  - work
+  - dhs
+```
 
 ### Event types
 
@@ -215,6 +238,7 @@ When adding an event you pick a **Type** from a dropdown. The built-in types are
 | Standard | – | A normal event |
 | Holiday | 🏖 `mdi:beach` | All-day by default, shown as a banner on each day of the trip, gets an automatic countdown |
 | Birthday | 🎂 `mdi:cake-variant` | All-day, repeats every year, shows *turns X* if you add the birth year to the title, e.g. `Mum (1962)` |
+| Anniversary | ❤️ `mdi:heart` | All-day, repeats every year, gets an automatic countdown, shows *12th anniversary* if you add the year to the title, e.g. `Wedding (2014)` |
 | Work event | 💼 `mdi:briefcase-outline` | Briefcase icon on the event |
 | DHS | 🏷 `mdi:tag-outline` | Tag icon on the event |
 
@@ -251,6 +275,9 @@ default_event_type: standard
 | `all_day` | `true` to switch on All day when this type is picked |
 | `repeat` | Default repeat when picked: `daily`, `weekly`, `fortnightly`, `monthly`, `yearly` |
 | `countdown` | `true` to show a countdown card for upcoming events of this type |
+| `countdown_limit` | Only the next N events of this type get a card (birthdays default to `2`) |
+| `countdown_days` | Only events within this many days get a card (default: the card's `countdown_days`, 365) |
+| `countdown_calendars` | `true` to also count down events from calendars of this type, not just tagged events (on by default for birthdays and anniversaries) |
 
 ### Repeating events
 
@@ -267,13 +294,17 @@ A shared family to-do list below the calendar, grouped by person.
 todo_entity: todo.family
 ```
 
-- **People come from your calendars** – every calendar of type *Events* is a person you can assign tasks to, using the display name you gave it (e.g. *Dom*, *Kasia*, *Family*). There's also an **Everyone** option.
+- **People come from your calendars** – every calendar of type *Events* is a person you can assign tasks to, using the display name you gave it (e.g. *Oliver*, *Emma*, *Family*). There's also an **Everyone** option.
 - **Add a task** – type it, optionally pick a due date, tap the person and press **+** (or Enter). Anyone using the dashboard can add.
 - **Tick to finish** – the task is marked done and disappears from the list. An **Undo** button appears for a few seconds.
 - **Due dates** – shown as *Today*, *Tomorrow* or the date; overdue tasks turn red.
 - **Live** – changes made on another phone or in HA's own To-do page show up instantly.
 
-How it's stored: the person is saved in the task's description as `For: Dom`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Dom]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
+**Position** – `todo_position: top | bottom | left | right`. Left and right become a sidebar when the card is at least 900px wide (on narrower screens they fall back to the bottom). In full-screen layouts, top and bottom show the groups in one scrolling row so the calendar keeps most of the height.
+
+**Auto-hide** – `todo_autohide: 30` folds the list into a slim bar (top/bottom) or a vertical tab (left/right) showing the task count. Tap it to open; it folds away again after 30 seconds without use (it waits while someone is typing a task). `todo_autohide: true` uses 30 seconds. Both options are also in the visual editor.
+
+How it's stored: the person is saved in the task's description as `For: Emma`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Emma]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
 
 ### Deleting events
 
