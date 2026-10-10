@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.3.0";
+const CARD_VERSION = "1.4.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -134,6 +134,7 @@ class HomeCalendarCard extends HTMLElement {
       throw new Error("Add at least one calendar entity under 'calendars'");
     }
     const oldWeather = this._config?.weather_entity;
+    const oldTodo = this._config?.todo_entity;
     this._config = {
       default_view: "agenda", days_to_show: 7, first_day_of_week: "monday", time_format: "auto",
       show_empty_days: false, show_header: true, show_calendar_chips: true, allow_add: true,
@@ -170,8 +171,11 @@ class HomeCalendarCard extends HTMLElement {
     if (!this._anchor) this._anchor = startOfDay(new Date());
 
     if (oldWeather !== this._config.weather_entity) this._unsubscribeWeather();
+    if (oldTodo !== this._config.todo_entity) { this._unsubscribeTodo(); this._todos = []; }
+    this._todoKey = null; // rebuild the to-do form for the new config
     if (this._hass) {
       this._subscribeWeather();
+      this._subscribeTodo();
       this._fetchEvents();
       this._fetchCountdowns();
     }
@@ -184,11 +188,14 @@ class HomeCalendarCard extends HTMLElement {
     if (!this._config) return;
     if (!old) {
       this._subscribeWeather();
+      this._subscribeTodo();
       this._fetchEvents();
       this._fetchCountdowns();
       this._render();
       return;
     }
+    const t = this._config.todo_entity;
+    if (t && old.states[t] !== hass.states[t] && !this._todoLive) this._loadTodos();
     let rerender = old.locale !== hass.locale;
     const w = this._config.weather_entity;
     if (w && old.states[w] !== hass.states[w]) rerender = true;
@@ -215,6 +222,7 @@ class HomeCalendarCard extends HTMLElement {
         this._today = k;
         this._fetchEvents();
         this._fetchCountdowns();
+        this._renderTodoList();
       }
       this._render();
     }, 60 * 1000);
@@ -222,6 +230,7 @@ class HomeCalendarCard extends HTMLElement {
     this._refresh = setInterval(() => { this._fetchEvents(); this._fetchCountdowns(); }, mins * 60 * 1000);
     if (this._hass && this._config) {
       this._subscribeWeather();
+      this._subscribeTodo();
       this._fetchEvents();
       this._fetchCountdowns();
     }
@@ -232,6 +241,219 @@ class HomeCalendarCard extends HTMLElement {
     clearInterval(this._refresh);
     clearTimeout(this._refetchTimer);
     this._unsubscribeWeather();
+    this._unsubscribeTodo();
+  }
+
+  /* ----------------------------------------------------------------- to-do */
+  // Uses a Home Assistant to-do entity (e.g. Local To-do). The person is stored as
+  // "For: <name>" in the item's description (or a "[Name] " title prefix when the
+  // list doesn't support descriptions), using the calendar's display name.
+
+  _subscribeTodo() {
+    const ent = this._config?.todo_entity;
+    if (!ent || !this._hass || this._todoSub || !this.isConnected) return;
+    this._todoSub = this._hass.connection.subscribeMessage((msg) => {
+      this._todoLive = true;
+      this._todos = msg.items || [];
+      this._todoError = null;
+      this._renderTodoList();
+    }, { type: "todo/item/subscribe", entity_id: ent }).catch((err) => {
+      console.warn("home-calendar-card: live to-do updates unavailable, polling instead", err);
+      this._todoSub = null;
+      this._todoLive = false;
+      this._loadTodos();
+    });
+  }
+
+  _unsubscribeTodo() {
+    if (this._todoSub) {
+      this._todoSub.then((u) => u && u()).catch(() => {});
+      this._todoSub = null;
+    }
+    this._todoLive = false;
+  }
+
+  async _loadTodos() {
+    const ent = this._config?.todo_entity;
+    if (!ent || !this._hass) return;
+    try {
+      const r = await this._hass.callWS({ type: "todo/item/list", entity_id: ent });
+      this._todos = r.items || [];
+      this._todoError = null;
+    } catch (e) {
+      this._todoError = `${ent}: ${e?.message || "could not load the to-do list"}`;
+    }
+    this._renderTodoList();
+  }
+
+  _todoPeople() { return this._calendars.filter((c) => c.type === "events"); }
+
+  _parseTodo(it) {
+    let summary = it.summary || "";
+    let who = null;
+    const pre = summary.match(/^\[([^\]]+)\]\s*/);
+    if (pre) { who = pre[1].trim(); summary = summary.slice(pre[0].length); }
+    const d = String(it.description || "").match(/^\s*For:\s*(.+?)\s*$/mi);
+    if (d) who = d[1];
+    const cal = who ? this._todoPeople().find((c) => this._calName(c).toLowerCase() === who.toLowerCase()) : null;
+    const timed = !!(it.due && String(it.due).length > 10);
+    const due = it.due ? (timed ? new Date(it.due) : parseDate(it.due)) : null;
+    return { raw: it, uid: it.uid, summary, who, cal, due, timed, done: it.status === "completed" };
+  }
+
+  _buildTodo() {
+    const box = this._todoBox;
+    const ent = this._config.todo_entity;
+    if (!box) return;
+    if (!ent) { box.hidden = true; box.innerHTML = ""; this._todoKey = null; return; }
+    const people = this._todoPeople();
+    const feats = this._features(ent);
+    const key = JSON.stringify([ent, feats, this._config.todo_title, people.map((c) => [c.entity, this._calName(c), c.color])]);
+    if (key === this._todoKey) return;
+    this._todoKey = key;
+    box.hidden = false;
+    if (this._todoWho === undefined || (this._todoWho && !people.some((c) => c.entity === this._todoWho))) {
+      this._todoWho = people[0]?.entity || "";
+    }
+    const canDue = !this._hass || !this._hass.states[ent] || (feats & (16 | 32));
+    const canAdd = !this._hass || !this._hass.states[ent] || (feats & 1);
+    const chip = (entity, label, color, av) => `<button type="button" class="chip ${this._todoWho === entity ? "sel" : ""}" style="--c:${esc(color)}" data-action="todo-who" data-entity="${esc(entity)}">${av || `<span class="dot"></span>`}${esc(label)}</button>`;
+    box.innerHTML = `
+      <div class="todo-head">
+        <ha-icon icon="mdi:checkbox-marked-circle-outline"></ha-icon>
+        <span class="todo-title">${esc(this._config.todo_title || "To-do")}</span>
+        <span class="todo-count"></span>
+      </div>
+      <div class="todo-err"></div>
+      <div class="todo-list"></div>
+      ${canAdd ? `<form class="todo-add" autocomplete="off">
+        <div class="todo-row">
+          <input class="inp" id="t-text" placeholder="Add a task…" enterkeyhint="done">
+          ${canDue ? `<input class="inp" type="date" id="t-due" title="Due date">` : ""}
+          <button class="t-addbtn" type="submit" title="Add task"><ha-icon icon="mdi:plus"></ha-icon></button>
+        </div>
+        <div class="t-who">
+          ${people.map((c) => chip(c.entity, this._calName(c), c.color, this._avatar(c, "sm"))).join("")}
+          ${chip("", "Everyone", "var(--hcc-accent)", `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>`)}
+        </div>
+      </form>` : ""}`;
+    const form = box.querySelector(".todo-add");
+    if (form) {
+      form.addEventListener("submit", (e) => { e.preventDefault(); this._addTodo(); });
+      form.addEventListener("keydown", (e) => e.stopPropagation()); // don't trigger HA shortcuts while typing
+    }
+    this._renderTodoList();
+  }
+
+  _dueChip(t) {
+    if (!t.due) return "";
+    const n = Math.round((startOfDay(t.due) - startOfDay(new Date())) / 864e5);
+    const date = this._fmt({ weekday: "short", day: "numeric", month: "short" }).format(t.due);
+    let label = n === 0 ? "Today" : n === 1 ? "Tomorrow" : n === -1 ? "Yesterday" : date;
+    if (t.timed) label += ` ${this._time(t.due)}`;
+    const cls = n < 0 || (t.timed && t.due < new Date()) ? "overdue" : n === 0 ? "due-today" : "";
+    return `<span class="due ${cls}" title="${esc(date)}"><ha-icon icon="${cls === "overdue" ? "mdi:alert-circle-outline" : "mdi:calendar-blank-outline"}"></ha-icon>${esc(label)}</span>`;
+  }
+
+  _renderTodoList() {
+    const box = this._todoBox;
+    const list = box?.querySelector(".todo-list");
+    if (!list) return;
+    box.querySelector(".todo-err").textContent = this._todoError || "";
+    this._pendingDone = this._pendingDone || new Set();
+    const items = (this._todos || []).map((i) => this._parseTodo(i)).filter((t) => !t.done && !this._pendingDone.has(t.uid));
+    const sort = (a, b) => ((a.due ? a.due.getTime() : Infinity) - (b.due ? b.due.getTime() : Infinity)) || a.summary.localeCompare(b.summary);
+    const groups = this._todoPeople().map((c) => ({ name: this._calName(c), cal: c, items: items.filter((t) => t.cal === c) }));
+    const loose = {};
+    items.filter((t) => !t.cal).forEach((t) => { const k = t.who || "Everyone"; (loose[k] = loose[k] || []).push(t); });
+    Object.entries(loose).sort(([a], [b]) => (a === "Everyone") - (b === "Everyone") || a.localeCompare(b))
+      .forEach(([name, its]) => groups.push({ name, cal: null, items: its }));
+    box.querySelector(".todo-count").textContent = items.length ? String(items.length) : "";
+    const shown = groups.filter((g) => g.items.length);
+    list.innerHTML = shown.length ? shown.map((g) => {
+      const color = g.cal?.color || "var(--hcc-accent)";
+      const av = g.cal ? this._avatar(g.cal, "sm") : "";
+      return `<div class="tg" style="--c:${esc(color)}">
+        <div class="tg-head">${av || (g.name === "Everyone" ? `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>` : `<span class="dot"></span>`)}
+          <span class="tg-name">${esc(g.name)}</span><span class="tg-n">${g.items.length}</span></div>
+        ${g.items.sort(sort).map((t) => `<div class="ti" data-uid="${esc(t.uid)}">
+          <button class="tick" data-action="todo-done" data-uid="${esc(t.uid)}" title="Mark as done"><ha-icon icon="mdi:check"></ha-icon></button>
+          <span class="ti-text">${esc(t.summary)}</span>${this._dueChip(t)}
+        </div>`).join("")}
+      </div>`;
+    }).join("") : `<div class="todo-empty"><ha-icon icon="mdi:party-popper"></ha-icon>All done – nothing on the list</div>`;
+  }
+
+  async _addTodo() {
+    const ent = this._config.todo_entity;
+    const box = this._todoBox;
+    const input = box.querySelector("#t-text");
+    const dueInp = box.querySelector("#t-due");
+    const text = input.value.trim();
+    if (!text) { input.focus(); return; }
+    const cal = this._todoPeople().find((c) => c.entity === this._todoWho);
+    const name = cal ? this._calName(cal) : "";
+    const feats = this._features(ent);
+    const data = { item: text };
+    if (name) {
+      if (feats & 64) data.description = `For: ${name}`;
+      else data.item = `[${name}] ${text}`;
+    }
+    if (dueInp?.value) data.due_date = dueInp.value;
+    const btn = box.querySelector(".t-addbtn");
+    btn.disabled = true;
+    try {
+      await this._hass.callService("todo", "add_item", data, { entity_id: ent });
+      input.value = "";
+      if (dueInp) dueInp.value = "";
+      input.focus();
+      if (!this._todoLive) this._loadTodos();
+    } catch (e) {
+      box.querySelector(".todo-err").textContent = e?.message || "Could not add the task.";
+    }
+    btn.disabled = false;
+  }
+
+  async _todoDone(uid) {
+    const ent = this._config.todo_entity;
+    const raw = (this._todos || []).find((i) => i.uid === uid);
+    if (!raw) return;
+    const t = this._parseTodo(raw);
+    const row = [...this._todoBox.querySelectorAll(".ti")].find((r) => r.dataset.uid === uid);
+    row?.classList.add("done");
+    this._pendingDone = this._pendingDone || new Set();
+    this._pendingDone.add(uid);
+    setTimeout(() => this._renderTodoList(), 550);
+    const remove = this._config.todo_on_done === "remove";
+    try {
+      if (remove) await this._hass.callService("todo", "remove_item", { item: [uid] }, { entity_id: ent });
+      else await this._hass.callService("todo", "update_item", { item: uid, status: "completed" }, { entity_id: ent });
+      this.dispatchEvent(new CustomEvent("hass-notification", {
+        detail: { message: `Done: ${t.summary}`, action: { text: "Undo", action: () => this._todoUndo(uid, raw, remove) } },
+        bubbles: true, composed: true,
+      }));
+      if (!this._todoLive) this._loadTodos();
+    } catch (e) {
+      this._pendingDone.delete(uid);
+      this._renderTodoList();
+      this._toast(e?.message || "Could not update the task.");
+    }
+  }
+
+  async _todoUndo(uid, raw, removed) {
+    const ent = this._config.todo_entity;
+    try {
+      if (removed) {
+        const data = { item: raw.summary };
+        if (raw.description) data.description = raw.description;
+        if (raw.due) data[String(raw.due).length > 10 ? "due_datetime" : "due_date"] = raw.due;
+        await this._hass.callService("todo", "add_item", data, { entity_id: ent });
+      } else {
+        await this._hass.callService("todo", "update_item", { item: uid, status: "needs_action" }, { entity_id: ent });
+      }
+    } catch (e) { this._toast(e?.message || "Could not undo."); }
+    this._pendingDone.delete(uid);
+    if (!this._todoLive) this._loadTodos(); else this._renderTodoList();
   }
 
   /* ------------------------------------------------------------------ data */
@@ -575,8 +797,9 @@ class HomeCalendarCard extends HTMLElement {
   /* ------------------------------------------------------------- rendering */
 
   _build() {
-    this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="wrap"></div></ha-card><dialog></dialog>`;
+    this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="wrap"></div><div class="todo" hidden></div></ha-card><dialog></dialog>`;
     this._main = this.shadowRoot.querySelector(".wrap");
+    this._todoBox = this.shadowRoot.querySelector(".todo");
     this._dlg = this.shadowRoot.querySelector("dialog");
     this.shadowRoot.addEventListener("click", (e) => this._onClick(e));
     this._dlg.addEventListener("change", (e) => this._onFormChange(e));
@@ -605,6 +828,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!this._config) return;
     if (!this._built) this._build();
     this._applyTheme();
+    if (this._todoKey === null || this._todoKey === undefined || this._hass) this._buildTodo();
     const c = this._config;
     const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._renderAgenda();
     const maxH = c.max_height ? ` style="max-height:${esc(c.max_height)};overflow:auto"` : "";
@@ -866,11 +1090,11 @@ class HomeCalendarCard extends HTMLElement {
       <div class="dlg-body form" style="--c:${esc(selColor)}">
         <input id="f-title" class="inp" placeholder="Add title" autocomplete="off">
         <div class="sel-row">
-          <label class="sel"><span class="lbl">Type</span>
+          <label class="selbox"><span class="lbl">Type</span>
             <span class="sel-wrap"><ha-icon id="f-type-icon" icon="${esc(defType.icon || "mdi:calendar-blank-outline")}"></ha-icon>
             <select id="f-type" class="inp">${this._types.map((t) => `<option value="${esc(t.id)}" ${t.id === defType.id ? "selected" : ""}>${esc(t.name || t.id)}</option>`).join("")}</select></span>
           </label>
-          <label class="sel"><span class="lbl">Repeat</span>
+          <label class="selbox"><span class="lbl">Repeat</span>
             <span class="sel-wrap"><ha-icon icon="mdi:repeat"></ha-icon>
             <select id="f-rep" class="inp">${REPEATS.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select></span>
           </label>
@@ -1133,6 +1357,13 @@ class HomeCalendarCard extends HTMLElement {
         break;
       case "close":
         this._closeDialog();
+        break;
+      case "todo-who":
+        this._todoWho = el.dataset.entity;
+        this._todoBox.querySelectorAll(".t-who .chip").forEach((c) => c.classList.toggle("sel", c === el));
+        break;
+      case "todo-done":
+        this._todoDone(el.dataset.uid);
         break;
       case "more-info":
         this.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: el.dataset.entity }, bubbles: true, composed: true }));
@@ -1399,7 +1630,7 @@ textarea.inp { resize: vertical; }
 .switch input:checked + .track { background: var(--c); }
 .switch input:checked + .track::after { transform: translateX(16px); }
 .sel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.sel { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.selbox { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .sel-wrap { position: relative; display: block; }
 .sel-wrap ha-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); --mdc-icon-size: 18px; color: var(--c); pointer-events: none; }
 .sel-wrap select { appearance: none; -webkit-appearance: none; padding-left: 36px; padding-right: 30px; cursor: pointer;
@@ -1412,6 +1643,56 @@ textarea.inp { resize: vertical; }
 .f-wx ha-icon { --mdc-icon-size: 22px; }
 .f-err { color: var(--error-color, #db4437); font-size: .85rem; font-weight: 600; }
 .f-err:empty { display: none; }
+
+/* to-do */
+.todo { container-type: inline-size; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--hcc-line); }
+.todo[hidden] { display: none; }
+.todo-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.todo-head > ha-icon { color: var(--hcc-accent); --mdc-icon-size: 22px; }
+.todo-title { font-size: 1.05rem; font-weight: 700; }
+.todo-count { font-size: .75rem; font-weight: 700; min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 999px;
+  background: var(--hcc-accent); color: var(--hcc-on-accent); display: inline-grid; place-items: center; }
+.todo-count:empty { display: none; }
+.todo-err { font-size: .8rem; color: var(--error-color, #db4437); margin-bottom: 6px; }
+.todo-err:empty { display: none; }
+.todo-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin-bottom: 12px; }
+.tg { background: color-mix(in srgb, var(--c) 7%, transparent); border: 1px solid color-mix(in srgb, var(--c) 22%, transparent); border-radius: 14px; padding: 8px 10px 6px; min-width: 0; }
+.tg-head { display: flex; align-items: center; gap: 8px; padding: 2px 2px 6px; font-weight: 700; font-size: .88rem; }
+.tg-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.tg-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tg-n { font-size: .72rem; color: var(--hcc-muted); font-weight: 700; }
+.t-all { --mdc-icon-size: 18px; color: var(--c, var(--hcc-accent)); }
+.ti { display: flex; align-items: center; gap: 10px; padding: 7px 2px; border-top: 1px solid var(--hcc-line); transition: opacity .4s, transform .4s; }
+.tg-head + .ti { border-top: none; }
+.ti.done { opacity: 0; transform: translateX(16px); }
+.ti.done .ti-text { text-decoration: line-through; }
+.tick { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--c); flex: none; display: grid; place-items: center; color: transparent; transition: background .15s, color .15s; }
+.tick ha-icon { --mdc-icon-size: 16px; }
+.tick:hover { background: color-mix(in srgb, var(--c) 18%, transparent); color: var(--c); }
+.ti.done .tick { background: var(--c); color: #fff; }
+.ti-text { flex: 1; min-width: 0; font-size: .92rem; font-weight: 500; word-break: break-word; }
+.due { display: inline-flex; align-items: center; gap: 3px; font-size: .72rem; font-weight: 600; color: var(--hcc-muted); white-space: nowrap; flex: none; }
+.due ha-icon { --mdc-icon-size: 13px; }
+.due.due-today { color: var(--hcc-accent); }
+.due.overdue { color: var(--error-color, #db4437); }
+.todo-empty { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--hcc-muted); font-size: .88rem; padding: 10px 0; }
+.todo-empty ha-icon { --mdc-icon-size: 20px; }
+.todo-add { display: flex; flex-direction: column; gap: 8px; }
+.todo-row { display: flex; gap: 8px; }
+.todo-row #t-text { flex: 1; }
+.todo-row #t-due { width: 150px; flex: none; }
+.t-addbtn { width: 42px; height: 42px; flex: none; border-radius: 12px; background: var(--hcc-accent); color: var(--hcc-on-accent); display: grid; place-items: center; }
+.t-addbtn:disabled { opacity: .5; }
+.t-addbtn ha-icon { --mdc-icon-size: 22px; }
+.t-who { display: flex; flex-wrap: wrap; gap: 6px; }
+.t-who .chip { opacity: .6; background: none; border-color: var(--hcc-line); }
+.t-who .chip.sel { opacity: 1; background: color-mix(in srgb, var(--c) 18%, transparent); border-color: var(--c); font-weight: 700; }
+.t-who .t-all { --mdc-icon-size: 16px; }
+@container (max-width: 420px) {
+  .todo-row { flex-wrap: wrap; }
+  .todo-row #t-text { flex-basis: 100%; }
+  .todo-row #t-due { flex: 1; width: auto; }
+}
 `;
 
 
@@ -1420,6 +1701,10 @@ textarea.inp { resize: vertical; }
 const GENERAL_SCHEMA = [
   { name: "title", selector: { text: {} } },
   { name: "weather_entity", selector: { entity: { domain: "weather" } } },
+  { type: "grid", name: "", schema: [
+    { name: "todo_entity", selector: { entity: { domain: "todo" } } },
+    { name: "todo_title", selector: { text: {} } },
+  ] },
   {
     type: "grid", name: "", schema: [
       { name: "default_view", selector: { select: { mode: "dropdown", options: [
@@ -1439,7 +1724,7 @@ const GENERAL_SCHEMA = [
   ] },
 ];
 const GENERAL_LABELS = {
-  title: "Title", weather_entity: "Weather entity", default_view: "Default view", days_to_show: "Days in agenda",
+  title: "Title", weather_entity: "Weather entity", todo_entity: "To-do list (optional)", todo_title: "To-do heading", default_view: "Default view", days_to_show: "Days in agenda",
   first_day_of_week: "First day of week", time_format: "Time format", show_header: "Show date & weather header",
   allow_add: "Allow adding events", show_empty_days: "Show days without events", max_height: "Max height (e.g. 600px)",
 };
