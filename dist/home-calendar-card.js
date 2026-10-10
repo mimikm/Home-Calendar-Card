@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.6.3";
+const CARD_VERSION = "1.6.4";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -57,6 +57,17 @@ const THEMES = {
 };
 const THEME_VARS = { bg: "--hcc-bg", text: "--hcc-text", muted: "--hcc-muted", line: "--hcc-line", soft: "--hcc-soft", accent: "--hcc-accent", onAccent: "--hcc-on-accent" };
 const themePalette = (t) => THEMES[t]?.palette || DEFAULT_COLORS;
+
+// Countdown colours per theme – one colour per kind of countdown, separate from the
+// calendar colours so countdowns are easy to tell apart. `custom` rotates for your own dates.
+const COUNTDOWN_COLORS = {
+  auto:     { birthday: "#D63AF9", anniversary: "#E91E63", holiday: "#0288D1", event: "#607D8B", custom: ["#FB8C00", "#00897B", "#5E35B1", "#C0CA33"] },
+  nordic:   { birthday: "#C026D3", anniversary: "#E11D48", holiday: "#0284C7", event: "#64748B", custom: ["#D97706", "#0D9488", "#4F46E5", "#65A30D"] },
+  sunset:   { birthday: "#B5367A", anniversary: "#D7263D", holiday: "#2A9D8F", event: "#8C6E63", custom: ["#E9A23B", "#457B9D", "#6D597A", "#7C9A3D"] },
+  forest:   { birthday: "#A2557A", anniversary: "#B23A48", holiday: "#2E7DAF", event: "#5F7366", custom: ["#C8961E", "#5B8E3E", "#6F5CA8", "#D07A3C"] },
+  midnight: { birthday: "#E879F9", anniversary: "#FB7185", holiday: "#38BDF8", event: "#94A3B8", custom: ["#FBBF24", "#34D399", "#A78BFA", "#FB923C"] },
+  graphite: { birthday: "#DA8FFF", anniversary: "#FF6482", holiday: "#64D2FF", event: "#98989F", custom: ["#FFD60A", "#30D158", "#FF9F0A", "#5E9EFF"] },
+};
 
 // Built-in event types. Override or extend with `event_types` in the card config.
 // The type is stored on the event as a tag (e.g. "#work") in its description.
@@ -650,13 +661,14 @@ class HomeCalendarCard extends HTMLElement {
     const out = await Promise.all(list.map(async (cd) => {
       const cal = this._calendars.find((c) => c.entity === cd.calendar);
       const color = cd.color || cal?.color || "var(--hcc-accent)";
+      const fixed = cd.color || null;
       if (cd.date) {
         const timed = /[T ]\d/.test(String(cd.date));
         const d = timed ? new Date(cd.date) : parseDate(cd.date);
         if (isNaN(d)) return null;
         if (cd.repeat === "yearly") while (startOfDay(d) < today) d.setFullYear(d.getFullYear() + 1);
         if ((timed ? d : addDays(d, 1)) <= now) return null;
-        return { name: cd.name || "Countdown", start: d, end: d, icon: cd.icon, color };
+        return { name: cd.name || "Countdown", start: d, end: d, icon: cd.icon, color, fixed, kind: cd.type || "custom" };
       }
       if (!cd.calendar || !this._hass.states[cd.calendar]) return null;
       try {
@@ -667,7 +679,7 @@ class HomeCalendarCard extends HTMLElement {
         }
         const hit = evs.filter((ev) => ev.end > now && (!re || re.test(ev.summary))).sort((a, b) => a.start - b.start)[0];
         if (!hit) return null;
-        return { name: cd.name || hit.summary, start: hit.start, end: hit.end, icon: cd.icon, color, ev: hit };
+        return { name: cd.name || hit.summary, start: hit.start, end: hit.end, icon: cd.icon, color, fixed, ev: hit, kind: cd.type || this._cdKind(hit) };
       } catch (e) {
         console.warn("home-calendar-card: countdown failed", cd, e);
         return null;
@@ -699,7 +711,7 @@ class HomeCalendarCard extends HTMLElement {
         if (limit > 0 && perType[ev.type] >= limit) return;
         perType[ev.type] += 1;
         seen.add(k);
-        out.push({ name: ev.summary, start: ev.start, end: ev.end, icon: this._typeIcon(ev), color: ev.cal.color, ev });
+        out.push({ name: ev.summary, start: ev.start, end: ev.end, icon: this._typeIcon(ev), color: ev.cal.color, ev, kind: this._cdKind(ev) });
       });
     }
     if (id !== this._cdId) return;
@@ -707,8 +719,30 @@ class HomeCalendarCard extends HTMLElement {
     this._render();
   }
 
+  _cdKind(ev) {
+    const ty = this._ty(ev);
+    if (ty.style === "birthday") return "birthday";
+    if (ty.style === "anniversary") return "anniversary";
+    if (ty.style === "banner") return "holiday";
+    return ty.id === "standard" ? "event" : ty.id;
+  }
+
+  // countdown_colors: "calendar" = use calendar colours (old behaviour), or a map overriding theme colours
+  _cdColor(cd, customIdx) {
+    if (cd.fixed) return cd.fixed;
+    const opt = this._config.countdown_colors;
+    if (opt === "calendar") return cd.color;
+    const base = COUNTDOWN_COLORS[THEMES[this._config.theme] ? this._config.theme : "auto"] || COUNTDOWN_COLORS.auto;
+    const map = { ...base, ...(opt && typeof opt === "object" ? opt : {}) };
+    const custom = [].concat(map.custom || base.custom);
+    if (map[cd.kind] && cd.kind !== "custom") return map[cd.kind];
+    if (cd.kind === "custom" || !cd.ev) return custom[customIdx % custom.length];
+    return this._ty(cd.ev).color || map.event;
+  }
+
   _renderCountdowns() {
     if (!this._countdowns?.length) return "";
+    let customIdx = 0;
     const now = new Date();
     const today = startOfDay(now);
     const f = this._fmt({ weekday: "short", day: "numeric", month: "short" });
@@ -717,7 +751,8 @@ class HomeCalendarCard extends HTMLElement {
       const ongoing = cd.start <= now && cd.end > now;
       const num = n > 0 ? n : ongoing && n < 0 ? "Now" : "Today";
       const unit = n > 1 ? "days" : n === 1 ? "day" : "";
-      return `<div class="cd ${n <= 0 ? "due" : ""}" style="--c:${esc(cd.color)}" ${cd.ev ? `data-action="open-cd" data-start="${cd.start.getTime()}" data-name="${esc(cd.ev.summary)}"` : ""}>
+      const color = this._cdColor(cd, !cd.fixed && (cd.kind === "custom" || !cd.ev) ? customIdx++ : 0);
+      return `<div class="cd ${n <= 0 ? "due" : ""}" style="--c:${esc(color)}" ${cd.ev ? `data-action="open-cd" data-start="${cd.start.getTime()}" data-name="${esc(cd.ev.summary)}"` : ""}>
         <div class="cd-top"><span class="cd-icon"><ha-icon icon="${esc(cd.icon || "mdi:timer-sand")}"></ha-icon></span>
         <span class="cd-num">${num}${unit ? `<span>${unit}</span>` : ""}</span></div>
         <div class="cd-name">${esc(cd.name)}</div>
