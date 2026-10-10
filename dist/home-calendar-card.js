@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.6.0";
+const CARD_VERSION = "1.6.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -138,7 +138,7 @@ class HomeCalendarCard extends HTMLElement {
     this._config = {
       default_view: "agenda", days_to_show: 7, first_day_of_week: "monday", time_format: "auto",
       show_empty_days: false, show_header: true, show_calendar_chips: true, allow_add: true,
-      max_events_per_day: 3, refresh_interval: 5,
+      refresh_interval: 5,
       ...config,
     };
     this._calendars = config.calendars
