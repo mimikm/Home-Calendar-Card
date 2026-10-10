@@ -4,6 +4,24 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 
 ![Home Calendar Card](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/preview.png)
 
+## Screenshots
+
+| Wall display – Month (Midnight) | Wall display – Week (Sunset) |
+|---|---|
+| ![Month view on a wall display](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/wall-month.png) | ![Week view on a wall display](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/wall-week.png) |
+| **Wall display – Agenda (Forest)** | **Adding an event** |
+| ![Agenda view on a wall display](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/wall-agenda.png) | ![Add event dialog](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/add-event.png) |
+
+**Five colour themes**
+
+![Nordic, Sunset, Forest, Midnight and Graphite themes](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/themes.png)
+
+**On a phone (Graphite)**
+
+<img src="https://github.com/mimikm/Home-Calendar-Card/raw/main/images/mobile.png" alt="Phone view" width="320">
+
+<sub>Screenshots use a fictional family – all names, places and events are made up.</sub>
+
 ## Features
 
 - 📅 **Three views** – Agenda (grouped by day), Week (7 columns, stacks on phones) and Month (grid, dots on phones)
