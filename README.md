@@ -10,7 +10,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
 - ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
 - 🏷️ **Event types** – Standard, Holiday, Birthday, Work event and DHS out of the box (fully customisable), each with its own icon and behaviour
-- 🗑️ **Delete events** – on calendars that support it (tap twice to confirm; recurring events delete only that occurrence)
+- 🗑️ **Delete events** – tap an event → **Delete**, with a confirmation; repeating events let you delete *this event*, *this and following* or *all events*
 - 👨‍👩‍👧 **One calendar per person** – link a calendar to a `person` entity to show their profile photo (or initials) on chips and events, plus a shared family calendar
 - 🎂 **Birthdays** – birthday calendars get a cake icon and "turns 36" when the birth year is in the event
 - 🎉 **Holidays** – bank/school holiday calendars appear as a banner on the day instead of cluttering the event list
@@ -149,6 +149,7 @@ max_height: 640px
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
 | `allow_add` | boolean | `true` | Show the **+ Event** button |
+| `allow_delete` | boolean | `true` | Show the **Delete** button on events (turn off for a shared wall screen) |
 | `max_events_per_day` | number | `3` | Events listed per day in Month view before "+N" |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
 | `refresh_interval` | minutes | `5` | How often events are re-fetched |
@@ -255,6 +256,15 @@ todo_entity: todo.family
 - **Live** – changes made on another phone or in HA's own To-do page show up instantly.
 
 How it's stored: the person is saved in the task's description as `For: Dom`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Dom]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
+
+### Deleting events
+
+Tap any event and press **Delete** in its pop-up. You'll be asked to confirm:
+
+- **One-off events** – *Delete* or *Cancel*.
+- **Repeating events** – choose **This event**, **This and following** (this date onwards) or **All events** (the whole series).
+
+The Delete button only appears for calendars whose Home Assistant integration supports deleting (Local Calendar and Google Calendar do). For other calendars the pop-up says so. To stop events being deleted from a shared screen, set `allow_delete: false` (also in the visual editor).
 
 ### Wall display (permanent desktop / tablet)
 
