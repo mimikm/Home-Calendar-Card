@@ -20,6 +20,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 📱 **Responsive** – adapts to the card's width, works in Sections and Masonry dashboards
 - 🌍 Dates and times follow your HA language and 12/24-hour profile setting
 - ✅ **Shared to-do list** – tasks grouped by person (using your calendar names), optional due date, anyone can add, tick to complete (with Undo); updates live on every device
+- 🖥️ **Wall display mode** – fills the whole screen, stretches Month/Week to the full height, to-do list as a sidebar, auto-scales text for distance viewing and keeps the screen awake
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
 - Zero dependencies, one file
@@ -133,6 +134,11 @@ max_height: 640px
 | `todo_entity` | string | – | A `todo.*` entity to show the shared to-do list – see *To-do list* |
 | `todo_title` | string | `To-do` | Heading above the to-do list |
 | `todo_on_done` | `complete` \| `remove` | `complete` | What ticking a task does: mark it completed (kept in HA's history) or delete it |
+| `layout` | `card` \| `fill` \| `fullscreen` | `card` | `fill` fills a Panel view below HA's top bar; `fullscreen` covers the whole window – see *Wall display* |
+| `scale` | `auto` \| number | `auto` | Text/UI size in `fill`/`fullscreen` (`auto` grows with the screen, e.g. `1.5` = 150%) |
+| `keep_awake` | boolean | `true` in fill/fullscreen | Stop the screen from sleeping while the card is shown |
+| `browser_fullscreen` | boolean | `false` | In `fullscreen`, the first tap also switches the browser to true full screen (hides the address bar) |
+| `todo_position` | `side` \| `bottom` | `side` | Where the to-do list goes in fill/fullscreen on wide screens |
 | `theme` | `auto` \| `nordic` \| `sunset` \| `forest` \| `midnight` \| `graphite` | `auto` | Colour scheme – see *Themes* |
 | `title` | string | – | Shown above the date in the header |
 | `default_view` | `agenda` \| `week` \| `month` | `agenda` | View shown when the dashboard loads |
@@ -249,6 +255,29 @@ todo_entity: todo.family
 - **Live** – changes made on another phone or in HA's own To-do page show up instantly.
 
 How it's stored: the person is saved in the task's description as `For: Dom`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Dom]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
+
+### Wall display (permanent desktop / tablet)
+
+```yaml
+type: custom:home-calendar-card
+layout: fullscreen
+theme: midnight
+browser_fullscreen: true
+# ...calendars, weather, todo_entity as usual
+```
+
+- **`layout: fullscreen`** – the card covers the entire browser window (HA's header and sidebar are hidden behind it). Month and Week stretch to fill the screen, Agenda flows into columns, and the to-do list becomes a sidebar on screens 1100px and wider.
+- **`layout: fill`** – fills the page but keeps HA's top bar. Put the card in a **Panel** view (dashboard view settings → View type → Panel).
+- **Auto scaling** – on big screens everything is enlarged so it's readable from across the room. Override with `scale: 1.4`.
+- **Keeps the screen awake** using the browser's Wake Lock (needs HTTPS, e.g. Nabu Casa or your own certificate).
+- **Editing is safe** – while the dashboard is in edit mode or the card editor is open, the card shows as a normal card so you can still reach everything.
+- **Hidden controls** – move the mouse or touch the screen and two buttons appear top-right for 3 seconds: *browser full screen* and *show Home Assistant* (temporarily switches to `fill` until the page is reloaded; a full-screen button in the toolbar switches back).
+
+**Tips for a dedicated screen**
+- Set this dashboard as the default on that device (Profile → Dashboard).
+- On a PC, run the browser in kiosk mode, e.g. `chrome --kiosk https://your-ha/dashboard-wall/0`.
+- On an Android tablet, a kiosk browser such as Fully Kiosk Browser works well.
+- On an iPad, add the dashboard to the Home Screen and use Guided Access.
 
 ### Themes
 
