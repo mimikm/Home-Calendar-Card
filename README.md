@@ -146,6 +146,7 @@ max_height: 640px
 | `countdowns` | list | – | Countdown cards shown under the header – see *Countdowns* |
 | `countdown_days` | number | `365` | How far ahead calendar-based countdowns look |
 | `max_countdowns` | number | `8` | Maximum countdown cards shown |
+| `countdown_colors` | map \| `calendar` | theme colours | Override countdown colours (see *Countdown colours*), or `calendar` to use each calendar's colour |
 | `event_types` | list | built-in five | Types offered in the add-event dropdown – see *Event types* |
 | `default_event_type` | string | `standard` | Type pre-selected when adding an event |
 | `weather_entity` | string | – | Weather entity for current conditions and daily forecast |
@@ -206,6 +207,29 @@ Each countdown is either a fixed date or the **next matching event** from a cale
 | `color` | Card colour (defaults to the calendar's colour) |
 
 Countdowns are sorted soonest first and disappear once the date has passed (yearly ones roll over automatically). Tap a calendar countdown to open the event.
+
+**Countdown colours** – every theme has its own countdown colours, separate from the calendar colours, so each kind of countdown is easy to spot:
+
+| Countdown | Colour |
+|---|---|
+| 🎂 Birthday | pink-purple |
+| ❤️ Anniversary | rose-red |
+| 🏖 Holiday | blue |
+| ✈️ Your own dates (`date:`) | rotating – orange, teal, indigo, green… so neighbouring cards differ |
+| Other events | grey, or the event type's `color` |
+
+The exact shades are tuned for each theme. A `color:` on a single countdown always wins. Override per kind, or go back to calendar colours:
+
+```yaml
+countdown_colors:
+  birthday: "#FF4FA3"
+  holiday: "#00A3E0"
+  custom: ["#F59E0B", "#10B981"]
+# or
+countdown_colors: calendar
+```
+
+You can also give a fixed-date countdown a kind, e.g. `type: anniversary`, to use that colour.
 
 **Automatic countdowns – no config needed:**
 
