@@ -30,6 +30,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
 - ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
 - 🏷️ **Event types** – Standard, Holiday, Birthday, Anniversary, Work event and DHS out of the box (fully customisable), each with its own icon and behaviour
+- ✏️ **Edit events** – tap an event → **Edit** to change the title, time, type, repeat, location or notes, or move it to another person's calendar
 - 🗑️ **Delete events** – tap an event → **Delete**, with a confirmation; repeating events let you delete *this event*, *this and following* or *all events*
 - 👨‍👩‍👧 **One calendar per person** – link a calendar to a `person` entity to show their profile photo (or initials) on chips and events, plus a shared family calendar
 - 🎂 **Birthdays** – birthday calendars get a cake icon and "turns 36" when the birth year is in the event
@@ -171,6 +172,7 @@ max_height: 640px
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
 | `allow_add` | boolean | `true` | Show the **+ Event** button |
+| `allow_edit` | boolean | `true` | Show the **Edit** button on events |
 | `allow_delete` | boolean | `true` | Show the **Delete** button on events (turn off for a shared wall screen) |
 | `max_events_per_day` | number | `3` | Events listed per day in Month view before "+N" |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
@@ -331,6 +333,16 @@ todo_entity: todo.family
 **Auto-hide** – `todo_autohide: 30` folds the list into a slim bar (top/bottom) or a vertical tab (left/right) showing the task count. Tap it to open; it folds away again after 30 seconds without use (it waits while someone is typing a task). `todo_autohide: true` uses 30 seconds. Both options are also in the visual editor.
 
 How it's stored: the person is saved in the task's description as `For: Emma`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Emma]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
+
+### Editing events
+
+Tap any event and press **Edit**. The same form as adding opens, filled in with the event's details – change anything and press **Save**.
+
+- **Move to another calendar** – tap a different calendar chip (e.g. from *Family* to *Emma*). The event is created in the new calendar and removed from the old one.
+- **Repeating events** – when you save, choose **This event** (only this date) or **This and following** (this date onwards). Repeating events can't be moved to another calendar.
+- **Event types and years are kept** – a birthday stays *Leo (2016)* and keeps its *Birthday* type when you edit it.
+
+The Edit button only appears for calendars whose Home Assistant integration supports updating events (Local Calendar and Google Calendar do). Otherwise the pop-up says the calendar can't edit events. Turn editing off with `allow_edit: false` (also in the visual editor).
 
 ### Deleting events
 
