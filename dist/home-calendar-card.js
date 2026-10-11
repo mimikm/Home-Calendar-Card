@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.7.0";
+const CARD_VERSION = "1.8.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -61,12 +61,12 @@ const themePalette = (t) => THEMES[t]?.palette || DEFAULT_COLORS;
 // Countdown colours per theme – one colour per kind of countdown, separate from the
 // calendar colours so countdowns are easy to tell apart. `custom` rotates for your own dates.
 const COUNTDOWN_COLORS = {
-  auto:     { birthday: "#D63AF9", anniversary: "#E91E63", holiday: "#0288D1", event: "#607D8B", custom: ["#FB8C00", "#00897B", "#5E35B1", "#C0CA33"] },
-  nordic:   { birthday: "#C026D3", anniversary: "#E11D48", holiday: "#0284C7", event: "#64748B", custom: ["#D97706", "#0D9488", "#4F46E5", "#65A30D"] },
-  sunset:   { birthday: "#B5367A", anniversary: "#D7263D", holiday: "#2A9D8F", event: "#8C6E63", custom: ["#E9A23B", "#457B9D", "#6D597A", "#7C9A3D"] },
-  forest:   { birthday: "#A2557A", anniversary: "#B23A48", holiday: "#2E7DAF", event: "#5F7366", custom: ["#C8961E", "#5B8E3E", "#6F5CA8", "#D07A3C"] },
-  midnight: { birthday: "#E879F9", anniversary: "#FB7185", holiday: "#38BDF8", event: "#94A3B8", custom: ["#FBBF24", "#34D399", "#A78BFA", "#FB923C"] },
-  graphite: { birthday: "#DA8FFF", anniversary: "#FF6482", holiday: "#64D2FF", event: "#98989F", custom: ["#FFD60A", "#30D158", "#FF9F0A", "#5E9EFF"] },
+  auto:     { birthday: "#D63AF9", anniversary: "#E91E63", holiday: "#0288D1", nameday: "#F4B400", event: "#607D8B", custom: ["#FB8C00", "#00897B", "#5E35B1", "#C0CA33"] },
+  nordic:   { birthday: "#C026D3", anniversary: "#E11D48", holiday: "#0284C7", nameday: "#CA8A04", event: "#64748B", custom: ["#EA580C", "#0D9488", "#4F46E5", "#65A30D"] },
+  sunset:   { birthday: "#B5367A", anniversary: "#D7263D", holiday: "#2A9D8F", nameday: "#C9A227", event: "#8C6E63", custom: ["#E07A5F", "#457B9D", "#6D597A", "#7C9A3D"] },
+  forest:   { birthday: "#A2557A", anniversary: "#B23A48", holiday: "#2E7DAF", nameday: "#C8961E", event: "#5F7366", custom: ["#D07A3C", "#5B8E3E", "#6F5CA8", "#3E8E8E"] },
+  midnight: { birthday: "#E879F9", anniversary: "#FB7185", holiday: "#38BDF8", nameday: "#FACC15", event: "#94A3B8", custom: ["#FB923C", "#34D399", "#A78BFA", "#A3E635"] },
+  graphite: { birthday: "#DA8FFF", anniversary: "#FF6482", holiday: "#64D2FF", nameday: "#FFD60A", event: "#98989F", custom: ["#FF9F0A", "#30D158", "#5E9EFF", "#AC8E68"] },
 };
 
 // Built-in event types. Override or extend with `event_types` in the card config.
@@ -79,11 +79,14 @@ const DEFAULT_TYPES = [
   { id: "anniversary", name: "Anniversary", icon: "mdi:heart", style: "anniversary", all_day: true, repeat: "yearly",
     countdown: true, countdown_calendars: true },
   { id: "work", name: "Work event", icon: "mdi:briefcase-outline" },
+  // Polish name days (imieniny). Offered in the dropdown when the card is in Polish.
+  { id: "nameday", name: "Name day", icon: "mdi:flower-tulip", style: "nameday", all_day: true, repeat: "yearly",
+    countdown: true, countdown_limit: 2, countdown_calendars: true, langs: ["pl"] },
   { id: "dhs", name: "DHS", icon: "mdi:tag-outline" },
 ];
 const REPEATS = [
-  ["", "Does not repeat"], ["FREQ=DAILY", "Every day"], ["FREQ=WEEKLY", "Every week"],
-  ["FREQ=WEEKLY;INTERVAL=2", "Every 2 weeks"], ["FREQ=MONTHLY", "Every month"], ["FREQ=YEARLY", "Every year"],
+  ["", "rep_none"], ["FREQ=DAILY", "rep_daily"], ["FREQ=WEEKLY", "rep_weekly"],
+  ["FREQ=WEEKLY;INTERVAL=2", "rep_2weeks"], ["FREQ=MONTHLY", "rep_monthly"], ["FREQ=YEARLY", "rep_yearly"],
 ];
 const toRrule = (r) => {
   if (!r) return "";
@@ -96,6 +99,194 @@ const ordinal = (n) => {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
 const TAG_RE = /(^|\s)#([a-z0-9_-]+)(?=\s|$)/gi;
+
+// ------------------------------------------------------------------ translations
+// The UI language follows Home Assistant (or `language:` in the card config).
+const I18N = {
+  en: {
+    agenda: "Agenda", week: "Week", month: "Month", today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday",
+    prev: "Previous", next: "Next", event_btn: "Event", back_fs: "Back to full screen",
+    all_day: "All day", all_day_n: "All day · {n}/{t}", until: "Until {t}", from: "From {t}", now: "Now",
+    nothing: "Nothing planned", no_events: "No events in this period", repeating: "Repeating event",
+    birthday: "Birthday", anniversary: "Anniversary", nameday: "Name day",
+    close: "Close", delete: "Delete", edit: "Edit", cancel: "Cancel", save: "Save", saving: "Saving…", back: "Back",
+    add_event: "Add event", new_event: "New event", edit_event: "Edit event", add_title: "Add title",
+    type: "Type", repeat: "Repeat", calendar: "Calendar", starts: "Starts", ends: "Ends",
+    location: "Location", description: "Description", forecast: "Forecast: {f}", rain: "{p}% chance of rain",
+    rep_none: "Does not repeat", rep_daily: "Every day", rep_weekly: "Every week", rep_2weeks: "Every 2 weeks",
+    rep_monthly: "Every month", rep_yearly: "Every year", rep_custom: "Custom (keep as is)",
+    rec_note: "Repeating event – you'll choose which events to change when you save.",
+    err_title: "Please add a title.", err_start: "Please choose a start date.", err_end_date: "End date is before the start date.",
+    err_times: "Please choose start and end times.", err_order: "End must be after start.",
+    err_create: "Could not create the event.", err_save: "Could not save the changes.", err_delete: "Could not delete the event.",
+    added: "Added “{t}”", saved: "Saved “{t}”", moved: "Moved “{t}” to {c}", deleted: "Deleted “{t}”",
+    deleted_all: "Deleted all “{t}” events", deleted_from: "Deleted “{t}” from {d} on",
+    del_rec_q: "Delete repeating event", del_q: "Delete “{t}”? This can't be undone.",
+    this_event: "This event", this_following: "This and following", all_events: "All events",
+    save_rec_q: "Save changes to a repeating event",
+    ro_event: "This event can't be changed from here.", ro_cal: "This calendar is read-only in Home Assistant.",
+    no_edit: "This calendar can't edit events from Home Assistant.", no_delete: "This calendar can't delete events from Home Assistant.",
+    countdown: "Countdown",
+    todo: "To-do", todo_toggle: "Show / hide the to-do list", add_task: "Add a task…", due: "Due date", add_task_btn: "Add task",
+    everyone: "Everyone", mark_done: "Mark as done", all_done: "All done – nothing on the list",
+    done: "Done: {t}", undo: "Undo", err_task_add: "Could not add the task.", err_task_upd: "Could not update the task.", err_undo: "Could not undo.",
+    fs_browser: "Browser full screen", fs_exit: "Exit browser full screen", fs_off: "Show Home Assistant (until reload)",
+    type_standard: "Standard", type_holiday: "Holiday", type_birthday: "Birthday", type_anniversary: "Anniversary",
+    type_work: "Work event", type_dhs: "DHS", type_nameday: "Name day",
+    "wx_clear-night": "clear", wx_cloudy: "cloudy", wx_exceptional: "exceptional", wx_fog: "fog", wx_hail: "hail",
+    wx_lightning: "lightning", "wx_lightning-rainy": "thunderstorms", wx_partlycloudy: "partly cloudy", wx_pouring: "pouring",
+    wx_rainy: "rainy", wx_snowy: "snowy", "wx_snowy-rainy": "sleet", wx_sunny: "sunny", wx_windy: "windy", "wx_windy-variant": "windy",
+    // editor
+    ed_theme: "Theme", ed_theme_sub: "Colour scheme for the card. “Home Assistant” follows your dashboard theme.",
+    ed_cals: "Calendars", ed_cals_sub: "Pick each calendar, give it a name and colour, and optionally link it to a person.",
+    ed_add_cal: "Add calendar", ed_display: "Display", ed_note: "Countdowns and custom event types are set in the code editor – see the README.",
+    ed_colour: "Colour", ed_up: "Move up", ed_down: "Move down", ed_remove: "Remove", ed_leave_empty: "Leave empty to use “{n}”",
+    l_title: "Title", l_weather_entity: "Weather entity", l_language: "Language", l_layout: "Layout", l_keep_awake: "Keep screen awake",
+    l_todo_entity: "To-do list (optional)", l_todo_title: "To-do heading", l_todo_position: "To-do position",
+    l_todo_autohide: "To-do auto-hide after (0 = off)", l_default_view: "Default view", l_days_to_show: "Days in agenda",
+    l_first_day_of_week: "First day of week", l_time_format: "Time format", l_show_header: "Show date & weather header",
+    l_allow_add: "Allow adding events", l_allow_edit: "Allow editing events", l_allow_delete: "Allow deleting events",
+    l_show_empty_days: "Show days without events", l_max_height: "Max height (e.g. 600px)",
+    l_entity: "Calendar", l_name: "Display name", l_person: "Person (shows their photo)", l_type: "Calendar type",
+    o_auto: "Automatic", o_top: "Top", o_bottom: "Bottom", o_left: "Left", o_right: "Right",
+    o_monday: "Monday", o_sunday: "Sunday", o_saturday: "Saturday",
+    o_tf_auto: "From HA profile", o_24h: "24 hour", o_12h: "12 hour",
+    o_card: "Card (normal)", o_fill: "Fill page (panel view)", o_fullscreen: "Full screen (wall display)",
+    o_events: "Events", o_birthdays: "Birthdays", o_anniversaries: "Anniversaries", o_namedays: "Name days", o_holidays: "Holidays (day banner)",
+    o_lang_auto: "From Home Assistant",
+  },
+  pl: {
+    agenda: "Agenda", week: "Tydzień", month: "Miesiąc", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
+    prev: "Poprzedni", next: "Następny", event_btn: "Wydarzenie", back_fs: "Wróć do pełnego ekranu",
+    all_day: "Cały dzień", all_day_n: "Cały dzień · {n}/{t}", until: "Do {t}", from: "Od {t}", now: "Teraz",
+    nothing: "Nic zaplanowanego", no_events: "Brak wydarzeń w tym okresie", repeating: "Wydarzenie cykliczne",
+    birthday: "Urodziny", anniversary: "Rocznica", nameday: "Imieniny",
+    close: "Zamknij", delete: "Usuń", edit: "Edytuj", cancel: "Anuluj", save: "Zapisz", saving: "Zapisywanie…", back: "Wstecz",
+    add_event: "Dodaj wydarzenie", new_event: "Nowe wydarzenie", edit_event: "Edytuj wydarzenie", add_title: "Dodaj tytuł",
+    type: "Typ", repeat: "Powtarzanie", calendar: "Kalendarz", starts: "Początek", ends: "Koniec",
+    location: "Miejsce", description: "Opis", forecast: "Prognoza: {f}", rain: "{p}% szans na deszcz",
+    rep_none: "Nie powtarza się", rep_daily: "Codziennie", rep_weekly: "Co tydzień", rep_2weeks: "Co 2 tygodnie",
+    rep_monthly: "Co miesiąc", rep_yearly: "Co roku", rep_custom: "Niestandardowe (bez zmian)",
+    rec_note: "Wydarzenie cykliczne – przy zapisie wybierzesz, które wystąpienia zmienić.",
+    err_title: "Dodaj tytuł.", err_start: "Wybierz datę rozpoczęcia.", err_end_date: "Data zakończenia jest przed datą rozpoczęcia.",
+    err_times: "Wybierz godzinę rozpoczęcia i zakończenia.", err_order: "Koniec musi być po początku.",
+    err_create: "Nie udało się utworzyć wydarzenia.", err_save: "Nie udało się zapisać zmian.", err_delete: "Nie udało się usunąć wydarzenia.",
+    added: "Dodano „{t}”", saved: "Zapisano „{t}”", moved: "Przeniesiono „{t}” do: {c}", deleted: "Usunięto „{t}”",
+    deleted_all: "Usunięto wszystkie wystąpienia „{t}”", deleted_from: "Usunięto „{t}” od {d}",
+    del_rec_q: "Usuń wydarzenie cykliczne", del_q: "Usunąć „{t}”? Tego nie można cofnąć.",
+    this_event: "To wydarzenie", this_following: "To i następne", all_events: "Wszystkie",
+    save_rec_q: "Zapisz zmiany w wydarzeniu cyklicznym",
+    ro_event: "Tego wydarzenia nie można tu zmienić.", ro_cal: "Ten kalendarz jest tylko do odczytu w Home Assistant.",
+    no_edit: "Ten kalendarz nie pozwala edytować wydarzeń z Home Assistant.", no_delete: "Ten kalendarz nie pozwala usuwać wydarzeń z Home Assistant.",
+    countdown: "Odliczanie",
+    todo: "Do zrobienia", todo_toggle: "Pokaż / ukryj listę zadań", add_task: "Dodaj zadanie…", due: "Termin", add_task_btn: "Dodaj zadanie",
+    everyone: "Wszyscy", mark_done: "Oznacz jako zrobione", all_done: "Wszystko zrobione – lista jest pusta",
+    done: "Zrobione: {t}", undo: "Cofnij", err_task_add: "Nie udało się dodać zadania.", err_task_upd: "Nie udało się zaktualizować zadania.", err_undo: "Nie udało się cofnąć.",
+    fs_browser: "Pełny ekran przeglądarki", fs_exit: "Wyjdź z pełnego ekranu", fs_off: "Pokaż Home Assistant (do odświeżenia)",
+    type_standard: "Zwykłe", type_holiday: "Wakacje", type_birthday: "Urodziny", type_anniversary: "Rocznica",
+    type_work: "Praca", type_dhs: "DHS", type_nameday: "Imieniny",
+    "wx_clear-night": "bezchmurnie", wx_cloudy: "pochmurno", wx_exceptional: "wyjątkowe warunki", wx_fog: "mgła", wx_hail: "grad",
+    wx_lightning: "burza", "wx_lightning-rainy": "burza z deszczem", wx_partlycloudy: "częściowe zachmurzenie", wx_pouring: "ulewa",
+    wx_rainy: "deszczowo", wx_snowy: "śnieg", "wx_snowy-rainy": "deszcz ze śniegiem", wx_sunny: "słonecznie", wx_windy: "wietrznie", "wx_windy-variant": "wietrznie",
+    ed_theme: "Motyw", ed_theme_sub: "Kolorystyka karty. „Home Assistant” korzysta z motywu Twojego dashboardu.",
+    ed_cals: "Kalendarze", ed_cals_sub: "Wybierz kalendarz, nadaj mu nazwę i kolor, a opcjonalnie przypisz osobę.",
+    ed_add_cal: "Dodaj kalendarz", ed_display: "Wyświetlanie", ed_note: "Odliczania i własne typy wydarzeń ustawia się w edytorze kodu – szczegóły w README.",
+    ed_colour: "Kolor", ed_up: "Przesuń w górę", ed_down: "Przesuń w dół", ed_remove: "Usuń", ed_leave_empty: "Zostaw puste, aby użyć „{n}”",
+    l_title: "Tytuł", l_weather_entity: "Encja pogody", l_language: "Język", l_layout: "Układ", l_keep_awake: "Nie wygaszaj ekranu",
+    l_todo_entity: "Lista zadań (opcjonalnie)", l_todo_title: "Nagłówek listy zadań", l_todo_position: "Położenie listy zadań",
+    l_todo_autohide: "Autoukrywanie listy po (0 = wył.)", l_default_view: "Widok domyślny", l_days_to_show: "Dni w agendzie",
+    l_first_day_of_week: "Pierwszy dzień tygodnia", l_time_format: "Format czasu", l_show_header: "Pokaż nagłówek z datą i pogodą",
+    l_allow_add: "Zezwalaj na dodawanie wydarzeń", l_allow_edit: "Zezwalaj na edycję wydarzeń", l_allow_delete: "Zezwalaj na usuwanie wydarzeń",
+    l_show_empty_days: "Pokaż dni bez wydarzeń", l_max_height: "Maks. wysokość (np. 600px)",
+    l_entity: "Kalendarz", l_name: "Wyświetlana nazwa", l_person: "Osoba (pokazuje jej zdjęcie)", l_type: "Typ kalendarza",
+    o_auto: "Automatycznie", o_top: "Góra", o_bottom: "Dół", o_left: "Lewo", o_right: "Prawo",
+    o_monday: "Poniedziałek", o_sunday: "Niedziela", o_saturday: "Sobota",
+    o_tf_auto: "Z profilu HA", o_24h: "24-godzinny", o_12h: "12-godzinny",
+    o_card: "Karta (zwykła)", o_fill: "Wypełnij stronę (widok panelu)", o_fullscreen: "Pełny ekran (ekran ścienny)",
+    o_events: "Wydarzenia", o_birthdays: "Urodziny", o_anniversaries: "Rocznice", o_namedays: "Imieniny", o_holidays: "Święta i wakacje (baner dnia)",
+    o_lang_auto: "Z Home Assistant",
+  },
+  es: {
+    agenda: "Agenda", week: "Semana", month: "Mes", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
+    prev: "Anterior", next: "Siguiente", event_btn: "Evento", back_fs: "Volver a pantalla completa",
+    all_day: "Todo el día", all_day_n: "Todo el día · {n}/{t}", until: "Hasta {t}", from: "Desde {t}", now: "Ahora",
+    nothing: "Nada planeado", no_events: "No hay eventos en este periodo", repeating: "Evento recurrente",
+    birthday: "Cumpleaños", anniversary: "Aniversario", nameday: "Onomástica",
+    close: "Cerrar", delete: "Eliminar", edit: "Editar", cancel: "Cancelar", save: "Guardar", saving: "Guardando…", back: "Atrás",
+    add_event: "Añadir evento", new_event: "Nuevo evento", edit_event: "Editar evento", add_title: "Añadir título",
+    type: "Tipo", repeat: "Repetir", calendar: "Calendario", starts: "Inicio", ends: "Fin",
+    location: "Ubicación", description: "Descripción", forecast: "Previsión: {f}", rain: "{p}% de probabilidad de lluvia",
+    rep_none: "No se repite", rep_daily: "Cada día", rep_weekly: "Cada semana", rep_2weeks: "Cada 2 semanas",
+    rep_monthly: "Cada mes", rep_yearly: "Cada año", rep_custom: "Personalizado (sin cambios)",
+    rec_note: "Evento recurrente: al guardar elegirás qué eventos cambiar.",
+    err_title: "Añade un título.", err_start: "Elige una fecha de inicio.", err_end_date: "La fecha de fin es anterior a la de inicio.",
+    err_times: "Elige la hora de inicio y de fin.", err_order: "El fin debe ser posterior al inicio.",
+    err_create: "No se pudo crear el evento.", err_save: "No se pudieron guardar los cambios.", err_delete: "No se pudo eliminar el evento.",
+    added: "Añadido «{t}»", saved: "Guardado «{t}»", moved: "«{t}» movido a {c}", deleted: "Eliminado «{t}»",
+    deleted_all: "Eliminados todos los eventos «{t}»", deleted_from: "Eliminado «{t}» desde el {d}",
+    del_rec_q: "Eliminar evento recurrente", del_q: "¿Eliminar «{t}»? No se puede deshacer.",
+    this_event: "Este evento", this_following: "Este y los siguientes", all_events: "Todos los eventos",
+    save_rec_q: "Guardar cambios en un evento recurrente",
+    ro_event: "Este evento no se puede cambiar desde aquí.", ro_cal: "Este calendario es de solo lectura en Home Assistant.",
+    no_edit: "Este calendario no permite editar eventos desde Home Assistant.", no_delete: "Este calendario no permite eliminar eventos desde Home Assistant.",
+    countdown: "Cuenta atrás",
+    todo: "Tareas", todo_toggle: "Mostrar / ocultar la lista de tareas", add_task: "Añadir una tarea…", due: "Fecha límite", add_task_btn: "Añadir tarea",
+    everyone: "Todos", mark_done: "Marcar como hecha", all_done: "Todo hecho: la lista está vacía",
+    done: "Hecho: {t}", undo: "Deshacer", err_task_add: "No se pudo añadir la tarea.", err_task_upd: "No se pudo actualizar la tarea.", err_undo: "No se pudo deshacer.",
+    fs_browser: "Pantalla completa del navegador", fs_exit: "Salir de pantalla completa", fs_off: "Mostrar Home Assistant (hasta recargar)",
+    type_standard: "Estándar", type_holiday: "Vacaciones", type_birthday: "Cumpleaños", type_anniversary: "Aniversario",
+    type_work: "Trabajo", type_dhs: "DHS", type_nameday: "Onomástica",
+    "wx_clear-night": "despejado", wx_cloudy: "nublado", wx_exceptional: "excepcional", wx_fog: "niebla", wx_hail: "granizo",
+    wx_lightning: "tormenta eléctrica", "wx_lightning-rainy": "tormenta con lluvia", wx_partlycloudy: "parcialmente nublado", wx_pouring: "lluvia intensa",
+    wx_rainy: "lluvioso", wx_snowy: "nieve", "wx_snowy-rainy": "aguanieve", wx_sunny: "soleado", wx_windy: "ventoso", "wx_windy-variant": "ventoso",
+    ed_theme: "Tema", ed_theme_sub: "Combinación de colores de la tarjeta. «Home Assistant» sigue el tema de tu panel.",
+    ed_cals: "Calendarios", ed_cals_sub: "Elige cada calendario, dale un nombre y un color y, si quieres, vincúlalo a una persona.",
+    ed_add_cal: "Añadir calendario", ed_display: "Visualización", ed_note: "Las cuentas atrás y los tipos de evento personalizados se configuran en el editor de código; consulta el README.",
+    ed_colour: "Color", ed_up: "Subir", ed_down: "Bajar", ed_remove: "Quitar", ed_leave_empty: "Déjalo vacío para usar «{n}»",
+    l_title: "Título", l_weather_entity: "Entidad del tiempo", l_language: "Idioma", l_layout: "Diseño", l_keep_awake: "Mantener la pantalla encendida",
+    l_todo_entity: "Lista de tareas (opcional)", l_todo_title: "Título de la lista de tareas", l_todo_position: "Posición de la lista de tareas",
+    l_todo_autohide: "Ocultar la lista tras (0 = no)", l_default_view: "Vista predeterminada", l_days_to_show: "Días en la agenda",
+    l_first_day_of_week: "Primer día de la semana", l_time_format: "Formato de hora", l_show_header: "Mostrar encabezado con fecha y tiempo",
+    l_allow_add: "Permitir añadir eventos", l_allow_edit: "Permitir editar eventos", l_allow_delete: "Permitir eliminar eventos",
+    l_show_empty_days: "Mostrar días sin eventos", l_max_height: "Altura máx. (p. ej. 600px)",
+    l_entity: "Calendario", l_name: "Nombre visible", l_person: "Persona (muestra su foto)", l_type: "Tipo de calendario",
+    o_auto: "Automático", o_top: "Arriba", o_bottom: "Abajo", o_left: "Izquierda", o_right: "Derecha",
+    o_monday: "Lunes", o_sunday: "Domingo", o_saturday: "Sábado",
+    o_tf_auto: "Del perfil de HA", o_24h: "24 horas", o_12h: "12 horas",
+    o_card: "Tarjeta (normal)", o_fill: "Llenar la página (vista de panel)", o_fullscreen: "Pantalla completa (pantalla de pared)",
+    o_events: "Eventos", o_birthdays: "Cumpleaños", o_anniversaries: "Aniversarios", o_namedays: "Onomásticas", o_holidays: "Festivos (banner del día)",
+    o_lang_auto: "De Home Assistant",
+  },
+};
+const LANGS = { en: "English", pl: "Polski", es: "Español" };
+
+// "pl-PL" -> "pl"; unknown languages fall back to English
+const uiLang = (code) => {
+  const c = String(code || "en").toLowerCase().split(/[-_]/)[0];
+  return I18N[c] ? c : "en";
+};
+
+const tr = (lang, key, vars) => {
+  let s = I18N[lang]?.[key] ?? I18N.en[key] ?? key;
+  if (vars) Object.entries(vars).forEach(([k, v]) => { s = s.split(`{${k}}`).join(v); });
+  return s;
+};
+
+// Polish: 1 rok, 2–4 lata (not 12–14), 5+ lat
+const plYears = (n) => (n === 1 ? "rok" : n % 10 >= 2 && n % 10 <= 4 && !(n % 100 >= 12 && n % 100 <= 14) ? "lata" : "lat");
+
+const NUM = {
+  en: { days: (n) => (n === 1 ? "day" : "days"), turns: (n) => `turns ${n}`, ord: (n) => ordinal(n), anniv: (n) => `${ordinal(n)} anniversary` },
+  pl: { days: (n) => (n === 1 ? "dzień" : "dni"), turns: (n) => `kończy ${n} ${plYears(n)}`, ord: (n) => `${n}. rocznica`, anniv: (n) => `${n}. rocznica` },
+  es: { days: (n) => (n === 1 ? "día" : "días"), turns: (n) => `cumple ${n}`, ord: (n) => `${n}.º`, anniv: (n) => `${n}.º aniversario` },
+};
+
+// Tags people may type themselves in Google/Apple (e.g. "#imieniny") map to the built-in types
+const TYPE_ALIASES = {
+  imieniny: "nameday", urodziny: "birthday", rocznica: "anniversary", wakacje: "holiday", urlop: "holiday", praca: "work",
+  onomastica: "nameday", santo: "nameday", cumpleanos: "birthday", aniversario: "anniversary", vacaciones: "holiday", trabajo: "work",
+};
+
 
 // Calendar entity feature flags (homeassistant.components.calendar.CalendarEntityFeature)
 const FEATURE_CREATE = 1;
@@ -167,16 +358,18 @@ class HomeCalendarCard extends HTMLElement {
         const pal = themePalette(config.theme);
         o.color = o.color || pal[i % pal.length];
         const t = String(o.type || "events").toLowerCase();
-        o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : t.startsWith("anniversar") ? "anniversary" : "events";
+        o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : t.startsWith("anniversar") ? "anniversary"
+          : (t.startsWith("nameday") || t.startsWith("imieniny")) ? "nameday" : "events";
         return o;
       })
       .filter((c) => c.entity);
     const defs = Object.fromEntries(DEFAULT_TYPES.map((t) => [t.id, t]));
+    this._configTypes = Array.isArray(config.event_types) && config.event_types.length > 0;
     this._types = Array.isArray(config.event_types) && config.event_types.length
       ? config.event_types.map((t) => {
         const o = typeof t === "string" ? { id: t } : { ...t };
         o.id = String(o.id || o.name || "").toLowerCase().replace(/[^a-z0-9_-]+/g, "_");
-        return { ...(defs[o.id] || { name: o.id, icon: "mdi:tag-outline" }), ...o };
+        return { ...(defs[o.id] || { name: o.id, icon: "mdi:tag-outline" }), ...o, customName: o.name };
       }).filter((t) => t.id)
       : DEFAULT_TYPES.map((t) => ({ ...t }));
     this._storeKey = "home-calendar-card:" + this._calendars.map((c) => c.entity).join(",");
@@ -347,9 +540,9 @@ class HomeCalendarCard extends HTMLElement {
     const canAdd = !this._hass || !this._hass.states[ent] || (feats & 1);
     const chip = (entity, label, color, av) => `<button type="button" class="chip ${this._todoWho === entity ? "sel" : ""}" style="--c:${esc(color)}" data-action="todo-who" data-entity="${esc(entity)}">${av || `<span class="dot"></span>`}${esc(label)}</button>`;
     box.innerHTML = `
-      <div class="todo-head" ${this._todoAutohide() ? `data-action="todo-toggle" role="button" title="Show / hide the to-do list"` : ""}>
+      <div class="todo-head" ${this._todoAutohide() ? `data-action="todo-toggle" role="button" title="${esc(this._t("todo_toggle"))}"` : ""}>
         <ha-icon icon="mdi:checkbox-marked-circle-outline"></ha-icon>
-        <span class="todo-title">${esc(this._config.todo_title || "To-do")}</span>
+        <span class="todo-title">${esc(this._config.todo_title || this._t("todo"))}</span>
         <span class="todo-count"></span>
         ${this._todoAutohide() ? `<ha-icon class="todo-chev" icon="mdi:chevron-down"></ha-icon>` : ""}
       </div>
@@ -357,13 +550,13 @@ class HomeCalendarCard extends HTMLElement {
       <div class="todo-list"></div>
       ${canAdd ? `<form class="todo-add" autocomplete="off">
         <div class="todo-row">
-          <input class="inp" id="t-text" placeholder="Add a task…" enterkeyhint="done">
-          ${canDue ? `<input class="inp" type="date" id="t-due" title="Due date">` : ""}
-          <button class="t-addbtn" type="submit" title="Add task"><ha-icon icon="mdi:plus"></ha-icon></button>
+          <input class="inp" id="t-text" placeholder="${esc(this._t("add_task"))}" enterkeyhint="done">
+          ${canDue ? `<input class="inp" type="date" id="t-due" title="${esc(this._t("due"))}">` : ""}
+          <button class="t-addbtn" type="submit" title="${esc(this._t("add_task_btn"))}"><ha-icon icon="mdi:plus"></ha-icon></button>
         </div>
         <div class="t-who">
           ${people.map((c) => chip(c.entity, this._calName(c), c.color, this._avatar(c, "sm"))).join("")}
-          ${chip("", "Everyone", "var(--hcc-accent)", `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>`)}
+          ${chip("", this._t("everyone"), "var(--hcc-accent)", `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>`)}
         </div>
       </form>` : ""}`;
     const form = box.querySelector(".todo-add");
@@ -411,7 +604,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!t.due) return "";
     const n = Math.round((startOfDay(t.due) - startOfDay(new Date())) / 864e5);
     const date = this._fmt({ weekday: "short", day: "numeric", month: "short" }).format(t.due);
-    let label = n === 0 ? "Today" : n === 1 ? "Tomorrow" : n === -1 ? "Yesterday" : date;
+    let label = n === 0 ? this._t("today") : n === 1 ? this._t("tomorrow") : n === -1 ? this._t("yesterday") : date;
     if (t.timed) label += ` ${this._time(t.due)}`;
     const cls = n < 0 || (t.timed && t.due < new Date()) ? "overdue" : n === 0 ? "due-today" : "";
     return `<span class="due ${cls}" title="${esc(date)}"><ha-icon icon="${cls === "overdue" ? "mdi:alert-circle-outline" : "mdi:calendar-blank-outline"}"></ha-icon>${esc(label)}</span>`;
@@ -427,23 +620,24 @@ class HomeCalendarCard extends HTMLElement {
     const sort = (a, b) => ((a.due ? a.due.getTime() : Infinity) - (b.due ? b.due.getTime() : Infinity)) || a.summary.localeCompare(b.summary);
     const groups = this._todoPeople().map((c) => ({ name: this._calName(c), cal: c, items: items.filter((t) => t.cal === c) }));
     const loose = {};
-    items.filter((t) => !t.cal).forEach((t) => { const k = t.who || "Everyone"; (loose[k] = loose[k] || []).push(t); });
-    Object.entries(loose).sort(([a], [b]) => (a === "Everyone") - (b === "Everyone") || a.localeCompare(b))
-      .forEach(([name, its]) => groups.push({ name, cal: null, items: its }));
+    const EVERY = "\u0000everyone";
+    items.filter((t) => !t.cal).forEach((t) => { const k = t.who || EVERY; (loose[k] = loose[k] || []).push(t); });
+    Object.entries(loose).sort(([a], [b]) => (a === EVERY) - (b === EVERY) || a.localeCompare(b))
+      .forEach(([name, its]) => groups.push({ name: name === EVERY ? this._t("everyone") : name, every: name === EVERY, cal: null, items: its }));
     box.querySelector(".todo-count").textContent = items.length ? String(items.length) : "";
     const shown = groups.filter((g) => g.items.length);
     list.innerHTML = shown.length ? shown.map((g) => {
       const color = g.cal?.color || "var(--hcc-accent)";
       const av = g.cal ? this._avatar(g.cal, "sm") : "";
       return `<div class="tg" style="--c:${esc(color)}">
-        <div class="tg-head">${av || (g.name === "Everyone" ? `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>` : `<span class="dot"></span>`)}
+        <div class="tg-head">${av || (g.every ? `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>` : `<span class="dot"></span>`)}
           <span class="tg-name">${esc(g.name)}</span><span class="tg-n">${g.items.length}</span></div>
         ${g.items.sort(sort).map((t) => `<div class="ti" data-uid="${esc(t.uid)}">
-          <button class="tick" data-action="todo-done" data-uid="${esc(t.uid)}" title="Mark as done"><ha-icon icon="mdi:check"></ha-icon></button>
+          <button class="tick" data-action="todo-done" data-uid="${esc(t.uid)}" title="${esc(this._t("mark_done"))}"><ha-icon icon="mdi:check"></ha-icon></button>
           <span class="ti-text">${esc(t.summary)}</span>${this._dueChip(t)}
         </div>`).join("")}
       </div>`;
-    }).join("") : `<div class="todo-empty"><ha-icon icon="mdi:party-popper"></ha-icon>All done – nothing on the list</div>`;
+    }).join("") : `<div class="todo-empty"><ha-icon icon="mdi:party-popper"></ha-icon>${esc(this._t("all_done"))}</div>`;
   }
 
   async _addTodo() {
@@ -471,7 +665,7 @@ class HomeCalendarCard extends HTMLElement {
       input.focus();
       if (!this._todoLive) this._loadTodos();
     } catch (e) {
-      box.querySelector(".todo-err").textContent = e?.message || "Could not add the task.";
+      box.querySelector(".todo-err").textContent = e?.message || this._t("err_task_add");
     }
     btn.disabled = false;
   }
@@ -490,12 +684,12 @@ class HomeCalendarCard extends HTMLElement {
     try {
       if (remove) await this._hass.callService("todo", "remove_item", { item: [uid] }, { entity_id: ent });
       else await this._hass.callService("todo", "update_item", { item: uid, status: "completed" }, { entity_id: ent });
-      this._notify(`Done: ${t.summary}`, { text: "Undo", action: () => this._todoUndo(uid, raw, remove) });
+      this._notify(this._t("done", { t: t.summary }), { text: this._t("undo"), action: () => this._todoUndo(uid, raw, remove) });
       if (!this._todoLive) this._loadTodos();
     } catch (e) {
       this._pendingDone.delete(uid);
       this._renderTodoList();
-      this._toast(e?.message || "Could not update the task.");
+      this._toast(e?.message || this._t("err_task_upd"));
     }
   }
 
@@ -510,7 +704,7 @@ class HomeCalendarCard extends HTMLElement {
       } else {
         await this._hass.callService("todo", "update_item", { item: uid, status: "needs_action" }, { entity_id: ent });
       }
-    } catch (e) { this._toast(e?.message || "Could not undo."); }
+    } catch (e) { this._toast(e?.message || this._t("err_undo")); }
     this._pendingDone.delete(uid);
     if (!this._todoLive) this._loadTodos(); else this._renderTodoList();
   }
@@ -587,7 +781,7 @@ class HomeCalendarCard extends HTMLElement {
     let summary = strip(e.summary);
     const title = summary;
     const description = strip(e.description);
-    const typeId = tagged || (["birthday", "holiday", "anniversary"].includes(cal.type) ? cal.type : "standard");
+    const typeId = tagged || (["birthday", "holiday", "anniversary", "nameday"].includes(cal.type) ? cal.type : "standard");
     let age = null;
     if (["birthday", "anniversary"].includes(this._typeById(typeId).style)) {
       const m = `${summary} ${description}`.match(/\b(19\d{2}|20\d{2})\b/);
@@ -612,7 +806,8 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _typeById(id, strict = false) {
-    const k = String(id || "").toLowerCase();
+    let k = String(id || "").toLowerCase();
+    if (TYPE_ALIASES[k] && !this._types?.some((t) => t.id === k)) k = TYPE_ALIASES[k];
     return this._types?.find((t) => t.id === k) || DEFAULT_TYPES.find((t) => t.id === k)
       || (strict ? null : DEFAULT_TYPES[0]);
   }
@@ -622,13 +817,14 @@ class HomeCalendarCard extends HTMLElement {
   _isBanner(ev) { return this._ty(ev).style === "banner"; }
 
   // Birthdays and anniversaries: all-day, yearly, with an age/years count.
-  _isBday(ev) { return ["birthday", "anniversary"].includes(this._ty(ev).style); }
+  _isBday(ev) { return ["birthday", "anniversary", "nameday"].includes(this._ty(ev).style); }
 
   _yearlyLabel(ev, short = false) {
     const anniv = this._ty(ev).style === "anniversary";
-    const name = anniv ? "Anniversary" : "Birthday";
-    if (short || !ev.age) return name;
-    return anniv ? `${ordinal(ev.age)} anniversary` : `Birthday · turns ${ev.age}`;
+    const style = this._ty(ev).style;
+    const name = this._t(style === "nameday" ? "nameday" : anniv ? "anniversary" : "birthday");
+    if (short || !ev.age || style === "nameday") return name;
+    return anniv ? this._n().anniv(ev.age) : `${name} · ${this._n().turns(ev.age)}`;
   }
 
   _typeIcon(ev) { return this._ty(ev).icon || ""; }
@@ -670,7 +866,7 @@ class HomeCalendarCard extends HTMLElement {
         if (isNaN(d)) return null;
         if (cd.repeat === "yearly") while (startOfDay(d) < today) d.setFullYear(d.getFullYear() + 1);
         if ((timed ? d : addDays(d, 1)) <= now) return null;
-        return { name: cd.name || "Countdown", start: d, end: d, icon: cd.icon, color, fixed, kind: cd.type || "custom" };
+        return { name: cd.name || this._t("countdown"), start: d, end: d, icon: cd.icon, color, fixed, kind: cd.type || "custom" };
       }
       if (!cd.calendar || !this._hass.states[cd.calendar]) return null;
       try {
@@ -725,6 +921,7 @@ class HomeCalendarCard extends HTMLElement {
     const ty = this._ty(ev);
     if (ty.style === "birthday") return "birthday";
     if (ty.style === "anniversary") return "anniversary";
+    if (ty.style === "nameday") return "nameday";
     if (ty.style === "banner") return "holiday";
     return ty.id === "standard" ? "event" : ty.id;
   }
@@ -751,14 +948,14 @@ class HomeCalendarCard extends HTMLElement {
     return `<div class="cds">${this._countdowns.map((cd) => {
       const n = Math.round((startOfDay(cd.start) - today) / 864e5);
       const ongoing = cd.start <= now && cd.end > now;
-      const num = n > 0 ? n : ongoing && n < 0 ? "Now" : "Today";
-      const unit = n > 1 ? "days" : n === 1 ? "day" : "";
+      const num = n > 0 ? n : ongoing && n < 0 ? this._t("now") : this._t("today");
+      const unit = n > 0 ? this._n().days(n) : "";
       const color = this._cdColor(cd, !cd.fixed && (cd.kind === "custom" || !cd.ev) ? customIdx++ : 0);
       return `<div class="cd ${n <= 0 ? "due" : ""}" style="--c:${esc(color)}" ${cd.ev ? `data-action="open-cd" data-start="${cd.start.getTime()}" data-name="${esc(cd.ev.summary)}"` : ""}>
         <div class="cd-top"><span class="cd-icon"><ha-icon icon="${esc(cd.icon || "mdi:timer-sand")}"></ha-icon></span>
         <span class="cd-num">${num}${unit ? `<span>${unit}</span>` : ""}</span></div>
         <div class="cd-name">${esc(cd.name)}</div>
-        <div class="cd-date">${esc(f.format(cd.start))}${cd.ev?.age && this._isBday(cd.ev) ? ` · ${esc(this._ty(cd.ev).style === "anniversary" ? ordinal(cd.ev.age) : `turns ${cd.ev.age}`)}` : ""}</div>
+        <div class="cd-date">${esc(f.format(cd.start))}${cd.kind === "nameday" ? ` · ${esc(this._t("nameday"))}` : ""}${cd.ev?.age && this._isBday(cd.ev) ? ` · ${esc(this._ty(cd.ev).style === "anniversary" ? this._n().ord(cd.ev.age) : this._n().turns(cd.ev.age))}` : ""}</div>
       </div>`;
     }).join("")}</div>`;
   }
@@ -777,6 +974,7 @@ class HomeCalendarCard extends HTMLElement {
     }
     if (cal.type === "birthday") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:cake-variant"></ha-icon></span>`;
     if (cal.type === "anniversary") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:heart"></ha-icon></span>`;
+    if (cal.type === "nameday") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:flower-tulip"></ha-icon></span>`;
     return "";
   }
 
@@ -822,7 +1020,26 @@ class HomeCalendarCard extends HTMLElement {
 
   /* ------------------------------------------------------------ formatting */
 
-  _lang() { return this._hass?.locale?.language || this._hass?.language || navigator.language || "en"; }
+  _lang() {
+    const l = this._config?.language;
+    return (l && l !== "auto" ? l : null) || this._hass?.locale?.language || this._hass?.language || navigator.language || "en";
+  }
+
+  _ui() { return uiLang(this._lang()); }
+
+  _t(key, vars) { return tr(this._ui(), key, vars); }
+
+  _n() { return NUM[this._ui()]; }
+
+  _wx(c) { const k = `wx_${c}`; const v = this._t(k); return v === k ? wxName(c) : v; }
+
+  _typeName(ty) {
+    if (!ty) return "";
+    if (ty.customName) return ty.customName;
+    const k = `type_${ty.id}`;
+    const v = this._t(k);
+    return v === k ? (ty.name || ty.id) : v;
+  }
 
   _fmt(opts) {
     const key = this._lang() + JSON.stringify(opts);
@@ -857,26 +1074,26 @@ class HomeCalendarCard extends HTMLElement {
       const total = Math.round((ev.end - ev.start) / 864e5);
       if (total > 1 && day) {
         const n = Math.round((startOfDay(day) - ev.start) / 864e5) + 1;
-        return `All day · ${n}/${total}`;
+        return this._t("all_day_n", { n, t: total });
       }
-      return "All day";
+      return this._t("all_day");
     }
     if (!day) return `${this._time(ev.start)} – ${this._time(ev.end)}`;
     const ds = startOfDay(day);
     const de = addDays(ds, 1);
     const startsBefore = ev.start < ds;
     const endsAfter = ev.end > de;
-    if (startsBefore && endsAfter) return "All day";
-    if (startsBefore) return `Until ${this._time(ev.end)}`;
-    if (endsAfter) return `From ${this._time(ev.start)}`;
+    if (startsBefore && endsAfter) return this._t("all_day");
+    if (startsBefore) return this._t("until", { t: this._time(ev.end) });
+    if (endsAfter) return this._t("from", { t: this._time(ev.start) });
     if (ev.start.getTime() === ev.end.getTime()) return this._time(ev.start);
     return `${this._time(ev.start)} – ${this._time(ev.end)}`;
   }
 
   _shortLabel(ev, day) {
-    if (ev.allDay) return "All day";
+    if (ev.allDay) return this._t("all_day");
     const ds = startOfDay(day);
-    if (ev.start < ds) return ev.end > addDays(ds, 1) ? "All day" : `→ ${this._time(ev.end)}`;
+    if (ev.start < ds) return ev.end > addDays(ds, 1) ? this._t("all_day") : `→ ${this._time(ev.end)}`;
     return this._time(ev.start);
   }
 
@@ -885,8 +1102,8 @@ class HomeCalendarCard extends HTMLElement {
     const shortDay = this._fmt({ weekday: "short", day: "numeric", month: "short" });
     if (ev.allDay) {
       const lastDay = addDays(ev.end, -1);
-      if (sameDay(ev.start, lastDay) || ev.end <= ev.start) return `${longDay.format(ev.start)} · All day`;
-      return `${shortDay.format(ev.start)} – ${shortDay.format(lastDay)} · All day`;
+      if (sameDay(ev.start, lastDay) || ev.end <= ev.start) return `${longDay.format(ev.start)} · ${this._t("all_day")}`;
+      return `${shortDay.format(ev.start)} – ${shortDay.format(lastDay)} · ${this._t("all_day")}`;
     }
     if (sameDay(ev.start, ev.end)) return `${longDay.format(ev.start)} · ${this._time(ev.start)} – ${this._time(ev.end)}`;
     return `${shortDay.format(ev.start)} ${this._time(ev.start)} – ${shortDay.format(ev.end)} ${this._time(ev.end)}`;
@@ -991,8 +1208,8 @@ class HomeCalendarCard extends HTMLElement {
     if (this._mode !== "fullscreen") { box.innerHTML = ""; return; }
     const isFs = !!document.fullscreenElement;
     box.innerHTML = `
-      ${document.fullscreenEnabled ? `<button class="icon" data-action="browser-fs" title="${isFs ? "Exit browser full screen" : "Browser full screen"}"><ha-icon icon="${isFs ? "mdi:fullscreen-exit" : "mdi:fullscreen"}"></ha-icon></button>` : ""}
-      <button class="icon" data-action="fs-off" title="Show Home Assistant (until reload)"><ha-icon icon="mdi:dock-window"></ha-icon></button>`;
+      ${document.fullscreenEnabled ? `<button class="icon" data-action="browser-fs" title="${esc(this._t(isFs ? "fs_exit" : "fs_browser"))}"><ha-icon icon="${isFs ? "mdi:fullscreen-exit" : "mdi:fullscreen"}"></ha-icon></button>` : ""}
+      <button class="icon" data-action="fs-off" title="${esc(this._t("fs_off"))}"><ha-icon icon="mdi:dock-window"></ha-icon></button>`;
   }
 
   async _keepAwake() {
@@ -1066,7 +1283,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!st) return "";
     const unit = st.attributes.temperature_unit || "°";
     const today = this._forecast[dayKey(new Date())];
-    const cond = this._hass.formatEntityState ? this._hass.formatEntityState(st) : wxName(st.state);
+    const cond = this._hass.formatEntityState ? this._hass.formatEntityState(st) : this._wx(st.state);
     const hiLo = today ? ` · ${round(today.temperature)}°${today.templow != null ? ` / ${round(today.templow)}°` : ""}` : "";
     return `<button class="now-wx" data-action="more-info" data-entity="${esc(id)}" title="${esc(cond)}">
       <ha-icon icon="${wxIcon(st.state)}" style="color:${wxColor(st.state)}"></ha-icon>
@@ -1076,18 +1293,18 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _renderToolbar() {
-    const views = [["agenda", "Agenda"], ["week", "Week"], ["month", "Month"]];
+    const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")]];
     const canAdd = this._config.allow_add !== false && this._writable().length > 0;
     return `<div class="toolbar">
       <div class="seg">${views.map(([v, l]) => `<button class="${this._view === v ? "on" : ""}" data-action="view" data-view="${v}">${l}</button>`).join("")}</div>
       <div class="nav">
-        <button class="icon" data-action="prev" title="Previous"><ha-icon icon="mdi:chevron-left"></ha-icon></button>
-        <button class="today" data-action="today">Today</button>
-        <button class="icon" data-action="next" title="Next"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
+        <button class="icon" data-action="prev" title="${esc(this._t("prev"))}"><ha-icon icon="mdi:chevron-left"></ha-icon></button>
+        <button class="today" data-action="today">${esc(this._t("today"))}</button>
+        <button class="icon" data-action="next" title="${esc(this._t("next"))}"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
         <span class="range">${esc(this._rangeLabel())}</span>
       </div>
-      ${this._config.layout === "fullscreen" && this._mode === "fill" && !this._inEditor() ? `<button class="icon" data-action="fs-on" title="Back to full screen"><ha-icon icon="mdi:fullscreen"></ha-icon></button>` : ""}
-      ${canAdd ? `<button class="add" data-action="add"><ha-icon icon="mdi:plus"></ha-icon><span>Event</span></button>` : ""}
+      ${this._config.layout === "fullscreen" && this._mode === "fill" && !this._inEditor() ? `<button class="icon" data-action="fs-on" title="${esc(this._t("back_fs"))}"><ha-icon icon="mdi:fullscreen"></ha-icon></button>` : ""}
+      ${canAdd ? `<button class="add" data-action="add"><ha-icon icon="mdi:plus"></ha-icon><span>${esc(this._t("event_btn"))}</span></button>` : ""}
     </div>`;
   }
 
@@ -1102,7 +1319,7 @@ class HomeCalendarCard extends HTMLElement {
     const f = this._forecast[dayKey(d)];
     if (!f) return "";
     const rain = Number(f.precipitation_probability);
-    return `<span class="wx ${compact ? "compact" : ""}" title="${esc(wxName(f.condition))}">
+    return `<span class="wx ${compact ? "compact" : ""}" title="${esc(this._wx(f.condition))}">
       <ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon>
       <b>${round(f.temperature)}°</b>${f.templow != null ? `<i>${round(f.templow)}°</i>` : ""}
       ${!compact && rain > 0 ? `<span class="rain"><ha-icon icon="mdi:umbrella-outline"></ha-icon>${Math.round(rain)}%</span>` : ""}
@@ -1119,7 +1336,7 @@ class HomeCalendarCard extends HTMLElement {
     return `<div class="ev ${live ? "live" : ""} ${past ? "past" : ""} ${bday ? "bday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
       <div class="bar"></div>
       <div class="ev-body">
-        <div class="ev-time">${live ? `<span class="pulse"></span>Now · ` : ""}${esc(label)}</div>
+        <div class="ev-time">${live ? `<span class="pulse"></span>${esc(this._t("now"))} · ` : ""}${esc(label)}</div>
         <div class="ev-title">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}${esc(ev.summary)}</div>
         ${ev.location ? `<div class="ev-sub"><ha-icon icon="mdi:map-marker-outline"></ha-icon><span>${esc(ev.location)}</span></div>` : ""}
       </div>
@@ -1145,11 +1362,11 @@ class HomeCalendarCard extends HTMLElement {
         </button>
         <div class="aday-main">
           <div class="aday-head"><div class="head-l"><span class="rel">${esc(this._relDay(d))}</span>${hols}</div>${this._wxBadge(d)}</div>
-          ${evs.length ? evs.map((ev) => this._eventRow(ev, d)).join("") : hols ? "" : `<div class="empty-day">Nothing planned</div>`}
+          ${evs.length ? evs.map((ev) => this._eventRow(ev, d)).join("") : hols ? "" : `<div class="empty-day">${esc(this._t("nothing"))}</div>`}
         </div>
       </div>`;
     }
-    return out || `<div class="empty"><ha-icon icon="mdi:calendar-check-outline"></ha-icon><div>No events in this period</div></div>`;
+    return out || `<div class="empty"><ha-icon icon="mdi:calendar-check-outline"></ha-icon><div>${esc(this._t("no_events"))}</div></div>`;
   }
 
   _renderWeek() {
@@ -1224,19 +1441,19 @@ class HomeCalendarCard extends HTMLElement {
     const canEdit = allowEdit && ev.uid && (feats & FEATURE_UPDATE);
     const missing = [allowEdit && !canEdit && "edit", allowDel && !canDel && "delete"].filter(Boolean);
     let delNote = "";
-    if (missing.length && !ev.uid) delNote = "This event can't be changed from here.";
-    else if (missing.length === 2) delNote = "This calendar is read-only in Home Assistant.";
-    else if (missing.length === 1) delNote = `This calendar can't ${missing[0]} events from Home Assistant.`;
+    if (missing.length && !ev.uid) delNote = this._t("ro_event");
+    else if (missing.length === 2) delNote = this._t("ro_cal");
+    else if (missing.length === 1) delNote = this._t(missing[0] === "edit" ? "no_edit" : "no_delete");
     const f = this._forecast[dayKey(ev.start)];
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.location)}`;
     this._openDialog(`
       <div class="dlg-head" style="--c:${esc(ev.cal.color)}">
         <span class="dlg-dot"></span><div class="dlg-title">${esc(ev.summary)}</div>
-        <button class="icon" data-action="close" title="Close"><ha-icon icon="mdi:close"></ha-icon></button>
+        <button class="icon" data-action="close" title="${esc(this._t("close"))}"><ha-icon icon="mdi:close"></ha-icon></button>
       </div>
       <div class="dlg-body">
-        <div class="row"><ha-icon icon="mdi:clock-outline"></ha-icon><div>${esc(this._whenText(ev))}${ev.age ? `<div class="muted">${this._ty(ev).style === "anniversary" ? `${ordinal(ev.age)} anniversary 💍` : `Turns ${ev.age} 🎂`}</div>` : ""}${ev.rrule || ev.recurrence_id ? `<div class="muted">Repeating event</div>` : ""}</div></div>
-        ${ev.type !== "standard" ? `<div class="row"><ha-icon icon="${esc(this._typeIcon(ev) || "mdi:tag-outline")}" style="color:${esc(ev.cal.color)}"></ha-icon><div>${esc(this._ty(ev).name || ev.type)}</div></div>` : ""}
+        <div class="row"><ha-icon icon="mdi:clock-outline"></ha-icon><div>${esc(this._whenText(ev))}${ev.age ? `<div class="muted">${this._ty(ev).style === "anniversary" ? `${esc(this._n().anniv(ev.age))} 💍` : `${esc(this._n().turns(ev.age))} 🎂`}</div>` : ""}${ev.rrule || ev.recurrence_id ? `<div class="muted">${esc(this._t("repeating"))}</div>` : ""}</div></div>
+        ${ev.type !== "standard" ? `<div class="row"><ha-icon icon="${esc(this._typeIcon(ev) || "mdi:tag-outline")}" style="color:${esc(ev.cal.color)}"></ha-icon><div>${esc(this._typeName(this._ty(ev)))}</div></div>` : ""}
         ${ev.location ? `<div class="row"><ha-icon icon="mdi:map-marker-outline"></ha-icon><a href="${mapUrl}" target="_blank" rel="noopener">${esc(ev.location)}</a></div>` : ""}
         <div class="row"><ha-icon icon="mdi:calendar-blank-outline"></ha-icon><div class="cal-line">${this._avatar(ev.cal, "sm") || `<span class="cal-dot" style="--c:${esc(ev.cal.color)}"></span>`}${esc(this._calName(ev.cal))}</div></div>
         ${f ? `<div class="row"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><div>${this._forecastText(f)}</div></div>` : ""}
@@ -1244,11 +1461,11 @@ class HomeCalendarCard extends HTMLElement {
         <div class="f-err"></div>
       </div>
       <div class="dlg-foot">
-        ${canDel ? `<button class="btn danger" data-action="delete"><ha-icon icon="mdi:delete-outline"></ha-icon><span>Delete</span></button>` : ""}
-        ${canEdit ? `<button class="btn edit" data-action="edit"><ha-icon icon="mdi:pencil-outline"></ha-icon><span>Edit</span></button>` : ""}
+        ${canDel ? `<button class="btn danger" data-action="delete"><ha-icon icon="mdi:delete-outline"></ha-icon><span>${esc(this._t("delete"))}</span></button>` : ""}
+        ${canEdit ? `<button class="btn edit" data-action="edit"><ha-icon icon="mdi:pencil-outline"></ha-icon><span>${esc(this._t("edit"))}</span></button>` : ""}
         ${delNote ? `<span class="del-note"><ha-icon icon="mdi:lock-outline"></ha-icon>${esc(delNote)}</span>` : ""}
         <span class="sp"></span>
-        <button class="btn" data-action="close">Close</button>
+        <button class="btn" data-action="close">${esc(this._t("close"))}</button>
       </div>`);
   }
 
@@ -1261,19 +1478,19 @@ class HomeCalendarCard extends HTMLElement {
     const rec = this._isRecurring(ev);
     foot.classList.add("confirm");
     foot.innerHTML = rec ? `
-      <div class="del-q"><ha-icon icon="mdi:delete-alert-outline"></ha-icon>Delete repeating event</div>
+      <div class="del-q"><ha-icon icon="mdi:delete-alert-outline"></ha-icon>${esc(this._t("del_rec_q"))}</div>
       <div class="del-opts">
-        <button class="btn danger-fill" data-action="delete-do" data-scope="one">This event</button>
-        <button class="btn danger-line" data-action="delete-do" data-scope="future">This and following</button>
-        <button class="btn danger-line" data-action="delete-do" data-scope="all">All events</button>
+        <button class="btn danger-fill" data-action="delete-do" data-scope="one">${esc(this._t("this_event"))}</button>
+        <button class="btn danger-line" data-action="delete-do" data-scope="future">${esc(this._t("this_following"))}</button>
+        <button class="btn danger-line" data-action="delete-do" data-scope="all">${esc(this._t("all_events"))}</button>
         <span class="sp"></span>
-        <button class="btn" data-action="delete-cancel">Cancel</button>
+        <button class="btn" data-action="delete-cancel">${esc(this._t("cancel"))}</button>
       </div>` : `
-      <div class="del-q"><ha-icon icon="mdi:delete-alert-outline"></ha-icon>Delete “${esc(ev.summary)}”? This can't be undone.</div>
+      <div class="del-q"><ha-icon icon="mdi:delete-alert-outline"></ha-icon>${esc(this._t("del_q", { t: ev.summary }))}</div>
       <div class="del-opts">
         <span class="sp"></span>
-        <button class="btn" data-action="delete-cancel">Cancel</button>
-        <button class="btn danger-fill" data-action="delete-do" data-scope="one">Delete</button>
+        <button class="btn" data-action="delete-cancel">${esc(this._t("cancel"))}</button>
+        <button class="btn danger-fill" data-action="delete-do" data-scope="one">${esc(this._t("delete"))}</button>
       </div>`;
   }
 
@@ -1281,9 +1498,10 @@ class HomeCalendarCard extends HTMLElement {
     const unit = this._hass?.states[this._config.weather_entity]?.attributes?.temperature_unit || "°";
     const parts = [`${round(f.temperature)}${unit}`];
     if (f.templow != null) parts[0] += ` / ${round(f.templow)}${unit}`;
-    if (Number(f.precipitation_probability) > 0) parts.push(`${Math.round(f.precipitation_probability)}% chance of rain`);
-    const cond = f.condition ? wxName(f.condition) : "";
-    return `<span class="cap">${esc(cond)}</span>${cond ? " · " : ""}${esc(parts.join(" · "))}`;
+    if (Number(f.precipitation_probability) > 0) parts.push(this._t("rain", { p: Math.round(f.precipitation_probability) }));
+    const cond = f.condition ? this._wx(f.condition) : "";
+    const Cond = cond ? cond.charAt(0).toLocaleUpperCase(this._lang()) + cond.slice(1) : ""; // sentence case in every language
+    return `${esc(Cond)}${cond ? " · " : ""}${esc(parts.join(" · "))}`;
   }
 
   _openDay(date) {
@@ -1293,16 +1511,21 @@ class HomeCalendarCard extends HTMLElement {
       <div class="dlg-head">
         <div class="dlg-title">${esc(this._relDay(date))}${sameDay(date, new Date()) || Math.abs(startOfDay(date) - startOfDay(new Date())) <= 864e5 ? `<div class="sub">${esc(this._fmt({ weekday: "long", day: "numeric", month: "long" }).format(date))}</div>` : ""}</div>
         ${this._wxBadge(date)}
-        <button class="icon" data-action="close" title="Close"><ha-icon icon="mdi:close"></ha-icon></button>
+        <button class="icon" data-action="close" title="${esc(this._t("close"))}"><ha-icon icon="mdi:close"></ha-icon></button>
       </div>
       <div class="dlg-body day-list">
         ${this._holidayTags(date) ? `<div class="hols">${this._holidayTags(date)}</div>` : ""}
-        ${evs.length ? evs.map((ev) => this._eventRow(ev, date)).join("") : `<div class="empty-day">Nothing planned</div>`}
+        ${evs.length ? evs.map((ev) => this._eventRow(ev, date)).join("") : `<div class="empty-day">${esc(this._t("nothing"))}</div>`}
       </div>
       <div class="dlg-foot">
         <span class="sp"></span>
-        ${canAdd ? `<button class="btn primary" data-action="add" data-date="${dayKey(date)}"><ha-icon icon="mdi:plus"></ha-icon><span>Add event</span></button>` : `<button class="btn" data-action="close">Close</button>`}
+        ${canAdd ? `<button class="btn primary" data-action="add" data-date="${dayKey(date)}"><ha-icon icon="mdi:plus"></ha-icon><span>${esc(this._t("add_event"))}</span></button>` : `<button class="btn" data-action="close">${esc(this._t("close"))}</button>`}
       </div>`);
+  }
+
+  _formTypes(current) {
+    const ui = this._ui();
+    return this._types.filter((t) => !t.langs || this._configTypes || t.langs.includes(ui) || t.id === current?.id);
   }
 
   _openAdd(date) { this._openForm(date, null); }
@@ -1345,46 +1568,49 @@ class HomeCalendarCard extends HTMLElement {
     const defType = (ev && this._types.find((t) => t.id === ev.type))
       || this._types.find((t) => t.id === (this._config.default_event_type || "standard")) || this._types[0];
     const rr = ev?.rrule || "";
-    const repeats = rr && !REPEATS.some(([v]) => v === rr) ? [...REPEATS, [rr, "Custom (keep as is)"]] : REPEATS;
+    const repeats = rr && !REPEATS.some(([v]) => v === rr) ? [...REPEATS, [rr, "rep_custom"]] : REPEATS;
     this._openDialog(`
       <div class="dlg-head">
-        <div class="dlg-title">${ev ? "Edit event" : "New event"}</div>
-        <button class="icon" data-action="close" title="Close"><ha-icon icon="mdi:close"></ha-icon></button>
+        <div class="dlg-title">${esc(this._t(ev ? "edit_event" : "new_event"))}</div>
+        <button class="icon" data-action="close" title="${esc(this._t("close"))}"><ha-icon icon="mdi:close"></ha-icon></button>
       </div>
       <div class="dlg-body form" style="--c:${esc(selColor)}">
-        <input id="f-title" class="inp" placeholder="Add title" autocomplete="off" value="${ev ? esc(ev.title || ev.summary) : ""}">
+        <input id="f-title" class="inp" placeholder="${esc(this._t("add_title"))}" autocomplete="off" value="${ev ? esc(ev.title || ev.summary) : ""}">
         <div class="sel-row">
-          <label class="selbox"><span class="lbl">Type</span>
+          <label class="selbox"><span class="lbl">${esc(this._t("type"))}</span>
             <span class="sel-wrap"><ha-icon id="f-type-icon" icon="${esc(defType.icon || "mdi:calendar-blank-outline")}"></ha-icon>
-            <select id="f-type" class="inp">${this._types.map((t) => `<option value="${esc(t.id)}" ${t.id === defType.id ? "selected" : ""}>${esc(t.name || t.id)}</option>`).join("")}</select></span>
+            <select id="f-type" class="inp">${this._formTypes(defType).map((t) => `<option value="${esc(t.id)}" ${t.id === defType.id ? "selected" : ""}>${esc(this._typeName(t))}</option>`).join("")}</select></span>
           </label>
-          <label class="selbox"><span class="lbl">Repeat</span>
+          <label class="selbox"><span class="lbl">${esc(this._t("repeat"))}</span>
             <span class="sel-wrap"><ha-icon icon="mdi:repeat"></ha-icon>
-            <select id="f-rep" class="inp">${repeats.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("")}</select></span>
+            <select id="f-rep" class="inp">${repeats.map(([v, l]) => `<option value="${esc(v)}">${esc(this._t(l))}</option>`).join("")}</select></span>
           </label>
         </div>
         <div>
-          <div class="lbl">Calendar</div>
+          <div class="lbl">${esc(this._t("calendar"))}</div>
           <div class="cal-pick">${cals.map((c) => `
             <button type="button" class="chip ${c.entity === this._addCal ? "sel" : ""}" style="--c:${esc(c.color)}" data-action="pick-cal" data-entity="${esc(c.entity)}">
               ${this._avatar(c, "sm") || `<span class="dot"></span>`}${esc(this._calName(c))}
             </button>`).join("")}</div>
         </div>
-        <label class="switch"><input type="checkbox" id="f-allday"><span class="track"></span>All day</label>
-        <div class="dt"><span class="lbl">Starts</span><input class="inp" type="date" id="f-sd" value="${dayKey(s)}"><input class="inp" type="time" id="f-st" value="${timeKey(s)}"></div>
-        <div class="dt"><span class="lbl">Ends</span><input class="inp" type="date" id="f-ed" value="${dayKey(e)}"><input class="inp" type="time" id="f-et" value="${timeKey(e)}"></div>
+        <label class="switch"><input type="checkbox" id="f-allday"><span class="track"></span>${esc(this._t("all_day"))}</label>
+        <div class="dt"><span class="lbl">${esc(this._t("starts"))}</span><input class="inp" type="date" id="f-sd" value="${dayKey(s)}"><input class="inp" type="time" id="f-st" value="${timeKey(s)}"></div>
+        <div class="dt"><span class="lbl">${esc(this._t("ends"))}</span><input class="inp" type="date" id="f-ed" value="${dayKey(e)}"><input class="inp" type="time" id="f-et" value="${timeKey(e)}"></div>
         <div id="f-wx" class="f-wx"></div>
-        <input id="f-loc" class="inp" placeholder="Location" autocomplete="off" value="${ev ? esc(ev.location) : ""}">
-        <textarea id="f-desc" class="inp" rows="3" placeholder="Description">${ev ? esc(ev.description) : ""}</textarea>
-        ${ev && this._isRecurring(ev) ? `<div class="form-note"><ha-icon icon="mdi:repeat"></ha-icon>Repeating event – you'll choose which events to change when you save.</div>` : ""}
+        <input id="f-loc" class="inp" placeholder="${esc(this._t("location"))}" autocomplete="off" value="${ev ? esc(ev.location) : ""}">
+        <textarea id="f-desc" class="inp" rows="3" placeholder="${esc(this._t("description"))}">${ev ? esc(ev.description) : ""}</textarea>
+        ${ev && this._isRecurring(ev) ? `<div class="form-note"><ha-icon icon="mdi:repeat"></ha-icon>${esc(this._t("rec_note"))}</div>` : ""}
         <div class="f-err"></div>
       </div>
       <div class="dlg-foot">
         <span class="sp"></span>
-        <button class="btn" data-action="${ev ? "edit-cancel" : "close"}">Cancel</button>
-        <button class="btn primary" data-action="save">Save</button>
+        <button class="btn" data-action="${ev ? "edit-cancel" : "close"}">${esc(this._t("cancel"))}</button>
+        <button class="btn primary" data-action="save">${esc(this._t("save"))}</button>
       </div>`);
     this._formFoot = this._q(".dlg-foot").innerHTML;
+    // "Starts"/"Ends" labels differ in length per language – size both rows to the longer one
+    const lw = Math.max(58, ...[...this._dlg.querySelectorAll(".dt .lbl")].map((l) => Math.ceil(l.scrollWidth)));
+    this._q(".form").style.setProperty("--lblw", `${lw}px`);
     if (ev) {
       // keep the event's own settings rather than the type's defaults
       this._q("#f-type-icon").setAttribute("icon", defType.icon || "mdi:calendar-blank-outline");
@@ -1468,7 +1694,7 @@ class HomeCalendarCard extends HTMLElement {
     const s = this._formStart();
     const f = s && this._forecast[dayKey(s)];
     box.innerHTML = f
-      ? `<ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><span>Forecast: ${this._forecastText(f)}</span>`
+      ? `<ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><span>${this._t("forecast", { f: this._forecastText(f) })}</span>`
       : "";
   }
 
@@ -1480,21 +1706,21 @@ class HomeCalendarCard extends HTMLElement {
   async _saveEvent(scope) {
     const editing = this._editEv;
     const title = this._q("#f-title")?.value.trim();
-    if (!title) { this._setFormError("Please add a title."); this._q("#f-title").focus(); return; }
+    if (!title) { this._setFormError(this._t("err_title")); this._q("#f-title").focus(); return; }
     const allDay = this._q("#f-allday").checked;
     const sd = this._q("#f-sd").value;
     const ed = this._q("#f-ed").value || sd;
     const data = { summary: title };
-    if (!sd) { this._setFormError("Please choose a start date."); return; }
+    if (!sd) { this._setFormError(this._t("err_start")); return; }
     if (allDay) {
-      if (ed < sd) { this._setFormError("End date is before the start date."); return; }
+      if (ed < sd) { this._setFormError(this._t("err_end_date")); return; }
       data.start_date = sd;
       data.end_date = dayKey(addDays(parseDate(ed), 1)); // HA end_date is exclusive
     } else {
       const st = this._q("#f-st").value;
       const et = this._q("#f-et").value;
-      if (!st || !et) { this._setFormError("Please choose start and end times."); return; }
-      if (new Date(`${ed}T${et}`) <= new Date(`${sd}T${st}`)) { this._setFormError("End must be after start."); return; }
+      if (!st || !et) { this._setFormError(this._t("err_times")); return; }
+      if (new Date(`${ed}T${et}`) <= new Date(`${sd}T${st}`)) { this._setFormError(this._t("err_order")); return; }
       data.start_date_time = `${sd} ${st}:00`;
       data.end_date_time = `${ed} ${et}:00`;
     }
@@ -1510,7 +1736,7 @@ class HomeCalendarCard extends HTMLElement {
 
     const btn = this._q('[data-action="save"]');
     btn.disabled = true;
-    btn.textContent = "Saving…";
+    btn.textContent = this._t("saving");
     try {
       if (rrule) {
         // Repeating events go through the websocket API, which supports RRULE.
@@ -1527,15 +1753,15 @@ class HomeCalendarCard extends HTMLElement {
         await this._hass.callService("calendar", "create_event", data, { entity_id: this._addCal });
       }
       this._closeDialog();
-      this._toast(`Added “${title}”`);
+      this._toast(this._t("added", { t: title }));
       // Some integrations (e.g. CalDAV) take a moment before the new event is listed.
       this._fetchEvents();
       this._fetchCountdowns();
       setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(); }, 4000);
     } catch (err) {
       btn.disabled = false;
-      btn.textContent = "Save";
-      this._setFormError(err?.message || "Could not create the event.");
+      btn.textContent = this._t("save");
+      this._setFormError(err?.message || this._t("err_create"));
     }
   }
 
@@ -1556,12 +1782,12 @@ class HomeCalendarCard extends HTMLElement {
     const foot = this._q(".dlg-foot");
     foot.classList.add("confirm", "edit-confirm");
     foot.innerHTML = `
-      <div class="del-q"><ha-icon icon="mdi:repeat"></ha-icon>Save changes to a repeating event</div>
+      <div class="del-q"><ha-icon icon="mdi:repeat"></ha-icon>${esc(this._t("save_rec_q"))}</div>
       <div class="del-opts">
-        <button class="btn primary" data-action="save-scope" data-scope="one">This event</button>
-        <button class="btn line" data-action="save-scope" data-scope="future">This and following</button>
+        <button class="btn primary" data-action="save-scope" data-scope="one">${esc(this._t("this_event"))}</button>
+        <button class="btn line" data-action="save-scope" data-scope="future">${esc(this._t("this_following"))}</button>
         <span class="sp"></span>
-        <button class="btn" data-action="save-back">Back</button>
+        <button class="btn" data-action="save-back">${esc(this._t("back"))}</button>
       </div>`;
   }
 
@@ -1572,7 +1798,7 @@ class HomeCalendarCard extends HTMLElement {
     const busy = (on) => this._dlg.querySelectorAll('[data-action^="save"]').forEach((b) => { b.disabled = on; });
     busy(true);
     const sb = this._q('[data-action="save"]');
-    if (sb) sb.textContent = "Saving…";
+    if (sb) sb.textContent = this._t("saving");
     try {
       if (moving) {
         // Move = create in the new calendar, then remove from the old one
@@ -1591,7 +1817,7 @@ class HomeCalendarCard extends HTMLElement {
       this._editEv = null;
       this._closeDialog();
       const cal = this._calendars.find((c) => c.entity === this._addCal);
-      this._toast(moving ? `Moved “${f.title}” to ${this._calName(cal)}` : `Saved “${f.title}”`);
+      this._toast(moving ? this._t("moved", { t: f.title, c: this._calName(cal) }) : this._t("saved", { t: f.title }));
       this._fetchEvents();
       this._fetchCountdowns();
       setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(); }, 4000);
@@ -1599,8 +1825,8 @@ class HomeCalendarCard extends HTMLElement {
       if (this._q(".edit-confirm")) this._restoreFormFoot();
       busy(false);
       const b = this._q('[data-action="save"]');
-      if (b) b.textContent = "Save";
-      this._setFormError(err?.message || "Could not save the changes.");
+      if (b) b.textContent = this._t("save");
+      this._setFormError(err?.message || this._t("err_save"));
     }
   }
 
@@ -1623,14 +1849,14 @@ class HomeCalendarCard extends HTMLElement {
       }
       await this._hass.callWS(msg);
       this._closeDialog();
-      this._toast(scope === "all" ? `Deleted all “${ev.summary}” events`
-        : scope === "future" ? `Deleted “${ev.summary}” from ${this._fmt({ day: "numeric", month: "short" }).format(ev.start)} on`
-          : `Deleted “${ev.summary}”`);
+      this._toast(scope === "all" ? this._t("deleted_all", { t: ev.summary })
+        : scope === "future" ? this._t("deleted_from", { t: ev.summary, d: this._fmt({ day: "numeric", month: "short" }).format(ev.start) })
+          : this._t("deleted", { t: ev.summary }));
       this._fetchEvents();
       this._fetchCountdowns();
     } catch (err) {
       this._dlg.querySelectorAll('[data-action^="delete"]').forEach((b) => { b.disabled = false; });
-      this._setFormError(err?.message || "Could not delete the event.");
+      this._setFormError(err?.message || this._t("err_delete"));
     }
   }
 
@@ -2034,8 +2260,9 @@ textarea.inp { resize: vertical; }
 .cal-pick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .cal-pick .chip { opacity: .6; background: none; border-color: var(--hcc-line); padding: 6px 12px 6px 10px; }
 .cal-pick .chip.sel { opacity: 1; background: color-mix(in srgb, var(--c) 18%, transparent); border-color: var(--c); font-weight: 700; }
-.dt { display: grid; grid-template-columns: 58px minmax(0, 1fr) 136px; gap: 8px; align-items: center; }
-.form.allday .dt { grid-template-columns: 58px minmax(0, 1fr); }
+.form { --lblw: 58px; }
+.dt { display: grid; grid-template-columns: var(--lblw) minmax(0, 1fr) 136px; gap: 8px 10px; align-items: center; }
+.form.allday .dt { grid-template-columns: var(--lblw) minmax(0, 1fr); }
 .form.allday .dt input[type=time] { display: none; }
 .switch { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: .92rem; font-weight: 500; user-select: none; position: relative; width: fit-content; }
 .switch input { position: absolute; opacity: 0; pointer-events: none; }
@@ -2200,59 +2427,60 @@ ha-card { container: hcc / inline-size; }
 
 /* ===================================================================== editor */
 
-const GENERAL_SCHEMA = [
-  { name: "title", selector: { text: {} } },
-  { name: "weather_entity", selector: { entity: { domain: "weather" } } },
-  { type: "grid", name: "", schema: [
-    { name: "todo_entity", selector: { entity: { domain: "todo" } } },
-    { name: "todo_title", selector: { text: {} } },
-    { name: "todo_position", selector: { select: { mode: "dropdown", options: [
-      { value: "auto", label: "Automatic" }, { value: "top", label: "Top" }, { value: "bottom", label: "Bottom" },
-      { value: "left", label: "Left" }, { value: "right", label: "Right" }] } } },
-    { name: "todo_autohide", selector: { number: { min: 0, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } },
-  ] },
-  {
-    type: "grid", name: "", schema: [
-      { name: "default_view", selector: { select: { mode: "dropdown", options: [
-        { value: "agenda", label: "Agenda" }, { value: "week", label: "Week" }, { value: "month", label: "Month" }] } } },
+// Editor forms are built per language. `t(key)` translates, `o(value, key)` makes a dropdown option.
+const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
+  "default_view", "days_to_show", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
+  "allow_edit", "allow_delete", "show_empty_days", "max_height"];
+const generalSchema = (t) => {
+  const o = (value, key) => ({ value, label: t(key) });
+  return [
+    { type: "grid", name: "", schema: [
+      { name: "title", selector: { text: {} } },
+      { name: "language", selector: { select: { mode: "dropdown", options: [o("auto", "o_lang_auto"),
+        ...Object.entries(LANGS).map(([value, label]) => ({ value, label }))] } } },
+    ] },
+    { name: "weather_entity", selector: { entity: { domain: "weather" } } },
+    { type: "grid", name: "", schema: [
+      { name: "todo_entity", selector: { entity: { domain: "todo" } } },
+      { name: "todo_title", selector: { text: {} } },
+      { name: "todo_position", selector: { select: { mode: "dropdown", options: [
+        o("auto", "o_auto"), o("top", "o_top"), o("bottom", "o_bottom"), o("left", "o_left"), o("right", "o_right")] } } },
+      { name: "todo_autohide", selector: { number: { min: 0, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } },
+    ] },
+    { type: "grid", name: "", schema: [
+      { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month")] } } },
       { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
-      { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [
-        { value: "monday", label: "Monday" }, { value: "sunday", label: "Sunday" }, { value: "saturday", label: "Saturday" }] } } },
-      { name: "time_format", selector: { select: { mode: "dropdown", options: [
-        { value: "auto", label: "From HA profile" }, { value: "24h", label: "24 hour" }, { value: "12h", label: "12 hour" }] } } },
-    ],
-  },
-  { type: "grid", name: "", schema: [
-    { name: "layout", selector: { select: { mode: "dropdown", options: [
-      { value: "card", label: "Card (normal)" }, { value: "fill", label: "Fill page (panel view)" }, { value: "fullscreen", label: "Full screen (wall display)" }] } } },
-    { name: "keep_awake", selector: { boolean: {} } },
-  ] },
-  { type: "grid", name: "", schema: [
-    { name: "show_header", selector: { boolean: {} } },
-    { name: "allow_add", selector: { boolean: {} } },
-    { name: "allow_edit", selector: { boolean: {} } },
-    { name: "allow_delete", selector: { boolean: {} } },
-    { name: "show_empty_days", selector: { boolean: {} } },
-    { name: "max_height", selector: { text: {} } },
-  ] },
-];
-const GENERAL_LABELS = {
-  title: "Title", weather_entity: "Weather entity", layout: "Layout", keep_awake: "Keep screen awake", todo_entity: "To-do list (optional)", todo_title: "To-do heading", todo_position: "To-do position", todo_autohide: "To-do auto-hide after (0 = off)", default_view: "Default view", days_to_show: "Days in agenda",
-  first_day_of_week: "First day of week", time_format: "Time format", show_header: "Show date & weather header",
-  allow_add: "Allow adding events", allow_edit: "Allow editing events", allow_delete: "Allow deleting events", show_empty_days: "Show days without events", max_height: "Max height (e.g. 600px)",
+      { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [o("monday", "o_monday"), o("sunday", "o_sunday"), o("saturday", "o_saturday")] } } },
+      { name: "time_format", selector: { select: { mode: "dropdown", options: [o("auto", "o_tf_auto"), o("24h", "o_24h"), o("12h", "o_12h")] } } },
+    ] },
+    { type: "grid", name: "", schema: [
+      { name: "layout", selector: { select: { mode: "dropdown", options: [o("card", "o_card"), o("fill", "o_fill"), o("fullscreen", "o_fullscreen")] } } },
+      { name: "keep_awake", selector: { boolean: {} } },
+    ] },
+    { type: "grid", name: "", schema: [
+      { name: "show_header", selector: { boolean: {} } },
+      { name: "allow_add", selector: { boolean: {} } },
+      { name: "allow_edit", selector: { boolean: {} } },
+      { name: "allow_delete", selector: { boolean: {} } },
+      { name: "show_empty_days", selector: { boolean: {} } },
+      { name: "max_height", selector: { text: {} } },
+    ] },
+  ];
 };
-const CAL_SCHEMA = [
-  { type: "grid", name: "", schema: [
-    { name: "entity", required: true, selector: { entity: { domain: "calendar" } } },
-    { name: "name", selector: { text: {} } },
-  ] },
-  { type: "grid", name: "", schema: [
-    { name: "person", selector: { entity: { domain: "person" } } },
-    { name: "type", selector: { select: { mode: "dropdown", options: [
-      { value: "events", label: "Events" }, { value: "birthday", label: "Birthdays" }, { value: "anniversary", label: "Anniversaries" }, { value: "holiday", label: "Holidays (day banner)" }] } } },
-  ] },
-];
-const CAL_LABELS = { entity: "Calendar", name: "Display name", person: "Person (shows their photo)", type: "Calendar type" };
+const calSchema = (t) => {
+  const o = (value, key) => ({ value, label: t(key) });
+  return [
+    { type: "grid", name: "", schema: [
+      { name: "entity", required: true, selector: { entity: { domain: "calendar" } } },
+      { name: "name", selector: { text: {} } },
+    ] },
+    { type: "grid", name: "", schema: [
+      { name: "person", selector: { entity: { domain: "person" } } },
+      { name: "type", selector: { select: { mode: "dropdown", options: [o("events", "o_events"), o("birthday", "o_birthdays"),
+        o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
+    ] },
+  ];
+};
 
 const EDITOR_STYLES = `
 :host { display: block; }
@@ -2317,6 +2545,11 @@ class HomeCalendarCardEditor extends HTMLElement {
 
   _cals() { return (this._config.calendars || []).map((c) => (typeof c === "string" ? { entity: c } : { ...c })); }
 
+  _t(key, vars) {
+    const l = this._config?.language;
+    return tr(uiLang(l && l !== "auto" ? l : this._hass?.locale?.language || this._hass?.language || navigator.language), key, vars);
+  }
+
   _emit(config, rerender = false) {
     const clean = { ...config };
     if (Array.isArray(clean.calendars)) {
@@ -2352,43 +2585,43 @@ class HomeCalendarCardEditor extends HTMLElement {
     this._forms = [];
     this.shadowRoot.innerHTML = `<style>${EDITOR_STYLES}</style>
       <div class="sec">
-        <div class="h">Theme</div>
-        <div class="sub">Colour scheme for the card. "Home Assistant" follows your dashboard theme.</div>
+        <div class="h">${esc(this._t("ed_theme"))}</div>
+        <div class="sub">${esc(this._t("ed_theme_sub"))}</div>
         <div class="themes">${Object.keys(THEMES).map((k) => this._themeTile(k)).join("")}</div>
       </div>
       <div class="sec">
-        <div class="h">Calendars</div>
-        <div class="sub">Pick each calendar, give it a name and colour, and optionally link it to a person.</div>
+        <div class="h">${esc(this._t("ed_cals"))}</div>
+        <div class="sub">${esc(this._t("ed_cals_sub"))}</div>
         <div class="cals">${cals.map((c, i) => {
           const col = /^#[0-9a-f]{6}$/i.test(c.color || "") ? c.color : pal[i % pal.length];
           return `<div class="cal">
-            <label class="sw" title="Colour" style="background:${esc(c.color || col)}"><input type="color" data-i="${i}" value="${col}"></label>
+            <label class="sw" title="${esc(this._t("ed_colour"))}" style="background:${esc(c.color || col)}"><input type="color" data-i="${i}" value="${col}"></label>
             <div class="slot" data-i="${i}"></div>
             <div class="btns">
-              <button class="ib" data-act="up" data-i="${i}" title="Move up" ${i === 0 ? "disabled" : ""}><ha-icon icon="mdi:arrow-up"></ha-icon></button>
-              <button class="ib" data-act="down" data-i="${i}" title="Move down" ${i === cals.length - 1 ? "disabled" : ""}><ha-icon icon="mdi:arrow-down"></ha-icon></button>
-              <button class="ib" data-act="del" data-i="${i}" title="Remove"><ha-icon icon="mdi:delete-outline"></ha-icon></button>
+              <button class="ib" data-act="up" data-i="${i}" title="${esc(this._t("ed_up"))}" ${i === 0 ? "disabled" : ""}><ha-icon icon="mdi:arrow-up"></ha-icon></button>
+              <button class="ib" data-act="down" data-i="${i}" title="${esc(this._t("ed_down"))}" ${i === cals.length - 1 ? "disabled" : ""}><ha-icon icon="mdi:arrow-down"></ha-icon></button>
+              <button class="ib" data-act="del" data-i="${i}" title="${esc(this._t("ed_remove"))}"><ha-icon icon="mdi:delete-outline"></ha-icon></button>
             </div>
           </div>`;
         }).join("")}</div>
-        <button class="addcal" data-act="add"><ha-icon icon="mdi:plus"></ha-icon>Add calendar</button>
+        <button class="addcal" data-act="add"><ha-icon icon="mdi:plus"></ha-icon>${esc(this._t("ed_add_cal"))}</button>
       </div>
       <div class="sec">
-        <div class="h">Display</div>
+        <div class="h">${esc(this._t("ed_display"))}</div>
         <div class="slot-general"></div>
-        <div class="note">Countdowns and custom event types are set in the code editor – see the README.</div>
+        <div class="note">${esc(this._t("ed_note"))}</div>
       </div>`;
 
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
       const i = Number(slot.dataset.i);
       const c = cals[i];
-      const f = this._makeForm(CAL_SCHEMA, { entity: c.entity || "", name: c.name || "", person: c.person || "", type: c.type || "events" },
-        (s) => CAL_LABELS[s.name] ?? s.name,
+      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", type: c.type || "events" },
+        (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),
         (s) => {
           if (s.name !== "name") return undefined;
           const ent = this._cals()[i]?.entity;
           const fn = ent && this._hass?.states[ent]?.attributes?.friendly_name;
-          return fn ? `Leave empty to use “${fn}”` : undefined;
+          return fn ? this._t("ed_leave_empty", { n: fn }) : undefined;
         });
       f.addEventListener("value-changed", (ev) => {
         ev.stopPropagation();
@@ -2400,12 +2633,14 @@ class HomeCalendarCardEditor extends HTMLElement {
       slot.appendChild(f);
     });
 
-    const gen = this._makeForm(GENERAL_SCHEMA, this._config, (s) => GENERAL_LABELS[s.name] ?? s.name);
+    const gen = this._makeForm(generalSchema((k) => this._t(k)), { language: "auto", ...this._config }, (s) => this._t(`l_${s.name}`));
     gen.addEventListener("value-changed", (ev) => {
       ev.stopPropagation();
       gen.data = ev.detail.value;
       const next = { ...this._config, ...ev.detail.value };
-      Object.keys(GENERAL_LABELS).forEach((k) => { if (next[k] === "" || next[k] == null) delete next[k]; });
+      GENERAL_KEYS.forEach((k) => { if (next[k] === "" || next[k] == null) delete next[k]; });
+      if (next.language === "auto") delete next.language;
+      if (next.language !== this._config.language) { this._emit(next, true); return; } // re-draw in the new language
       this._emit(next);
     });
     this.shadowRoot.querySelector(".slot-general").appendChild(gen);
