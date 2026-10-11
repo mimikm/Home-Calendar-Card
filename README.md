@@ -44,6 +44,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🖥️ **Wall display mode** – fills the whole screen, stretches Month/Week to the full height, to-do list as a sidebar, auto-scales text for distance viewing and keeps the screen awake
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
+- 🌍 **English, Polish and Spanish** – card and visual editor follow your Home Assistant language, with an extra **Imieniny** (name day) event type in Polish
 - Zero dependencies, one file
 
 ## Requirements
@@ -163,6 +164,7 @@ max_height: 640px
 | `todo_position` | `auto` \| `top` \| `bottom` \| `left` \| `right` | `auto` | Where the to-do list sits. `auto` = bottom for a normal card, right in fill/fullscreen |
 | `todo_autohide` | `false` \| `true` \| seconds | `false` | Fold the to-do list away into a slim bar/tab; tap to open; it folds again after this many seconds without use (`true` = 30) |
 | `theme` | `auto` \| `nordic` \| `sunset` \| `forest` \| `midnight` \| `graphite` | `auto` | Colour scheme – see *Themes* |
+| `language` | `auto` \| `en` \| `pl` \| `es` | `auto` | Card language – `auto` follows your Home Assistant profile |
 | `title` | string | – | Shown above the date in the header |
 | `default_view` | `agenda` \| `week` \| `month` | `agenda` | View shown when the dashboard loads |
 | `days_to_show` | number | `7` | Number of days in Agenda view |
@@ -188,11 +190,13 @@ max_height: 640px
 | `person` | A `person.*` entity – shows their profile picture (or initials) on chips and events |
 | `picture` | Image URL to use instead of a person's picture, e.g. `/local/kids.png` |
 | `icon` | MDI icon shown as the badge when there's no picture, e.g. `mdi:human-child` |
-| `type` | `events` (default), `birthday`, `anniversary` or `holiday` |
+| `type` | `events` (default), `birthday`, `anniversary`, `nameday` or `holiday` |
 
 **`type: birthday`** – events show a 🎂 icon and "Birthday". If the event title or description contains a birth year (e.g. *Anna (1990)*), the card shows *turns 36* and hides the year from the title.
 
 **`type: anniversary`** – events show a ❤️ icon and "Anniversary". With a year in the title (e.g. *Wedding (2014)*) the card shows *12th anniversary*.
+
+**`type: nameday`** – Polish name days (*imieniny*): a 🌷 icon and "Imieniny", with countdowns for the next two.
 
 **`type: holiday`** – events appear as a coloured banner next to the day (and tint the day in Month view) rather than as an event row.
 
@@ -267,6 +271,7 @@ When adding an event you pick a **Type** from a dropdown. The built-in types are
 | Holiday | 🏖 `mdi:beach` | All-day by default, shown as a banner on each day of the trip, gets an automatic countdown |
 | Birthday | 🎂 `mdi:cake-variant` | All-day, repeats every year, shows *turns X* if you add the birth year to the title, e.g. `Mum (1962)` |
 | Anniversary | ❤️ `mdi:heart` | All-day, repeats every year, gets an automatic countdown, shows *12th anniversary* if you add the year to the title, e.g. `Wedding (2014)` |
+| Imieniny (Polish only) | 🌷 `mdi:flower-tulip` | Name day – all-day, repeats every year, countdowns for the next 2 name days. Shown in the Type dropdown when the card is in Polish |
 | Work event | 💼 `mdi:briefcase-outline` | Briefcase icon on the event |
 | DHS | 🏷 `mdi:tag-outline` | Tag icon on the event |
 
@@ -415,6 +420,24 @@ Countdowns and `event_types` are kept when you use the visual editor – edit th
 - **Birthdays** – in Google Calendar, add the *Birthdays* calendar (it's built from your Google Contacts); it then appears in the Google Calendar integration. On iCloud, the *Birthdays* calendar can be added via CalDAV.
 - **Bank holidays** – add the [Holiday integration](https://www.home-assistant.io/integrations/holiday/) (choose your country), or subscribe to a holidays calendar in Google.
 - **School holidays** – most councils publish an iCal feed; subscribe to it in Google Calendar or use the [Remote Calendar integration](https://www.home-assistant.io/integrations/remote_calendar/).
+
+## Languages
+
+The card and its visual editor are available in:
+
+| Language | Code |
+|---|---|
+| English | `en` |
+| Polski | `pl` |
+| Español | `es` |
+
+The language follows your Home Assistant profile automatically. Set `language: pl` (or pick it in the visual editor) to force one. Dates, weekdays and month names always use your language's normal format.
+
+**Polish extra – Imieniny 🇵🇱** – in Polish the Type dropdown includes **Imieniny** (name days). They repeat every year, get their own gold countdown colour, and the next two name days appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#imieniny`. A whole calendar of name days can be set to *Calendar type: Imieniny* in the editor.
+
+You can also type these tags in Google or Apple Calendar instead of the English ones: `#urodziny`, `#rocznica`, `#wakacje`, `#urlop`, `#praca`, `#imieniny` (Polish) and `#cumpleanos`, `#aniversario`, `#vacaciones`, `#trabajo`, `#onomastica` (Spanish).
+
+Your own `event_types` names, calendar names and `todo_title` are shown exactly as you write them.
 
 ## Troubleshooting
 
