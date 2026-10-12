@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.9.1";
+const CARD_VERSION = "1.10.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -98,6 +98,8 @@ const ordinal = (n) => {
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
+const DONE_BY_RE = /^\s*Done by:\s*(.+?)(?:\s*\((\d{4}-\d{2}-\d{2})(?:[ T](\d{2}:\d{2}))?\))?\s*$/mi;
+const DONE_BY_LINE_RE = /\n?^\s*Done by:.*$/gmi;
 const TAG_RE = /(^|\s)#([a-z0-9_-]+)(?=\s|$)/gi;
 
 // ------------------------------------------------------------------ translations
@@ -159,7 +161,7 @@ const I18N = {
     l_enabled: "Enabled", l_start: "From", l_end: "Until", l_style: "Style", l_brightness: "Brightness",
     l_when_entity: "Or turn on with an entity (optional)", l_wake_entity: "Wake with a motion sensor (optional)", l_wake_seconds: "Stay awake for (seconds)",
     l_after: "Start after (minutes)", l_media: "Photo folder (media source)", l_interval: "Seconds per photo", l_show_info: "Show clock & next event", l_shuffle: "Shuffle photos",
-    ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
+    ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
     agenda: "Agenda", week: "Tydzień", month: "Miesiąc", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
@@ -216,7 +218,7 @@ const I18N = {
     l_enabled: "Włączony", l_start: "Od", l_end: "Do", l_style: "Styl", l_brightness: "Jasność",
     l_when_entity: "Lub włączaj encją (opcjonalnie)", l_wake_entity: "Wybudzaj czujnikiem ruchu (opcjonalnie)", l_wake_seconds: "Wybudź na (sekundy)",
     l_after: "Włącz po (minutach)", l_media: "Folder ze zdjęciami (media source)", l_interval: "Sekundy na zdjęcie", l_show_info: "Pokaż zegar i następne wydarzenie", l_shuffle: "Losowa kolejność zdjęć",
-    ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
+    ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
     agenda: "Agenda", week: "Semana", month: "Mes", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
@@ -273,7 +275,7 @@ const I18N = {
     l_enabled: "Activado", l_start: "Desde", l_end: "Hasta", l_style: "Estilo", l_brightness: "Brillo",
     l_when_entity: "O activar con una entidad (opcional)", l_wake_entity: "Activar con un sensor de movimiento (opcional)", l_wake_seconds: "Permanecer activo (segundos)",
     l_after: "Iniciar tras (minutos)", l_media: "Carpeta de fotos (media source)", l_interval: "Segundos por foto", l_show_info: "Mostrar reloj y próximo evento", l_shuffle: "Fotos en orden aleatorio",
-    ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
+    ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
 };
 const LANGS = { en: "English", pl: "Polski", es: "Español" };
@@ -428,6 +430,8 @@ class HomeCalendarCard extends HTMLElement {
     }
     const t = this._config.todo_entity;
     if (t && old.states[t] !== hass.states[t] && !this._todoLive) this._loadTodos();
+    const tc = this._config.todo_calendar;
+    if (tc && old.states[tc] !== hass.states[tc]) this._fetchTodoCal();
     const { night } = this._ambientCfg();
     if (night?.wake_entity && hass.states[night.wake_entity]?.state === "on" && old.states[night.wake_entity]?.state !== "on") this._wake();
     if (night?.when_entity && old.states[night.when_entity] !== hass.states[night.when_entity]) this._ambientTick();
@@ -464,11 +468,12 @@ class HomeCalendarCard extends HTMLElement {
         this._fetchEvents();
         this._fetchCountdowns();
         this._renderTodoList();
+        this._fetchTodoCal();
       }
       this._render();
     }, 60 * 1000);
     const mins = Math.max(1, Number(this._config?.refresh_interval) || 5);
-    this._refresh = setInterval(() => { this._fetchEvents(); this._fetchCountdowns(); }, mins * 60 * 1000);
+    this._refresh = setInterval(() => { this._fetchEvents(); this._fetchCountdowns(); this._fetchTodoCal(); }, mins * 60 * 1000);
     if (this._hass && this._config) {
       this._subscribeWeather();
       this._subscribeTodo();
@@ -543,7 +548,47 @@ class HomeCalendarCard extends HTMLElement {
     const cal = who ? this._todoPeople().find((c) => this._calName(c).toLowerCase() === who.toLowerCase()) : null;
     const timed = !!(it.due && String(it.due).length > 10);
     const due = it.due ? (timed ? new Date(it.due) : parseDate(it.due)) : null;
-    return { raw: it, uid: it.uid, summary, who, cal, due, timed, done: it.status === "completed" };
+    // "Done by: Dom (2026-10-12 14:30)" is written by this card when a task is ticked
+    const db = String(it.description || "").match(DONE_BY_RE);
+    let completedAt = it.completed ? new Date(it.completed) : null;
+    if (!completedAt && db?.[2]) completedAt = new Date(`${db[2]}T${db[3] || "12:00"}`);
+    if (completedAt && isNaN(completedAt)) completedAt = null;
+    return { raw: it, uid: it.uid, summary, who, cal, due, timed, done: it.status === "completed", doneBy: db ? db[1] : null, completedAt };
+  }
+
+  _todoOpts() {
+    const c = this._config;
+    const days = Number(c.todo_days_ahead);
+    const cdays = Number(c.todo_completed_days);
+    return {
+      groupBy: c.todo_group_by === "due" ? "due" : "person",
+      daysAhead: days > 0 ? days : (c.todo_calendar ? 7 : 0), // 0 = no limit
+      calendar: c.todo_calendar || "",
+      showCompleted: c.todo_show_completed === true,
+      completedDays: cdays > 0 ? cdays : 7,
+      recordDoneBy: c.todo_record_done_by !== false,
+    };
+  }
+
+  // Future repeats of recurring chores, read from a calendar (e.g. Chore Calendar). Shown read-only.
+  async _fetchTodoCal() {
+    const { calendar, daysAhead } = this._todoOpts();
+    if (!calendar || !this._hass?.states[calendar]) { this._todoCal = []; return; }
+    const start = startOfDay(new Date());
+    const end = addDays(start, (daysAhead || 7) + 1);
+    try {
+      const res = await this._hass.callApi("GET",
+        `calendars/${calendar}?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
+      this._todoCal = (res || []).map((e) => {
+        const allDay = !!(e.start && e.start.date);
+        const st = allDay ? parseDate(e.start.date) : new Date(e.start?.dateTime || e.start);
+        return { uid: `cal:${e.uid || ""}:${st.getTime()}`, summary: e.summary || "", due: st, timed: !allDay, upcoming: true, description: e.description || "" };
+      }).filter((e) => e.summary && !isNaN(e.due));
+    } catch (e) {
+      console.warn("home-calendar-card: could not read todo_calendar", calendar, e);
+      this._todoCal = [];
+    }
+    this._renderTodoList();
   }
 
   _buildTodo() {
@@ -553,7 +598,8 @@ class HomeCalendarCard extends HTMLElement {
     if (!ent) { box.hidden = true; box.innerHTML = ""; this._todoKey = null; return; }
     const people = this._todoPeople();
     const feats = this._features(ent);
-    const key = JSON.stringify([ent, feats, this._config.todo_title, this._config.todo_autohide, people.map((c) => [c.entity, this._calName(c), c.color])]);
+    const o = this._todoOpts();
+    const key = JSON.stringify([ent, feats, this._config.todo_title, this._config.todo_autohide, o, people.map((c) => [c.entity, this._calName(c), c.color])]);
     if (key === this._todoKey) return;
     this._todoKey = key;
     box.hidden = false;
@@ -590,6 +636,7 @@ class HomeCalendarCard extends HTMLElement {
     }
     this._applyTodoState();
     this._renderTodoList();
+    this._fetchTodoCal();
   }
 
   // Auto-hide: seconds of inactivity before the list folds away (0 = off).
@@ -624,14 +671,32 @@ class HomeCalendarCard extends HTMLElement {
     }, auto * 1000);
   }
 
-  _dueChip(t) {
+  _dueChip(t, upcoming = false) {
     if (!t.due) return "";
     const n = Math.round((startOfDay(t.due) - startOfDay(new Date())) / 864e5);
     const date = this._fmt({ weekday: "short", day: "numeric", month: "short" }).format(t.due);
     let label = n === 0 ? this._t("today") : n === 1 ? this._t("tomorrow") : n === -1 ? this._t("yesterday") : date;
     if (t.timed) label += ` ${this._time(t.due)}`;
-    const cls = n < 0 || (t.timed && t.due < new Date()) ? "overdue" : n === 0 ? "due-today" : "";
+    const cls = !upcoming && (n < 0 || (t.timed && t.due < new Date())) ? "overdue" : n === 0 ? "due-today" : "";
     return `<span class="due ${cls}" title="${esc(date)}"><ha-icon icon="${cls === "overdue" ? "mdi:alert-circle-outline" : "mdi:calendar-blank-outline"}"></ha-icon>${esc(label)}</span>`;
+  }
+
+  _todoRow(t, showWho, dateInHeading = false) {
+    // when the group heading already says the day, only show a time (if any)
+    const chip = (up) => (!dateInHeading ? this._dueChip(t, up)
+      : t.timed ? `<span class="due ${!up && t.due < new Date() ? "overdue" : ""}"><ha-icon icon="mdi:clock-outline"></ha-icon>${esc(this._time(t.due))}</span>` : "");
+    const who = showWho && (t.cal || t.who)
+      ? `<span class="ti-who" style="--c:${esc(t.cal?.color || "var(--hcc-accent)")}">${t.cal ? this._avatar(t.cal, "sm") : ""}${esc(t.cal ? this._calName(t.cal) : t.who)}</span>` : "";
+    if (t.upcoming) {
+      return `<div class="ti upcoming" title="${esc(this._t("upcoming_hint"))}">
+        <span class="tick ghost"><ha-icon icon="mdi:calendar-clock"></ha-icon></span>
+        <span class="ti-text">${esc(t.summary)}</span>${who}${chip(true)}
+      </div>`;
+    }
+    return `<div class="ti" data-uid="${esc(t.uid)}">
+      <button class="tick" data-action="todo-done" data-uid="${esc(t.uid)}" title="${esc(this._t("mark_done"))}"><ha-icon icon="mdi:check"></ha-icon></button>
+      <span class="ti-text">${esc(t.summary)}</span>${who}${chip(false)}
+    </div>`;
   }
 
   _renderTodoList() {
@@ -640,28 +705,81 @@ class HomeCalendarCard extends HTMLElement {
     if (!list) return;
     box.querySelector(".todo-err").textContent = this._todoError || "";
     this._pendingDone = this._pendingDone || new Set();
-    const items = (this._todos || []).map((i) => this._parseTodo(i)).filter((t) => !t.done && !this._pendingDone.has(t.uid));
-    const sort = (a, b) => ((a.due ? a.due.getTime() : Infinity) - (b.due ? b.due.getTime() : Infinity)) || a.summary.localeCompare(b.summary);
-    const groups = this._todoPeople().map((c) => ({ name: this._calName(c), cal: c, items: items.filter((t) => t.cal === c) }));
-    const loose = {};
-    const EVERY = "\u0000everyone";
-    items.filter((t) => !t.cal).forEach((t) => { const k = t.who || EVERY; (loose[k] = loose[k] || []).push(t); });
-    Object.entries(loose).sort(([a], [b]) => (a === EVERY) - (b === EVERY) || a.localeCompare(b))
-      .forEach(([name, its]) => groups.push({ name: name === EVERY ? this._t("everyone") : name, every: name === EVERY, cal: null, items: its }));
+    const o = this._todoOpts();
+    const today = startOfDay(new Date());
+    const horizon = o.daysAhead ? addDays(today, o.daysAhead + 1) : null;
+    const all = (this._todos || []).map((i) => this._parseTodo(i));
+    const inWindow = (t) => !horizon || !t.due || t.due < horizon;
+    const items = all.filter((t) => !t.done && !this._pendingDone.has(t.uid) && inWindow(t));
+    const norm = (x) => String(x || "").trim().toLowerCase();
+    // future repeats from the linked calendar – skip the ones already present as a real task on that day
+    const upcoming = (this._todoCal || [])
+      .map((e) => ({ ...e, ...this._parseTodo({ summary: e.summary, description: e.description, due: null }), due: e.due, timed: e.timed, upcoming: true, uid: e.uid }))
+      .filter((e) => e.due >= today && inWindow(e)
+        && !all.some((t) => norm(t.summary) === norm(e.summary) && t.due && sameDay(t.due, e.due)
+          && (!t.done || (t.completedAt && sameDay(t.completedAt, new Date())))));
+    const sort = (a, b) => ((a.due ? a.due.getTime() : Infinity) - (b.due ? b.due.getTime() : Infinity)) || (a.upcoming - b.upcoming) || a.summary.localeCompare(b.summary);
+    let groups = [];
+    if (o.groupBy === "due") {
+      const by = new Map();
+      const put = (k, g, t) => { if (!by.has(k)) by.set(k, { ...g, items: [] }); by.get(k).items.push(t); };
+      [...items, ...upcoming].forEach((t) => {
+        if (!t.due) return put("z", { name: this._t("tg_nodate"), icon: "mdi:calendar-blank-outline", order: 9e15 }, t);
+        const n = Math.round((startOfDay(t.due) - today) / 864e5);
+        if (n < 0 || (t.timed && t.due < new Date() && !t.upcoming)) return put("o", { name: this._t("tg_overdue"), icon: "mdi:alert-circle-outline", cls: "overdue", order: -1 }, t);
+        if (n === 0) return put("t", { name: this._t("today"), icon: "mdi:calendar-today", cls: "today", order: 0 }, t);
+        if (n === 1) return put("m", { name: this._t("tomorrow"), icon: "mdi:calendar-arrow-right", order: 1 }, t);
+        put(`d${n}`, { name: this._fmt({ weekday: "long", day: "numeric", month: "short" }).format(t.due), icon: "mdi:calendar", order: n }, t);
+      });
+      groups = [...by.values()].sort((a, b) => a.order - b.order);
+    } else {
+      groups = this._todoPeople().map((c) => ({ name: this._calName(c), cal: c, items: items.filter((t) => t.cal === c) }));
+      const loose = {};
+      const EVERY = "\u0000everyone";
+      items.filter((t) => !t.cal).forEach((t) => { const k = t.who || EVERY; (loose[k] = loose[k] || []).push(t); });
+      Object.entries(loose).sort(([a], [b]) => (a === EVERY) - (b === EVERY) || a.localeCompare(b))
+        .forEach(([name, its]) => groups.push({ name: name === EVERY ? this._t("everyone") : name, every: name === EVERY, cal: null, items: its }));
+      if (upcoming.length) groups.push({ name: this._t("tg_upcoming"), icon: "mdi:calendar-clock", upcomingGroup: true, items: upcoming });
+    }
     box.querySelector(".todo-count").textContent = items.length ? String(items.length) : "";
     const shown = groups.filter((g) => g.items.length);
-    list.innerHTML = shown.length ? shown.map((g) => {
-      const color = g.cal?.color || "var(--hcc-accent)";
+    const due = o.groupBy === "due";
+    let html = shown.length ? shown.map((g) => {
+      const color = g.cal?.color || (g.cls === "overdue" ? "var(--error-color, #db4437)" : "var(--hcc-accent)");
       const av = g.cal ? this._avatar(g.cal, "sm") : "";
-      return `<div class="tg" style="--c:${esc(color)}">
-        <div class="tg-head">${av || (g.every ? `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>` : `<span class="dot"></span>`)}
-          <span class="tg-name">${esc(g.name)}</span><span class="tg-n">${g.items.length}</span></div>
-        ${g.items.sort(sort).map((t) => `<div class="ti" data-uid="${esc(t.uid)}">
-          <button class="tick" data-action="todo-done" data-uid="${esc(t.uid)}" title="${esc(this._t("mark_done"))}"><ha-icon icon="mdi:check"></ha-icon></button>
-          <span class="ti-text">${esc(t.summary)}</span>${this._dueChip(t)}
-        </div>`).join("")}
+      const head = av || (g.every ? `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>` : g.icon ? `<ha-icon class="t-all" icon="${g.icon}"></ha-icon>` : `<span class="dot"></span>`);
+      return `<div class="tg ${g.cls || ""} ${g.upcomingGroup ? "upcoming-group" : ""}" style="--c:${esc(color)}">
+        <div class="tg-head">${head}<span class="tg-name">${esc(g.name)}</span><span class="tg-n">${g.items.length}</span></div>
+        ${g.items.sort(sort).map((t) => this._todoRow(t, due || g.upcomingGroup, due && g.cls !== "overdue")).join("")}
       </div>`;
     }).join("") : `<div class="todo-empty"><ha-icon icon="mdi:party-popper"></ha-icon>${esc(this._t("all_done"))}</div>`;
+
+    // recently completed
+    if (o.showCompleted) {
+      const since = addDays(today, -(o.completedDays - 1));
+      const doneAll = all.filter((t) => t.done);
+      const dated = doneAll.filter((t) => t.completedAt && t.completedAt >= since).sort((a, b) => b.completedAt - a.completedAt);
+      const undated = doneAll.filter((t) => !t.completedAt).slice(-10).reverse(); // no timestamp: show the last few
+      const done = [...dated, ...undated];
+      if (done.length) {
+        const open = !!this._doneOpen;
+        html += `<div class="tg done-group ${open ? "open" : ""}" style="--c:var(--hcc-muted)">
+          <button class="tg-head done-head" data-action="todo-done-toggle"><ha-icon class="t-all" icon="mdi:check-all"></ha-icon>
+            <span class="tg-name">${esc(this._t("done_section"))}</span><span class="tg-n">${done.length}</span><ha-icon class="done-chev" icon="mdi:chevron-down"></ha-icon></button>
+          ${open ? done.map((t) => {
+            const when = t.completedAt ? (sameDay(t.completedAt, new Date()) ? this._t("today") : sameDay(t.completedAt, addDays(new Date(), -1)) ? this._t("yesterday")
+              : this._fmt({ weekday: "short", day: "numeric", month: "short" }).format(t.completedAt)) : "";
+            const meta = [when, t.doneBy].filter(Boolean).join(" · ");
+            const who = t.cal || t.who ? `<span class="ti-who" style="--c:${esc(t.cal?.color || "var(--hcc-accent)")}">${t.cal ? this._avatar(t.cal, "sm") : ""}${esc(t.cal ? this._calName(t.cal) : t.who)}</span>` : "";
+            return `<div class="ti is-done" data-uid="${esc(t.uid)}">
+              <button class="tick on" data-action="todo-undone" data-uid="${esc(t.uid)}" title="${esc(this._t("undo_done"))}"><ha-icon icon="mdi:check"></ha-icon></button>
+              <span class="ti-text">${esc(t.summary)}</span>${who}${meta ? `<span class="done-meta">${esc(meta)}</span>` : ""}
+            </div>`;
+          }).join("") : ""}
+        </div>`;
+      }
+    }
+    list.innerHTML = html;
   }
 
   async _addTodo() {
@@ -707,7 +825,16 @@ class HomeCalendarCard extends HTMLElement {
     const remove = this._config.todo_on_done === "remove";
     try {
       if (remove) await this._hass.callService("todo", "remove_item", { item: [uid] }, { entity_id: ent });
-      else await this._hass.callService("todo", "update_item", { item: uid, status: "completed" }, { entity_id: ent });
+      else {
+        const data = { item: uid, status: "completed" };
+        const user = this._hass.user?.name;
+        if (user && this._todoOpts().recordDoneBy && (this._features(ent) & 64)) {
+          const n = new Date();
+          const base = String(raw.description || "").replace(DONE_BY_LINE_RE, "").trim();
+          data.description = `${base ? `${base}\n` : ""}Done by: ${user} (${dayKey(n)} ${timeKey(n)})`;
+        }
+        await this._hass.callService("todo", "update_item", data, { entity_id: ent });
+      }
       this._notify(this._t("done", { t: t.summary }), { text: this._t("undo"), action: () => this._todoUndo(uid, raw, remove) });
       if (!this._todoLive) this._loadTodos();
     } catch (e) {
@@ -715,6 +842,20 @@ class HomeCalendarCard extends HTMLElement {
       this._renderTodoList();
       this._toast(e?.message || this._t("err_task_upd"));
     }
+  }
+
+  // Un-tick a task from the Done section
+  async _todoUndone(uid) {
+    const ent = this._config.todo_entity;
+    const raw = (this._todos || []).find((i) => i.uid === uid);
+    if (!raw) return;
+    this._pendingDone?.delete(uid);
+    const data = { item: uid, status: "needs_action" };
+    if ((this._features(ent) & 64) && raw.description) data.description = String(raw.description).replace(DONE_BY_LINE_RE, "").trim();
+    try {
+      await this._hass.callService("todo", "update_item", data, { entity_id: ent });
+      if (!this._todoLive) this._loadTodos();
+    } catch (e) { this._toast(e?.message || this._t("err_task_upd")); }
   }
 
   async _todoUndo(uid, raw, removed) {
@@ -726,7 +867,9 @@ class HomeCalendarCard extends HTMLElement {
         if (raw.due) data[String(raw.due).length > 10 ? "due_datetime" : "due_date"] = raw.due;
         await this._hass.callService("todo", "add_item", data, { entity_id: ent });
       } else {
-        await this._hass.callService("todo", "update_item", { item: uid, status: "needs_action" }, { entity_id: ent });
+        const data = { item: uid, status: "needs_action" };
+        if ((this._features(ent) & 64) && raw.description != null) data.description = String(raw.description).replace(DONE_BY_LINE_RE, "").trim();
+        await this._hass.callService("todo", "update_item", data, { entity_id: ent });
       }
     } catch (e) { this._toast(e?.message || this._t("err_undo")); }
     this._pendingDone.delete(uid);
@@ -2305,6 +2448,13 @@ class HomeCalendarCard extends HTMLElement {
       case "todo-done":
         this._todoDone(el.dataset.uid);
         break;
+      case "todo-undone":
+        this._todoUndone(el.dataset.uid);
+        break;
+      case "todo-done-toggle":
+        this._doneOpen = !this._doneOpen;
+        this._renderTodoList();
+        break;
       case "browser-fs":
         this._browserFullscreen();
         break;
@@ -2803,6 +2953,23 @@ ha-card { container: hcc / inline-size; }
   .saver-info { flex-direction: column; align-items: flex-start; }
   .saver .amb-next { align-items: flex-start; text-align: left; max-width: 100%; }
 }
+
+/* to-do: upcoming repeats, who, done section */
+.ti-who { display: inline-flex; align-items: center; gap: 4px; font-size: .7rem; font-weight: 600; color: var(--hcc-muted); white-space: nowrap; flex: none; max-width: 40%; overflow: hidden; }
+.ti-who .av.sm { width: 16px; height: 16px; border-width: 1px; }
+.ti.upcoming { opacity: .62; }
+.tick.ghost { border-style: dashed; border-color: var(--hcc-muted); color: var(--hcc-muted); cursor: default; }
+.tick.ghost ha-icon { --mdc-icon-size: 14px; }
+.tg.overdue .tg-name { color: var(--error-color, #db4437); }
+.tg.today .tg-name { color: var(--hcc-accent); }
+.done-group { grid-column: 1 / -1; background: var(--hcc-soft); border-color: var(--hcc-line); }
+.done-head { width: 100%; text-align: left; }
+.done-chev { --mdc-icon-size: 18px; color: var(--hcc-muted); transition: transform .2s; }
+.done-group.open .done-chev { transform: rotate(180deg); }
+.ti.is-done .ti-text { text-decoration: line-through; color: var(--hcc-muted); }
+.tick.on { background: var(--hcc-muted); border-color: var(--hcc-muted); color: #fff; }
+.tick.on:hover { background: var(--hcc-accent); border-color: var(--hcc-accent); color: #fff; }
+.done-meta { font-size: .7rem; color: var(--hcc-muted); white-space: nowrap; flex: none; }
 `;
 
 
@@ -2812,6 +2979,7 @@ ha-card { container: hcc / inline-size; }
 const NIGHT_DEFAULTS = { enabled: false, style: "clock", start: "22:00", end: "06:30", brightness: 30, wake_seconds: 60 };
 const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, show_info: true };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
+  "todo_group_by", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
   "default_view", "days_to_show", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t) => {
@@ -2828,7 +2996,12 @@ const generalSchema = (t) => {
       { name: "todo_title", selector: { text: {} } },
       { name: "todo_position", selector: { select: { mode: "dropdown", options: [
         o("auto", "o_auto"), o("top", "o_top"), o("bottom", "o_bottom"), o("left", "o_left"), o("right", "o_right")] } } },
-      { name: "todo_autohide", selector: { number: { min: 0, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } },
+        { name: "todo_autohide", selector: { number: { min: 0, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } },
+      { name: "todo_group_by", selector: { select: { mode: "dropdown", options: [o("person", "o_group_person"), o("due", "o_group_due")] } } },
+      { name: "todo_days_ahead", selector: { number: { min: 0, max: 60, step: 1, mode: "box" } } },
+      { name: "todo_calendar", selector: { entity: { domain: "calendar" } } },
+      { name: "todo_show_completed", selector: { boolean: {} } },
+      { name: "todo_completed_days", selector: { number: { min: 1, max: 60, step: 1, mode: "box" } } },
     ] },
     { type: "grid", name: "", schema: [
       { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month")] } } },
