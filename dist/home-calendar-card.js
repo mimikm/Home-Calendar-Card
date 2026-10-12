@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.9.0";
+const CARD_VERSION = "1.9.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -159,7 +159,7 @@ const I18N = {
     l_enabled: "Enabled", l_start: "From", l_end: "Until", l_style: "Style", l_brightness: "Brightness",
     l_when_entity: "Or turn on with an entity (optional)", l_wake_entity: "Wake with a motion sensor (optional)", l_wake_seconds: "Stay awake for (seconds)",
     l_after: "Start after (minutes)", l_media: "Photo folder (media source)", l_interval: "Seconds per photo", l_show_info: "Show clock & next event", l_shuffle: "Shuffle photos",
-    o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
+    ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
     agenda: "Agenda", week: "Tydzień", month: "Miesiąc", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
@@ -216,7 +216,7 @@ const I18N = {
     l_enabled: "Włączony", l_start: "Od", l_end: "Do", l_style: "Styl", l_brightness: "Jasność",
     l_when_entity: "Lub włączaj encją (opcjonalnie)", l_wake_entity: "Wybudzaj czujnikiem ruchu (opcjonalnie)", l_wake_seconds: "Wybudź na (sekundy)",
     l_after: "Włącz po (minutach)", l_media: "Folder ze zdjęciami (media source)", l_interval: "Sekundy na zdjęcie", l_show_info: "Pokaż zegar i następne wydarzenie", l_shuffle: "Losowa kolejność zdjęć",
-    o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
+    ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
     agenda: "Agenda", week: "Semana", month: "Mes", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
@@ -273,7 +273,7 @@ const I18N = {
     l_enabled: "Activado", l_start: "Desde", l_end: "Hasta", l_style: "Estilo", l_brightness: "Brillo",
     l_when_entity: "O activar con una entidad (opcional)", l_wake_entity: "Activar con un sensor de movimiento (opcional)", l_wake_seconds: "Permanecer activo (segundos)",
     l_after: "Iniciar tras (minutos)", l_media: "Carpeta de fotos (media source)", l_interval: "Segundos por foto", l_show_info: "Mostrar reloj y próximo evento", l_shuffle: "Fotos en orden aleatorio",
-    o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
+    ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
 };
 const LANGS = { en: "English", pl: "Polski", es: "Español" };
@@ -2904,12 +2904,35 @@ const EDITOR_STYLES = `
 .th .dots span { width: 11px; height: 11px; border-radius: 50%; }
 .th .nm { font-size: .8rem; font-weight: 600; }
 .th .tick { position: absolute; top: 6px; right: 6px; --mdc-icon-size: 18px; color: var(--primary-color); }
-.cal { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 12px 8px 4px 12px;
-  border: 1px solid var(--divider-color); border-radius: 12px; margin-bottom: 10px; }
-.sw { width: 32px; height: 32px; border-radius: 50%; position: relative; overflow: hidden; cursor: pointer; margin-top: 10px;
+.cal { border: 1px solid var(--divider-color); border-radius: 12px; margin-bottom: 8px; overflow: hidden; transition: box-shadow .15s; }
+.cal.open { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+.cal-head { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 10px; cursor: pointer; user-select: none; }
+.cal-head:hover { background: rgba(127,127,127,.06); }
+.cal.open .cal-head { border-bottom: 1px solid var(--divider-color); }
+.sw { width: 28px; height: 28px; border-radius: 50%; position: relative; overflow: hidden; cursor: pointer; flex: none;
   box-shadow: inset 0 0 0 2px rgba(0,0,0,.12); display: block; }
 .sw input { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); opacity: 0; cursor: pointer; border: 0; padding: 0; }
-.btns { display: flex; flex-direction: column; }
+.ch-av { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; flex: none; }
+.ch-txt { flex: 1; min-width: 0; }
+.ch-name { font-weight: 600; font-size: .95rem; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.ch-n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ch-name.missing { color: var(--secondary-text-color); font-style: italic; font-weight: 500; }
+.ch-sub { font-size: .78rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ch-warn { color: var(--error-color, #db4437); }
+.btns { display: flex; flex: none; }
+.chev { color: var(--secondary-text-color); transition: transform .2s; --mdc-icon-size: 22px; flex: none; padding: 0 2px; }
+.cal.open .chev, .sec-head.open .chev { transform: rotate(180deg); }
+.cal-body { padding: 10px 10px 4px 12px; }
+.sec-head { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; border-radius: 10px; padding: 4px 6px; margin: 0 -6px 4px; }
+.sec-head:hover { background: rgba(127,127,127,.06); }
+.sec-head .h { margin: 0; flex: 1; }
+.sec-head .cur { font-size: .85rem; color: var(--secondary-text-color); display: flex; align-items: center; gap: 6px; }
+.sec-head .cur .dots { display: flex; gap: 2px; }
+.sec-head .cur .dots span { width: 9px; height: 9px; border-radius: 50%; }
+.h .count { font-weight: 500; color: var(--secondary-text-color); font-size: .85rem; margin-left: 4px; }
+.cal-tools { display: flex; justify-content: flex-end; gap: 4px; margin: -2px 0 6px; }
+.linkbtn { background: none; border: none; color: var(--primary-color); font: inherit; font-size: .8rem; cursor: pointer; padding: 2px 6px; border-radius: 6px; }
+.linkbtn:hover { background: rgba(127,127,127,.1); }
 .ib { background: none; border: none; color: var(--secondary-text-color); cursor: pointer; padding: 6px; border-radius: 50%; display: grid; place-items: center; }
 .ib:hover { background: rgba(127,127,127,.15); }
 .ib:disabled { opacity: .3; cursor: default; background: none; }
@@ -2925,11 +2948,20 @@ class HomeCalendarCardEditor extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this._forms = [];
+    this._openCals = new Set();   // calendars expanded in the editor
+    this._themeOpen = false;
+    // one delegated click handler: the innermost [data-act] wins (so row buttons don't also toggle the row)
+    this.shadowRoot.addEventListener("click", (e) => {
+      const el = e.composedPath().find((n) => n instanceof HTMLElement && n.dataset && n.dataset.act);
+      if (el && this.shadowRoot.contains(el)) this._action(el);
+    });
   }
 
   set hass(hass) {
+    const first = !this._hass;
     this._hass = hass;
     this._forms.forEach((f) => { f.hass = hass; });
+    if (first && this._config) this._refreshHeads(); // names/photos need hass
   }
 
   setConfig(config) {
@@ -2991,26 +3023,40 @@ class HomeCalendarCardEditor extends HTMLElement {
     if (!this._config) return;
     const cals = this._cals();
     const pal = themePalette(this._config.theme);
+    [...this._openCals].forEach((k) => { if (k >= cals.length) this._openCals.delete(k); }); // config edited elsewhere
     this._forms = [];
     this.shadowRoot.innerHTML = `<style>${EDITOR_STYLES}</style>
       <div class="sec">
-        <div class="h">${esc(this._t("ed_theme"))}</div>
-        <div class="sub">${esc(this._t("ed_theme_sub"))}</div>
-        <div class="themes">${Object.keys(THEMES).map((k) => this._themeTile(k)).join("")}</div>
+        <div class="sec-head ${this._themeOpen ? "open" : ""}" data-act="toggle-theme">
+          <div class="h">${esc(this._t("ed_theme"))}</div>
+          <span class="cur"><span class="dots">${themePalette(this._config.theme).slice(0, 4).map((c) => `<span style="background:${c}"></span>`).join("")}</span>${esc((THEMES[this._config.theme] || THEMES.auto).name)}</span>
+          <ha-icon class="chev" icon="mdi:chevron-down"></ha-icon>
+        </div>
+        ${this._themeOpen ? `<div class="sub">${esc(this._t("ed_theme_sub"))}</div>
+        <div class="themes">${Object.keys(THEMES).map((k) => this._themeTile(k)).join("")}</div>` : ""}
       </div>
       <div class="sec">
-        <div class="h">${esc(this._t("ed_cals"))}</div>
+        <div class="h">${esc(this._t("ed_cals"))}<span class="count">${cals.length ? `(${cals.length})` : ""}</span></div>
         <div class="sub">${esc(this._t("ed_cals_sub"))}</div>
+        ${cals.length > 1 ? `<div class="cal-tools">
+          <button class="linkbtn" data-act="expand-all">${esc(this._t("ed_expand_all"))}</button>
+          <button class="linkbtn" data-act="collapse-all">${esc(this._t("ed_collapse_all"))}</button>
+        </div>` : ""}
         <div class="cals">${cals.map((c, i) => {
           const col = /^#[0-9a-f]{6}$/i.test(c.color || "") ? c.color : pal[i % pal.length];
-          return `<div class="cal">
-            <label class="sw" title="${esc(this._t("ed_colour"))}" style="background:${esc(c.color || col)}"><input type="color" data-i="${i}" value="${col}"></label>
-            <div class="slot" data-i="${i}"></div>
-            <div class="btns">
-              <button class="ib" data-act="up" data-i="${i}" title="${esc(this._t("ed_up"))}" ${i === 0 ? "disabled" : ""}><ha-icon icon="mdi:arrow-up"></ha-icon></button>
-              <button class="ib" data-act="down" data-i="${i}" title="${esc(this._t("ed_down"))}" ${i === cals.length - 1 ? "disabled" : ""}><ha-icon icon="mdi:arrow-down"></ha-icon></button>
-              <button class="ib" data-act="del" data-i="${i}" title="${esc(this._t("ed_remove"))}"><ha-icon icon="mdi:delete-outline"></ha-icon></button>
+          const open = this._openCals.has(i);
+          return `<div class="cal ${open ? "open" : ""}" data-i="${i}">
+            <div class="cal-head" data-act="toggle" data-i="${i}" title="${esc(this._t(open ? "ed_collapse" : "ed_expand"))}">
+              <label class="sw" data-act="swatch" title="${esc(this._t("ed_colour"))}" style="background:${esc(c.color || col)}"><input type="color" data-i="${i}" value="${col}"></label>
+              <div class="ch-txt">${this._headHtml(c)}</div>
+              <div class="btns">
+                <button class="ib" data-act="up" data-i="${i}" title="${esc(this._t("ed_up"))}" ${i === 0 ? "disabled" : ""}><ha-icon icon="mdi:arrow-up"></ha-icon></button>
+                <button class="ib" data-act="down" data-i="${i}" title="${esc(this._t("ed_down"))}" ${i === cals.length - 1 ? "disabled" : ""}><ha-icon icon="mdi:arrow-down"></ha-icon></button>
+                <button class="ib" data-act="del" data-i="${i}" title="${esc(this._t("ed_remove"))}"><ha-icon icon="mdi:delete-outline"></ha-icon></button>
+              </div>
+              <ha-icon class="chev" icon="mdi:chevron-down"></ha-icon>
             </div>
+            ${open ? `<div class="cal-body"><div class="slot" data-i="${i}"></div></div>` : ""}
           </div>`;
         }).join("")}</div>
         <button class="addcal" data-act="add"><ha-icon icon="mdi:plus"></ha-icon>${esc(this._t("ed_add_cal"))}</button>
@@ -3038,6 +3084,8 @@ class HomeCalendarCardEditor extends HTMLElement {
         const list = this._cals();
         list[i] = { ...list[i], ...ev.detail.value };
         this._emit({ ...this._config, calendars: list });
+        const head = this.shadowRoot.querySelector(`.cal[data-i="${i}"] .ch-txt`);
+        if (head) head.innerHTML = this._headHtml(list[i]);
       });
       slot.appendChild(f);
     });
@@ -3073,7 +3121,28 @@ class HomeCalendarCardEditor extends HTMLElement {
         this._emit({ ...this._config, calendars: list });
       });
     });
-    this.shadowRoot.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => this._action(b)));
+  }
+
+  // Collapsed calendar row: name (with photo), entity and type at a glance
+  _headHtml(c) {
+    const st = c.entity && this._hass?.states[c.entity];
+    const ps = c.person && this._hass?.states[c.person];
+    const name = c.name || ps?.attributes?.friendly_name || st?.attributes?.friendly_name || (c.entity ? c.entity.replace(/^calendar\./, "") : "");
+    const typeKey = { events: "o_events", birthday: "o_birthdays", anniversary: "o_anniversaries", nameday: "o_namedays", holiday: "o_holidays" }[c.type || "events"] || "o_events";
+    const typeTxt = this._t(typeKey).replace(/\s*\(.*\)\s*$/, "");
+    const pic = ps?.attributes?.entity_picture;
+    const missing = c.entity && this._hass && !st;
+    return `<div class="ch-name ${name ? "" : "missing"}">${pic ? `<img class="ch-av" src="${esc(pic)}" alt="">` : ""}<span class="ch-n">${esc(name || this._t("ed_new_cal"))}</span></div>
+      <div class="ch-sub">${c.entity ? `<span class="${missing ? "ch-warn" : ""}">${esc(c.entity)}</span> · ` : ""}${esc(typeTxt)}</div>`;
+  }
+
+  _refreshHeads() {
+    const cals = this._cals();
+    this.shadowRoot.querySelectorAll(".cal[data-i]").forEach((row) => {
+      const c = cals[Number(row.dataset.i)];
+      const h = row.querySelector(".ch-txt");
+      if (c && h) h.innerHTML = this._headHtml(c);
+    });
   }
 
   _makeForm(schema, data, computeLabel, computeHelper) {
@@ -3090,17 +3159,37 @@ class HomeCalendarCardEditor extends HTMLElement {
   _action(b) {
     const list = this._cals();
     const i = Number(b.dataset.i);
+    const open = this._openCals;
+    const swap = (a, c) => {
+      const ha = open.has(a); const hc = open.has(c);
+      open.delete(a); open.delete(c);
+      if (ha) open.add(c);
+      if (hc) open.add(a);
+    };
     switch (b.dataset.act) {
+      case "swatch": return; // colour picker – don't toggle the row
+      case "toggle":
+        if (open.has(i)) open.delete(i); else open.add(i);
+        this._render();
+        return;
+      case "expand-all": list.forEach((_, k) => open.add(k)); this._render(); return;
+      case "collapse-all": open.clear(); this._render(); return;
+      case "toggle-theme": this._themeOpen = !this._themeOpen; this._render(); return;
       case "theme": {
         const next = { ...this._config };
         if (b.dataset.theme === "auto") delete next.theme; else next.theme = b.dataset.theme;
         this._emit(next, true);
         return;
       }
-      case "add": list.push({ entity: "" }); break;
-      case "del": list.splice(i, 1); break;
-      case "up": if (i > 0) [list[i - 1], list[i]] = [list[i], list[i - 1]]; break;
-      case "down": if (i < list.length - 1) [list[i + 1], list[i]] = [list[i], list[i + 1]]; break;
+      case "add": list.push({ entity: "" }); open.add(list.length - 1); break; // new calendar opens straight away
+      case "del": {
+        list.splice(i, 1);
+        const kept = [...open].filter((k) => k !== i).map((k) => (k > i ? k - 1 : k));
+        open.clear(); kept.forEach((k) => open.add(k));
+        break;
+      }
+      case "up": if (i > 0) { [list[i - 1], list[i]] = [list[i], list[i - 1]]; swap(i - 1, i); } break;
+      case "down": if (i < list.length - 1) { [list[i + 1], list[i]] = [list[i], list[i + 1]]; swap(i, i + 1); } break;
       default: return;
     }
     this._emit({ ...this._config, calendars: list }, true);
