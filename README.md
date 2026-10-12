@@ -44,6 +44,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🖥️ **Wall display mode** – fills the whole screen, stretches Month/Week to the full height, to-do list as a sidebar, auto-scales text for distance viewing and keeps the screen awake
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
+- 🌙 **Night mode & screensaver** for always-on screens – a dim night clock on a schedule (wake by touch or motion sensor) and a family-photo slideshow with clock, weather and next event when idle
 - 🌍 **English, Polish and Spanish** – card and visual editor follow your Home Assistant language, with an extra **Imieniny** (name day) event type in Polish
 - Zero dependencies, one file
 
@@ -157,6 +158,8 @@ max_height: 640px
 | `todo_entity` | string | – | A `todo.*` entity to show the shared to-do list – see *To-do list* |
 | `todo_title` | string | `To-do` | Heading above the to-do list |
 | `todo_on_done` | `complete` \| `remove` | `complete` | What ticking a task does: mark it completed (kept in HA's history) or delete it |
+| `night_mode` | `true` \| object | – | Night screen for always-on displays – see *Night mode & screensaver* |
+| `screensaver` | `true` \| object | – | Photo slideshow / clock when nobody uses the screen – see *Night mode & screensaver* |
 | `layout` | `card` \| `fill` \| `fullscreen` | `card` | `fill` fills a Panel view below HA's top bar; `fullscreen` covers the whole window – see *Wall display* |
 | `scale` | `auto` \| number | `auto` | Text/UI size in `fill`/`fullscreen` (`auto` grows with the screen, e.g. `1.5` = 150%) |
 | `keep_awake` | boolean | `true` in fill/fullscreen | Stop the screen from sleeping while the card is shown |
@@ -380,6 +383,52 @@ browser_fullscreen: true
 - On a PC, run the browser in kiosk mode, e.g. `chrome --kiosk https://your-ha/dashboard-wall/0`.
 - On an Android tablet, a kiosk browser such as Fully Kiosk Browser works well.
 - On an iPad, add the dashboard to the Home Screen and use Guided Access.
+
+### Night mode & screensaver
+
+Made for wall tablets and screens that are always on. Both cover the whole screen in `layout: fullscreen` (or just the card in a normal dashboard), and both switch themselves off while you edit the dashboard.
+
+| Night mode (clock) | Screensaver |
+|---|---|
+| ![Night mode](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/night-mode.png) | ![Screensaver](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/screensaver.png) |
+
+**🌙 Night mode** – between the times you choose, the screen goes dark:
+
+```yaml
+night_mode:
+  start: "22:00"
+  end: "06:30"
+  style: clock          # clock = black screen with a dim clock, dim = darkened calendar
+  brightness: 30        # %
+  wake_entity: binary_sensor.hallway_motion   # optional – wake when someone walks past
+  wake_seconds: 60
+```
+
+- **Clock style** shows the time, date, tomorrow's first events and tomorrow's weather. It moves a little every minute so nothing burns into the screen.
+- **Tap** (or the motion sensor) wakes the calendar for `wake_seconds`; it stays awake while someone is using it.
+- **Controlled by an automation instead?** Use `when_entity: input_boolean.night` – night mode is on whenever that entity is on (works with `input_boolean`, `binary_sensor`, `switch` or `schedule`). Then `start`/`end` are ignored.
+- `night_mode: true` uses the defaults above.
+
+**🖼️ Screensaver** – after a few minutes without anyone touching the screen:
+
+```yaml
+screensaver:
+  after: 5              # minutes without use
+  media: media-source://media_source/local/photos
+  interval: 20          # seconds per photo
+  shuffle: true
+  show_info: true       # clock, weather, next events and countdown on top
+```
+
+- **Photos** come from Home Assistant's **Media** library: put them in `/media/photos` (e.g. with the Samba or File editor add-on) and use `media-source://media_source/local/photos`. Sub-folders are included (two levels). You can also list plain URLs with `images: [/local/photos/beach.jpg, ...]`.
+- Photos fade into each other with a slow zoom; portrait photos aren't cropped – they sit on a blurred copy of themselves.
+- **No photos?** Leave `media` empty for a clean clock screen on a softly moving background.
+- **One tap** (or moving the mouse) closes it – the tap never presses anything underneath.
+- When it starts, the calendar jumps back to **today** in your default view, so the next person always sees the current week.
+- It never starts while someone is adding an event or typing a task. During night hours, night mode takes over.
+- `screensaver: true` uses the defaults (5 minutes, clock only).
+
+Both are also in the visual editor under **Night mode** and **Screensaver**.
 
 ### Themes
 
