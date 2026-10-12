@@ -451,8 +451,9 @@ theme: midnight
 
 Everything except countdowns and custom event types can be set in the visual editor:
 
-- **Theme** – tap a preview tile
-- **Calendars** – for each calendar pick the entity, then give it a **display name**, tap the colour dot to change its **colour**, link a **person** for their photo, and set the **calendar type** (Events, Birthdays, Holidays). Reorder with the arrows, remove with the bin, add more with **Add calendar**
+- **Theme** – shows the current theme; tap it to open the preview tiles and pick another
+- **Calendars** – each calendar is a compact row showing its colour, name (with the person's photo), entity and type. **Tap a row** to open its settings: pick the entity, give it a **display name**, link a **person** for their photo and set the **calendar type** (Events, Birthdays, Anniversaries, Imieniny, Holidays). Tap the colour dot to change its **colour** without opening the row. Reorder with the arrows, remove with the bin, add more with **Add calendar** (new calendars open straight away). **Expand all / Collapse all** when you have many
+- A calendar whose entity no longer exists is shown with its entity in red
 - **Display** – title, weather, default view, week start, time format and more
 
 Countdowns and `event_types` are kept when you use the visual editor – edit them in the code editor.
