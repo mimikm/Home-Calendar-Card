@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.8.0";
+const CARD_VERSION = "1.9.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -154,6 +154,12 @@ const I18N = {
     o_card: "Card (normal)", o_fill: "Fill page (panel view)", o_fullscreen: "Full screen (wall display)",
     o_events: "Events", o_birthdays: "Birthdays", o_anniversaries: "Anniversaries", o_namedays: "Name days", o_holidays: "Holidays (day banner)",
     o_lang_auto: "From Home Assistant",
+    up_next: "Next", nothing_today: "Nothing else today", nothing_tomorrow: "Nothing planned tomorrow", tap_wake: "Tap to wake",
+    ed_night: "Night mode", ed_saver: "Screensaver", l_night_mode: "Night mode", l_screensaver: "Screensaver",
+    l_enabled: "Enabled", l_start: "From", l_end: "Until", l_style: "Style", l_brightness: "Brightness",
+    l_when_entity: "Or turn on with an entity (optional)", l_wake_entity: "Wake with a motion sensor (optional)", l_wake_seconds: "Stay awake for (seconds)",
+    l_after: "Start after (minutes)", l_media: "Photo folder (media source)", l_interval: "Seconds per photo", l_show_info: "Show clock & next event", l_shuffle: "Shuffle photos",
+    o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
     agenda: "Agenda", week: "Tydzień", month: "Miesiąc", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
@@ -205,6 +211,12 @@ const I18N = {
     o_card: "Karta (zwykła)", o_fill: "Wypełnij stronę (widok panelu)", o_fullscreen: "Pełny ekran (ekran ścienny)",
     o_events: "Wydarzenia", o_birthdays: "Urodziny", o_anniversaries: "Rocznice", o_namedays: "Imieniny", o_holidays: "Święta i wakacje (baner dnia)",
     o_lang_auto: "Z Home Assistant",
+    up_next: "Następne", nothing_today: "Na dziś nic więcej", nothing_tomorrow: "Jutro nic zaplanowanego", tap_wake: "Dotknij, aby wybudzić",
+    ed_night: "Tryb nocny", ed_saver: "Wygaszacz ekranu", l_night_mode: "Tryb nocny", l_screensaver: "Wygaszacz ekranu",
+    l_enabled: "Włączony", l_start: "Od", l_end: "Do", l_style: "Styl", l_brightness: "Jasność",
+    l_when_entity: "Lub włączaj encją (opcjonalnie)", l_wake_entity: "Wybudzaj czujnikiem ruchu (opcjonalnie)", l_wake_seconds: "Wybudź na (sekundy)",
+    l_after: "Włącz po (minutach)", l_media: "Folder ze zdjęciami (media source)", l_interval: "Sekundy na zdjęcie", l_show_info: "Pokaż zegar i następne wydarzenie", l_shuffle: "Losowa kolejność zdjęć",
+    o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
     agenda: "Agenda", week: "Semana", month: "Mes", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
@@ -256,6 +268,12 @@ const I18N = {
     o_card: "Tarjeta (normal)", o_fill: "Llenar la página (vista de panel)", o_fullscreen: "Pantalla completa (pantalla de pared)",
     o_events: "Eventos", o_birthdays: "Cumpleaños", o_anniversaries: "Aniversarios", o_namedays: "Onomásticas", o_holidays: "Festivos (banner del día)",
     o_lang_auto: "De Home Assistant",
+    up_next: "A continuación", nothing_today: "Nada más por hoy", nothing_tomorrow: "Mañana no hay nada planeado", tap_wake: "Toca para activar",
+    ed_night: "Modo nocturno", ed_saver: "Salvapantallas", l_night_mode: "Modo nocturno", l_screensaver: "Salvapantallas",
+    l_enabled: "Activado", l_start: "Desde", l_end: "Hasta", l_style: "Estilo", l_brightness: "Brillo",
+    l_when_entity: "O activar con una entidad (opcional)", l_wake_entity: "Activar con un sensor de movimiento (opcional)", l_wake_seconds: "Permanecer activo (segundos)",
+    l_after: "Iniciar tras (minutos)", l_media: "Carpeta de fotos (media source)", l_interval: "Segundos por foto", l_show_info: "Mostrar reloj y próximo evento", l_shuffle: "Fotos en orden aleatorio",
+    o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
 };
 const LANGS = { en: "English", pl: "Polski", es: "Español" };
@@ -381,6 +399,7 @@ class HomeCalendarCard extends HTMLElement {
       this._view = ["agenda", "week", "month"].includes(this._config.default_view) ? this._config.default_view : "agenda";
     }
     this._configured = true;
+    if (this._built) setTimeout(() => this._ambientTick(), 0);
     if (!this._anchor) this._anchor = startOfDay(new Date());
 
     if (oldWeather !== this._config.weather_entity) this._unsubscribeWeather();
@@ -409,6 +428,9 @@ class HomeCalendarCard extends HTMLElement {
     }
     const t = this._config.todo_entity;
     if (t && old.states[t] !== hass.states[t] && !this._todoLive) this._loadTodos();
+    const { night } = this._ambientCfg();
+    if (night?.wake_entity && hass.states[night.wake_entity]?.state === "on" && old.states[night.wake_entity]?.state !== "on") this._wake();
+    if (night?.when_entity && old.states[night.when_entity] !== hass.states[night.when_entity]) this._ambientTick();
     let rerender = old.locale !== hass.locale;
     const w = this._config.weather_entity;
     if (w && old.states[w] !== hass.states[w]) rerender = true;
@@ -432,6 +454,7 @@ class HomeCalendarCard extends HTMLElement {
     window.addEventListener("resize", this._onResize);
     document.addEventListener("visibilitychange", this._onVis);
     this._keepAwake();
+    this._ambientStart();
     this._tick = setInterval(() => {
       const k = dayKey(new Date());
       if (k !== this._today) {
@@ -463,6 +486,7 @@ class HomeCalendarCard extends HTMLElement {
     clearTimeout(this._refetchTimer);
     this._unsubscribeWeather();
     this._unsubscribeTodo();
+    this._ambientStop();
   }
 
   /* ----------------------------------------------------------------- to-do */
@@ -1120,11 +1144,28 @@ class HomeCalendarCard extends HTMLElement {
   /* ------------------------------------------------------------- rendering */
 
   _build() {
-    this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="inner"><div class="wrap"></div><div class="todo" hidden></div></div><div class="fs-ctl"></div><div class="hcc-toast"></div></ha-card><dialog></dialog>`;
+    this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="inner"><div class="wrap"></div><div class="todo" hidden></div></div><div class="amb night"></div><div class="amb saver"></div><div class="fs-ctl"></div><div class="hcc-toast"></div></ha-card><dialog></dialog>`;
     this._main = this.shadowRoot.querySelector(".wrap");
     this._todoBox = this.shadowRoot.querySelector(".todo");
     ["pointerdown", "keydown", "input", "focusin"].forEach((ev) => this._todoBox.addEventListener(ev, () => this._todoActivity()));
     this._inner = this.shadowRoot.querySelector(".inner");
+    this._nightEl = this.shadowRoot.querySelector(".amb.night");
+    this._saverEl = this.shadowRoot.querySelector(".amb.saver");
+    // Taps on the night/screensaver overlays only wake the screen – they never reach the calendar underneath.
+    [this._nightEl, this._saverEl].forEach((el) => {
+      el.addEventListener("pointerdown", (e) => e.stopPropagation());
+      el.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
+    });
+    this._nightEl.addEventListener("click", (e) => { e.stopPropagation(); e.preventDefault(); this._wake(); });
+    const dismissSaver = () => { this._lastActivity = Date.now(); this._setSaver(null); };
+    this._saverEl.addEventListener("click", (e) => { e.stopPropagation(); e.preventDefault(); dismissSaver(); });
+    let moved = 0;
+    this._saverEl.addEventListener("pointermove", (e) => {
+      e.stopPropagation();
+      if (e.pointerType !== "mouse") return;
+      moved += Math.abs(e.movementX || 0) + Math.abs(e.movementY || 0);
+      if (moved > 40) { moved = 0; dismissSaver(); }
+    });
     this._dlg = this.shadowRoot.querySelector("dialog");
     this.shadowRoot.addEventListener("click", (e) => this._onClick(e));
     // Full-screen controls stay hidden until someone moves the mouse or touches the screen.
@@ -1145,6 +1186,290 @@ class HomeCalendarCard extends HTMLElement {
     });
     this._dlg.addEventListener("close", () => { this._dlg.innerHTML = ""; this._curEv = null; this._editEv = null; });
     this._built = true;
+  }
+
+  /* --------------------------------------------------------------- ambient */
+  // Night mode and screensaver for always-on screens. Both are overlays inside the card,
+  // so in `layout: fullscreen` they cover the whole screen. Never active while editing.
+
+  _ambientCfg() {
+    const on = (v) => v === true || (v && typeof v === "object" && v.enabled !== false);
+    const n = this._config?.night_mode;
+    const s = this._config?.screensaver;
+    const night = on(n) ? { start: "22:00", end: "06:30", style: "clock", brightness: 30, wake_seconds: 60, ...(typeof n === "object" ? n : {}) } : null;
+    const saver = on(s) ? { after: 5, interval: 20, show_info: true, shuffle: true, ...(typeof s === "object" ? s : {}) } : null;
+    return { night, saver };
+  }
+
+  _isNight(cfg) {
+    if (!cfg) return false;
+    if (cfg.when_entity) {
+      const st = this._hass?.states[cfg.when_entity]?.state;
+      return st === "on" || st === "true";
+    }
+    const mins = (t) => { const m = String(t || "").match(/^(\d{1,2}):(\d{2})/); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };
+    const s = mins(cfg.start);
+    const e = mins(cfg.end);
+    if (s == null || e == null || s === e) return false;
+    const d = new Date();
+    const m = d.getHours() * 60 + d.getMinutes();
+    return s < e ? m >= s && m < e : m >= s || m < e; // start > end = overnight (e.g. 22:00–06:30)
+  }
+
+  _ambientStart() {
+    this._lastActivity = Date.now();
+    this._onActivity = () => {
+      const now = Date.now();
+      this._lastActivity = now;
+      const { night } = this._ambientCfg();
+      if (this._wakeUntil && now < this._wakeUntil && night) this._wakeUntil = now + (Number(night.wake_seconds) || 60) * 1000;
+    };
+    this._activityEvents = ["pointerdown", "pointermove", "keydown", "wheel", "touchstart"];
+    this._activityEvents.forEach((ev) => window.addEventListener(ev, this._onActivity, { passive: true }));
+    clearInterval(this._ambTimer);
+    this._ambTimer = setInterval(() => this._ambientTick(), 5000);
+    setTimeout(() => this._ambientTick(), 0);
+  }
+
+  _ambientStop() {
+    (this._activityEvents || []).forEach((ev) => window.removeEventListener(ev, this._onActivity));
+    clearInterval(this._ambTimer);
+    clearInterval(this._slideTimer);
+    this._saverOn = false;
+    this._nightOn = false;
+  }
+
+  _ambientTick() {
+    if (!this._built || !this._config || !this._nightEl) return;
+    const { night, saver } = this._ambientCfg();
+    const editing = this._inEditor();
+    const now = Date.now();
+    const awake = this._wakeUntil && now < this._wakeUntil;
+    const nightOn = !!(!editing && night && this._isNight(night) && !awake);
+    const active = this.shadowRoot.activeElement;
+    const busy = this._dlg?.open || (active && this._todoBox?.contains(active));
+    const idle = saver ? now - this._lastActivity >= Math.max(0.05, Number(saver.after) || 5) * 60000 : false;
+    const saverOn = !!(!editing && !nightOn && saver && !busy && (this._saverOn || idle));
+    if ((nightOn && !this._nightOn) || (saverOn && !this._saverOn)) this._ambientEnter();
+    this._setNight(nightOn ? night : null);
+    this._setSaver(saverOn ? saver : null);
+    if (nightOn || saverOn) {
+      if (!this._ambFetched || now - this._ambFetched > 10 * 60000) this._fetchAmbient();
+      this._updateAmbient();
+    }
+  }
+
+  // Going dark or into the screensaver: show today again in the default view.
+  _ambientEnter() {
+    const def = ["agenda", "week", "month"].includes(this._config.default_view) ? this._config.default_view : "agenda";
+    if (!sameDay(this._anchor, new Date()) || this._view !== def) {
+      this._anchor = startOfDay(new Date());
+      this._view = def;
+      this._fetchEvents();
+    }
+    this._fetchAmbient();
+  }
+
+  _wake(seconds) {
+    const { night } = this._ambientCfg();
+    this._wakeUntil = Date.now() + (seconds || Number(night?.wake_seconds) || 60) * 1000;
+    this._lastActivity = Date.now();
+    this._ambientTick();
+  }
+
+  // Today + the next two days from every visible calendar, independent of the calendar view.
+  async _fetchAmbient() {
+    if (!this._hass) return;
+    this._ambFetched = Date.now();
+    const start = startOfDay(new Date());
+    const end = addDays(start, 3);
+    const lists = await Promise.all(this._calendars.filter((c) => this._hass.states[c.entity] && !this._hidden.has(c.entity)).map(async (cal) => {
+      try {
+        const res = await this._hass.callApi("GET",
+          `calendars/${cal.entity}?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
+        return (res || []).map((e) => this._normalize(e, cal));
+      } catch (e) { return []; }
+    }));
+    this._ambEvents = lists.flat().filter((ev) => !this._isBanner(ev)).sort((a, b) => a.start - b.start);
+    this._updateAmbient();
+  }
+
+  _ambLine(ev, dayLabel) {
+    const running = !ev.allDay && ev.start <= new Date() && ev.end > new Date();
+    const when = ev.allDay ? (this._isBday(ev) ? this._yearlyLabel(ev, true) : this._t("all_day")) : running ? this._t("now") : this._time(ev.start);
+    const icon = this._typeIcon(ev);
+    return `<div class="amb-ev" style="--c:${esc(ev.cal.color)}"><span class="amb-ev-day">${esc(dayLabel)}</span>
+      <span class="amb-ev-when">${esc(when)}</span>${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : `<span class="amb-dot"></span>`}
+      <span class="amb-ev-title">${esc(ev.summary)}</span></div>`;
+  }
+
+  _ambWeather(day, withLow = true) {
+    const f = this._forecast[dayKey(day)];
+    const st = this._config.weather_entity && this._hass?.states[this._config.weather_entity];
+    if (sameDay(day, new Date()) && st) {
+      return `<span class="amb-wx"><ha-icon icon="${wxIcon(st.state)}" style="color:${wxColor(st.state)}"></ha-icon>${round(st.attributes.temperature)}°${f && withLow ? `<i>${round(f.temperature)}° / ${round(f.templow)}°</i>` : ""}</span>`;
+    }
+    if (!f) return "";
+    return `<span class="amb-wx"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon>${round(f.temperature)}°${withLow && f.templow != null ? `<i>/ ${round(f.templow)}°</i>` : ""}</span>`;
+  }
+
+  _updateAmbient() {
+    const now = new Date();
+    const evs = this._ambEvents || [];
+    const tomorrow = addDays(startOfDay(now), 1);
+    const dateTxt = this._fmt({ weekday: "long", day: "numeric", month: "long" }).format(now);
+    // small drift every minute so nothing stays burnt into the screen
+    const minute = Math.floor(now.getTime() / 60000);
+    if (minute !== this._driftMin) {
+      this._driftMin = minute;
+      this._drift = [Math.round((Math.random() - 0.5) * 80), Math.round((Math.random() - 0.5) * 60)];
+    }
+    const [dx, dy] = this._drift || [0, 0];
+
+    if (this._nightOn && this._nightStyle === "clock") {
+      const tmr = evs.filter((e) => sameDay(e.start, tomorrow) || (e.allDay && e.start <= tomorrow && e.end > tomorrow)).slice(0, 2);
+      const box = this._nightEl.querySelector(".amb-box");
+      box.style.setProperty("--sx", `${dx}px`);
+      box.style.setProperty("--sy", `${dy}px`);
+      box.querySelector(".amb-time").textContent = this._time(now);
+      box.querySelector(".amb-date").textContent = dateTxt;
+      box.querySelector(".amb-next").innerHTML = (tmr.length ? tmr.map((e) => this._ambLine(e, this._t("tomorrow"))).join("") : `<div class="amb-ev muted">${esc(this._t("nothing_tomorrow"))}</div>`)
+        + (this._forecast[dayKey(tomorrow)] ? `<div class="amb-tw">${esc(this._t("tomorrow"))} ${this._ambWeather(tomorrow)}</div>` : "");
+    }
+
+    if (this._saverOn) {
+      const info = this._saverEl.querySelector(".saver-info");
+      info.hidden = this._saverCfg?.show_info === false;
+      info.style.setProperty("--sx", `${dx / 2}px`);
+      info.style.setProperty("--sy", `${dy / 3}px`);
+      info.querySelector(".amb-time").textContent = this._time(now);
+      info.querySelector(".amb-date").innerHTML = `${esc(dateTxt)} ${this._ambWeather(now)}`;
+      const nowMs = now.getTime();
+      const todayLeft = evs.filter((e) => sameDay(e.start, now) && !e.allDay && e.end.getTime() > nowMs);
+      const allDayToday = evs.filter((e) => e.allDay && e.start <= now && e.end > now && this._isBday(e));
+      const tomorrowEvs = evs.filter((e) => sameDay(e.start, tomorrow));
+      let lines = [...allDayToday.slice(0, 1).map((e) => this._ambLine(e, this._t("today"))), ...todayLeft.slice(0, 2).map((e) => this._ambLine(e, this._t("today")))];
+      if (!todayLeft.length) {
+        lines.push(`<div class="amb-ev muted">${esc(this._t("nothing_today"))}</div>`);
+        if (tomorrowEvs[0]) lines.push(this._ambLine(tomorrowEvs[0], this._t("tomorrow")));
+      }
+      const cd = (this._countdowns || []).find((c) => startOfDay(c.start) > startOfDay(now));
+      if (cd) {
+        const n = Math.round((startOfDay(cd.start) - startOfDay(now)) / 864e5);
+        lines.push(`<div class="amb-cd"><ha-icon icon="${esc(cd.icon || "mdi:timer-sand")}"></ha-icon><b>${n}</b> ${esc(this._n().days(n))} · ${esc(cd.name)}</div>`);
+      }
+      info.querySelector(".amb-next").innerHTML = lines.join("");
+    }
+  }
+
+  _setNight(cfg) {
+    const el = this._nightEl;
+    if (!cfg) {
+      if (this._nightOn) { el.classList.remove("on"); this._nightOn = false; }
+      return;
+    }
+    const style = cfg.style === "dim" ? "dim" : "clock";
+    const b = Math.max(5, Math.min(100, Number(cfg.brightness) || 30)) / 100;
+    el.style.setProperty("--nb", String(b));
+    if (!this._nightOn || this._nightStyle !== style) {
+      this._nightStyle = style;
+      el.className = `amb night style-${style} on`;
+      el.innerHTML = style === "clock"
+        ? `<div class="amb-box"><div class="amb-time"></div><div class="amb-date"></div><div class="amb-next"></div></div><div class="amb-hint">${esc(this._t("tap_wake"))}</div>`
+        : `<div class="amb-hint">${esc(this._t("tap_wake"))}</div>`;
+      this._nightOn = true;
+      this._updateAmbient();
+    }
+  }
+
+  _setSaver(cfg) {
+    const el = this._saverEl;
+    if (!cfg) {
+      if (this._saverOn) {
+        this._saverOn = false;
+        el.classList.remove("on");
+        clearInterval(this._slideTimer);
+      }
+      return;
+    }
+    this._saverCfg = cfg;
+    if (this._saverOn) return;
+    this._saverOn = true;
+    el.className = "amb saver on nophotos";
+    el.innerHTML = `<div class="ph"><div class="ph-bg"></div><div class="ph-img"></div></div><div class="ph"><div class="ph-bg"></div><div class="ph-img"></div></div>
+      <div class="saver-shade"></div>
+      <div class="saver-info"><div class="saver-left"><div class="amb-time"></div><div class="amb-date"></div></div><div class="amb-next"></div></div>`;
+    this._phFront = 0;
+    this._updateAmbient();
+    this._loadPhotos(cfg).then(() => {
+      if (!this._saverOn) return;
+      if (this._photos?.length) {
+        this._nextPhoto();
+        clearInterval(this._slideTimer);
+        this._slideTimer = setInterval(() => this._nextPhoto(), Math.max(5, Number(cfg.interval) || 20) * 1000);
+      }
+    });
+  }
+
+  // Photos: `media:` is a Home Assistant media source folder (e.g. media-source://media_source/local/photos),
+  // `images:` a list of plain URLs (e.g. /local/photos/beach.jpg). Both can be combined.
+  async _loadPhotos(cfg) {
+    const key = JSON.stringify([cfg.media || cfg.folder || "", cfg.images || [], cfg.shuffle]);
+    if (this._photos && this._photosKey === key && Date.now() - this._photosAt < 3600e3) return;
+    const list = [];
+    [].concat(cfg.images || []).forEach((u) => u && list.push({ url: String(u) }));
+    const walk = async (id, depth) => {
+      const r = await this._hass.callWS({ type: "media_source/browse_media", media_content_id: id });
+      for (const c of r?.children || []) {
+        if (list.length >= 500) break;
+        if (c.media_class === "image" || String(c.media_content_type || "").startsWith("image")) list.push({ id: c.media_content_id });
+        else if (c.can_expand && depth < 2) await walk(c.media_content_id, depth + 1);
+      }
+    };
+    const src = cfg.media || cfg.folder;
+    if (src && this._hass) {
+      try { await walk(src, 0); } catch (e) { console.warn("home-calendar-card: could not read screensaver photos from", src, e); }
+    }
+    if (cfg.shuffle !== false) {
+      for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
+    }
+    this._photos = list;
+    this._photosKey = key;
+    this._photosAt = Date.now();
+    this._photoIdx = 0;
+  }
+
+  async _photoUrl(p) {
+    if (p.url) return p.url;
+    const r = await this._hass.callWS({ type: "media_source/resolve_media", media_content_id: p.id, expires: 3600 });
+    return this._hass.hassUrl ? this._hass.hassUrl(r.url) : r.url;
+  }
+
+  async _nextPhoto(tries = 0) {
+    if (!this._saverOn || !this._photos?.length || tries > 3) return;
+    const p = this._photos[this._photoIdx++ % this._photos.length];
+    let url;
+    try { url = await this._photoUrl(p); } catch (e) { this._nextPhoto(tries + 1); return; }
+    const img = new Image();
+    img.onload = () => {
+      if (!this._saverOn) return;
+      const layers = this._saverEl.querySelectorAll(".ph");
+      const next = layers[this._phFront ? 0 : 1];
+      const prev = layers[this._phFront ? 1 : 0];
+      const css = `url("${String(url).replace(/"/g, "%22")}")`;
+      next.querySelector(".ph-bg").style.backgroundImage = css;
+      const im = next.querySelector(".ph-img");
+      im.style.backgroundImage = css;
+      im.style.animation = "none";
+      void im.offsetWidth; // restart the slow zoom
+      im.style.animation = "";
+      next.classList.add("show");
+      prev.classList.remove("show");
+      this._phFront = this._phFront ? 0 : 1;
+      this._saverEl.classList.remove("nophotos");
+    };
+    img.onerror = () => this._nextPhoto(tries + 1);
+    img.src = url;
   }
 
   /* ---------------------------------------------------------------- layout */
@@ -2422,12 +2747,70 @@ ha-card { container: hcc / inline-size; }
 .hcc-toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .toast-btn { color: var(--hcc-accent); font-weight: 700; text-transform: uppercase; font-size: .8rem; padding: 6px 8px; border-radius: 6px; }
 .toast-btn:hover { background: rgba(255,255,255,.1); }
+
+/* ---------- night mode & screensaver ---------- */
+.amb { position: absolute; inset: 0; z-index: 6; display: none; overflow: hidden; border-radius: inherit; user-select: none; -webkit-user-select: none; }
+.amb.on { display: block; animation: ambIn .8s ease; }
+@keyframes ambIn { from { opacity: 0; } }
+.amb-hint { position: absolute; left: 50%; top: 18px; transform: translateX(-50%); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; opacity: .35; zoom: var(--hcc-zoom, 1); white-space: nowrap; }
+.night.style-dim { background: rgba(0, 0, 0, calc(1 - var(--nb, .3))); color: #fff; }
+.night.style-dim .amb-hint { opacity: .5; }
+.night.style-clock { background: #000; color: #fff; }
+.night.style-clock .amb-box, .night.style-clock .amb-hint { opacity: max(.28, var(--nb, .3)); }
+.amb-box { position: absolute; left: 50%; top: 50%; transform: translate(calc(-50% + var(--sx, 0px)), calc(-50% + var(--sy, 0px)));
+  text-align: center; transition: transform 3s ease; zoom: var(--hcc-zoom, 1); width: max-content; max-width: 90%; }
+.amb-time { font-size: clamp(64px, 15cqw, 220px); font-weight: 200; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.amb-date { font-size: clamp(16px, 2.2cqw, 30px); font-weight: 400; opacity: .8; margin-top: 10px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.amb-box .amb-date { justify-content: center; }
+.amb-next { display: flex; flex-direction: column; gap: 8px; margin-top: 26px; font-size: clamp(14px, 1.7cqw, 22px); }
+.amb-box .amb-next { align-items: center; }
+.amb-ev { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.amb-ev.muted { opacity: .65; }
+.amb-ev-day { opacity: .6; text-transform: uppercase; font-size: .72em; letter-spacing: .08em; font-weight: 600; }
+.amb-ev-when { font-weight: 600; font-variant-numeric: tabular-nums; }
+.amb-ev ha-icon { --mdc-icon-size: 1.1em; color: var(--c); }
+.amb-dot { width: .55em; height: .55em; border-radius: 50%; background: var(--c); flex: none; }
+.amb-ev-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 32ch; }
+.amb-tw { opacity: .7; font-size: .85em; display: flex; align-items: center; gap: 8px; justify-content: center; }
+.amb-wx { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
+.amb-wx ha-icon { --mdc-icon-size: 1.3em; }
+.amb-wx i { font-style: normal; opacity: .7; font-weight: 400; }
+.amb-cd { display: flex; align-items: center; gap: 8px; margin-top: 6px; opacity: .9; }
+.amb-cd ha-icon { --mdc-icon-size: 1.1em; }
+.amb-cd b { font-weight: 700; }
+/* screensaver */
+.saver { background: #000; color: #fff; cursor: default; }
+.saver.nophotos { background: radial-gradient(120% 120% at 20% 10%, color-mix(in srgb, var(--hcc-accent) 55%, #000) 0%, #05070d 60%) , #05070d;
+  background-size: 200% 200%; animation: ambIn .8s ease, drift 40s ease-in-out infinite alternate; }
+@keyframes drift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
+.ph { position: absolute; inset: 0; opacity: 0; transition: opacity 1.8s ease; }
+.ph.show { opacity: 1; }
+.ph-bg { position: absolute; inset: -60px; background-size: cover; background-position: center; filter: blur(40px) brightness(.5) saturate(1.2); }
+.ph-img { position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center; transform-origin: 50% 40%; }
+.ph.show .ph-img { animation: kenburns 30s ease-out forwards; }
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.07); } }
+@media (prefers-reduced-motion: reduce) { .ph.show .ph-img, .saver.nophotos { animation: none; } }
+.saver-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.65) 0%, rgba(0,0,0,.15) 35%, transparent 55%); pointer-events: none; }
+.saver.nophotos .saver-shade { display: none; }
+.saver-info { position: absolute; left: 4%; right: 4%; bottom: 5%; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  text-shadow: 0 2px 14px rgba(0,0,0,.55); transform: translate(var(--sx, 0px), var(--sy, 0px)); transition: transform 3s ease; zoom: var(--hcc-zoom, 1); }
+.saver-info[hidden] { display: none; }
+.saver .amb-time { font-size: clamp(56px, 10cqw, 170px); font-weight: 300; }
+.saver .amb-next { margin: 0; align-items: flex-end; text-align: right; padding: 14px 18px; border-radius: 18px; background: rgba(0,0,0,.28);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); max-width: 48%; }
+.saver.nophotos .amb-next { background: rgba(255,255,255,.06); }
+@container hcc (max-width: 700px) {
+  .saver-info { flex-direction: column; align-items: flex-start; }
+  .saver .amb-next { align-items: flex-start; text-align: left; max-width: 100%; }
+}
 `;
 
 
 /* ===================================================================== editor */
 
 // Editor forms are built per language. `t(key)` translates, `o(value, key)` makes a dropdown option.
+const NIGHT_DEFAULTS = { enabled: false, style: "clock", start: "22:00", end: "06:30", brightness: 30, wake_seconds: 60 };
+const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, show_info: true };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "default_view", "days_to_show", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
@@ -2464,6 +2847,30 @@ const generalSchema = (t) => {
       { name: "allow_delete", selector: { boolean: {} } },
       { name: "show_empty_days", selector: { boolean: {} } },
       { name: "max_height", selector: { text: {} } },
+    ] },
+    { type: "expandable", name: "night_mode", title: t("ed_night"), icon: "mdi:weather-night", schema: [
+      { type: "grid", name: "", schema: [
+        { name: "enabled", selector: { boolean: {} } },
+        { name: "style", selector: { select: { mode: "dropdown", options: [o("clock", "o_clock"), o("dim", "o_dim")] } } },
+        { name: "start", selector: { time: {} } },
+        { name: "end", selector: { time: {} } },
+      ] },
+      { name: "brightness", selector: { number: { min: 5, max: 100, step: 5, mode: "slider", unit_of_measurement: "%" } } },
+      { type: "grid", name: "", schema: [
+        { name: "wake_entity", selector: { entity: { domain: "binary_sensor" } } },
+        { name: "wake_seconds", selector: { number: { min: 10, max: 1800, step: 10, mode: "box", unit_of_measurement: "s" } } },
+      ] },
+      { name: "when_entity", selector: { entity: { domain: ["input_boolean", "binary_sensor", "switch", "schedule"] } } },
+    ] },
+    { type: "expandable", name: "screensaver", title: t("ed_saver"), icon: "mdi:image-multiple", schema: [
+      { type: "grid", name: "", schema: [
+        { name: "enabled", selector: { boolean: {} } },
+        { name: "after", selector: { number: { min: 1, max: 120, step: 1, mode: "box", unit_of_measurement: "min" } } },
+        { name: "interval", selector: { number: { min: 5, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } },
+        { name: "shuffle", selector: { boolean: {} } },
+      ] },
+      { name: "media", selector: { text: {} } },
+      { name: "show_info", selector: { boolean: {} } },
     ] },
   ];
 };
@@ -2544,6 +2951,8 @@ class HomeCalendarCardEditor extends HTMLElement {
   }
 
   _cals() { return (this._config.calendars || []).map((c) => (typeof c === "string" ? { entity: c } : { ...c })); }
+
+  _objCfg(v) { return v === true ? { enabled: true } : v && typeof v === "object" ? v : {}; }
 
   _t(key, vars) {
     const l = this._config?.language;
@@ -2633,12 +3042,23 @@ class HomeCalendarCardEditor extends HTMLElement {
       slot.appendChild(f);
     });
 
-    const gen = this._makeForm(generalSchema((k) => this._t(k)), { language: "auto", ...this._config }, (s) => this._t(`l_${s.name}`));
+    const gen = this._makeForm(generalSchema((k) => this._t(k)), {
+      language: "auto", ...this._config,
+      night_mode: { ...NIGHT_DEFAULTS, ...this._objCfg(this._config.night_mode) },
+      screensaver: { ...SAVER_DEFAULTS, ...this._objCfg(this._config.screensaver) },
+    }, (s) => this._t(`l_${s.name}`), (s) => (s.name === "media" ? this._t("ed_media_help") : undefined));
     gen.addEventListener("value-changed", (ev) => {
       ev.stopPropagation();
       gen.data = ev.detail.value;
       const next = { ...this._config, ...ev.detail.value };
       GENERAL_KEYS.forEach((k) => { if (next[k] === "" || next[k] == null) delete next[k]; });
+      ["night_mode", "screensaver"].forEach((k) => {
+        const v = next[k];
+        if (!v || typeof v !== "object") return;
+        const clean = Object.fromEntries(Object.entries(v).filter(([, x]) => x !== "" && x != null));
+        const untouched = JSON.stringify(clean) === JSON.stringify(k === "night_mode" ? NIGHT_DEFAULTS : SAVER_DEFAULTS);
+        if (untouched && !this._config[k]) delete next[k]; else next[k] = clean;
+      });
       if (next.language === "auto") delete next.language;
       if (next.language !== this._config.language) { this._emit(next, true); return; } // re-draw in the new language
       this._emit(next);
