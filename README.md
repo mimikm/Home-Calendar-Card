@@ -158,6 +158,12 @@ max_height: 640px
 | `todo_entity` | string | – | A `todo.*` entity to show the shared to-do list – see *To-do list* |
 | `todo_title` | string | `To-do` | Heading above the to-do list |
 | `todo_on_done` | `complete` \| `remove` | `complete` | What ticking a task does: mark it completed (kept in HA's history) or delete it |
+| `todo_group_by` | `person` \| `due` | `person` | Group tasks by person, or by due date (Overdue / Today / Tomorrow / each day / Anytime) |
+| `todo_days_ahead` | number | – (all) | Only show tasks due within this many days. Tasks without a date always show |
+| `todo_calendar` | string | – | Calendar with future repeats of recurring chores (e.g. Chore Calendar) – shown read-only |
+| `todo_show_completed` | boolean | `false` | Show a collapsible **Done** section with recently completed tasks |
+| `todo_completed_days` | number | `7` | How many days back the Done section goes |
+| `todo_record_done_by` | boolean | `true` | When a task is ticked in the card, note who did it ("Done by: Emma") in the task's notes |
 | `night_mode` | `true` \| object | – | Night screen for always-on displays – see *Night mode & screensaver* |
 | `screensaver` | `true` \| object | – | Photo slideshow / clock when nobody uses the screen – see *Night mode & screensaver* |
 | `layout` | `card` \| `fill` \| `fullscreen` | `card` | `fill` fills a Panel view below HA's top bar; `fullscreen` covers the whole window – see *Wall display* |
@@ -339,6 +345,28 @@ todo_entity: todo.family
 **Position** – `todo_position: top | bottom | left | right`. Left and right become a sidebar when the card is at least 900px wide (on narrower screens they fall back to the bottom). In full-screen layouts, top and bottom show the groups in one scrolling row so the calendar keeps most of the height.
 
 **Auto-hide** – `todo_autohide: 30` folds the list into a slim bar (top/bottom) or a vertical tab (left/right) showing the task count. Tap it to open; it folds away again after 30 seconds without use (it waits while someone is typing a task). `todo_autohide: true` uses 30 seconds. Both options are also in the visual editor.
+
+#### Recurring chores, upcoming and done tasks
+
+Great with recurring-chore integrations such as **Chore Calendar**, which keep only the *next* occurrence of each chore as a to-do and the future ones in a calendar:
+
+```yaml
+todo_entity: todo.household_chores
+todo_group_by: due                       # Overdue / Today / Tomorrow / each day / Anytime
+todo_days_ahead: 7                       # only the coming week
+todo_calendar: calendar.household_chores # future repeats, shown read-only
+todo_show_completed: true                # "Done" section
+todo_completed_days: 7
+```
+
+- **Grouped by due date** – Overdue (red), Today, Tomorrow, then one group per day, and *Anytime* for tasks without a date. Each task shows who it's for.
+- **Upcoming repeats** – occurrences from `todo_calendar` appear in their day with a dashed calendar icon. They can't be ticked yet – the real task appears when it's due. Repeats that match an existing task on the same day (same name) are not shown twice.
+- **Done section** – tap **Done** to open it: tasks completed in the last `todo_completed_days` days, newest first, with when and who. **Tap the tick to un-tick** a task (it goes back to the list).
+- **Who did it** – Home Assistant doesn't record who completes a task, so when someone ticks a task *in this card* it adds `Done by: <HA user> (date time)` to the task's notes (lists that support notes, e.g. Local To-do). On a shared wall tablet that's the tablet's HA user. Turn off with `todo_record_done_by: false`.
+- Tasks without a completion time (some integrations don't store one) still appear in Done – the most recent 10.
+- With `todo_on_done: remove`, ticked tasks are deleted, so the Done section stays empty.
+
+All of these are also in the visual editor under the to-do settings.
 
 How it's stored: the person is saved in the task's description as `For: Emma`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Emma]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
 
