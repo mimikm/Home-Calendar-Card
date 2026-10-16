@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.11.0";
+const CARD_VERSION = "1.12.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -161,7 +161,7 @@ const I18N = {
     l_enabled: "Enabled", l_start: "From", l_end: "Until", l_style: "Style", l_brightness: "Brightness",
     l_when_entity: "Or turn on with an entity (optional)", l_wake_entity: "Wake with a motion sensor (optional)", l_wake_seconds: "Stay awake for (seconds)",
     l_after: "Start after (minutes)", l_media: "Photo folder (media source)", l_interval: "Seconds per photo", l_show_info: "Show clock & next event", l_shuffle: "Shuffle photos",
-    ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
+    ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
     agenda: "Agenda", week: "Tydzień", month: "Miesiąc", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
@@ -218,7 +218,7 @@ const I18N = {
     l_enabled: "Włączony", l_start: "Od", l_end: "Do", l_style: "Styl", l_brightness: "Jasność",
     l_when_entity: "Lub włączaj encją (opcjonalnie)", l_wake_entity: "Wybudzaj czujnikiem ruchu (opcjonalnie)", l_wake_seconds: "Wybudź na (sekundy)",
     l_after: "Włącz po (minutach)", l_media: "Folder ze zdjęciami (media source)", l_interval: "Sekundy na zdjęcie", l_show_info: "Pokaż zegar i następne wydarzenie", l_shuffle: "Losowa kolejność zdjęć",
-    ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
+    ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
     agenda: "Agenda", week: "Semana", month: "Mes", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
@@ -275,7 +275,7 @@ const I18N = {
     l_enabled: "Activado", l_start: "Desde", l_end: "Hasta", l_style: "Estilo", l_brightness: "Brillo",
     l_when_entity: "O activar con una entidad (opcional)", l_wake_entity: "Activar con un sensor de movimiento (opcional)", l_wake_seconds: "Permanecer activo (segundos)",
     l_after: "Iniciar tras (minutos)", l_media: "Carpeta de fotos (media source)", l_interval: "Segundos por foto", l_show_info: "Mostrar reloj y próximo evento", l_shuffle: "Fotos en orden aleatorio",
-    ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
+    ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
 };
 const LANGS = { en: "English", pl: "Polski", es: "Español" };
@@ -1107,18 +1107,19 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _renderCountdowns() {
-    if (!this._countdowns?.length) return "";
+    if (!this._countdowns?.length || this._config.show_countdowns === false) return "";
+    const compact = this._config.countdown_style === "compact";
     let customIdx = 0;
     const now = new Date();
     const today = startOfDay(now);
     const f = this._fmt({ weekday: "short", day: "numeric", month: "short" });
-    return `<div class="cds">${this._countdowns.map((cd) => {
+    return `<div class="cds ${compact ? "compact" : ""}">${this._countdowns.map((cd) => {
       const n = Math.round((startOfDay(cd.start) - today) / 864e5);
       const ongoing = cd.start <= now && cd.end > now;
       const num = n > 0 ? n : ongoing && n < 0 ? this._t("now") : this._t("today");
       const unit = n > 0 ? this._n().days(n) : "";
       const color = this._cdColor(cd, !cd.fixed && (cd.kind === "custom" || !cd.ev) ? customIdx++ : 0);
-      return `<div class="cd ${n <= 0 ? "due" : ""}" style="--c:${esc(color)}" ${cd.ev ? `data-action="open-cd" data-start="${cd.start.getTime()}" data-name="${esc(cd.ev.summary)}"` : ""}>
+      return `<div class="cd ${n <= 0 ? "due" : ""}" style="--c:${esc(color)}" title="${esc(`${cd.name} · ${f.format(cd.start)}`)}" ${cd.ev ? `data-action="open-cd" data-start="${cd.start.getTime()}" data-name="${esc(cd.ev.summary)}"` : ""}>
         <div class="cd-top"><span class="cd-icon"><ha-icon icon="${esc(cd.icon || "mdi:timer-sand")}"></ha-icon></span>
         <span class="cd-num">${num}${unit ? `<span>${unit}</span>` : ""}</span></div>
         <div class="cd-name">${esc(cd.name)}</div>
@@ -1663,6 +1664,15 @@ class HomeCalendarCard extends HTMLElement {
       this._renderFsControls();
       if (fromResize) this._render();
     }
+    // appearance sliders: countdown_size / event_size in % (80) or as a factor (0.8)
+    const pct = (v, lo, hi) => {
+      let n = Number(v);
+      if (!(n > 0)) return 1;
+      if (n > 3) n /= 100;
+      return Math.max(lo, Math.min(hi, n));
+    };
+    this.style.setProperty("--cd-scale", String(pct(this._config.countdown_size, 0.5, 1.5)));
+    this.style.setProperty("--ev-scale", String(pct(this._config.event_size, 0.8, 1.6)));
     this._inner.classList.toggle("has-todo", !!this._config.todo_entity);
     let pos = String(this._config.todo_position || "auto").toLowerCase();
     if (pos === "side") pos = "right";
@@ -3025,6 +3035,22 @@ ha-card { container: hcc / inline-size; }
 .tick.on { background: var(--hcc-muted); border-color: var(--hcc-muted); color: #fff; }
 .tick.on:hover { background: var(--hcc-accent); border-color: var(--hcc-accent); color: #fff; }
 .done-meta { font-size: .7rem; color: var(--hcc-muted); white-space: nowrap; flex: none; }
+
+/* appearance: countdown size/style, bigger day boxes */
+.cds { zoom: var(--cd-scale, 1); }
+.cds.compact { gap: 6px; margin-bottom: 10px; }
+.cds.compact .cd { display: flex; align-items: center; gap: 8px; min-width: 0; max-width: 260px; padding: 4px 12px 4px 4px; border-radius: 999px; }
+.cds.compact .cd-top { gap: 6px; flex: none; }
+.cds.compact .cd-icon { width: 24px; height: 24px; border-radius: 50%; }
+.cds.compact .cd-icon ha-icon { --mdc-icon-size: 14px; }
+.cds.compact .cd-num { font-size: 1rem; font-weight: 800; }
+.cds.compact .cd-num span { font-size: .68rem; }
+.cds.compact .cd-name { margin: 0; font-size: .8rem; font-weight: 600; min-width: 0; }
+.cds.compact .cd-date { display: none; }
+.view-agenda .aday, .wcol > .whead, .wcol > .wevs, .mcell > * { zoom: var(--ev-scale, 1); }
+.mhead { zoom: var(--ev-scale, 1); }
+.mcell { min-height: calc(86px * var(--ev-scale, 1)); }
+.wcol { min-height: calc(170px * var(--ev-scale, 1)); }
 `;
 
 
@@ -3035,6 +3061,7 @@ const NIGHT_DEFAULTS = { enabled: false, style: "clock", start: "22:00", end: "0
 const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, show_info: true };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "todo_group_by", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
+  "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips",
   "default_view", "days_to_show", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t) => {
@@ -3075,6 +3102,15 @@ const generalSchema = (t) => {
       { name: "allow_delete", selector: { boolean: {} } },
       { name: "show_empty_days", selector: { boolean: {} } },
       { name: "max_height", selector: { text: {} } },
+    ] },
+    { type: "expandable", name: "appearance", flatten: true, title: t("ed_look"), icon: "mdi:palette-outline", schema: [
+      { type: "grid", name: "", schema: [
+        { name: "show_countdowns", selector: { boolean: {} } },
+        { name: "countdown_style", selector: { select: { mode: "dropdown", options: [o("cards", "o_cards"), o("compact", "o_compact")] } } },
+      ] },
+      { name: "countdown_size", selector: { number: { min: 50, max: 150, step: 5, mode: "slider", unit_of_measurement: "%" } } },
+      { name: "event_size", selector: { number: { min: 80, max: 160, step: 5, mode: "slider", unit_of_measurement: "%" } } },
+      { name: "show_calendar_chips", selector: { boolean: {} } },
     ] },
     { type: "expandable", name: "night_mode", title: t("ed_night"), icon: "mdi:weather-night", schema: [
       { type: "grid", name: "", schema: [
@@ -3322,7 +3358,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     });
 
     const gen = this._makeForm(generalSchema((k) => this._t(k)), {
-      language: "auto", ...this._config,
+      language: "auto", show_countdowns: true, countdown_style: "cards", countdown_size: 100, event_size: 100, show_calendar_chips: true, ...this._config,
       night_mode: { ...NIGHT_DEFAULTS, ...this._objCfg(this._config.night_mode) },
       screensaver: { ...SAVER_DEFAULTS, ...this._objCfg(this._config.screensaver) },
     }, (s) => this._t(`l_${s.name}`), (s) => (s.name === "media" ? this._t("ed_media_help") : undefined));
@@ -3339,6 +3375,8 @@ class HomeCalendarCardEditor extends HTMLElement {
         if (untouched && !this._config[k]) delete next[k]; else next[k] = clean;
       });
       if (next.language === "auto") delete next.language;
+      const DEF = { show_countdowns: true, countdown_style: "cards", countdown_size: 100, event_size: 100, show_calendar_chips: true };
+      Object.entries(DEF).forEach(([k, v]) => { if (next[k] === v && this._config[k] === undefined) delete next[k]; });
       if (next.language !== this._config.language) { this._emit(next, true); return; } // re-draw in the new language
       this._emit(next);
     });
