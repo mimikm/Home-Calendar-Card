@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.10.0";
+const CARD_VERSION = "1.11.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -161,7 +161,7 @@ const I18N = {
     l_enabled: "Enabled", l_start: "From", l_end: "Until", l_style: "Style", l_brightness: "Brightness",
     l_when_entity: "Or turn on with an entity (optional)", l_wake_entity: "Wake with a motion sensor (optional)", l_wake_seconds: "Stay awake for (seconds)",
     l_after: "Start after (minutes)", l_media: "Photo folder (media source)", l_interval: "Seconds per photo", l_show_info: "Show clock & next event", l_shuffle: "Shuffle photos",
-    ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
+    ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
     agenda: "Agenda", week: "Tydzień", month: "Miesiąc", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
@@ -218,7 +218,7 @@ const I18N = {
     l_enabled: "Włączony", l_start: "Od", l_end: "Do", l_style: "Styl", l_brightness: "Jasność",
     l_when_entity: "Lub włączaj encją (opcjonalnie)", l_wake_entity: "Wybudzaj czujnikiem ruchu (opcjonalnie)", l_wake_seconds: "Wybudź na (sekundy)",
     l_after: "Włącz po (minutach)", l_media: "Folder ze zdjęciami (media source)", l_interval: "Sekundy na zdjęcie", l_show_info: "Pokaż zegar i następne wydarzenie", l_shuffle: "Losowa kolejność zdjęć",
-    ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
+    ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
     agenda: "Agenda", week: "Semana", month: "Mes", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
@@ -275,7 +275,7 @@ const I18N = {
     l_enabled: "Activado", l_start: "Desde", l_end: "Hasta", l_style: "Estilo", l_brightness: "Brillo",
     l_when_entity: "O activar con una entidad (opcional)", l_wake_entity: "Activar con un sensor de movimiento (opcional)", l_wake_seconds: "Permanecer activo (segundos)",
     l_after: "Iniciar tras (minutos)", l_media: "Carpeta de fotos (media source)", l_interval: "Segundos por foto", l_show_info: "Mostrar reloj y próximo evento", l_shuffle: "Fotos en orden aleatorio",
-    ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
+    ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
 };
 const LANGS = { en: "English", pl: "Polski", es: "Español" };
@@ -1776,11 +1776,35 @@ class HomeCalendarCard extends HTMLElement {
     </div>`;
   }
 
-  _renderChips() {
-    return `<div class="chips">${this._calendars.map((c) => `
-      <button class="chip ${this._hidden.has(c.entity) ? "off" : ""}" style="--c:${esc(c.color)}" data-action="toggle-cal" data-entity="${esc(c.entity)}">
+  _calChip(c) {
+    return `<button class="chip ${this._hidden.has(c.entity) ? "off" : ""}" style="--c:${esc(c.color)}" data-action="toggle-cal" data-entity="${esc(c.entity)}">
         ${this._avatar(c, "sm") || `<span class="dot"></span>`}${esc(this._calName(c))}
-      </button>`).join("")}</div>`;
+      </button>`;
+  }
+
+  // Calendars with the same `group:` share one chip that shows/hides them all; the arrow opens the members.
+  _renderChips() {
+    this._openGroups = this._openGroups || new Set();
+    const done = new Set();
+    const out = [];
+    this._calendars.forEach((c) => {
+      const g = String(c.group || "").trim();
+      if (!g) { out.push(this._calChip(c)); return; }
+      if (done.has(g)) return;
+      done.add(g);
+      const members = this._calendars.filter((x) => String(x.group || "").trim() === g);
+      const visible = members.filter((x) => !this._hidden.has(x.entity)).length;
+      const state = visible === 0 ? "off" : visible < members.length ? "part" : "";
+      const open = this._openGroups.has(g);
+      const stack = members.slice(0, 4).map((m) => this._avatar(m, "sm") || `<span class="dot" style="--c:${esc(m.color)}"></span>`).join("");
+      out.push(`<span class="cgroup ${open ? "open" : ""}">
+        <button class="chip grp ${state}" style="--c:${esc(members[0].color)}" data-action="toggle-group" data-group="${esc(g)}">
+          <span class="gstack">${stack}</span>${esc(g)}<span class="gcount">${state === "part" ? `${visible}/${members.length}` : members.length}</span>
+        </button><button class="chip gexp" style="--c:${esc(members[0].color)}" data-action="expand-group" data-group="${esc(g)}" title="${esc(this._t("grp_each"))}"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
+        ${open ? `<span class="gmembers">${members.map((m) => this._calChip(m)).join("")}</span>` : ""}
+      </span>`);
+    });
+    return `<div class="chips">${out.join("")}</div>`;
   }
 
   _wxBadge(d, compact = false) {
@@ -2376,6 +2400,22 @@ class HomeCalendarCard extends HTMLElement {
         this._anchor = startOfDay(new Date());
         this._fetchEvents();
         break;
+      case "toggle-group": {
+        const g = el.dataset.group;
+        const members = this._calendars.filter((x) => String(x.group || "").trim() === g);
+        const anyVisible = members.some((m) => !this._hidden.has(m.entity));
+        members.forEach((m) => { if (anyVisible) this._hidden.add(m.entity); else this._hidden.delete(m.entity); });
+        this._saveHidden();
+        this._render();
+        break;
+      }
+      case "expand-group": {
+        this._openGroups = this._openGroups || new Set();
+        const g = el.dataset.group;
+        if (this._openGroups.has(g)) this._openGroups.delete(g); else this._openGroups.add(g);
+        this._render();
+        break;
+      }
       case "toggle-cal": {
         const ent = el.dataset.entity;
         if (this._hidden.has(ent)) this._hidden.delete(ent); else this._hidden.add(ent);
@@ -2519,6 +2559,21 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .chip .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex: none; }
 .chip.off { opacity: .5; background: none; border-color: var(--hcc-line); }
 .chip.off .dot { background: none; box-shadow: inset 0 0 0 1.5px var(--c); }
+.cgroup { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; border-radius: 999px; }
+.cgroup.open { background: var(--hcc-soft); border-radius: 18px; padding: 3px; box-shadow: inset 0 0 0 1px var(--hcc-line); }
+.chip.grp { border-radius: 16px 5px 5px 16px; padding-right: 9px; font-weight: 600; margin-right: -4px; }
+.chip.gexp { border-radius: 5px 16px 16px 5px; padding: 4px 7px 4px 5px; align-self: stretch; }
+.chip.grp.off + .chip.gexp { opacity: .5; background: none; border-color: var(--hcc-line); }
+.chip.gexp ha-icon { --mdc-icon-size: 16px; transition: transform .2s; }
+.cgroup.open .chip.gexp ha-icon { transform: rotate(180deg); }
+.gstack { display: inline-flex; align-items: center; }
+.gstack > * { margin-left: -5px; box-shadow: 0 0 0 2px var(--hcc-bg); }
+.gstack > *:first-child { margin-left: 0; }
+.gstack .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.gcount { font-size: .7rem; font-weight: 700; color: var(--hcc-muted); margin-left: 2px; }
+.chip.grp.part { border-style: dashed; }
+.chip.grp.off .gstack > * { filter: grayscale(1); opacity: .6; }
+.gmembers { display: inline-flex; flex-wrap: wrap; gap: 6px; }
 
 /* avatars */
 .av { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: none; border: 2px solid var(--c);
@@ -3056,6 +3111,7 @@ const calSchema = (t) => {
     ] },
     { type: "grid", name: "", schema: [
       { name: "person", selector: { entity: { domain: "person" } } },
+      { name: "group", selector: { text: {} } },
       { name: "type", selector: { select: { mode: "dropdown", options: [o("events", "o_events"), o("birthday", "o_birthdays"),
         o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
     ] },
@@ -3092,6 +3148,7 @@ const EDITOR_STYLES = `
 .ch-name.missing { color: var(--secondary-text-color); font-style: italic; font-weight: 500; }
 .ch-sub { font-size: .78rem; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ch-warn { color: var(--error-color, #db4437); }
+.ch-grp { font-weight: 600; color: var(--primary-color); }
 .btns { display: flex; flex: none; }
 .chev { color: var(--secondary-text-color); transition: transform .2s; --mdc-icon-size: 22px; flex: none; padding: 0 2px; }
 .cal.open .chev, .sec-head.open .chev { transform: rotate(180deg); }
@@ -3243,9 +3300,10 @@ class HomeCalendarCardEditor extends HTMLElement {
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
       const i = Number(slot.dataset.i);
       const c = cals[i];
-      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", type: c.type || "events" },
+      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events" },
         (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),
         (s) => {
+          if (s.name === "group") return this._t("ed_group_help");
           if (s.name !== "name") return undefined;
           const ent = this._cals()[i]?.entity;
           const fn = ent && this._hass?.states[ent]?.attributes?.friendly_name;
@@ -3306,7 +3364,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     const pic = ps?.attributes?.entity_picture;
     const missing = c.entity && this._hass && !st;
     return `<div class="ch-name ${name ? "" : "missing"}">${pic ? `<img class="ch-av" src="${esc(pic)}" alt="">` : ""}<span class="ch-n">${esc(name || this._t("ed_new_cal"))}</span></div>
-      <div class="ch-sub">${c.entity ? `<span class="${missing ? "ch-warn" : ""}">${esc(c.entity)}</span> · ` : ""}${esc(typeTxt)}</div>`;
+      <div class="ch-sub">${c.entity ? `<span class="${missing ? "ch-warn" : ""}">${esc(c.entity)}</span> · ` : ""}${esc(typeTxt)}${c.group ? ` · <span class="ch-grp">${esc(c.group)}</span>` : ""}</div>`;
   }
 
   _refreshHeads() {
