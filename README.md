@@ -200,6 +200,36 @@ max_height: 640px
 | `picture` | Image URL to use instead of a person's picture, e.g. `/local/kids.png` |
 | `icon` | MDI icon shown as the badge when there's no picture, e.g. `mdi:human-child` |
 | `type` | `events` (default), `birthday`, `anniversary`, `nameday` or `holiday` |
+| `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
+
+#### Calendar groups
+
+Lots of calendars? Give some of them the same `group` and they collapse into **one button** in the calendar bar:
+
+```yaml
+calendars:
+  - entity: calendar.family
+  - entity: calendar.emma
+    person: person.emma
+    group: Parents
+  - entity: calendar.oliver
+    person: person.oliver
+    group: Parents
+  - entity: calendar.birthdays
+    type: birthday
+    group: Extras
+  - entity: calendar.school_holidays
+    type: holiday
+    group: Extras
+```
+
+- The group button shows the members' photos/colours, the group name and how many calendars it holds.
+- **Tap it** to hide or show the whole group at once. If only some are visible it shows e.g. *1/2* with a dashed outline, and the next tap hides them all.
+- **Tap the arrow** next to it to open the group and switch members on or off one by one.
+- Your choice is remembered on each device, like the single calendar buttons.
+- In the visual editor, each calendar has a **Group** field – type the same name for every calendar you want together.
+
+Groups only tidy up the calendar bar – adding events still lists every calendar you can write to.
 
 **`type: birthday`** – events show a 🎂 icon and "Birthday". If the event title or description contains a birth year (e.g. *Anna (1990)*), the card shows *turns 36* and hides the year from the title.
 
