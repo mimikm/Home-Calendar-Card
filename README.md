@@ -46,6 +46,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
 - 🌙 **Night mode & screensaver** for always-on screens – a dim night clock on a schedule (wake by touch or motion sensor) and a family-photo slideshow with clock, weather and next event when idle
 - 🌍 **English, Polish and Spanish** – card and visual editor follow your Home Assistant language, with an extra **Imieniny** (name day) event type in Polish
+- 🔍 **Appearance controls** – hide or shrink countdowns (compact one-line style, size slider) and enlarge day boxes and events with a slider
 - Zero dependencies, one file
 
 ## Requirements
@@ -151,6 +152,10 @@ max_height: 640px
 | `countdowns` | list | – | Countdown cards shown under the header – see *Countdowns* |
 | `countdown_days` | number | `365` | How far ahead calendar-based countdowns look |
 | `max_countdowns` | number | `8` | Maximum countdown cards shown |
+| `show_countdowns` | boolean | `true` | Show the countdown strip – see *Appearance* |
+| `countdown_style` | `cards` \| `compact` | `cards` | `compact` = one slim row of pills |
+| `countdown_size` | number (%) | `100` | Countdown size, 50–150 |
+| `event_size` | number (%) | `100` | Day & event size, 80–160 – bigger, taller day boxes |
 | `countdown_colors` | map \| `calendar` | theme colours | Override countdown colours (see *Countdown colours*), or `calendar` to use each calendar's colour |
 | `event_types` | list | built-in five | Types offered in the add-event dropdown – see *Event types* |
 | `default_event_type` | string | `standard` | Type pre-selected when adding an event |
@@ -487,6 +492,26 @@ screensaver:
 - `screensaver: true` uses the defaults (5 minutes, clock only).
 
 Both are also in the visual editor under **Night mode** and **Screensaver**.
+
+### Appearance – bigger, clearer day boxes
+
+Give the calendar more room by shrinking or hiding the countdowns and making the days bigger:
+
+```yaml
+show_countdowns: true        # false hides the countdown strip completely
+countdown_style: compact     # cards (default) or compact one-line pills
+countdown_size: 80           # countdown size in %, 50–150
+event_size: 130              # day & event text size in %, 80–160 (also makes Month/Week boxes taller)
+show_calendar_chips: false   # hide the calendar buttons row
+```
+
+![Default vs compact countdowns with 130% day size](images/appearance.png)
+
+- **Compact** countdowns turn the strip into one slim row of pills (`1 day Leo`, `6 days Lake District`) – about 60% less height. Tap or hover a pill to see the date.
+- **Event size** enlarges the day numbers, weather and event titles in every view, and makes Month and Week boxes taller to fit.
+- In `fill`/`fullscreen` the space you free up goes straight to the day boxes.
+
+All of these are in the visual editor under **Appearance**, with sliders for the two sizes.
 
 ### Themes
 
