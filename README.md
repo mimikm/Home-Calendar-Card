@@ -2,7 +2,7 @@
 
 [![Validate](https://github.com/mimikm/Home-Calendar-Card/actions/workflows/validate.yml/badge.svg)](https://github.com/mimikm/Home-Calendar-Card/actions/workflows/validate.yml) [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz) [![GitHub release](https://img.shields.io/github/v/release/mimikm/Home-Calendar-Card)](https://github.com/mimikm/Home-Calendar-Card/releases) [![Downloads](https://img.shields.io/github/downloads/mimikm/Home-Calendar-Card/total?label=downloads&color=2ea44f)](https://github.com/mimikm/Home-Calendar-Card/releases) [![Latest release downloads](https://img.shields.io/github/downloads/mimikm/Home-Calendar-Card/latest/total?label=latest%20release)](https://github.com/mimikm/Home-Calendar-Card/releases/latest) [![Stars](https://img.shields.io/github/stars/mimikm/Home-Calendar-Card?style=flat&color=f5c518)](https://github.com/mimikm/Home-Calendar-Card/stargazers)
 
-A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple iCloud** (via CalDAV) or any other Home Assistant calendar in **Agenda**, **Week** and **Month** views, with the **daily weather forecast** on every day — and lets you **add events** straight from the dashboard, choosing which calendar they go into.
+A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple iCloud** (via CalDAV) or any other Home Assistant calendar in **Agenda**, **Week**, **Month** and **Planner** views, with the **daily weather forecast** on every day — and lets you **add events** straight from the dashboard, choosing which calendar they go into.
 
 ![Home Calendar Card](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/preview.png)
 
@@ -13,6 +13,10 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 | ![Month view on a wall display](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/wall-month.png) | ![Week view on a wall display](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/wall-week.png) |
 | **Wall display – Agenda (Forest)** | **Adding an event** |
 | ![Agenda view on a wall display](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/wall-agenda.png) | ![Add event dialog](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/add-event.png) |
+
+**Planner view – a column for each person (Midnight)**
+
+![Planner view with a column per person](https://github.com/mimikm/Home-Calendar-Card/raw/main/images/planner.png)
 
 **Five colour themes**
 
@@ -26,7 +30,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 
 ## Features
 
-- 📅 **Three views** – Agenda (grouped by day), Week (7 columns, stacks on phones) and Month (grid, dots on phones)
+- 📅 **Four views** – Agenda (grouped by day), Week (7 columns, stacks on phones), Month (grid, dots on phones) and Planner (a column per person, like a printed family planner)
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
 - ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
 - 🏷️ **Event types** – Standard, Holiday, Birthday, Anniversary, Work event and DHS out of the box (fully customisable), each with its own icon and behaviour
@@ -180,7 +184,7 @@ max_height: 640px
 | `theme` | `auto` \| `nordic` \| `sunset` \| `forest` \| `midnight` \| `graphite` | `auto` | Colour scheme – see *Themes* |
 | `language` | `auto` \| `en` \| `pl` \| `es` | `auto` | Card language – `auto` follows your Home Assistant profile |
 | `title` | string | – | Shown above the date in the header |
-| `default_view` | `agenda` \| `week` \| `month` | `agenda` | View shown when the dashboard loads |
+| `default_view` | `agenda` \| `week` \| `month` \| `planner` | `agenda` | View shown when the dashboard loads |
 | `days_to_show` | number | `7` | Number of days in Agenda view |
 | `first_day_of_week` | `monday` \| `sunday` \| `saturday` | `monday` | Start of week in Week and Month views |
 | `time_format` | `auto` \| `24h` \| `12h` | `auto` | `auto` follows your HA user profile |
@@ -206,6 +210,7 @@ max_height: 640px
 | `icon` | MDI icon shown as the badge when there's no picture, e.g. `mdi:human-child` |
 | `type` | `events` (default), `birthday`, `anniversary`, `nameday` or `holiday` |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
+| `planner_column` | `true` (default) gives this calendar its own column in the Planner view. `false` shows its events next to the date instead – handy for a shared Family calendar |
 
 #### Calendar groups
 
@@ -424,6 +429,32 @@ Tap any event and press **Delete** in its pop-up. You'll be asked to confirm:
 
 The Delete button only appears for calendars whose Home Assistant integration supports deleting (Local Calendar and Google Calendar do). For other calendars the pop-up says so. To stop events being deleted from a shared screen, set `allow_delete: false` (also in the visual editor).
 
+### Planner view (a column per person)
+
+Like a printed family planner on the fridge: **days down the side, one column per person**, so you can see who's doing what all week at a glance. Pick **Planner** in the view buttons, or make it the default:
+
+```yaml
+default_view: planner
+calendars:
+  - entity: calendar.family
+    name: Family
+    planner_column: false   # optional: show family events next to the date instead of in their own column
+  - entity: calendar.emma
+    person: person.emma
+  - entity: calendar.oliver
+    person: person.oliver
+  - entity: calendar.birthdays
+    type: birthday
+```
+
+- Every normal calendar (`type: events`) gets a column with the person's photo and name at the top, in the order of your `calendars` list.
+- **Tap an empty box** to add an event straight into that person's calendar on that day. Tap an event to open it.
+- Birthday, anniversary and name day calendars, bank and school holidays, and calendars with `planner_column: false` show in the date box on the left.
+- Today is highlighted and weekends are shaded. The weather for each day sits under the date.
+- Hiding a calendar with its button in the calendar bar also hides its column.
+- In `fill`/`fullscreen` the 7 days stretch to fill the screen. On a phone the columns scroll sideways while the dates stay in place.
+- **Event size** (see *Appearance*) makes the boxes taller and the text bigger.
+
 ### Wall display (permanent desktop / tablet)
 
 ```yaml
@@ -577,6 +608,14 @@ Your own `event_types` names, calendar names and `todo_title` are shown exactly 
 - **No weather on days** – your weather entity must support a *daily* forecast. Hourly-only providers will show the current conditions in the header only.
 - **"Event" button missing** – none of the configured calendars support creating events. Check the calendar's integration.
 - **New event doesn't appear immediately** – some providers (especially iCloud via CalDAV) take a few seconds to sync; the card refreshes again automatically.
+
+## Roadmap
+
+Planned features – ideas and votes are welcome in [Issues](https://github.com/mimikm/Home-Calendar-Card/issues).
+
+- 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in English, Polish and Spanish. The microphone needs HTTPS.
+- 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
+- 🗣️ **Voice assistant tip** – a ready-made script and guide for adding events by talking to Assist or a voice speaker with an AI conversation agent.
 
 ## Support
 
