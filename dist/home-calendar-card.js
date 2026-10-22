@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.12.0";
+const CARD_VERSION = "1.13.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -106,7 +106,7 @@ const TAG_RE = /(^|\s)#([a-z0-9_-]+)(?=\s|$)/gi;
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
-    agenda: "Agenda", week: "Week", month: "Month", today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday",
+    agenda: "Agenda", week: "Week", month: "Month", planner: "Planner", pl_add: "Add event for {n}", pl_none: "No person calendars to show – turn some on above", today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday",
     prev: "Previous", next: "Next", event_btn: "Event", back_fs: "Back to full screen",
     all_day: "All day", all_day_n: "All day · {n}/{t}", until: "Until {t}", from: "From {t}", now: "Now",
     nothing: "Nothing planned", no_events: "No events in this period", repeating: "Repeating event",
@@ -149,7 +149,7 @@ const I18N = {
     l_first_day_of_week: "First day of week", l_time_format: "Time format", l_show_header: "Show date & weather header",
     l_allow_add: "Allow adding events", l_allow_edit: "Allow editing events", l_allow_delete: "Allow deleting events",
     l_show_empty_days: "Show days without events", l_max_height: "Max height (e.g. 600px)",
-    l_entity: "Calendar", l_name: "Display name", l_person: "Person (shows their photo)", l_type: "Calendar type",
+    l_entity: "Calendar", l_name: "Display name", l_person: "Person (shows their photo)", l_type: "Calendar type", l_planner_column: "Own column in Planner view", ed_planner_help: "Off: its events show next to the date instead",
     o_auto: "Automatic", o_top: "Top", o_bottom: "Bottom", o_left: "Left", o_right: "Right",
     o_monday: "Monday", o_sunday: "Sunday", o_saturday: "Saturday",
     o_tf_auto: "From HA profile", o_24h: "24 hour", o_12h: "12 hour",
@@ -164,7 +164,7 @@ const I18N = {
     ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
-    agenda: "Agenda", week: "Tydzień", month: "Miesiąc", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
+    agenda: "Agenda", week: "Tydzień", month: "Miesiąc", planner: "Planer", pl_add: "Dodaj wydarzenie dla: {n}", pl_none: "Brak kalendarzy osób do pokazania – włącz je powyżej", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
     prev: "Poprzedni", next: "Następny", event_btn: "Wydarzenie", back_fs: "Wróć do pełnego ekranu",
     all_day: "Cały dzień", all_day_n: "Cały dzień · {n}/{t}", until: "Do {t}", from: "Od {t}", now: "Teraz",
     nothing: "Nic zaplanowanego", no_events: "Brak wydarzeń w tym okresie", repeating: "Wydarzenie cykliczne",
@@ -206,7 +206,7 @@ const I18N = {
     l_first_day_of_week: "Pierwszy dzień tygodnia", l_time_format: "Format czasu", l_show_header: "Pokaż nagłówek z datą i pogodą",
     l_allow_add: "Zezwalaj na dodawanie wydarzeń", l_allow_edit: "Zezwalaj na edycję wydarzeń", l_allow_delete: "Zezwalaj na usuwanie wydarzeń",
     l_show_empty_days: "Pokaż dni bez wydarzeń", l_max_height: "Maks. wysokość (np. 600px)",
-    l_entity: "Kalendarz", l_name: "Wyświetlana nazwa", l_person: "Osoba (pokazuje jej zdjęcie)", l_type: "Typ kalendarza",
+    l_entity: "Kalendarz", l_name: "Wyświetlana nazwa", l_person: "Osoba (pokazuje jej zdjęcie)", l_type: "Typ kalendarza", l_planner_column: "Własna kolumna w widoku Planer", ed_planner_help: "Wyłączone: wydarzenia pokażą się obok daty",
     o_auto: "Automatycznie", o_top: "Góra", o_bottom: "Dół", o_left: "Lewo", o_right: "Prawo",
     o_monday: "Poniedziałek", o_sunday: "Niedziela", o_saturday: "Sobota",
     o_tf_auto: "Z profilu HA", o_24h: "24-godzinny", o_12h: "12-godzinny",
@@ -221,7 +221,7 @@ const I18N = {
     ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
-    agenda: "Agenda", week: "Semana", month: "Mes", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
+    agenda: "Agenda", week: "Semana", month: "Mes", planner: "Planificador", pl_add: "Añadir evento para {n}", pl_none: "No hay calendarios de personas – activa alguno arriba", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
     prev: "Anterior", next: "Siguiente", event_btn: "Evento", back_fs: "Volver a pantalla completa",
     all_day: "Todo el día", all_day_n: "Todo el día · {n}/{t}", until: "Hasta {t}", from: "Desde {t}", now: "Ahora",
     nothing: "Nada planeado", no_events: "No hay eventos en este periodo", repeating: "Evento recurrente",
@@ -263,7 +263,7 @@ const I18N = {
     l_first_day_of_week: "Primer día de la semana", l_time_format: "Formato de hora", l_show_header: "Mostrar encabezado con fecha y tiempo",
     l_allow_add: "Permitir añadir eventos", l_allow_edit: "Permitir editar eventos", l_allow_delete: "Permitir eliminar eventos",
     l_show_empty_days: "Mostrar días sin eventos", l_max_height: "Altura máx. (p. ej. 600px)",
-    l_entity: "Calendario", l_name: "Nombre visible", l_person: "Persona (muestra su foto)", l_type: "Tipo de calendario",
+    l_entity: "Calendario", l_name: "Nombre visible", l_person: "Persona (muestra su foto)", l_type: "Tipo de calendario", l_planner_column: "Columna propia en el Planificador", ed_planner_help: "Desactivado: sus eventos se muestran junto a la fecha",
     o_auto: "Automático", o_top: "Arriba", o_bottom: "Abajo", o_left: "Izquierda", o_right: "Derecha",
     o_monday: "Lunes", o_sunday: "Domingo", o_saturday: "Sábado",
     o_tf_auto: "Del perfil de HA", o_24h: "24 horas", o_12h: "12 horas",
@@ -397,8 +397,8 @@ class HomeCalendarCard extends HTMLElement {
       const saved = JSON.parse(localStorage.getItem(this._storeKey) || "{}");
       this._hidden = new Set(saved.hidden || []);
     } catch (e) { this._hidden = new Set(); }
-    if (!["agenda", "week", "month"].includes(this._view) || !this._configured) {
-      this._view = ["agenda", "week", "month"].includes(this._config.default_view) ? this._config.default_view : "agenda";
+    if (!["agenda", "week", "month", "planner"].includes(this._view) || !this._configured) {
+      this._view = ["agenda", "week", "month", "planner"].includes(this._config.default_view) ? this._config.default_view : "agenda";
     }
     this._configured = true;
     if (this._built) setTimeout(() => this._ambientTick(), 0);
@@ -899,7 +899,7 @@ class HomeCalendarCard extends HTMLElement {
       const days = Math.ceil((lead + daysInMonth) / 7) * 7;
       return { start, end: addDays(start, days), days };
     }
-    if (this._view === "week") {
+    if (this._view === "week" || this._view === "planner") {
       const start = this._startOfWeek(a);
       return { start, end: addDays(start, 7), days: 7 };
     }
@@ -1405,7 +1405,7 @@ class HomeCalendarCard extends HTMLElement {
 
   // Going dark or into the screensaver: show today again in the default view.
   _ambientEnter() {
-    const def = ["agenda", "week", "month"].includes(this._config.default_view) ? this._config.default_view : "agenda";
+    const def = ["agenda", "week", "month", "planner"].includes(this._config.default_view) ? this._config.default_view : "agenda";
     if (!sameDay(this._anchor, new Date()) || this._view !== def) {
       this._anchor = startOfDay(new Date());
       this._view = def;
@@ -1730,7 +1730,7 @@ class HomeCalendarCard extends HTMLElement {
     this._applyLayout();
     if (this._todoKey === null || this._todoKey === undefined || this._hass) this._buildTodo();
     const c = this._config;
-    const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._renderAgenda();
+    const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._view === "planner" ? this._renderPlanner() : this._renderAgenda();
     const maxH = c.max_height ? ` style="max-height:${esc(c.max_height)};overflow:auto"` : "";
     this._main.innerHTML = `
       ${c.show_header !== false ? this._renderHeader() : ""}
@@ -1771,7 +1771,7 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _renderToolbar() {
-    const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")]];
+    const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")], ["planner", this._t("planner")]];
     const canAdd = this._config.allow_add !== false && this._writable().length > 0;
     return `<div class="toolbar">
       <div class="seg">${views.map(([v, l]) => `<button class="${this._view === v ? "on" : ""}" data-action="view" data-view="${v}">${l}</button>`).join("")}</div>
@@ -1889,6 +1889,51 @@ class HomeCalendarCard extends HTMLElement {
             <div class="t"><span class="short">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</span><span class="full">${esc(this._isBday(ev) ? this._yearlyLabel(ev) : this._timeLabel(ev, d))}</span></div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
           </div>`).join("")}</div>
       </div>`;
+    }
+    return out + `</div>`;
+  }
+
+  // Planner: days down the side, one column per person (like a printed family planner).
+  _plannerCols() {
+    return this._calendars.filter((c) => c.type === "events" && c.planner_column !== false && !this._hidden.has(c.entity));
+  }
+
+  _renderPlanner() {
+    const { start } = this._range();
+    const today = dayKey(new Date());
+    const cols = this._plannerCols();
+    if (!cols.length) return `<div class="empty"><ha-icon icon="mdi:account-group-outline"></ha-icon><div>${esc(this._t("pl_none"))}</div></div>`;
+    const colSet = new Set(cols.map((c) => c.entity));
+    const canAdd = this._config.allow_add !== false;
+    const writable = new Set(this._writable().map((c) => c.entity));
+    const wd = this._fmt({ weekday: "short" });
+    const mo = this._fmt({ month: "short" });
+    const evHtml = (ev, d) => `<div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
+        <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
+      </div>`;
+    let out = `<div class="planner" style="--pcols:${cols.length}"><div class="phead pcorner"></div>`;
+    out += cols.map((c) => `<div class="phead" style="--c:${esc(c.color)}">${this._avatar(c, "sm") || `<span class="dot"></span>`}<span class="pname">${esc(this._calName(c))}</span></div>`).join("");
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(start, i);
+      const k = dayKey(d);
+      const evs = this._eventsOn(d);
+      const hol = this._holidaysOn(d)[0];
+      const shared = evs.filter((ev) => !colSet.has(ev.cal.entity));
+      const rowCls = `${k === today ? "is-today" : ""} ${[0, 6].includes(d.getDay()) ? "wkend" : ""} ${hol ? "has-hol" : ""}`;
+      const holStyle = hol ? ` style="--hol:${esc(hol.cal.color)}"` : "";
+      out += `<div class="pday ${rowCls}"${holStyle}>
+        <button class="pdate" data-action="open-day" data-date="${k}"><span class="wd">${esc(wd.format(d))}</span><span class="dn">${d.getDate()}</span><span class="mo">${esc(mo.format(d))}</span></button>
+        ${this._wxBadge(d, true)}
+        ${this._holidayTags(d) ? `<div class="phols">${this._holidayTags(d)}</div>` : ""}
+        ${shared.length ? `<div class="pshared">${shared.map((ev) => evHtml(ev, d)).join("")}</div>` : ""}
+      </div>`;
+      out += cols.map((c) => {
+        const mine = evs.filter((ev) => ev.cal.entity === c.entity);
+        const add = canAdd && writable.has(c.entity);
+        return `<div class="pcell ${rowCls}" style="--c:${esc(c.color)}${hol ? `;--hol:${esc(hol.cal.color)}` : ""}" ${add ? `data-action="add-for" data-entity="${esc(c.entity)}" data-date="${k}" title="${esc(this._t("pl_add", { n: this._calName(c) }))}"` : ""}>
+          ${mine.map((ev) => evHtml(ev, d)).join("")}${add ? `<span class="padd"><ha-icon icon="mdi:plus"></ha-icon></span>` : ""}
+        </div>`;
+      }).join("");
     }
     return out + `</div>`;
   }
@@ -2030,11 +2075,11 @@ class HomeCalendarCard extends HTMLElement {
     return this._types.filter((t) => !t.langs || this._configTypes || t.langs.includes(ui) || t.id === current?.id);
   }
 
-  _openAdd(date) { this._openForm(date, null); }
+  _openAdd(date, cal) { this._openForm(date, null, cal); }
 
   _openEdit(ev) { this._openForm(null, ev); }
 
-  _openForm(date, ev) {
+  _openForm(date, ev, presetCal) {
     this._editEv = ev || null;
     let cals = this._writable();
     if (ev) {
@@ -2065,7 +2110,8 @@ class HomeCalendarCard extends HTMLElement {
       if (ev.allDay && e < s) e = new Date(s);
       if (!ev.allDay && ev.end > ev.start) this._addDur = ev.end - ev.start;
     }
-    this._addCal = ev ? ev.cal.entity : (cals.find((c) => !this._hidden.has(c.entity)) || cals[0]).entity;
+    this._addCal = ev ? ev.cal.entity : presetCal && cals.some((c) => c.entity === presetCal) ? presetCal
+      : (cals.find((c) => !this._hidden.has(c.entity)) || cals[0]).entity;
     const selColor = cals.find((c) => c.entity === this._addCal).color;
     const defType = (ev && this._types.find((t) => t.id === ev.type))
       || this._types.find((t) => t.id === (this._config.default_event_type || "standard")) || this._types[0];
@@ -2401,7 +2447,7 @@ class HomeCalendarCard extends HTMLElement {
       case "next": {
         const dir = action === "next" ? 1 : -1;
         if (this._view === "month") this._anchor = new Date(this._anchor.getFullYear(), this._anchor.getMonth() + dir, 1);
-        else if (this._view === "week") this._anchor = addDays(this._anchor, 7 * dir);
+        else if (this._view === "week" || this._view === "planner") this._anchor = addDays(this._anchor, 7 * dir);
         else this._anchor = addDays(this._anchor, (Math.max(1, Number(this._config.days_to_show) || 7)) * dir);
         this._fetchEvents();
         break;
@@ -2438,6 +2484,9 @@ class HomeCalendarCard extends HTMLElement {
         break;
       case "open-day":
         this._openDay(parseDate(el.dataset.date));
+        break;
+      case "add-for":
+        this._openAdd(parseDate(el.dataset.date), el.dataset.entity);
         break;
       case "open-event": {
         const ev = this._events.find((x) => x.id === el.dataset.id);
@@ -3051,6 +3100,57 @@ ha-card { container: hcc / inline-size; }
 .mhead { zoom: var(--ev-scale, 1); }
 .mcell { min-height: calc(86px * var(--ev-scale, 1)); }
 .wcol { min-height: calc(170px * var(--ev-scale, 1)); }
+/* planner: days down the side, a column per person */
+.view-planner { overflow-x: auto; }
+.planner { display: grid; grid-template-columns: 84px repeat(var(--pcols), minmax(130px, 1fr)); gap: 4px; min-width: min-content; }
+.phead { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 6px; border-radius: 12px;
+  background: color-mix(in srgb, var(--c, var(--hcc-accent)) 16%, var(--hcc-bg)); font-weight: 700; font-size: .9rem; min-width: 0; zoom: var(--ev-scale, 1); }
+.phead .av.sm { width: 28px; height: 28px; font-size: .75rem; }
+.phead .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
+.pname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pcorner { background: transparent; }
+.pday { position: sticky; left: 0; z-index: 1; display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: 6px; border-radius: 12px;
+  background: var(--hcc-soft); min-width: 0; box-shadow: -6px 0 0 var(--hcc-bg); }
+.pday > * { zoom: var(--ev-scale, 1); }
+.pdate { display: flex; flex-direction: column; align-items: center; gap: 0; line-height: 1.1; padding: 2px 0; border-radius: 10px; }
+.pdate .wd, .pdate .mo { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--hcc-muted); }
+.pdate .dn { font-size: 1.25rem; font-weight: 800; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; }
+.pday.is-today .dn { background: var(--hcc-accent); color: #fff; }
+.pday .wx.compact { justify-content: center; }
+.phols, .pshared { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.phols .hol { font-size: .66rem; padding: 2px 6px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pcell { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 6px; border-radius: 12px; min-height: calc(74px * var(--ev-scale, 1)); min-width: 0;
+  background: var(--hcc-soft); }
+.pcell > * { zoom: var(--ev-scale, 1); }
+.pcell[data-action] { cursor: pointer; }
+.pcell[data-action]:hover { background: color-mix(in srgb, var(--c) 10%, var(--hcc-soft)); }
+.pcell.wkend, .pday.wkend { background: color-mix(in srgb, var(--hcc-text) 7%, var(--hcc-soft)); }
+.pcell.has-hol, .pday.has-hol { background: color-mix(in srgb, var(--hol) 12%, var(--hcc-soft)); }
+.pcell.is-today, .pday.is-today { background: color-mix(in srgb, var(--hcc-accent) 10%, var(--hcc-soft)); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--hcc-accent) 40%, transparent); }
+.pday.is-today { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--hcc-accent) 40%, transparent), -6px 0 0 var(--hcc-bg); }
+.pcell .wev .s { -webkit-line-clamp: 3; }
+.pshared .wev { padding: 2px 6px; font-size: .7rem; }
+.pshared .wev.bday .t { display: none; }
+.pshared .wev .s { -webkit-line-clamp: 1; }
+.padd { position: absolute; right: 6px; bottom: 4px; opacity: 0; color: var(--c); transition: opacity .15s; }
+.padd ha-icon { --mdc-icon-size: 18px; }
+.pcell[data-action]:hover .padd { opacity: .8; }
+@media (hover: none) { .pcell:not(:has(.wev)) .padd { opacity: .35; } }
+:host([layout="fill"]) .view-planner, :host([layout="fullscreen"]) .view-planner { overflow: auto; }
+:host([layout="fill"]) .planner, :host([layout="fullscreen"]) .planner { height: 100%; grid-template-rows: auto repeat(7, minmax(0, 1fr)); }
+:host([layout="fill"]) .pcell, :host([layout="fullscreen"]) .pcell, :host([layout="fill"]) .pday, :host([layout="fullscreen"]) .pday { min-height: 0; overflow: auto; }
+:host([layout="fill"]) .planner, :host([layout="fullscreen"]) .planner { grid-template-columns: 104px repeat(var(--pcols), minmax(130px, 1fr)); }
+:host([layout="fill"]) .pdate, :host([layout="fullscreen"]) .pdate { flex-direction: row; justify-content: center; gap: 6px; }
+:host([layout="fill"]) .pdate .mo, :host([layout="fullscreen"]) .pdate .mo { display: none; }
+:host([layout="fill"]) .pday, :host([layout="fullscreen"]) .pday { padding: 4px 6px; gap: 2px; }
+:host([layout="fill"]) .pdate, :host([layout="fullscreen"]) .pdate { padding: 0; }
+:host([layout="fill"]) .pdate .dn, :host([layout="fullscreen"]) .pdate .dn { width: 30px; height: 30px; font-size: 1.1rem; }
+@container (max-width: 600px) {
+  .planner { grid-template-columns: 62px repeat(var(--pcols), minmax(112px, 1fr)); }
+  .pday .wx.compact { flex-direction: column; gap: 0; }
+  .pday .wx.compact i { display: none; }
+  .phead { flex-direction: column; gap: 3px; font-size: .78rem; }
+}
 `;
 
 
@@ -3086,7 +3186,7 @@ const generalSchema = (t) => {
       { name: "todo_completed_days", selector: { number: { min: 1, max: 60, step: 1, mode: "box" } } },
     ] },
     { type: "grid", name: "", schema: [
-      { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month")] } } },
+      { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month"), o("planner", "planner")] } } },
       { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
       { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [o("monday", "o_monday"), o("sunday", "o_sunday"), o("saturday", "o_saturday")] } } },
       { name: "time_format", selector: { select: { mode: "dropdown", options: [o("auto", "o_tf_auto"), o("24h", "o_24h"), o("12h", "o_12h")] } } },
@@ -3151,6 +3251,7 @@ const calSchema = (t) => {
       { name: "type", selector: { select: { mode: "dropdown", options: [o("events", "o_events"), o("birthday", "o_birthdays"),
         o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
     ] },
+    { name: "planner_column", selector: { boolean: {} } },
   ];
 };
 
@@ -3336,10 +3437,11 @@ class HomeCalendarCardEditor extends HTMLElement {
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
       const i = Number(slot.dataset.i);
       const c = cals[i];
-      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events" },
+      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column !== false },
         (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),
         (s) => {
           if (s.name === "group") return this._t("ed_group_help");
+          if (s.name === "planner_column") return this._t("ed_planner_help");
           if (s.name !== "name") return undefined;
           const ent = this._cals()[i]?.entity;
           const fn = ent && this._hass?.states[ent]?.attributes?.friendly_name;
@@ -3350,6 +3452,7 @@ class HomeCalendarCardEditor extends HTMLElement {
         f.data = ev.detail.value; // keep the form in sync, since we don't rebuild it
         const list = this._cals();
         list[i] = { ...list[i], ...ev.detail.value };
+        if (list[i].planner_column !== false) delete list[i].planner_column; // default – keep YAML tidy
         this._emit({ ...this._config, calendars: list });
         const head = this.shadowRoot.querySelector(`.cal[data-i="${i}"] .ch-txt`);
         if (head) head.innerHTML = this._headHtml(list[i]);
