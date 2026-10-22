@@ -124,7 +124,7 @@ calendars:
     color: "#A142F4"
 countdowns:
   - name: Tenerife ✈️
-    date: 2026-12-20
+    date: "2026-12-20"
     icon: mdi:airplane
   - calendar: calendar.family       # next family event matching "holiday"
     match: holiday|vacation
@@ -135,7 +135,7 @@ countdowns:
     match: christmas
     icon: mdi:pine-tree
   - name: Anniversary
-    date: 2019-06-14
+    date: "2019-06-14"
     repeat: yearly
     icon: mdi:heart
 weather_entity: weather.forecast_home
@@ -256,7 +256,7 @@ Each countdown is either a fixed date or the **next matching event** from a cale
 | Option | Description |
 |---|---|
 | `name` | Label (defaults to the event title for calendar countdowns) |
-| `date` | Fixed date (`2026-12-20`) or date-time (`2026-12-20 07:30`) |
+| `date` | Fixed date (`"2026-12-20"`) or date-time (`"2026-12-20 07:30"`). Dates count down in your own time zone; a date saved by the dashboard editor as `2026-12-20T00:00:00.000Z` is read as that day too |
 | `repeat` | `yearly` – for anniversaries and birthdays entered as a fixed date |
 | `calendar` | Use the next upcoming event from this calendar instead of a fixed date |
 | `match` | Only count down to events whose title matches (case-insensitive, `\|` for "or") |
