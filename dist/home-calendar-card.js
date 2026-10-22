@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.13.0";
+const CARD_VERSION = "1.13.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -326,6 +326,19 @@ const startOfDay = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); retur
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const parseDate = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
 const sameDay = (a, b) => dayKey(a) === dayKey(b);
+// Countdown dates. HA's YAML editor turns an unquoted `date: 2026-10-24` into a JS Date and saves it as
+// "2026-10-24T00:00:00.000Z" (midnight UTC), which is the day before in the Americas – so midnight UTC
+// is read as a plain calendar date. Any other time keeps its exact moment.
+const cdDate = (v) => {
+  if (v instanceof Date) {
+    if (v.getUTCHours() + v.getUTCMinutes() + v.getUTCSeconds() + v.getUTCMilliseconds() === 0)
+      return { d: new Date(v.getUTCFullYear(), v.getUTCMonth(), v.getUTCDate()), timed: false };
+    return { d: new Date(v), timed: true };
+  }
+  const s = String(v).trim();
+  if (/^\d{4}-\d{2}-\d{2}([T ]00:00(:00(\.0+)?)?(Z|[+-]00:?00)?)?$/i.test(s)) return { d: parseDate(s), timed: false };
+  return { d: new Date(s), timed: true };
+};
 const round = (n) => (n == null || isNaN(n) ? "–" : Math.round(Number(n)));
 const wxIcon = (c) => WX_ICON[c] || "mdi:weather-partly-cloudy";
 const wxColor = (c) => WX_COLOR[c] || "var(--hcc-muted)";
@@ -1028,8 +1041,7 @@ class HomeCalendarCard extends HTMLElement {
       const color = cd.color || cal?.color || "var(--hcc-accent)";
       const fixed = cd.color || null;
       if (cd.date) {
-        const timed = /[T ]\d/.test(String(cd.date));
-        const d = timed ? new Date(cd.date) : parseDate(cd.date);
+        const { d, timed } = cdDate(cd.date);
         if (isNaN(d)) return null;
         if (cd.repeat === "yearly") while (startOfDay(d) < today) d.setFullYear(d.getFullYear() + 1);
         if ((timed ? d : addDays(d, 1)) <= now) return null;
