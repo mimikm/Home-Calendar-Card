@@ -1,6 +1,6 @@
 # Home Calendar Card
 
-[![Validate](https://github.com/mimikm/Home-Calendar-Card/actions/workflows/validate.yml/badge.svg)](https://github.com/mimikm/Home-Calendar-Card/actions/workflows/validate.yml) [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz) [![GitHub release](https://img.shields.io/github/v/release/mimikm/Home-Calendar-Card)](https://github.com/mimikm/Home-Calendar-Card/releases) [![Downloads](https://img.shields.io/github/downloads/mimikm/Home-Calendar-Card/total?label=downloads&color=2ea44f)](https://github.com/mimikm/Home-Calendar-Card/releases) [![Latest release downloads](https://img.shields.io/github/downloads/mimikm/Home-Calendar-Card/latest/total?label=latest%20release)](https://github.com/mimikm/Home-Calendar-Card/releases/latest) [![Stars](https://img.shields.io/github/stars/mimikm/Home-Calendar-Card?style=flat&color=f5c518)](https://github.com/mimikm/Home-Calendar-Card/stargazers)
+[![Validate](https://github.com/mimikm/Home-Calendar-Card/actions/workflows/validate.yml/badge.svg)](https://github.com/mimikm/Home-Calendar-Card/actions/workflows/validate.yml) [![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz) [![GitHub release](https://img.shields.io/github/v/release/mimikm/Home-Calendar-Card)](https://github.com/mimikm/Home-Calendar-Card/releases) [![Downloads](https://img.shields.io/github/downloads/mimikm/Home-Calendar-Card/total?label=downloads&color=2ea44f)](https://github.com/mimikm/Home-Calendar-Card/releases) [![Latest release downloads](https://img.shields.io/github/downloads/mimikm/Home-Calendar-Card/latest/total?label=latest%20release)](https://github.com/mimikm/Home-Calendar-Card/releases/latest) [![Stars](https://img.shields.io/github/stars/mimikm/Home-Calendar-Card?style=flat&color=f5c518)](https://github.com/mimikm/Home-Calendar-Card/stargazers)
 
 A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple iCloud** (via CalDAV) or any other Home Assistant calendar in **Agenda**, **Week**, **Month** and **Planner** views, with the **daily weather forecast** on every day — and lets you **add events** straight from the dashboard, choosing which calendar they go into.
 
@@ -68,9 +68,17 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 
 ### HACS (recommended)
 
-1. HACS → ⋮ → **Custom repositories**
-2. Add `https://github.com/mimikm/Home-Calendar-Card`, type **Dashboard**
-3. Install **Home Calendar Card** and reload your browser
+Home Calendar Card is in the **HACS default store** – no custom repository needed.
+
+[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=mimikm&repository=Home-Calendar-Card&category=plugin)
+
+1. Click the button above, or open **HACS** and search for **Home Calendar Card**
+2. Click **Download**
+3. Reload your browser
+
+HACS will tell you when a new version is out.
+
+> Added it as a custom repository before it was in the store? It keeps working. To tidy up, remove it under HACS → ⋮ → **Custom repositories** – the card stays installed.
 
 ### Manual
 
@@ -615,6 +623,7 @@ Planned features – ideas and votes are welcome in [Issues](https://github.com/
 
 - 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in English, Polish and Spanish. The microphone needs HTTPS.
 - 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
+- 🌐 **Web panel for wall displays** – show a web page (radar map, bus times, school menu, your own dashboard) or a camera next to the calendar. Choose the position, set its size with a slider or by dragging its edge, zoom the page to fit, auto-refresh, rotate several pages, and lock it so taps can't navigate away. Only works with sites that allow being embedded, and over HTTPS only with `https://` pages.
 - 🗣️ **Voice assistant tip** – a ready-made script and guide for adding events by talking to Assist or a voice speaker with an AI conversation agent.
 
 ## Support
