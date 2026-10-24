@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.13.1";
+const CARD_VERSION = "1.13.2";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -1131,11 +1131,11 @@ class HomeCalendarCard extends HTMLElement {
       const num = n > 0 ? n : ongoing && n < 0 ? this._t("now") : this._t("today");
       const unit = n > 0 ? this._n().days(n) : "";
       const color = this._cdColor(cd, !cd.fixed && (cd.kind === "custom" || !cd.ev) ? customIdx++ : 0);
-      return `<div class="cd ${n <= 0 ? "due" : ""}" style="--c:${esc(color)}" title="${esc(`${cd.name} · ${f.format(cd.start)}`)}" ${cd.ev ? `data-action="open-cd" data-start="${cd.start.getTime()}" data-name="${esc(cd.ev.summary)}"` : ""}>
+      return `<div class="cd ${n <= 0 ? "cd-due" : ""}" style="--c:${esc(color)}" title="${esc(`${cd.name} · ${f.format(cd.start)}`)}" ${cd.ev ? `data-action="open-cd" data-start="${cd.start.getTime()}" data-name="${esc(cd.ev.summary)}"` : ""}>
         <div class="cd-top"><span class="cd-icon"><ha-icon icon="${esc(cd.icon || "mdi:timer-sand")}"></ha-icon></span>
         <span class="cd-num">${num}${unit ? `<span>${unit}</span>` : ""}</span></div>
         <div class="cd-name">${esc(cd.name)}</div>
-        <div class="cd-date">${esc(f.format(cd.start))}${cd.kind === "nameday" ? ` · ${esc(this._t("nameday"))}` : ""}${cd.ev?.age && this._isBday(cd.ev) ? ` · ${esc(this._ty(cd.ev).style === "anniversary" ? this._n().ord(cd.ev.age) : this._n().turns(cd.ev.age))}` : ""}</div>
+        <div class="cd-date">${esc(f.format(cd.start))}${n === 0 && cd.ev && !cd.ev.allDay ? ` · ${esc(this._time(cd.start))}` : ""}${cd.kind === "nameday" ? ` · ${esc(this._t("nameday"))}` : ""}${cd.ev?.age && this._isBday(cd.ev) ? ` · ${esc(this._ty(cd.ev).style === "anniversary" ? this._n().ord(cd.ev.age) : this._n().turns(cd.ev.age))}` : ""}</div>
       </div>`;
     }).join("")}</div>`;
   }
@@ -2663,11 +2663,11 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
   background: linear-gradient(140deg, color-mix(in srgb, var(--c) 24%, transparent), color-mix(in srgb, var(--c) 6%, transparent));
   border: 1px solid color-mix(in srgb, var(--c) 30%, transparent); box-sizing: border-box; }
 .cd[data-action] { cursor: pointer; }
-.cd.due { background: var(--c); color: #fff; border-color: transparent; }
-.cd.due .cd-num span, .cd.due .cd-date { color: rgba(255,255,255,.85); }
+.cd.cd-due { background: var(--c); color: #fff; border-color: transparent; }
+.cd.cd-due .cd-num span, .cd.cd-due .cd-date { color: rgba(255,255,255,.85); }
 .cd-top { display: flex; align-items: center; gap: 8px; }
 .cd-icon { width: 30px; height: 30px; border-radius: 10px; background: var(--c); color: #fff; display: grid; place-items: center; flex: none; }
-.cd.due .cd-icon { background: rgba(255,255,255,.25); }
+.cd.cd-due .cd-icon { background: rgba(255,255,255,.25); }
 .cd-icon ha-icon { --mdc-icon-size: 18px; }
 .cd-num { font-size: 1.55rem; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
 .cd-num span { font-size: .72rem; font-weight: 600; color: var(--hcc-muted); margin-left: 3px; letter-spacing: 0; }
