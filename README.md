@@ -225,6 +225,7 @@ max_height: 640px
 | `private` | `true` – every event in this calendar shows as "Private" with only its time – see *Private events* |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
 | `planner_column` | `true` (default) gives this calendar its own column in the Planner view. `false` shows its events next to the date instead – handy for a shared Family calendar |
+| `icon_rules` | List of `match` / `icon` pairs that give events an icon based on their title, e.g. for a waste-collection calendar `- match: "glass"` with `icon: mdi:bottle-wine`. `match` is case-insensitive and `\|` means "or" (`plastic\|cans`); the first matching rule wins. A `#tag` in the title still takes priority |
 
 #### Calendar groups
 
