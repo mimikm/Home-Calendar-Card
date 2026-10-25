@@ -49,7 +49,9 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
 - 🌙 **Night mode & screensaver** for always-on screens – a dim night clock on a schedule (wake by touch or motion sensor) and a family-photo slideshow with clock, weather and next event when idle
-- 🌍 **English, Polish and Spanish** – card and visual editor follow your Home Assistant language, with an extra **Imieniny** (name day) event type in Polish
+- 🌍 **7 languages** – English, Polish, Spanish, German, Italian, Dutch and Hungarian; card and visual editor follow your Home Assistant language
+- 🔒 **Private events** – tick *Private* and the wall screen shows only "Private" and the time
+- 🕐 **Clock** – a big clock with seconds in the header for wall displays, 24h or 12h
 - 🔍 **Appearance controls** – hide or shrink countdowns (compact one-line style, size slider) and enlarge day boxes and events with a slider
 - Zero dependencies, one file
 
@@ -199,6 +201,9 @@ max_height: 640px
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
+| `show_clock` | boolean | `false` | Big clock in the header – see *Clock* |
+| `clock_seconds` | boolean | `true` | Show seconds on the clock |
+| `clock_format` | `auto` \| `24h` \| `12h` | `auto` | Clock style. `auto` follows `time_format` / your HA profile |
 | `allow_add` | boolean | `true` | Show the **+ Event** button |
 | `allow_edit` | boolean | `true` | Show the **Edit** button on events |
 | `allow_delete` | boolean | `true` | Show the **Delete** button on events (turn off for a shared wall screen) |
@@ -217,6 +222,7 @@ max_height: 640px
 | `picture` | Image URL to use instead of a person's picture, e.g. `/local/kids.png` |
 | `icon` | MDI icon shown as the badge when there's no picture, e.g. `mdi:human-child` |
 | `type` | `events` (default), `birthday`, `anniversary`, `nameday` or `holiday` |
+| `private` | `true` – every event in this calendar shows as "Private" with only its time – see *Private events* |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
 | `planner_column` | `true` (default) gives this calendar its own column in the Planner view. `false` shows its events next to the date instead – handy for a shared Family calendar |
 
@@ -253,7 +259,7 @@ Groups only tidy up the calendar bar – adding events still lists every calenda
 
 **`type: anniversary`** – events show a ❤️ icon and "Anniversary". With a year in the title (e.g. *Wedding (2014)*) the card shows *12th anniversary*.
 
-**`type: nameday`** – Polish name days (*imieniny*): a 🌷 icon and "Imieniny", with countdowns for the next two.
+**`type: nameday`** – name days (*imieniny*, *névnap*, *onomastico*, *Namenstag*…): a 🌷 icon and "Name day" in your language, with countdowns for the next two.
 
 **`type: holiday`** – events appear as a coloured banner next to the day (and tint the day in Month view) rather than as an event row.
 
@@ -328,7 +334,7 @@ When adding an event you pick a **Type** from a dropdown. The built-in types are
 | Holiday | 🏖 `mdi:beach` | All-day by default, shown as a banner on each day of the trip, gets an automatic countdown |
 | Birthday | 🎂 `mdi:cake-variant` | All-day, repeats every year, shows *turns X* if you add the birth year to the title, e.g. `Mum (1962)` |
 | Anniversary | ❤️ `mdi:heart` | All-day, repeats every year, gets an automatic countdown, shows *12th anniversary* if you add the year to the title, e.g. `Wedding (2014)` |
-| Imieniny (Polish only) | 🌷 `mdi:flower-tulip` | Name day – all-day, repeats every year, countdowns for the next 2 name days. Shown in the Type dropdown when the card is in Polish |
+| Name day | 🌷 `mdi:flower-tulip` | All-day, repeats every year, countdowns for the next 2 name days (*imieniny*, *névnap*, *onomastico*…) |
 | Work event | 💼 `mdi:briefcase-outline` | Briefcase icon on the event |
 | DHS | 🏷 `mdi:tag-outline` | Tag icon on the event |
 
@@ -368,6 +374,18 @@ default_event_type: standard
 | `countdown_limit` | Only the next N events of this type get a card (birthdays default to `2`) |
 | `countdown_days` | Only events within this many days get a card (default: the card's `countdown_days`, 365) |
 | `countdown_calendars` | `true` to also count down events from calendars of this type, not just tagged events (on by default for birthdays and anniversaries) |
+
+### Private events
+
+Some things shouldn't be on the kitchen wall – a surprise party, a doctor's appointment, a present to buy. Mark them **private** and the card shows only **🔒 Private** and the time, so everyone can see you're busy but not what for.
+
+- In **Add / Edit event**, switch on **🔒 Private**. The card adds a `#private` tag to the description (like event types).
+- From Google, Apple or Outlook, just add `#private` to the event's description. Translations work too: `#prywatne`, `#privado`, `#privato`, `#prive`, `#privat`.
+- Make a whole calendar private with `private: true` in its calendar options.
+
+Private events show **"Private"** in every view (Agenda, Week, Month, Planner): no title, place, notes or event type, and they never get an automatic countdown. Tap one to see its time and calendar. **Edit** still opens the real details, so you can change them or switch Private off.
+
+> This hides details on the screen – it isn't a security feature. Anyone with access to your calendar in Google or in Home Assistant can still read the event. To stop people opening the real details from the card, turn off `allow_edit`.
 
 ### Repeating events
 
@@ -552,6 +570,20 @@ show_calendar_chips: false   # hide the calendar buttons row
 
 All of these are in the visual editor under **Appearance**, with sliders for the two sizes.
 
+### Clock
+
+A big clock in the header, between the date and the weather – handy on wall displays:
+
+```yaml
+show_clock: true
+clock_seconds: true    # default – set false for hours and minutes only
+clock_format: 24h      # auto (default, follows time_format / your HA profile), 24h or 12h
+```
+
+![Clock in the header and a private event](images/clock-private.png)
+
+It ticks every second without redrawing the calendar, so it's light even on older tablets. It scales with the screen in `fullscreen`, and switches off with the rest of the header if you set `show_header: false`. Find it in the visual editor under **Appearance**.
+
 ### Themes
 
 | Theme | Look |
@@ -602,12 +634,27 @@ The card and its visual editor are available in:
 | English | `en` |
 | Polski | `pl` |
 | Español | `es` |
+| Deutsch | `de` |
+| Italiano | `it` |
+| Nederlands | `nl` |
+| Magyar | `hu` |
 
 The language follows your Home Assistant profile automatically. Set `language: pl` (or pick it in the visual editor) to force one. Dates, weekdays and month names always use your language's normal format.
 
-**Polish extra – Imieniny 🇵🇱** – in Polish the Type dropdown includes **Imieniny** (name days). They repeat every year, get their own gold countdown colour, and the next two name days appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#imieniny`. A whole calendar of name days can be set to *Calendar type: Imieniny* in the editor.
+**Name days 🌷** – the **Name day** type is available in every language (*imieniny*, *névnap*, *onomastico*, *Namenstag*, *naamdag*, *onomástica*). Name days repeat every year, get their own gold countdown colour, and the next two appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#nameday` (or a translation below). A whole calendar of name days can be set to *Calendar type: Name days* in the editor.
 
-You can also type these tags in Google or Apple Calendar instead of the English ones: `#urodziny`, `#rocznica`, `#wakacje`, `#urlop`, `#praca`, `#imieniny` (Polish) and `#cumpleanos`, `#aniversario`, `#vacaciones`, `#trabajo`, `#onomastica` (Spanish).
+You can also type these tags in Google or Apple Calendar instead of the English ones (no accents needed):
+
+| Language | Birthday | Anniversary | Holiday | Work | Name day | Private |
+|---|---|---|---|---|---|---|
+| Polski | `#urodziny` | `#rocznica` | `#wakacje`, `#urlop` | `#praca` | `#imieniny` | `#prywatne` |
+| Español | `#cumpleanos` | `#aniversario` | `#vacaciones` | `#trabajo` | `#onomastica`, `#santo` | `#privado` |
+| Deutsch | `#geburtstag` | `#jahrestag` | `#urlaub`, `#ferien` | `#arbeit` | `#namenstag` | `#privat` |
+| Italiano | `#compleanno` | `#anniversario` | `#vacanza`, `#ferie` | `#lavoro` | `#onomastico` | `#privato` |
+| Nederlands | `#verjaardag` | `#jubileum` | `#vakantie` | `#werk` | `#naamdag` | `#prive` |
+| Magyar | `#szuletesnap`, `#szulinap` | `#evfordulo` | `#szabadsag` | `#munka` | `#nevnap` | `#privat` |
+
+**🙏 Help us improve the translations.** German, Italian, Dutch and Hungarian are new, and some wording may sound odd to a native speaker. If you spot something, please [open an issue](https://github.com/mimikm/Home-Calendar-Card/issues) or a pull request with the better wording – every fix is welcome. The texts are in the `I18N` section at the top of `home-calendar-card.js`.
 
 Your own `event_types` names, calendar names and `todo_title` are shown exactly as you write them.
 
@@ -621,7 +668,7 @@ Your own `event_types` names, calendar names and `todo_title` are shown exactly 
 
 Planned features – ideas and votes are welcome in [Issues](https://github.com/mimikm/Home-Calendar-Card/issues).
 
-- 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in English, Polish and Spanish. The microphone needs HTTPS.
+- 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in all the card's languages. The microphone needs HTTPS.
 - 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
 - 🌐 **Web panel for wall displays** – show a web page (radar map, bus times, school menu, your own dashboard) or a camera next to the calendar. Choose the position, set its size with a slider or by dragging its edge, zoom the page to fit, auto-refresh, rotate several pages, and lock it so taps can't navigate away. Only works with sites that allow being embedded, and over HTTPS only with `https://` pages.
 - 🗣️ **Voice assistant tip** – a ready-made script and guide for adding events by talking to Assist or a voice speaker with an AI conversation agent.
