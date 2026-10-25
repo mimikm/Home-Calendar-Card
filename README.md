@@ -30,6 +30,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 
 ## Features
 
+- 🔢 **Week numbers** – ISO week numbers in Month, Week and Planner views
 - 📅 **Four views** – Agenda (grouped by day), Week (7 columns, stacks on phones), Month (grid, dots on phones) and Planner (a column per person, like a printed family planner)
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
 - ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
@@ -197,6 +198,7 @@ max_height: 640px
 | `default_view` | `agenda` \| `week` \| `month` \| `planner` | `agenda` | View shown when the dashboard loads |
 | `days_to_show` | number | `7` | Number of days in Agenda view |
 | `first_day_of_week` | `monday` \| `sunday` \| `saturday` | `monday` | Start of week in Week and Month views |
+| `show_week_numbers` | boolean | `false` | ISO week numbers – a slim column in Month view and *Week 43* in Week and Planner – see *Week numbers* |
 | `time_format` | `auto` \| `24h` \| `12h` | `auto` | `auto` follows your HA user profile |
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
 | `show_header` | boolean | `true` | Show the big date and current weather |
@@ -224,8 +226,8 @@ max_height: 640px
 | `type` | `events` (default), `birthday`, `anniversary`, `nameday` or `holiday` |
 | `private` | `true` – every event in this calendar shows as "Private" with only its time – see *Private events* |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
+| `icon_rules` | List of `match` / `icon` pairs that give events an icon from words in their title – see *Icons by title* |
 | `planner_column` | `true` (default) gives this calendar its own column in the Planner view. `false` shows its events next to the date instead – handy for a shared Family calendar |
-| `icon_rules` | List of `match` / `icon` pairs that give events an icon based on their title, e.g. for a waste-collection calendar `- match: "glass"` with `icon: mdi:bottle-wine`. `match` is case-insensitive and `\|` means "or" (`plastic\|cans`); the first matching rule wins. A `#tag` in the title still takes priority |
 
 #### Calendar groups
 
@@ -255,6 +257,32 @@ calendars:
 - In the visual editor, each calendar has a **Group** field – type the same name for every calendar you want together.
 
 Groups only tidy up the calendar bar – adding events still lists every calendar you can write to.
+
+#### Icons by title (`icon_rules`)
+
+Some calendars are filled by an integration – bin collections, school menus, sports fixtures – so you can't add `#tags` to their events. Give them icons from words in the title instead:
+
+```yaml
+calendars:
+  - entity: calendar.waste_collection_schedule
+    name: Bins
+    icon_rules:
+      - match: "glass"
+        icon: mdi:bottle-wine
+      - match: "plastic|cans"     # | = or
+        icon: mdi:recycle
+      - match: "garden|organic"
+        icon: mdi:leaf
+      - match: "general"
+        icon: mdi:trash-can
+```
+
+- Matching ignores upper/lower case and finds the word anywhere in the title (`glass` matches *Glass collection*).
+- Rules are checked from top to bottom – the **first match wins**.
+- A `#tag` on the event still takes priority, and private events always keep the 🔒 icon.
+- The icon shows in every view, in countdowns and on holiday banners.
+
+<sub>Contributed by [@wit3](https://github.com/wit3) in [#5](https://github.com/mimikm/Home-Calendar-Card/pull/5) – thank you!</sub>
 
 **`type: birthday`** – events show a 🎂 icon and "Birthday". If the event title or description contains a birth year (e.g. *Anna (1990)*), the card shows *turns 36* and hides the year from the title.
 
@@ -375,6 +403,22 @@ default_event_type: standard
 | `countdown_limit` | Only the next N events of this type get a card (birthdays default to `2`) |
 | `countdown_days` | Only events within this many days get a card (default: the card's `countdown_days`, 365) |
 | `countdown_calendars` | `true` to also count down events from calendars of this type, not just tagged events (on by default for birthdays and anniversaries) |
+
+### Week numbers
+
+Plan by week number? Turn on **Show week numbers** in the visual editor, or:
+
+```yaml
+show_week_numbers: true
+```
+
+![Month view with week numbers](images/week-numbers.png)
+
+- **Month view** gets a slim column on the left with the week number of each row.
+- **Week** and **Planner** views show it next to the dates, e.g. *Week 43 · 19 Oct – 25 Oct* (*KW 43* in German, *43. hét* in Hungarian…).
+- Numbers follow the **ISO 8601** standard used across Europe (weeks start on Monday, week 1 contains the first Thursday of January), even if your week starts on Sunday – so they match your work and school calendars.
+
+<sub>Requested by [@ydiazvaldivia](https://github.com/ydiazvaldivia) in [#4](https://github.com/mimikm/Home-Calendar-Card/issues/4).</sub>
 
 ### Private events
 
