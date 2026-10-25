@@ -1342,6 +1342,10 @@ class HomeCalendarCard extends HTMLElement {
         const t = String(o.type || "events").toLowerCase();
         o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : t.startsWith("anniversar") ? "anniversary"
           : (t.startsWith("nameday") || t.startsWith("imieniny")) ? "nameday" : "events";
+        // icon_rules: [{ match: "glass|bottle", icon: "mdi:bottle-wine" }] – icon by title keyword ("|" = or)
+        o._iconRules = (Array.isArray(o.icon_rules) ? o.icon_rules : [])
+          .map((r) => ({ words: String(r?.match || "").toLowerCase().split("|").map((w) => w.trim()).filter(Boolean), icon: r?.icon }))
+          .filter((r) => r.words.length && r.icon);
         return o;
       })
       .filter((c) => c.entity);
@@ -1922,8 +1926,10 @@ class HomeCalendarCard extends HTMLElement {
       if (a > 0 && a < 130) age = a;
       summary = summary.replace(/\s*[([]?\b(19|20)\d{2}\b[)\]]?/, "").trim() || summary;
     }
+    const hay = `${title} ${e.summary || ""}`.toLowerCase();
+    const ruleIcon = (cal._iconRules || []).find((r) => r.words.some((w) => hay.includes(w)))?.icon || "";
     const ev = {
-      age, type: typeId, tagged: !!tagged, title,
+      age, type: typeId, tagged: !!tagged, title, ruleIcon,
       id: `e${++EV_SEQ}`, summary: summary || "(No title)", description,
       location: e.location || "", uid: e.uid, recurrence_id: e.recurrence_id, rrule: e.rrule,
       allDay, start, end, cal,
@@ -1964,7 +1970,7 @@ class HomeCalendarCard extends HTMLElement {
     return anniv ? this._n().anniv(ev.age) : `${name} · ${this._n().turns(ev.age)}`;
   }
 
-  _typeIcon(ev) { return ev.private ? "mdi:lock-outline" : this._ty(ev).icon || ""; }
+  _typeIcon(ev) { return ev.private ? "mdi:lock-outline" : (!ev.tagged && ev.ruleIcon) || this._ty(ev).icon || ""; }
 
   _eventsOn(day) { return this._onDay(day).filter((ev) => !this._isBanner(ev)); }
 
@@ -1972,7 +1978,7 @@ class HomeCalendarCard extends HTMLElement {
 
   _holidayTags(day) {
     return this._holidaysOn(day).map((ev) => `<span class="hol" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
-      <ha-icon icon="${esc((ev.tagged ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper")}"></ha-icon>${esc(ev.summary)}</span>`).join("");
+      <ha-icon icon="${esc((ev.tagged || ev.ruleIcon ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper")}"></ha-icon>${esc(ev.summary)}</span>`).join("");
   }
 
   /* ------------------------------------------------------------ countdowns */
