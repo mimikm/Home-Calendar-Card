@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.14.0";
+const CARD_VERSION = "1.15.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -109,6 +109,7 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 const I18N = {
   en: {
     private_ev: "Private", private_sw: "Private", private_help: "Show only \"Private\" and the time on the screen", l_show_clock: "Show clock", l_clock_seconds: "Clock seconds", l_clock_format: "Clock format",
+    wk: "Week {n}", wk_short: "Wk", l_show_week_numbers: "Show week numbers",
     agenda: "Agenda", week: "Week", month: "Month", planner: "Planner", pl_add: "Add event for {n}", pl_none: "No person calendars to show – turn some on above", today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday",
     prev: "Previous", next: "Next", event_btn: "Event", back_fs: "Back to full screen",
     all_day: "All day", all_day_n: "All day · {n}/{t}", until: "Until {t}", from: "From {t}", now: "Now",
@@ -168,6 +169,7 @@ const I18N = {
   },
   pl: {
     private_ev: "Prywatne", private_sw: "Prywatne", private_help: "Na ekranie pokaż tylko \"Prywatne\" i godzinę", l_show_clock: "Pokaż zegar", l_clock_seconds: "Sekundy na zegarze", l_clock_format: "Format zegara",
+    wk: "Tydzień {n}", wk_short: "Tydz.", l_show_week_numbers: "Pokaż numery tygodni",
     agenda: "Agenda", week: "Tydzień", month: "Miesiąc", planner: "Planer", pl_add: "Dodaj wydarzenie dla: {n}", pl_none: "Brak kalendarzy osób do pokazania – włącz je powyżej", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
     prev: "Poprzedni", next: "Następny", event_btn: "Wydarzenie", back_fs: "Wróć do pełnego ekranu",
     all_day: "Cały dzień", all_day_n: "Cały dzień · {n}/{t}", until: "Do {t}", from: "Od {t}", now: "Teraz",
@@ -226,6 +228,7 @@ const I18N = {
   },
   es: {
     private_ev: "Privado", private_sw: "Privado", private_help: "Mostrar solo \"Privado\" y la hora en la pantalla", l_show_clock: "Mostrar reloj", l_clock_seconds: "Segundos en el reloj", l_clock_format: "Formato del reloj",
+    wk: "Semana {n}", wk_short: "Sem.", l_show_week_numbers: "Mostrar números de semana",
     agenda: "Agenda", week: "Semana", month: "Mes", planner: "Planificador", pl_add: "Añadir evento para {n}", pl_none: "No hay calendarios de personas – activa alguno arriba", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
     prev: "Anterior", next: "Siguiente", event_btn: "Evento", back_fs: "Volver a pantalla completa",
     all_day: "Todo el día", all_day_n: "Todo el día · {n}/{t}", until: "Hasta {t}", from: "Desde {t}", now: "Ahora",
@@ -283,6 +286,9 @@ const I18N = {
     ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
   it: {
+    wk: "Settimana {n}",
+    wk_short: "Sett.",
+    l_show_week_numbers: "Mostra numeri delle settimane",
     private_ev: "Privato",
     private_sw: "Privato",
     private_help: "Mostra sullo schermo solo \"Privato\" e l'orario",
@@ -517,6 +523,9 @@ const I18N = {
     ed_media_help: "es. media-source://media_source/local/photos – lascia vuoto per un salvaschermo con solo orologio",
   },
   nl: {
+    wk: "Week {n}",
+    wk_short: "Wk",
+    l_show_week_numbers: "Weeknummers tonen",
     private_ev: "Privé",
     private_sw: "Privé",
     private_help: "Toon op het scherm alleen \"Privé\" en de tijd",
@@ -751,6 +760,9 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    wk: "KW {n}",
+    wk_short: "KW",
+    l_show_week_numbers: "Kalenderwochen anzeigen",
     private_ev: "Privat",
     private_sw: "Privat",
     private_help: "Auf dem Bildschirm nur \"Privat\" und die Uhrzeit anzeigen",
@@ -985,6 +997,9 @@ const I18N = {
     ed_media_help: "z. B. media-source://media_source/local/photos – leer lassen für einen Bildschirmschoner nur mit Uhr",
   },
   hu: {
+    wk: "{n}. hét",
+    wk_short: "Hét",
+    l_show_week_numbers: "Hetek számának megjelenítése",
     private_ev: "Privát",
     private_sw: "Privát",
     private_help: "A képernyőn csak a \"Privát\" felirat és az időpont látszik",
@@ -1275,6 +1290,13 @@ const startOfDay = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); retur
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const parseDate = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
 const sameDay = (a, b) => dayKey(a) === dayKey(b);
+// ISO 8601 week number (weeks start on Monday; week 1 contains the first Thursday of the year)
+const isoWeek = (d) => {
+  const x = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const wd = x.getUTCDay() || 7;
+  x.setUTCDate(x.getUTCDate() + 4 - wd);
+  return Math.ceil(((x - Date.UTC(x.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+};
 // Countdown dates. HA's YAML editor turns an unquoted `date: 2026-10-24` into a JS Date and saves it as
 // "2026-10-24T00:00:00.000Z" (midnight UTC), which is the day before in the Americas – so midnight UTC
 // is read as a plain calendar date. Any other time keeps its exact moment.
@@ -1342,7 +1364,7 @@ class HomeCalendarCard extends HTMLElement {
         const t = String(o.type || "events").toLowerCase();
         o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : t.startsWith("anniversar") ? "anniversary"
           : (t.startsWith("nameday") || t.startsWith("imieniny")) ? "nameday" : "events";
-        // icon_rules: [{ match: "glass|bottle", icon: "mdi:bottle-wine" }] – icon by title keyword ("|" = or)
+        // icon_rules: [{ match: "glass|bottle", icon: "mdi:bottle-wine" }] – icon by title keyword ("|" = or). Thanks @wit3 (PR #5)
         o._iconRules = (Array.isArray(o.icon_rules) ? o.icon_rules : [])
           .map((r) => ({ words: String(r?.match || "").toLowerCase().split("|").map((w) => w.trim()).filter(Boolean), icon: r?.icon }))
           .filter((r) => r.words.length && r.icon);
@@ -1926,7 +1948,7 @@ class HomeCalendarCard extends HTMLElement {
       if (a > 0 && a < 130) age = a;
       summary = summary.replace(/\s*[([]?\b(19|20)\d{2}\b[)\]]?/, "").trim() || summary;
     }
-    const hay = `${title} ${e.summary || ""}`.toLowerCase();
+    const hay = `${title} ${summary}`.toLowerCase();
     const ruleIcon = (cal._iconRules || []).find((r) => r.words.some((w) => hay.includes(w)))?.icon || "";
     const ev = {
       age, type: typeId, tagged: !!tagged, title, ruleIcon,
@@ -1937,7 +1959,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!isPrivate) return ev;
     // Private: keep the real details for editing, show only "Private" + the time everywhere else.
     ev.real = { summary: ev.summary, title, description, location: ev.location, type: typeId, age };
-    return Object.assign(ev, { private: true, summary: this._t("private_ev"), title: this._t("private_ev"), description: "", location: "", type: "standard", tagged: false, age: null });
+    return Object.assign(ev, { private: true, summary: this._t("private_ev"), title: this._t("private_ev"), description: "", location: "", type: "standard", tagged: false, age: null, ruleIcon: "" });
   }
 
   _onDay(day) {
@@ -1978,7 +2000,7 @@ class HomeCalendarCard extends HTMLElement {
 
   _holidayTags(day) {
     return this._holidaysOn(day).map((ev) => `<span class="hol" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
-      <ha-icon icon="${esc((ev.tagged || ev.ruleIcon ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper")}"></ha-icon>${esc(ev.summary)}</span>`).join("");
+      <ha-icon icon="${esc((ev.tagged || ev.ruleIcon || ev.private ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper")}"></ha-icon>${esc(ev.summary)}</span>`).join("");
   }
 
   /* ------------------------------------------------------------ countdowns */
@@ -2019,7 +2041,7 @@ class HomeCalendarCard extends HTMLElement {
         }
         const hit = evs.filter((ev) => ev.end > now && (!re || re.test(ev.real?.summary ?? ev.summary))).sort((a, b) => a.start - b.start)[0];
         if (!hit) return null;
-        return { name: cd.name || hit.summary, start: hit.start, end: hit.end, icon: cd.icon, color, fixed, ev: hit, kind: cd.type || this._cdKind(hit) };
+        return { name: cd.name || hit.summary, start: hit.start, end: hit.end, icon: cd.icon || this._typeIcon(hit) || undefined, color, fixed, ev: hit, kind: cd.type || this._cdKind(hit) };
       } catch (e) {
         console.warn("home-calendar-card: countdown failed", cd, e);
         return null;
@@ -2257,7 +2279,11 @@ class HomeCalendarCard extends HTMLElement {
     const { start, end } = this._range();
     const last = addDays(end, -1);
     const f = this._fmt({ day: "numeric", month: "short" });
-    return sameDay(start, last) ? f.format(start) : `${f.format(start)} – ${f.format(last)}`;
+    const txt = sameDay(start, last) ? f.format(start) : `${f.format(start)} – ${f.format(last)}`;
+    if (!this._config.show_week_numbers || !["week", "planner"].includes(this._view)) return txt;
+    // the ISO week of the Monday in this range (ranges can start on Sunday/Saturday)
+    const mon = [0, 1, 2, 3, 4, 5, 6].map((i) => addDays(start, i)).find((d) => d.getDay() === 1) || start;
+    return `${this._t("wk", { n: isoWeek(mon) })} · ${txt}`;
   }
 
   /* ------------------------------------------------------------- rendering */
@@ -2952,11 +2978,17 @@ class HomeCalendarCard extends HTMLElement {
     const today = dayKey(new Date());
     const max = Math.max(1, Number(this._config.max_events_per_day) || (this._mode === "card" ? 3 : 6));
     const wdFmt = this._fmt({ weekday: "short" });
-    let out = `<div class="month"><div class="mhead">`;
+    const wn = !!this._config.show_week_numbers;
+    let out = `<div class="month ${wn ? "wn" : ""}"><div class="mhead">${wn ? `<div class="mwk-h">${esc(this._t("wk_short"))}</div>` : ""}`;
     for (let i = 0; i < 7; i++) out += `<div>${esc(wdFmt.format(addDays(start, i)))}</div>`;
     out += `</div><div class="mgrid">`;
     for (let i = 0; i < days; i++) {
       const d = addDays(start, i);
+      if (wn && i % 7 === 0) {
+        const mon = [0, 1, 2, 3, 4, 5, 6].map((k) => addDays(d, k)).find((x) => x.getDay() === 1) || d;
+        const w = isoWeek(mon);
+        out += `<div class="mwk" title="${esc(this._t("wk", { n: w }))}">${w}</div>`;
+      }
       const evs = this._eventsOn(d);
       const f = this._forecast[dayKey(d)];
       const hol = this._holidaysOn(d)[0];
@@ -3775,6 +3807,10 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .mev.allday { background: var(--c); color: #fff; }
 .mev.allday .mdot { display: none; }
 .more { font-size: .68rem; color: var(--hcc-muted); font-weight: 700; padding-left: 4px; }
+.month.wn .mhead, .month.wn .mgrid { grid-template-columns: 24px repeat(7, minmax(0, 1fr)); }
+.mwk, .mwk-h { display: flex; justify-content: center; font-size: .66rem; font-weight: 700; color: var(--hcc-muted); font-variant-numeric: tabular-nums; }
+.mwk { padding-top: 9px; border-radius: 8px; background: color-mix(in srgb, var(--hcc-soft) 45%, transparent); zoom: var(--ev-scale, 1); }
+.mwk-h { opacity: .8; }
 
 /* responsive */
 @container (max-width: 600px) {
@@ -4178,7 +4214,7 @@ const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "tod
   "todo_group_by", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips",
   "show_clock", "clock_seconds", "clock_format",
-  "default_view", "days_to_show", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
+  "default_view", "days_to_show", "show_week_numbers", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t) => {
   const o = (value, key) => ({ value, label: t(key) });
@@ -4204,6 +4240,7 @@ const generalSchema = (t) => {
     { type: "grid", name: "", schema: [
       { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month"), o("planner", "planner")] } } },
       { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
+      { name: "show_week_numbers", selector: { boolean: {} } },
       { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [o("monday", "o_monday"), o("sunday", "o_sunday"), o("saturday", "o_saturday")] } } },
       { name: "time_format", selector: { select: { mode: "dropdown", options: [o("auto", "o_tf_auto"), o("24h", "o_24h"), o("12h", "o_12h")] } } },
     ] },
