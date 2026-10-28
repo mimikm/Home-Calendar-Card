@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.15.1";
+const CARD_VERSION = "1.16.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -108,6 +108,7 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    edit_task: "Edit task", task_for: "For", replace_note: "This calendar can't change events directly, so saving replaces the event with a new one. Guests, reminders and colours set in the calendar app are not copied.", l_planner_days: "Days in Planner", l_planner_start: "Planner starts on", o_pl_week: "Start of the week", o_pl_today: "Today", o_pc_own: "Own column", o_pc_group: "Group column", o_pc_side: "Next to the date", l_month_mobile: "Month view on phones", o_mm_list: "List of the tapped day", o_mm_text: "Short titles", o_mm_dots: "Dots only", ed_layout: "Layout", l_sections: "Sections above the calendar (drag to reorder, untick to hide)", o_sec_header: "Date & weather", o_sec_countdowns: "Countdowns", o_sec_toolbar: "View buttons & date navigation", o_sec_chips: "Calendar buttons", l_show_view_selector: "Show view buttons (Agenda / Week / …)", l_show_date_navigation: "Show date navigation (‹ Today ›)", l_event_time_position: "Event time", o_tp_above: "Above the title", o_tp_left: "Left of the title", o_tp_right: "Right of the title", l_show_event_location: "Show event location", l_show_event_calendar: "Show calendar name on events", l_planner_column: "Planner view", ed_planner_help: "Own column, a shared column for its group, or next to the date",
     private_ev: "Private", private_sw: "Private", private_help: "Show only \"Private\" and the time on the screen", l_show_clock: "Show clock", l_clock_seconds: "Clock seconds", l_clock_format: "Clock format",
     wk: "Week {n}", wk_short: "Wk", l_show_week_numbers: "Show week numbers",
     agenda: "Agenda", week: "Week", month: "Month", planner: "Planner", pl_add: "Add event for {n}", pl_none: "No person calendars to show – turn some on above", today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday",
@@ -153,7 +154,7 @@ const I18N = {
     l_first_day_of_week: "First day of week", l_time_format: "Time format", l_show_header: "Show date & weather header",
     l_allow_add: "Allow adding events", l_allow_edit: "Allow editing events", l_allow_delete: "Allow deleting events",
     l_show_empty_days: "Show days without events", l_max_height: "Max height (e.g. 600px)",
-    l_entity: "Calendar", l_name: "Display name", l_person: "Person (shows their photo)", l_type: "Calendar type", l_planner_column: "Own column in Planner view", ed_planner_help: "Off: its events show next to the date instead",
+    l_entity: "Calendar", l_name: "Display name", l_person: "Person (shows their photo)", l_type: "Calendar type",
     o_auto: "Automatic", o_top: "Top", o_bottom: "Bottom", o_left: "Left", o_right: "Right",
     o_monday: "Monday", o_sunday: "Sunday", o_saturday: "Saturday",
     o_tf_auto: "From HA profile", o_24h: "24 hour", o_12h: "12 hour",
@@ -168,6 +169,7 @@ const I18N = {
     ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
+    edit_task: "Edytuj zadanie", task_for: "Dla", replace_note: "Ten kalendarz nie pozwala zmieniać wydarzeń, więc zapis zastąpi wydarzenie nowym. Goście, przypomnienia i kolory ustawione w aplikacji kalendarza nie zostaną skopiowane.", l_planner_days: "Dni w Planerze", l_planner_start: "Planer zaczyna się od", o_pl_week: "Początku tygodnia", o_pl_today: "Dzisiaj", o_pc_own: "Własna kolumna", o_pc_group: "Kolumna grupy", o_pc_side: "Obok daty", l_month_mobile: "Widok miesiąca na telefonie", o_mm_list: "Lista wybranego dnia", o_mm_text: "Krótkie tytuły", o_mm_dots: "Tylko kropki", ed_layout: "Układ", l_sections: "Sekcje nad kalendarzem (przeciągnij, by zmienić kolejność; odznacz, by ukryć)", o_sec_header: "Data i pogoda", o_sec_countdowns: "Odliczania", o_sec_toolbar: "Przyciski widoków i nawigacja dat", o_sec_chips: "Przyciski kalendarzy", l_show_view_selector: "Pokaż przyciski widoków (Agenda / Tydzień / …)", l_show_date_navigation: "Pokaż nawigację dat (‹ Dzisiaj ›)", l_event_time_position: "Godzina wydarzenia", o_tp_above: "Nad tytułem", o_tp_left: "Na lewo od tytułu", o_tp_right: "Na prawo od tytułu", l_show_event_location: "Pokaż miejsce wydarzenia", l_show_event_calendar: "Pokaż nazwę kalendarza przy wydarzeniach", l_planner_column: "Widok Planer", ed_planner_help: "Własna kolumna, wspólna kolumna grupy albo obok daty",
     private_ev: "Prywatne", private_sw: "Prywatne", private_help: "Na ekranie pokaż tylko \"Prywatne\" i godzinę", l_show_clock: "Pokaż zegar", l_clock_seconds: "Sekundy na zegarze", l_clock_format: "Format zegara",
     wk: "Tydzień {n}", wk_short: "Tydz.", l_show_week_numbers: "Pokaż numery tygodni",
     agenda: "Agenda", week: "Tydzień", month: "Miesiąc", planner: "Planer", pl_add: "Dodaj wydarzenie dla: {n}", pl_none: "Brak kalendarzy osób do pokazania – włącz je powyżej", today: "Dzisiaj", tomorrow: "Jutro", yesterday: "Wczoraj",
@@ -212,7 +214,7 @@ const I18N = {
     l_first_day_of_week: "Pierwszy dzień tygodnia", l_time_format: "Format czasu", l_show_header: "Pokaż nagłówek z datą i pogodą",
     l_allow_add: "Zezwalaj na dodawanie wydarzeń", l_allow_edit: "Zezwalaj na edycję wydarzeń", l_allow_delete: "Zezwalaj na usuwanie wydarzeń",
     l_show_empty_days: "Pokaż dni bez wydarzeń", l_max_height: "Maks. wysokość (np. 600px)",
-    l_entity: "Kalendarz", l_name: "Wyświetlana nazwa", l_person: "Osoba (pokazuje jej zdjęcie)", l_type: "Typ kalendarza", l_planner_column: "Własna kolumna w widoku Planer", ed_planner_help: "Wyłączone: wydarzenia pokażą się obok daty",
+    l_entity: "Kalendarz", l_name: "Wyświetlana nazwa", l_person: "Osoba (pokazuje jej zdjęcie)", l_type: "Typ kalendarza",
     o_auto: "Automatycznie", o_top: "Góra", o_bottom: "Dół", o_left: "Lewo", o_right: "Prawo",
     o_monday: "Poniedziałek", o_sunday: "Niedziela", o_saturday: "Sobota",
     o_tf_auto: "Z profilu HA", o_24h: "24-godzinny", o_12h: "12-godzinny",
@@ -227,6 +229,7 @@ const I18N = {
     ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
+    edit_task: "Editar tarea", task_for: "Para", replace_note: "Este calendario no permite cambiar eventos, así que al guardar se sustituye por uno nuevo. No se copian invitados, recordatorios ni colores de la app de calendario.", l_planner_days: "Días en el planificador", l_planner_start: "El planificador empieza", o_pl_week: "Al inicio de la semana", o_pl_today: "Hoy", o_pc_own: "Columna propia", o_pc_group: "Columna del grupo", o_pc_side: "Junto a la fecha", l_month_mobile: "Vista de mes en el móvil", o_mm_list: "Lista del día pulsado", o_mm_text: "Títulos cortos", o_mm_dots: "Solo puntos", ed_layout: "Diseño", l_sections: "Secciones sobre el calendario (arrastra para ordenar, desmarca para ocultar)", o_sec_header: "Fecha y tiempo", o_sec_countdowns: "Cuentas atrás", o_sec_toolbar: "Botones de vista y navegación", o_sec_chips: "Botones de calendarios", l_show_view_selector: "Mostrar botones de vista (Agenda / Semana / …)", l_show_date_navigation: "Mostrar navegación de fechas (‹ Hoy ›)", l_event_time_position: "Hora del evento", o_tp_above: "Encima del título", o_tp_left: "A la izquierda del título", o_tp_right: "A la derecha del título", l_show_event_location: "Mostrar ubicación del evento", l_show_event_calendar: "Mostrar nombre del calendario en los eventos", l_planner_column: "Vista planificador", ed_planner_help: "Columna propia, columna compartida del grupo o junto a la fecha",
     private_ev: "Privado", private_sw: "Privado", private_help: "Mostrar solo \"Privado\" y la hora en la pantalla", l_show_clock: "Mostrar reloj", l_clock_seconds: "Segundos en el reloj", l_clock_format: "Formato del reloj",
     wk: "Semana {n}", wk_short: "Sem.", l_show_week_numbers: "Mostrar números de semana",
     agenda: "Agenda", week: "Semana", month: "Mes", planner: "Planificador", pl_add: "Añadir evento para {n}", pl_none: "No hay calendarios de personas – activa alguno arriba", today: "Hoy", tomorrow: "Mañana", yesterday: "Ayer",
@@ -271,7 +274,7 @@ const I18N = {
     l_first_day_of_week: "Primer día de la semana", l_time_format: "Formato de hora", l_show_header: "Mostrar encabezado con fecha y tiempo",
     l_allow_add: "Permitir añadir eventos", l_allow_edit: "Permitir editar eventos", l_allow_delete: "Permitir eliminar eventos",
     l_show_empty_days: "Mostrar días sin eventos", l_max_height: "Altura máx. (p. ej. 600px)",
-    l_entity: "Calendario", l_name: "Nombre visible", l_person: "Persona (muestra su foto)", l_type: "Tipo de calendario", l_planner_column: "Columna propia en el Planificador", ed_planner_help: "Desactivado: sus eventos se muestran junto a la fecha",
+    l_entity: "Calendario", l_name: "Nombre visible", l_person: "Persona (muestra su foto)", l_type: "Tipo de calendario",
     o_auto: "Automático", o_top: "Arriba", o_bottom: "Abajo", o_left: "Izquierda", o_right: "Derecha",
     o_monday: "Lunes", o_sunday: "Domingo", o_saturday: "Sábado",
     o_tf_auto: "Del perfil de HA", o_24h: "24 horas", o_12h: "12 horas",
@@ -286,6 +289,7 @@ const I18N = {
     ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
   it: {
+    edit_task: "Modifica attività", task_for: "Per", replace_note: "Questo calendario non può modificare gli eventi, quindi salvando l'evento viene sostituito da uno nuovo. Invitati, promemoria e colori impostati nell'app del calendario non vengono copiati.", l_planner_days: "Giorni nel Planner", l_planner_start: "Il Planner inizia", o_pl_week: "Dall'inizio della settimana", o_pl_today: "Da oggi", o_pc_own: "Colonna propria", o_pc_group: "Colonna del gruppo", o_pc_side: "Accanto alla data", l_month_mobile: "Vista mese sul telefono", o_mm_list: "Elenco del giorno toccato", o_mm_text: "Titoli brevi", o_mm_dots: "Solo puntini", ed_layout: "Layout", l_sections: "Sezioni sopra il calendario (trascina per riordinare, deseleziona per nascondere)", o_sec_header: "Data e meteo", o_sec_countdowns: "Conti alla rovescia", o_sec_toolbar: "Pulsanti vista e navigazione date", o_sec_chips: "Pulsanti dei calendari", l_show_view_selector: "Mostra pulsanti vista (Agenda / Settimana / …)", l_show_date_navigation: "Mostra navigazione date (‹ Oggi ›)", l_event_time_position: "Orario dell'evento", o_tp_above: "Sopra il titolo", o_tp_left: "A sinistra del titolo", o_tp_right: "A destra del titolo", l_show_event_location: "Mostra luogo dell'evento", l_show_event_calendar: "Mostra nome del calendario negli eventi", l_planner_column: "Vista Planner", ed_planner_help: "Colonna propria, colonna condivisa del gruppo o accanto alla data",
     wk: "Settimana {n}",
     wk_short: "Sett.",
     l_show_week_numbers: "Mostra numeri delle settimane",
@@ -445,8 +449,6 @@ const I18N = {
     l_name: "Nome visualizzato",
     l_person: "Persona (mostra la sua foto)",
     l_type: "Tipo di calendario",
-    l_planner_column: "Colonna propria nella vista Planner",
-    ed_planner_help: "Disattivato: i suoi eventi appaiono accanto alla data",
     o_auto: "Automatico",
     o_top: "In alto",
     o_bottom: "In basso",
@@ -523,6 +525,7 @@ const I18N = {
     ed_media_help: "es. media-source://media_source/local/photos – lascia vuoto per un salvaschermo con solo orologio",
   },
   nl: {
+    edit_task: "Taak bewerken", task_for: "Voor", replace_note: "Deze agenda kan afspraken niet direct wijzigen, dus bij opslaan wordt de afspraak vervangen door een nieuwe. Gasten, herinneringen en kleuren uit de agenda-app worden niet overgenomen.", l_planner_days: "Dagen in de Planner", l_planner_start: "Planner begint", o_pl_week: "Aan het begin van de week", o_pl_today: "Vandaag", o_pc_own: "Eigen kolom", o_pc_group: "Groepskolom", o_pc_side: "Naast de datum", l_month_mobile: "Maandweergave op telefoon", o_mm_list: "Lijst van de aangetikte dag", o_mm_text: "Korte titels", o_mm_dots: "Alleen stippen", ed_layout: "Indeling", l_sections: "Onderdelen boven de agenda (sleep om te ordenen, vink uit om te verbergen)", o_sec_header: "Datum & weer", o_sec_countdowns: "Aftellers", o_sec_toolbar: "Weergaveknoppen & datumnavigatie", o_sec_chips: "Agendaknoppen", l_show_view_selector: "Weergaveknoppen tonen (Agenda / Week / …)", l_show_date_navigation: "Datumnavigatie tonen (‹ Vandaag ›)", l_event_time_position: "Tijd van de afspraak", o_tp_above: "Boven de titel", o_tp_left: "Links van de titel", o_tp_right: "Rechts van de titel", l_show_event_location: "Locatie van afspraak tonen", l_show_event_calendar: "Agendanaam bij afspraken tonen", l_planner_column: "Planner-weergave", ed_planner_help: "Eigen kolom, gedeelde groepskolom of naast de datum",
     wk: "Week {n}",
     wk_short: "Wk",
     l_show_week_numbers: "Weeknummers tonen",
@@ -682,8 +685,6 @@ const I18N = {
     l_name: "Weergavenaam",
     l_person: "Persoon (toont de foto)",
     l_type: "Soort agenda",
-    l_planner_column: "Eigen kolom in de Planner-weergave",
-    ed_planner_help: "Uit: de afspraken staan dan naast de datum",
     o_auto: "Automatisch",
     o_top: "Boven",
     o_bottom: "Onder",
@@ -760,6 +761,7 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    edit_task: "Aufgabe bearbeiten", task_for: "Für", replace_note: "Dieser Kalender kann Termine nicht direkt ändern, daher ersetzt das Speichern den Termin durch einen neuen. Gäste, Erinnerungen und Farben aus der Kalender-App werden nicht übernommen.", l_planner_days: "Tage im Planer", l_planner_start: "Planer beginnt", o_pl_week: "Am Wochenanfang", o_pl_today: "Heute", o_pc_own: "Eigene Spalte", o_pc_group: "Gruppenspalte", o_pc_side: "Neben dem Datum", l_month_mobile: "Monatsansicht auf dem Handy", o_mm_list: "Liste des angetippten Tages", o_mm_text: "Kurze Titel", o_mm_dots: "Nur Punkte", ed_layout: "Layout", l_sections: "Bereiche über dem Kalender (ziehen zum Sortieren, abwählen zum Ausblenden)", o_sec_header: "Datum & Wetter", o_sec_countdowns: "Countdowns", o_sec_toolbar: "Ansichtstasten & Datumsnavigation", o_sec_chips: "Kalender-Schaltflächen", l_show_view_selector: "Ansichtstasten anzeigen (Agenda / Woche / …)", l_show_date_navigation: "Datumsnavigation anzeigen (‹ Heute ›)", l_event_time_position: "Uhrzeit des Termins", o_tp_above: "Über dem Titel", o_tp_left: "Links vom Titel", o_tp_right: "Rechts vom Titel", l_show_event_location: "Ort des Termins anzeigen", l_show_event_calendar: "Kalendername bei Terminen anzeigen", l_planner_column: "Planer-Ansicht", ed_planner_help: "Eigene Spalte, gemeinsame Gruppenspalte oder neben dem Datum",
     wk: "KW {n}",
     wk_short: "KW",
     l_show_week_numbers: "Kalenderwochen anzeigen",
@@ -919,8 +921,6 @@ const I18N = {
     l_name: "Anzeigename",
     l_person: "Person (zeigt ihr Foto)",
     l_type: "Kalenderart",
-    l_planner_column: "Eigene Spalte in der Planer-Ansicht",
-    ed_planner_help: "Aus: die Termine erscheinen stattdessen neben dem Datum",
     o_auto: "Automatisch",
     o_top: "Oben",
     o_bottom: "Unten",
@@ -997,6 +997,7 @@ const I18N = {
     ed_media_help: "z. B. media-source://media_source/local/photos – leer lassen für einen Bildschirmschoner nur mit Uhr",
   },
   hu: {
+    edit_task: "Teendő szerkesztése", task_for: "Kinek", replace_note: "Ez a naptár nem tudja közvetlenül módosítani az eseményeket, ezért mentéskor az esemény egy újra cserélődik. A naptáralkalmazásban beállított vendégek, emlékeztetők és színek nem másolódnak át.", l_planner_days: "Napok a Tervezőben", l_planner_start: "A Tervező kezdete", o_pl_week: "A hét elejétől", o_pl_today: "Mától", o_pc_own: "Saját oszlop", o_pc_group: "Csoport oszlopa", o_pc_side: "A dátum mellett", l_month_mobile: "Havi nézet telefonon", o_mm_list: "A megérintett nap listája", o_mm_text: "Rövid címek", o_mm_dots: "Csak pontok", ed_layout: "Elrendezés", l_sections: "Részek a naptár felett (húzással rendezhető, kipipálás nélkül rejtve)", o_sec_header: "Dátum és időjárás", o_sec_countdowns: "Visszaszámlálások", o_sec_toolbar: "Nézetgombok és dátumnavigáció", o_sec_chips: "Naptárgombok", l_show_view_selector: "Nézetgombok megjelenítése (Napirend / Hét / …)", l_show_date_navigation: "Dátumnavigáció megjelenítése (‹ Ma ›)", l_event_time_position: "Esemény időpontja", o_tp_above: "A cím felett", o_tp_left: "A címtől balra", o_tp_right: "A címtől jobbra", l_show_event_location: "Helyszín megjelenítése", l_show_event_calendar: "Naptár nevének megjelenítése az eseményeknél", l_planner_column: "Tervező nézet", ed_planner_help: "Saját oszlop, közös csoportoszlop vagy a dátum mellett",
     wk: "{n}. hét",
     wk_short: "Hét",
     l_show_week_numbers: "Hetek számának megjelenítése",
@@ -1156,8 +1157,6 @@ const I18N = {
     l_name: "Megjelenített név",
     l_person: "Személy (a fotóját mutatja)",
     l_type: "Naptár típusa",
-    l_planner_column: "Saját oszlop a Tervező nézetben",
-    ed_planner_help: "Ki: az eseményei a dátum mellett jelennek meg",
     o_auto: "Automatikus",
     o_top: "Fent",
     o_bottom: "Lent",
@@ -1290,6 +1289,13 @@ const startOfDay = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); retur
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const parseDate = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
 const sameDay = (a, b) => dayKey(a) === dayKey(b);
+// Layout configurator (#11, #14): the parts above the calendar, in order. Missing = hidden.
+const SECTIONS = ["header", "countdowns", "toolbar", "chips"];
+const sectionList = (c) => {
+  const list = Array.isArray(c.sections) ? c.sections.filter((x, i, a) => SECTIONS.includes(x) && a.indexOf(x) === i) : SECTIONS;
+  return list.filter((x) => !((x === "header" && c.show_header === false) || (x === "countdowns" && c.show_countdowns === false)
+    || (x === "chips" && c.show_calendar_chips === false)));
+};
 // Calendar list entries: "calendar.x" or { entity: "calendar.x", ... }. Versions up to 1.15.0 could save a plain
 // "calendar.x" as { "0": "c", "1": "a", …, entity: "" } after an edit in the visual editor (#9) – rebuild those.
 const fixCalEntry = (c) => {
@@ -1697,8 +1703,107 @@ class HomeCalendarCard extends HTMLElement {
     }
     return `<div class="ti" data-uid="${esc(t.uid)}">
       <button class="tick" data-action="todo-done" data-uid="${esc(t.uid)}" title="${esc(this._t("mark_done"))}"><ha-icon icon="mdi:check"></ha-icon></button>
-      <span class="ti-text">${esc(t.summary)}</span>${who}${chip(false)}
+      <span class="ti-text" ${this._todoCanEdit() ? `data-action="todo-edit" data-uid="${esc(t.uid)}" role="button" title="${esc(this._t("edit_task"))}"` : ""}>${esc(t.summary)}</span>${who}${chip(false)}
     </div>`;
+  }
+
+  // Edit / delete tasks (#12). Needs the to-do integration to support updating (4) or deleting (2) items.
+  _todoCanEdit() {
+    const ent = this._config.todo_entity;
+    return this._config.allow_edit_tasks !== false && !!(this._features(ent) & (2 | 4));
+  }
+
+  _openTodoEdit(uid) {
+    const ent = this._config.todo_entity;
+    const raw = (this._todos || []).find((i) => i.uid === uid);
+    if (!raw) return;
+    const t = this._parseTodo(raw);
+    const feats = this._features(ent);
+    const canUpd = !!(feats & 4);
+    const canDel = !!(feats & 2) && this._config.allow_delete_tasks !== false;
+    const canDate = canUpd && !!(feats & (16 | 32));
+    const canTime = canUpd && !!(feats & 32);
+    const people = this._todoPeople();
+    this._editTodo = { uid, raw, t, who: t.cal ? t.cal.entity : t.who ? `name:${t.who}` : "" };
+    const chip = (key, label, color, av) => `<button type="button" class="chip ${this._editTodo.who === key ? "sel" : ""}" style="--c:${esc(color)}" data-action="todo-edit-who" data-key="${esc(key)}">${av || `<span class="dot"></span>`}${esc(label)}</button>`;
+    const extra = t.who && !t.cal ? chip(`name:${t.who}`, t.who, "var(--hcc-accent)") : "";
+    this._openDialog(`
+      <div class="dlg-head">
+        <div class="dlg-title">${esc(this._t("edit_task"))}</div>
+        <button class="icon" data-action="close" title="${esc(this._t("close"))}"><ha-icon icon="mdi:close"></ha-icon></button>
+      </div>
+      <div class="dlg-body form tform">
+        <input id="te-title" class="inp" value="${esc(t.summary)}" ${canUpd ? "" : "disabled"} autocomplete="off" placeholder="${esc(this._t("add_task"))}">
+        ${canDate ? `<div class="dt"><span class="lbl">${esc(this._t("due"))}</span>
+          <input class="inp" type="date" id="te-date" value="${t.due ? dayKey(t.due) : ""}">
+          ${canTime ? `<input class="inp" type="time" id="te-time" value="${t.due && t.timed ? timeKey(t.due) : ""}">` : ""}</div>` : ""}
+        ${canUpd && people.length ? `<div><div class="lbl">${esc(this._t("task_for"))}</div><div class="cal-pick">
+          ${people.map((c) => chip(c.entity, this._calName(c), c.color, this._avatar(c, "sm"))).join("")}${extra}
+          ${chip("", this._t("everyone"), "var(--hcc-accent)", `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>`)}
+        </div></div>` : ""}
+        <div class="f-err"></div>
+      </div>
+      <div class="dlg-foot">
+        ${canDel ? `<button class="btn danger" data-action="todo-delete"><ha-icon icon="mdi:delete-outline"></ha-icon><span>${esc(this._t("delete"))}</span></button>` : ""}
+        <span class="sp"></span>
+        <button class="btn" data-action="close">${esc(this._t("cancel"))}</button>
+        ${canUpd ? `<button class="btn primary" data-action="todo-save">${esc(this._t("save"))}</button>` : ""}
+      </div>`);
+    const inp = this._q("#te-title");
+    inp?.addEventListener("keydown", (e) => { e.stopPropagation(); if (e.key === "Enter") this._saveTodoEdit(); });
+  }
+
+  async _saveTodoEdit() {
+    const ed = this._editTodo;
+    if (!ed) return;
+    const ent = this._config.todo_entity;
+    const feats = this._features(ent);
+    const title = this._q("#te-title")?.value.trim();
+    if (!title) { this._setFormError(this._t("err_title")); return; }
+    const data = { item: ed.uid };
+    // person: "For: Name" in the notes when the list supports notes, otherwise a "[Name] " title prefix
+    const cal = this._todoPeople().find((c) => c.entity === ed.who);
+    const name = cal ? this._calName(cal) : ed.who.startsWith("name:") ? ed.who.slice(5) : "";
+    let summary = title;
+    if (feats & 64) {
+      const base = String(ed.raw.description || "").replace(/^\s*For:.*$\n?/gmi, "").trim();
+      const desc = [name ? `For: ${name}` : "", base].filter(Boolean).join("\n");
+      if (desc !== String(ed.raw.description || "").trim()) data.description = desc;
+    } else if (name) summary = `[${name}] ${title}`;
+    if (summary !== ed.raw.summary) data.rename = summary;
+    const d = this._q("#te-date")?.value || "";
+    const tm = this._q("#te-time")?.value || "";
+    if (this._q("#te-date")) {
+      const old = ed.raw.due ? String(ed.raw.due) : "";
+      if (d && tm) { const v = `${d} ${tm}:00`; if (!old.startsWith(`${d}T${tm}`) && old !== v) data.due_datetime = v; }
+      else if (d) { if (old !== d) data.due_date = d; }
+      else if (old) data.due_date = null; // cleared
+    }
+    if (Object.keys(data).length === 1) { this._closeDialog(); return; }
+    const btn = this._q('[data-action="todo-save"]');
+    if (btn) { btn.disabled = true; btn.textContent = this._t("saving"); }
+    try {
+      await this._hass.callService("todo", "update_item", data, { entity_id: ent });
+      this._closeDialog();
+      this._toast(this._t("saved", { t: title }));
+      if (!this._todoLive) this._loadTodos();
+    } catch (e) {
+      if (btn) { btn.disabled = false; btn.textContent = this._t("save"); }
+      this._setFormError(e?.message || this._t("err_task_upd"));
+    }
+  }
+
+  async _deleteTodo() {
+    const ed = this._editTodo;
+    if (!ed) return;
+    const ent = this._config.todo_entity;
+    try {
+      await this._hass.callService("todo", "remove_item", { item: [ed.uid] }, { entity_id: ent });
+      this._closeDialog();
+      const raw = ed.raw;
+      this._notify(this._t("deleted", { t: ed.t.summary }), { text: this._t("undo"), action: () => this._todoUndo(ed.uid, raw, true) });
+      if (!this._todoLive) this._loadTodos();
+    } catch (e) { this._setFormError(e?.message || this._t("err_task_upd")); }
   }
 
   _renderTodoList() {
@@ -1901,7 +2006,13 @@ class HomeCalendarCard extends HTMLElement {
       const days = Math.ceil((lead + daysInMonth) / 7) * 7;
       return { start, end: addDays(start, days), days };
     }
-    if (this._view === "week" || this._view === "planner") {
+    if (this._view === "planner") {
+      // planner_days (default 7) starting at the week start, or at today / the shown day with planner_start: today (#13)
+      const n = this._plannerDays();
+      const start = this._config.planner_start === "today" ? startOfDay(a) : this._startOfWeek(a);
+      return { start, end: addDays(start, n), days: n };
+    }
+    if (this._view === "week") {
       const start = this._startOfWeek(a);
       return { start, end: addDays(start, 7), days: 7 };
     }
@@ -2184,6 +2295,11 @@ class HomeCalendarCard extends HTMLElement {
 
   _features(entity) { return Number(this._hass?.states[entity]?.attributes?.supported_features) || 0; }
 
+  _canReplace(ev) {
+    const f = this._features(ev.cal.entity);
+    return this._config.edit_by_replace !== false && !!(f & FEATURE_CREATE) && !!(f & FEATURE_DELETE) && !this._isRecurring(ev);
+  }
+
   _writable() { return this._calendars.filter((c) => this._features(c.entity) & FEATURE_CREATE); }
 
   _calName(c) {
@@ -2295,7 +2411,10 @@ class HomeCalendarCard extends HTMLElement {
     if (!this._config.show_week_numbers || !["week", "planner"].includes(this._view)) return txt;
     // the ISO week of the Monday in this range (ranges can start on Sunday/Saturday)
     const mon = [0, 1, 2, 3, 4, 5, 6].map((i) => addDays(start, i)).find((d) => d.getDay() === 1) || start;
-    return `${this._t("wk", { n: isoWeek(mon) })} · ${txt}`;
+    const span = this._view === "planner" && (this._config.planner_start === "today" || this._plannerDays() !== 7);
+    const a = span ? isoWeek(start) : isoWeek(mon);
+    const b = span ? isoWeek(last) : a;
+    return `${this._t("wk", { n: a === b ? a : `${a}–${b}` })} · ${txt}`;
   }
 
   /* ------------------------------------------------------------- rendering */
@@ -2745,11 +2864,14 @@ class HomeCalendarCard extends HTMLElement {
     const c = this._config;
     const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._view === "planner" ? this._renderPlanner() : this._renderAgenda();
     const maxH = c.max_height ? ` style="max-height:${esc(c.max_height)};overflow:auto"` : "";
+    const part = {
+      header: () => this._renderHeader(),
+      countdowns: () => this._renderCountdowns(),
+      toolbar: () => this._renderToolbar(),
+      chips: () => (this._calendars.length > 1 ? this._renderChips() : ""),
+    };
     this._main.innerHTML = `
-      ${c.show_header !== false ? this._renderHeader() : ""}
-      ${this._renderCountdowns()}
-      ${this._renderToolbar()}
-      ${c.show_calendar_chips !== false && this._calendars.length > 1 ? this._renderChips() : ""}
+      ${sectionList(c).map((k) => part[k]()).join("")}
       <div class="progress ${this._loading ? "on" : ""}"></div>
       ${this._error ? `<div class="error"><ha-icon icon="mdi:alert-circle-outline"></ha-icon>${esc(this._error)}</div>` : ""}
       <div class="body view-${this._view}"${maxH}>${body}</div>`;
@@ -2819,14 +2941,18 @@ class HomeCalendarCard extends HTMLElement {
   _renderToolbar() {
     const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")], ["planner", this._t("planner")]];
     const canAdd = this._config.allow_add !== false && this._writable().length > 0;
-    return `<div class="toolbar">
-      <div class="seg">${views.map(([v, l]) => `<button class="${this._view === v ? "on" : ""}" data-action="view" data-view="${v}">${l}</button>`).join("")}</div>
-      <div class="nav">
+    const showViews = this._config.show_view_selector !== false;
+    const showNav = this._config.show_date_navigation !== false;
+    const fsBtn = this._config.layout === "fullscreen" && this._mode === "fill" && !this._inEditor();
+    if (!showViews && !showNav && !canAdd && !fsBtn) return "";
+    return `<div class="toolbar ${showNav ? "" : "no-nav"}">
+      ${showViews ? `<div class="seg">${views.map(([v, l]) => `<button class="${this._view === v ? "on" : ""}" data-action="view" data-view="${v}">${l}</button>`).join("")}</div>` : ""}
+      ${showNav ? `<div class="nav">
         <button class="icon" data-action="prev" title="${esc(this._t("prev"))}"><ha-icon icon="mdi:chevron-left"></ha-icon></button>
         <button class="today" data-action="today">${esc(this._t("today"))}</button>
         <button class="icon" data-action="next" title="${esc(this._t("next"))}"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
         <span class="range">${esc(this._rangeLabel())}</span>
-      </div>
+      </div>` : ""}
       ${this._config.layout === "fullscreen" && this._mode === "fill" && !this._inEditor() ? `<button class="icon" data-action="fs-on" title="${esc(this._t("back_fs"))}"><ha-icon icon="mdi:fullscreen"></ha-icon></button>` : ""}
       ${canAdd ? `<button class="add" data-action="add"><ha-icon icon="mdi:plus"></ha-icon><span>${esc(this._t("event_btn"))}</span></button>` : ""}
     </div>`;
@@ -2881,14 +3007,16 @@ class HomeCalendarCard extends HTMLElement {
     const bday = this._isBday(ev);
     const icon = this._typeIcon(ev);
     const label = bday ? this._yearlyLabel(ev) : this._timeLabel(ev, day);
-    return `<div class="ev ${live ? "live" : ""} ${past ? "past" : ""} ${bday ? "bday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
+    const c = this._config;
+    const tpos = ["left", "right"].includes(c.event_time_position) ? c.event_time_position : "above";
+    return `<div class="ev tpos-${tpos} ${live ? "live" : ""} ${past ? "past" : ""} ${bday ? "bday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
       <div class="bar"></div>
       <div class="ev-body">
         <div class="ev-time">${live ? `<span class="pulse"></span>${esc(this._t("now"))} · ` : ""}${esc(label)}</div>
         <div class="ev-title">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}${esc(ev.summary)}</div>
-        ${ev.location ? `<div class="ev-sub"><ha-icon icon="mdi:map-marker-outline"></ha-icon><span>${esc(ev.location)}</span></div>` : ""}
+        ${ev.location && c.show_event_location !== false ? `<div class="ev-sub"><ha-icon icon="mdi:map-marker-outline"></ha-icon><span>${esc(ev.location)}</span></div>` : ""}
       </div>
-      ${this._calendars.length > 1 ? `<div class="ev-cal">${this._avatar(ev.cal)}<span class="ev-cal-name">${esc(this._calName(ev.cal))}</span></div>` : ""}
+      ${this._calendars.length > 1 && c.show_event_calendar !== false ? `<div class="ev-cal">${this._avatar(ev.cal)}<span class="ev-cal-name">${esc(this._calName(ev.cal))}</span></div>` : ""}
     </div>`;
   }
 
@@ -2940,8 +3068,21 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   // Planner: days down the side, one column per person (like a printed family planner).
+  _plannerDays() { return Math.min(31, Math.max(1, Math.round(Number(this._config.planner_days) || 7))); }
+
+  // Planner columns: one per calendar, or one shared column per group for calendars with planner_column: group (#13).
   _plannerCols() {
-    return this._calendars.filter((c) => c.type === "events" && c.planner_column !== false && !this._hidden.has(c.entity));
+    const cols = [];
+    const byGroup = new Map();
+    this._calendars.forEach((c) => {
+      if (c.type !== "events" || c.planner_column === false || this._hidden.has(c.entity)) return;
+      const g = String(c.group || "").trim();
+      if (c.planner_column === "group" && g) {
+        if (!byGroup.has(g)) { const col = { group: g, members: [], color: c.color }; byGroup.set(g, col); cols.push(col); }
+        byGroup.get(g).members.push(c);
+      } else cols.push({ members: [c], color: c.color, cal: c });
+    });
+    return cols;
   }
 
   _renderPlanner() {
@@ -2949,7 +3090,7 @@ class HomeCalendarCard extends HTMLElement {
     const today = dayKey(new Date());
     const cols = this._plannerCols();
     if (!cols.length) return `<div class="empty"><ha-icon icon="mdi:account-group-outline"></ha-icon><div>${esc(this._t("pl_none"))}</div></div>`;
-    const colSet = new Set(cols.map((c) => c.entity));
+    const colSet = new Set(cols.flatMap((c) => c.members.map((m) => m.entity)));
     const canAdd = this._config.allow_add !== false;
     const writable = new Set(this._writable().map((c) => c.entity));
     const wd = this._fmt({ weekday: "short" });
@@ -2957,9 +3098,12 @@ class HomeCalendarCard extends HTMLElement {
     const evHtml = (ev, d) => `<div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
         <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
       </div>`;
-    let out = `<div class="planner" style="--pcols:${cols.length}"><div class="phead pcorner"></div>`;
-    out += cols.map((c) => `<div class="phead" style="--c:${esc(c.color)}">${this._avatar(c, "sm") || `<span class="dot"></span>`}<span class="pname">${esc(this._calName(c))}</span></div>`).join("");
-    for (let i = 0; i < 7; i++) {
+    const { days } = this._range();
+    let out = `<div class="planner" style="--pcols:${cols.length};--prows:${days}"><div class="phead pcorner"></div>`;
+    out += cols.map((c) => (c.cal
+      ? `<div class="phead" style="--c:${esc(c.color)}">${this._avatar(c.cal, "sm") || `<span class="dot"></span>`}<span class="pname">${esc(this._calName(c.cal))}</span></div>`
+      : `<div class="phead grp" style="--c:${esc(c.color)}"><span class="gstack">${c.members.slice(0, 4).map((m) => this._avatar(m, "sm") || `<span class="dot" style="--c:${esc(m.color)}"></span>`).join("")}</span><span class="pname">${esc(c.group)}</span></div>`)).join("");
+    for (let i = 0; i < days; i++) {
       const d = addDays(start, i);
       const k = dayKey(d);
       const evs = this._eventsOn(d);
@@ -2974,9 +3118,11 @@ class HomeCalendarCard extends HTMLElement {
         ${shared.length ? `<div class="pshared">${shared.map((ev) => evHtml(ev, d)).join("")}</div>` : ""}
       </div>`;
       out += cols.map((c) => {
-        const mine = evs.filter((ev) => ev.cal.entity === c.entity);
-        const add = canAdd && writable.has(c.entity);
-        return `<div class="pcell ${rowCls}" style="--c:${esc(c.color)}${hol ? `;--hol:${esc(hol.cal.color)}` : ""}" ${add ? `data-action="add-for" data-entity="${esc(c.entity)}" data-date="${k}" title="${esc(this._t("pl_add", { n: this._calName(c) }))}"` : ""}>
+        const ents = new Set(c.members.map((m) => m.entity));
+        const mine = evs.filter((ev) => ents.has(ev.cal.entity));
+        const target = c.members.find((m) => writable.has(m.entity)); // a group column adds to its first writable member
+        const add = canAdd && !!target;
+        return `<div class="pcell ${rowCls}" style="--c:${esc(c.color)}${hol ? `;--hol:${esc(hol.cal.color)}` : ""}" ${add ? `data-action="add-for" data-entity="${esc(target.entity)}" data-date="${k}" title="${esc(this._t("pl_add", { n: c.group || this._calName(target) }))}"` : ""}>
           ${mine.map((ev) => evHtml(ev, d)).join("")}${add ? `<span class="padd"><ha-icon icon="mdi:plus"></ha-icon></span>` : ""}
         </div>`;
       }).join("");
@@ -2991,7 +3137,8 @@ class HomeCalendarCard extends HTMLElement {
     const max = Math.max(1, Number(this._config.max_events_per_day) || (this._mode === "card" ? 3 : 6));
     const wdFmt = this._fmt({ weekday: "short" });
     const wn = !!this._config.show_week_numbers;
-    let out = `<div class="month ${wn ? "wn" : ""}"><div class="mhead">${wn ? `<div class="mwk-h">${esc(this._t("wk_short"))}</div>` : ""}`;
+    const mm = ["text", "dots"].includes(this._config.month_mobile) ? this._config.month_mobile : "list";
+    let out = `<div class="month ${wn ? "wn" : ""} mm-${mm}"><div class="mhead">${wn ? `<div class="mwk-h">${esc(this._t("wk_short"))}</div>` : ""}`;
     for (let i = 0; i < 7; i++) out += `<div>${esc(wdFmt.format(addDays(start, i)))}</div>`;
     out += `</div><div class="mgrid">`;
     for (let i = 0; i < days; i++) {
@@ -3005,7 +3152,7 @@ class HomeCalendarCard extends HTMLElement {
       const f = this._forecast[dayKey(d)];
       const hol = this._holidaysOn(d)[0];
       const more = evs.length - max;
-      out += `<div class="mcell ${d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${hol ? "has-hol" : ""}" ${hol ? `style="--hol:${esc(hol.cal.color)}"` : ""} data-action="open-day" data-date="${dayKey(d)}">
+      out += `<div class="mcell ${d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${mm === "list" && dayKey(d) === this._mSelKey() ? "msel" : ""} ${hol ? "has-hol" : ""}" ${hol ? `style="--hol:${esc(hol.cal.color)}"` : ""} data-action="open-day" data-date="${dayKey(d)}">
         <div class="mtop"><span class="mdn">${d.getDate()}</span>${f ? `<span class="mwx"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><b>${round(f.temperature)}°</b></span>` : ""}</div>
         ${hol ? `<div class="mhol" style="--c:${esc(hol.cal.color)}" title="${esc(hol.summary)}">${esc(hol.summary)}</div>` : ""}
         <div class="mevs">${evs.slice(0, max).map((ev) => `
@@ -3015,7 +3162,30 @@ class HomeCalendarCard extends HTMLElement {
           ${more > 0 ? `<div class="more">+${more}</div>` : ""}</div>
       </div>`;
     }
-    return out + `</div></div>`;
+    out += `</div>`;
+    if (mm === "list") out += this._renderMonthList();
+    return out + `</div>`;
+  }
+
+  // Phone Month view (#7): the tapped day's events listed under the grid (shown only on narrow cards).
+  _mSelKey() {
+    const { start, end } = this._range();
+    const sel = this._mSel && this._mSel >= start && this._mSel < end ? this._mSel : null;
+    const now = startOfDay(new Date());
+    const d = sel || (now >= start && now < end && now.getMonth() === this._anchor.getMonth() ? now : new Date(this._anchor.getFullYear(), this._anchor.getMonth(), 1));
+    return dayKey(d);
+  }
+
+  _renderMonthList() {
+    const d = parseDate(this._mSelKey());
+    const evs = this._eventsOn(d);
+    const hols = this._holidayTags(d);
+    const canAdd = this._config.allow_add !== false && this._writable().length > 0;
+    return `<div class="mlist">
+      <div class="mlist-head"><span class="rel">${esc(this._relDay(d))}</span>${hols}<span class="sp"></span>${this._wxBadge(d, true)}
+        ${canAdd ? `<button class="icon" data-action="add" data-date="${dayKey(d)}" title="${esc(this._t("add_event"))}"><ha-icon icon="mdi:plus"></ha-icon></button>` : ""}</div>
+      ${evs.length ? evs.map((ev) => this._eventRow(ev, d)).join("") : `<div class="empty-day">${esc(this._t("nothing"))}</div>`}
+    </div>`;
   }
 
   /* --------------------------------------------------------------- dialogs */
@@ -3037,7 +3207,8 @@ class HomeCalendarCard extends HTMLElement {
     const allowEdit = this._config.allow_edit !== false;
     const feats = this._features(ev.cal.entity);
     const canDel = allowDel && ev.uid && (feats & FEATURE_DELETE);
-    const canEdit = allowEdit && ev.uid && (feats & FEATURE_UPDATE);
+    // Calendars that can create + delete but not update (e.g. Google) are edited by replacing the event (#8).
+    const canEdit = allowEdit && ev.uid && ((feats & FEATURE_UPDATE) || this._canReplace(ev));
     const missing = [allowEdit && !canEdit && "edit", allowDel && !canDel && "delete"].filter(Boolean);
     let delNote = "";
     if (missing.length && !ev.uid) delNote = this._t("ro_event");
@@ -3201,6 +3372,7 @@ class HomeCalendarCard extends HTMLElement {
         <input id="f-loc" class="inp" placeholder="${esc(this._t("location"))}" autocomplete="off" value="${ev ? esc(ev.real ? ev.real.location : ev.location) : ""}">
         <textarea id="f-desc" class="inp" rows="3" placeholder="${esc(this._t("description"))}">${ev ? esc(ev.real ? ev.real.description : ev.description) : ""}</textarea>
         ${ev && this._isRecurring(ev) ? `<div class="form-note"><ha-icon icon="mdi:repeat"></ha-icon>${esc(this._t("rec_note"))}</div>` : ""}
+        ${ev && !(this._features(ev.cal.entity) & FEATURE_UPDATE) ? `<div class="form-note"><ha-icon icon="mdi:information-outline"></ha-icon>${esc(this._t("replace_note"))}</div>` : ""}
         <div class="f-err"></div>
       </div>
       <div class="dlg-foot">
@@ -3396,13 +3568,14 @@ class HomeCalendarCard extends HTMLElement {
     const rec = this._isRecurring(ev);
     if (rec && !scope) { this._askEditScope(); return; }
     const moving = this._addCal !== ev.cal.entity;
+    const replace = moving || !(this._features(ev.cal.entity) & FEATURE_UPDATE);
     const busy = (on) => this._dlg.querySelectorAll('[data-action^="save"]').forEach((b) => { b.disabled = on; });
     busy(true);
     const sb = this._q('[data-action="save"]');
     if (sb) sb.textContent = this._t("saving");
     try {
-      if (moving) {
-        // Move = create in the new calendar, then remove from the old one
+      if (replace) {
+        // Move (or a calendar that can't update events, e.g. Google) = create the new version, then remove the old one
         await this._hass.callWS({ type: "calendar/event/create", entity_id: this._addCal, event: this._eventPayload(f, f.rrule) });
         await this._hass.callWS({ type: "calendar/event/delete", entity_id: ev.cal.entity, uid: ev.uid });
       } else {
@@ -3500,7 +3673,8 @@ class HomeCalendarCard extends HTMLElement {
       case "next": {
         const dir = action === "next" ? 1 : -1;
         if (this._view === "month") this._anchor = new Date(this._anchor.getFullYear(), this._anchor.getMonth() + dir, 1);
-        else if (this._view === "week" || this._view === "planner") this._anchor = addDays(this._anchor, 7 * dir);
+        else if (this._view === "week") this._anchor = addDays(this._anchor, 7 * dir);
+        else if (this._view === "planner") this._anchor = addDays(this._config.planner_start === "today" ? this._anchor : this._startOfWeek(this._anchor), this._plannerDays() * dir);
         else this._anchor = addDays(this._anchor, (Math.max(1, Number(this._config.days_to_show) || 7)) * dir);
         this._fetchEvents();
         break;
@@ -3536,6 +3710,13 @@ class HomeCalendarCard extends HTMLElement {
         this._openAdd(el.dataset.date ? parseDate(el.dataset.date) : null);
         break;
       case "open-day":
+        // phone Month view in list mode: tapping a day shows it under the grid instead of a pop-up
+        if (this._view === "month" && !["text", "dots"].includes(this._config.month_mobile) && el.classList.contains("mcell")
+          && this._main.querySelector(".mlist") && getComputedStyle(this._main.querySelector(".mlist")).display !== "none") {
+          this._mSel = parseDate(el.dataset.date);
+          this._render();
+          break;
+        }
         this._openDay(parseDate(el.dataset.date));
         break;
       case "add-for":
@@ -3602,6 +3783,21 @@ class HomeCalendarCard extends HTMLElement {
         break;
       case "todo-undone":
         this._todoUndone(el.dataset.uid);
+        break;
+      case "todo-edit":
+        this._openTodoEdit(el.dataset.uid);
+        break;
+      case "todo-edit-who":
+        if (this._editTodo) {
+          this._editTodo.who = el.dataset.key;
+          this._dlg.querySelectorAll('[data-action="todo-edit-who"]').forEach((c) => c.classList.toggle("sel", c === el));
+        }
+        break;
+      case "todo-save":
+        this._saveTodoEdit();
+        break;
+      case "todo-delete":
+        this._deleteTodo();
         break;
       case "todo-done-toggle":
         this._doneOpen = !this._doneOpen;
@@ -3767,6 +3963,16 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .ev:active { transform: scale(.99); }
 .ev .bar { width: 4px; border-radius: 0 4px 4px 0; background: var(--c); flex: none; }
 .ev-body { min-width: 0; flex: 1; }
+/* event layout: time left of / right of the title instead of above it (#11) */
+.ev.tpos-left .ev-body, .ev.tpos-right .ev-body { display: grid; column-gap: 10px; align-items: baseline; }
+.ev.tpos-left .ev-body { grid-template-columns: minmax(4.6em, auto) minmax(0, 1fr); grid-template-areas: "time title" ". sub"; }
+.ev.tpos-right .ev-body { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title time" "sub sub"; }
+.ev.tpos-left .ev-time, .ev.tpos-right .ev-time { grid-area: time; white-space: nowrap; }
+.ev.tpos-right .ev-time { justify-content: flex-end; }
+.ev.tpos-left .ev-title, .ev.tpos-right .ev-title { grid-area: title; margin-top: 0; }
+.ev.tpos-left .ev-sub, .ev.tpos-right .ev-sub { grid-area: sub; }
+.ev.tpos-left, .ev.tpos-right { padding-top: 6px; padding-bottom: 6px; }
+.toolbar.no-nav { justify-content: space-between; }
 .ev-time { font-size: .76rem; color: var(--hcc-muted); font-weight: 600; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 6px; }
 .ev-title { font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 .ev-sub { font-size: .78rem; color: var(--hcc-muted); display: flex; align-items: center; gap: 3px; margin-top: 2px; min-width: 0; }
@@ -3819,10 +4025,29 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .mev.allday { background: var(--c); color: #fff; }
 .mev.allday .mdot { display: none; }
 .more { font-size: .68rem; color: var(--hcc-muted); font-weight: 700; padding-left: 4px; }
+.mlist { display: none; margin-top: 12px; border-top: 1px solid var(--hcc-line); padding-top: 10px; }
+.mlist-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-weight: 700; }
+.mlist-head .sp { flex: 1; }
+.mlist-head .icon { width: 30px; height: 30px; }
 .month.wn .mhead, .month.wn .mgrid { grid-template-columns: 24px repeat(7, minmax(0, 1fr)); }
 .mwk, .mwk-h { display: flex; justify-content: center; font-size: .66rem; font-weight: 700; color: var(--hcc-muted); font-variant-numeric: tabular-nums; }
 .mwk { padding-top: 9px; border-radius: 8px; background: color-mix(in srgb, var(--hcc-soft) 45%, transparent); zoom: var(--ev-scale, 1); }
 .mwk-h { opacity: .8; }
+@container (max-width: 480px) {
+  .month.mm-list .mlist { display: block; }
+  .month.mm-list .mcell.msel { box-shadow: inset 0 0 0 2px var(--hcc-accent); }
+  .month.mm-text .mcell { min-height: calc(76px * var(--ev-scale, 1)); padding: 3px 2px; }
+  .month.mm-text .mwx { display: none; }
+  .month.mm-text .mevs { flex-direction: column; flex-wrap: nowrap; gap: 1px; padding-left: 0; }
+  .month.mm-text .mev { padding: 0 2px; border-radius: 3px; background: color-mix(in srgb, var(--c) 18%, transparent); }
+  .month.mm-text .mev.allday { background: var(--c); }
+  .month.mm-text .mev .mdot { display: none; }
+  .month.mm-text .mev .mcake { --mdc-icon-size: 9px; flex: none; }
+  .month.mm-text .mev { display: flex; align-items: center; gap: 1px; }
+  .mlist-head .wx.compact { flex-direction: row; gap: 3px; }
+  .month.mm-text .mtxt { display: block; font-size: .56rem; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .month.mm-text .more { line-height: 1.2; }
+}
 
 /* responsive */
 @container (max-width: 600px) {
@@ -4170,6 +4395,9 @@ ha-card { container: hcc / inline-size; }
   background: color-mix(in srgb, var(--c, var(--hcc-accent)) 16%, var(--hcc-bg)); font-weight: 700; font-size: .9rem; min-width: 0; zoom: var(--ev-scale, 1); }
 .phead .av.sm { width: 28px; height: 28px; font-size: .75rem; }
 .phead .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
+.phead.grp .gstack { display: inline-flex; }
+.phead.grp .gstack > * { margin-left: -8px; box-shadow: 0 0 0 2px var(--hcc-bg); border-radius: 50%; }
+.phead.grp .gstack > *:first-child { margin-left: 0; }
 .pname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pcorner { background: transparent; }
 .pday { position: sticky; left: 0; z-index: 1; display: flex; flex-direction: column; align-items: stretch; gap: 4px; padding: 6px; border-radius: 12px;
@@ -4200,7 +4428,7 @@ ha-card { container: hcc / inline-size; }
 .pcell[data-action]:hover .padd { opacity: .8; }
 @media (hover: none) { .pcell:not(:has(.wev)) .padd { opacity: .35; } }
 :host([layout="fill"]) .view-planner, :host([layout="fullscreen"]) .view-planner { overflow: auto; }
-:host([layout="fill"]) .planner, :host([layout="fullscreen"]) .planner { height: 100%; grid-template-rows: auto repeat(7, minmax(0, 1fr)); }
+:host([layout="fill"]) .planner, :host([layout="fullscreen"]) .planner { height: 100%; grid-template-rows: auto repeat(var(--prows, 7), minmax(0, 1fr)); }
 :host([layout="fill"]) .pcell, :host([layout="fullscreen"]) .pcell, :host([layout="fill"]) .pday, :host([layout="fullscreen"]) .pday { min-height: 0; overflow: auto; }
 :host([layout="fill"]) .planner, :host([layout="fullscreen"]) .planner { grid-template-columns: 104px repeat(var(--pcols), minmax(130px, 1fr)); }
 :host([layout="fill"]) .pdate, :host([layout="fullscreen"]) .pdate { flex-direction: row; justify-content: center; gap: 6px; }
@@ -4222,11 +4450,16 @@ ha-card { container: hcc / inline-size; }
 // Editor forms are built per language. `t(key)` translates, `o(value, key)` makes a dropdown option.
 const NIGHT_DEFAULTS = { enabled: false, style: "clock", start: "22:00", end: "06:30", brightness: 30, wake_seconds: 60 };
 const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, show_info: true };
+// editor defaults that are not written to YAML until changed
+const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
+  clock_format: "auto", show_view_selector: true, show_date_navigation: true, event_time_position: "above", show_event_location: true,
+  show_event_calendar: true, planner_days: 7, planner_start: "week" };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "todo_group_by", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
-  "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips",
+  "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile",
+  "sections", "show_view_selector", "show_date_navigation", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
-  "default_view", "days_to_show", "show_week_numbers", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
+  "default_view", "days_to_show", "show_week_numbers", "planner_days", "planner_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t) => {
   const o = (value, key) => ({ value, label: t(key) });
@@ -4253,6 +4486,8 @@ const generalSchema = (t) => {
       { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month"), o("planner", "planner")] } } },
       { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
       { name: "show_week_numbers", selector: { boolean: {} } },
+      { name: "planner_days", selector: { number: { min: 1, max: 31, mode: "box" } } },
+      { name: "planner_start", selector: { select: { mode: "dropdown", options: [o("week", "o_pl_week"), o("today", "o_pl_today")] } } },
       { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [o("monday", "o_monday"), o("sunday", "o_sunday"), o("saturday", "o_saturday")] } } },
       { name: "time_format", selector: { select: { mode: "dropdown", options: [o("auto", "o_tf_auto"), o("24h", "o_24h"), o("12h", "o_12h")] } } },
     ] },
@@ -4261,7 +4496,6 @@ const generalSchema = (t) => {
       { name: "keep_awake", selector: { boolean: {} } },
     ] },
     { type: "grid", name: "", schema: [
-      { name: "show_header", selector: { boolean: {} } },
       { name: "allow_add", selector: { boolean: {} } },
       { name: "allow_edit", selector: { boolean: {} } },
       { name: "allow_delete", selector: { boolean: {} } },
@@ -4269,17 +4503,26 @@ const generalSchema = (t) => {
       { name: "max_height", selector: { text: {} } },
     ] },
     { type: "expandable", name: "appearance", flatten: true, title: t("ed_look"), icon: "mdi:palette-outline", schema: [
-      { type: "grid", name: "", schema: [
-        { name: "show_countdowns", selector: { boolean: {} } },
-        { name: "countdown_style", selector: { select: { mode: "dropdown", options: [o("cards", "o_cards"), o("compact", "o_compact")] } } },
-      ] },
+      { name: "countdown_style", selector: { select: { mode: "dropdown", options: [o("cards", "o_cards"), o("compact", "o_compact")] } } },
       { name: "countdown_size", selector: { number: { min: 50, max: 150, step: 5, mode: "slider", unit_of_measurement: "%" } } },
       { name: "event_size", selector: { number: { min: 80, max: 160, step: 5, mode: "slider", unit_of_measurement: "%" } } },
-      { name: "show_calendar_chips", selector: { boolean: {} } },
+      { name: "month_mobile", selector: { select: { mode: "dropdown", options: [o("list", "o_mm_list"), o("text", "o_mm_text"), o("dots", "o_mm_dots")] } } },
       { type: "grid", name: "", schema: [
         { name: "show_clock", selector: { boolean: {} } },
         { name: "clock_seconds", selector: { boolean: {} } },
         { name: "clock_format", selector: { select: { mode: "dropdown", options: [o("auto", "o_tf_auto"), o("24h", "o_24h"), o("12h", "o_12h")] } } },
+      ] },
+    ] },
+    { type: "expandable", name: "layout_cfg", flatten: true, title: t("ed_layout"), icon: "mdi:view-dashboard-edit-outline", schema: [
+      { name: "sections", selector: { select: { multiple: true, reorder: true, mode: "list", options: SECTIONS.map((k) => o(k, `o_sec_${k}`)) } } },
+      { type: "grid", name: "", schema: [
+        { name: "show_view_selector", selector: { boolean: {} } },
+        { name: "show_date_navigation", selector: { boolean: {} } },
+      ] },
+      { name: "event_time_position", selector: { select: { mode: "dropdown", options: [o("above", "o_tp_above"), o("left", "o_tp_left"), o("right", "o_tp_right")] } } },
+      { type: "grid", name: "", schema: [
+        { name: "show_event_location", selector: { boolean: {} } },
+        { name: "show_event_calendar", selector: { boolean: {} } },
       ] },
     ] },
     { type: "expandable", name: "night_mode", title: t("ed_night"), icon: "mdi:weather-night", schema: [
@@ -4321,7 +4564,7 @@ const calSchema = (t) => {
       { name: "type", selector: { select: { mode: "dropdown", options: [o("events", "o_events"), o("birthday", "o_birthdays"),
         o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
     ] },
-    { name: "planner_column", selector: { boolean: {} } },
+    { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
   ];
 };
 
@@ -4508,7 +4751,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
       const i = Number(slot.dataset.i);
       const c = cals[i];
-      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column !== false },
+      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column === false ? "side" : c.planner_column === "group" ? "group" : "own" },
         (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),
         (s) => {
           if (s.name === "group") return this._t("ed_group_help");
@@ -4523,7 +4766,10 @@ class HomeCalendarCardEditor extends HTMLElement {
         f.data = ev.detail.value; // keep the form in sync, since we don't rebuild it
         const list = this._cals();
         list[i] = { ...list[i], ...ev.detail.value };
-        if (list[i].planner_column !== false) delete list[i].planner_column; // default – keep YAML tidy
+        const pc = list[i].planner_column; // "own" is the default – keep YAML tidy
+        if (pc === "side" || pc === false) list[i].planner_column = false;
+        else if (pc === "group") list[i].planner_column = "group";
+        else delete list[i].planner_column;
         this._emit({ ...this._config, calendars: list });
         const head = this.shadowRoot.querySelector(`.cal[data-i="${i}"] .ch-txt`);
         if (head) head.innerHTML = this._headHtml(list[i]);
@@ -4532,7 +4778,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     });
 
     const gen = this._makeForm(generalSchema((k) => this._t(k)), {
-      language: "auto", show_countdowns: true, countdown_style: "cards", countdown_size: 100, event_size: 100, show_calendar_chips: true, show_clock: false, clock_seconds: true, clock_format: "auto", ...this._config,
+      ...LOOK_DEFAULTS, language: "auto", ...this._config, sections: sectionList(this._config),
       night_mode: { ...NIGHT_DEFAULTS, ...this._objCfg(this._config.night_mode) },
       screensaver: { ...SAVER_DEFAULTS, ...this._objCfg(this._config.screensaver) },
     }, (s) => this._t(`l_${s.name}`), (s) => (s.name === "media" ? this._t("ed_media_help") : undefined));
@@ -4549,8 +4795,12 @@ class HomeCalendarCardEditor extends HTMLElement {
         if (untouched && !this._config[k]) delete next[k]; else next[k] = clean;
       });
       if (next.language === "auto") delete next.language;
-      const DEF = { show_countdowns: true, countdown_style: "cards", countdown_size: 100, event_size: 100, show_calendar_chips: true, show_clock: false, clock_seconds: true, clock_format: "auto" };
-      Object.entries(DEF).forEach(([k, v]) => { if (next[k] === v && this._config[k] === undefined) delete next[k]; });
+      // sections replaces the old show_header / show_countdowns / show_calendar_chips switches
+      if (Array.isArray(next.sections)) {
+        ["show_header", "show_countdowns", "show_calendar_chips"].forEach((k) => delete next[k]);
+        if (JSON.stringify(next.sections) === JSON.stringify(SECTIONS)) delete next.sections;
+      }
+      Object.entries(LOOK_DEFAULTS).forEach(([k, v]) => { if (next[k] === v && this._config[k] === undefined) delete next[k]; });
       if (next.language !== this._config.language) { this._emit(next, true); return; } // re-draw in the new language
       this._emit(next);
     });
