@@ -30,6 +30,8 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 
 ## Features
 
+- 🧩 **Layout configurator** – reorder or hide the parts above the calendar, and put event times next to the title for a compact Agenda
+- 📱 **Phone-friendly Month view** – tap a day to list its events under the month, or show short titles in the day boxes
 - 🔢 **Week numbers** – ISO week numbers in Month, Week and Planner views
 - 📅 **Four views** – Agenda (grouped by day), Week (7 columns, stacks on phones), Month (grid, dots on phones) and Planner (a column per person, like a printed family planner)
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
@@ -203,6 +205,18 @@ max_height: 640px
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
+| `sections` | list | `[header, countdowns, toolbar, chips]` | Which parts appear above the calendar, in this order – see *Layout* |
+| `show_view_selector` | boolean | `true` | Show the Agenda / Week / Month / Planner buttons |
+| `show_date_navigation` | boolean | `true` | Show ‹ Today › and the date range |
+| `event_time_position` | `above` \| `left` \| `right` | `above` | Where an event's time sits in Agenda view – `left`/`right` put it on the title's line |
+| `show_event_location` | boolean | `true` | Show the location line on events in Agenda view |
+| `show_event_calendar` | boolean | `true` | Show the calendar name/photo on events in Agenda view |
+| `month_mobile` | `list` \| `text` \| `dots` | `list` | Month view on phones – see *Month view on phones* |
+| `planner_days` | number | `7` | Days shown in Planner view (1–31) |
+| `planner_start` | `week` \| `today` | `week` | Planner starts at the start of the week, or today (no past days) |
+| `allow_edit_tasks` | boolean | `true` | Tap a task to edit or delete it – see *To-do list* |
+| `allow_delete_tasks` | boolean | `true` | Show **Delete** when editing a task |
+| `edit_by_replace` | boolean | `true` | Allow editing events in calendars that can't update events (e.g. Google) by replacing them – see *Editing events* |
 | `show_clock` | boolean | `false` | Big clock in the header – see *Clock* |
 | `clock_seconds` | boolean | `true` | Show seconds on the clock |
 | `clock_format` | `auto` \| `24h` \| `12h` | `auto` | Clock style. `auto` follows `time_format` / your HA profile |
@@ -227,7 +241,7 @@ max_height: 640px
 | `private` | `true` – every event in this calendar shows as "Private" with only its time – see *Private events* |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
 | `icon_rules` | List of `match` / `icon` pairs that give events an icon from words in their title – see *Icons by title* |
-| `planner_column` | `true` (default) gives this calendar its own column in the Planner view. `false` shows its events next to the date instead – handy for a shared Family calendar |
+| `planner_column` | Planner view: `true` (default) – its own column; `group` – shares one column with the other calendars of its `group` (e.g. *Kids*); `false` – its events show next to the date instead, handy for a shared Family calendar |
 
 #### Calendar groups
 
@@ -450,6 +464,7 @@ todo_entity: todo.family
 - **People come from your calendars** – every calendar of type *Events* is a person you can assign tasks to, using the display name you gave it (e.g. *Oliver*, *Emma*, *Family*). There's also an **Everyone** option.
 - **Add a task** – type it, optionally pick a due date, tap the person and press **+** (or Enter). Anyone using the dashboard can add.
 - **Tick to finish** – the task is marked done and disappears from the list. An **Undo** button appears for a few seconds.
+- **Edit or delete** – tap a task's name to change it, move the due date, assign it to someone else or delete it (with Undo). This needs a to-do list that supports editing – Local To-do, Google Tasks and most others do. Turn off with `allow_edit_tasks: false`, or keep editing but hide Delete with `allow_delete_tasks: false`.
 - **Due dates** – shown as *Today*, *Tomorrow* or the date; overdue tasks turn red.
 - **Live** – changes made on another phone or in HA's own To-do page show up instantly.
 
@@ -489,7 +504,11 @@ Tap any event and press **Edit**. The same form as adding opens, filled in with 
 - **Repeating events** – when you save, choose **This event** (only this date) or **This and following** (this date onwards). Repeating events can't be moved to another calendar.
 - **Event types and years are kept** – a birthday stays *Leo (2016)* and keeps its *Birthday* type when you edit it.
 
-The Edit button only appears for calendars whose Home Assistant integration supports updating events (Local Calendar and Google Calendar do). Otherwise the pop-up says the calendar can't edit events. Turn editing off with `allow_edit: false` (also in the visual editor).
+The Edit button appears for calendars whose Home Assistant integration supports updating events, such as Local Calendar.
+
+**Google Calendar** – Home Assistant can add and delete Google events but not change them. So the card edits them by **replacing** the event: it creates the new version and then deletes the old one. The form shows a note when this happens. Guests, reminders, Meet links and colours set in Google aren't copied to the new event, and repeating Google events can't be edited this way (delete and re-add them instead). To switch this off, set `edit_by_replace: false`.
+
+For calendars that can't do either, the pop-up says the calendar can't edit events. Turn editing off completely with `allow_edit: false` (also in the visual editor).
 
 ### Deleting events
 
@@ -523,7 +542,26 @@ calendars:
 - Birthday, anniversary and name day calendars, bank and school holidays, and calendars with `planner_column: false` show in the date box on the left.
 - Today is highlighted and weekends are shaded. The weather for each day sits under the date.
 - Hiding a calendar with its button in the calendar bar also hides its column.
-- In `fill`/`fullscreen` the 7 days stretch to fill the screen. On a phone the columns scroll sideways while the dates stay in place.
+- In `fill`/`fullscreen` the days stretch to fill the screen. On a phone the columns scroll sideways while the dates stay in place.
+
+**Group columns** – lots of calendars? Give several the same `group` and `planner_column: group`, and they share one column, e.g. *Mum*, *Dad*, *Kids*, *Activities*. The column shows the members' photos; events keep their own calendar colour, and tapping an empty box adds to the first calendar of the group (you can pick another in the form).
+
+```yaml
+calendars:
+  - entity: calendar.oliver
+    person: person.oliver
+    group: Kids
+    planner_column: group
+  - entity: calendar.mia
+    person: person.mia
+    group: Kids
+    planner_column: group
+  - entity: calendar.football_club
+    group: Activities
+    planner_column: group
+```
+
+**How many days** – `planner_days: 10` shows 10 days instead of 7. `planner_start: today` starts with today at the top (no past days) instead of the start of the week, and ‹ › move by the number of days shown. Both are in the visual editor. Thanks to @ManicGTI for the idea ([#13](https://github.com/mimikm/Home-Calendar-Card/issues/13)).
 - **Event size** (see *Appearance*) makes the boxes taller and the text bigger.
 
 ### Wall display (permanent desktop / tablet)
@@ -614,6 +652,40 @@ show_calendar_chips: false   # hide the calendar buttons row
 - In `fill`/`fullscreen` the space you free up goes straight to the day boxes.
 
 All of these are in the visual editor under **Appearance**, with sliders for the two sizes.
+
+### Layout
+
+Arrange the card to suit your screen – handy for a TV that nobody touches, or a compact phone dashboard. In the visual editor open **Layout**, or:
+
+```yaml
+sections: [header, chips, countdowns]   # order of the parts above the calendar; leave one out to hide it
+show_view_selector: false               # hide Agenda / Week / Month / Planner
+show_date_navigation: false             # hide ‹ Today › and the date range
+event_time_position: right              # above (default), left or right of the title
+show_event_location: false
+show_event_calendar: false
+```
+
+![Event time above the title vs on the same line](images/event-layout.png)
+
+- **Sections** – `header` (date, clock & weather), `countdowns`, `toolbar` (view buttons, date navigation and **+ Event**) and `chips` (calendar buttons). List them in the order you want; any you leave out are hidden. In the editor, drag them to reorder and untick to hide.
+- **Non-touch screens** – with the view buttons and date navigation hidden and `allow_add: false`, the whole toolbar row disappears, giving the days more room ([#14](https://github.com/mimikm/Home-Calendar-Card/issues/14)).
+- **Compact Agenda** – `event_time_position: left` or `right` puts the time on the same line as the title, so each event takes about half the height ([#11](https://github.com/mimikm/Home-Calendar-Card/issues/11)).
+- The older `show_header`, `show_countdowns` and `show_calendar_chips` switches still work.
+
+### Month view on phones
+
+On a phone the day boxes are only about 45px wide, so Month view needs a different approach. Choose it in the visual editor under **Appearance** or with `month_mobile` ([#7](https://github.com/mimikm/Home-Calendar-Card/issues/7)):
+
+| `month_mobile` | On a phone |
+|---|---|
+| `list` (default) | Dots in the grid; **tap a day** and its events are listed under the month, like the phone calendar apps. Today is selected to start with |
+| `text` | Taller day boxes with short event titles (up to 3, then *+N*) |
+| `dots` | Coloured dots only (the previous behaviour) |
+
+![Phone Month view: list (left) and text (right)](images/phone-month.png)
+
+On wider screens Month view is unchanged and tapping a day opens its pop-up.
 
 ### Clock
 
@@ -708,7 +780,7 @@ Your own `event_types` names, calendar names and `todo_title` are shown exactly 
 - **No weather on days** – your weather entity must support a *daily* forecast. Hourly-only providers will show the current conditions in the header only.
 - **"Event" button missing** – none of the configured calendars support creating events. Check the calendar's integration.
 - **"+ Event" button disappeared after using the visual editor** – fixed in v1.15.1. Older versions could save a calendar written as a plain `- calendar.xyz` line as a long list of single letters (`'0': c`, `'1': a`, …). v1.15.1 reads those correctly and tidies them up the next time you save in the visual editor; you can also replace the list with `- calendar.xyz` by hand.
-- **"This calendar can't edit/delete events"** – the card offers Edit and Delete only when the calendar's integration supports it in Home Assistant. Some integrations can only create events, and read-only feeds can't change anything.
+- **"This calendar can't edit/delete events"** – the card offers Edit and Delete only when the calendar's integration supports it in Home Assistant. Google Calendar events are edited by replacing them (see *Editing events*); repeating Google events can only be deleted. Read-only feeds can't change anything.
 - **New event doesn't appear immediately** – some providers (especially iCloud via CalDAV) take a few seconds to sync; the card refreshes again automatically.
 
 ## Roadmap
@@ -718,7 +790,6 @@ Planned features – ideas and votes are welcome in [Issues](https://github.com/
 - 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in all the card's languages. The microphone needs HTTPS.
 - 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
 - 🌐 **Web panel for wall displays** – show a web page (radar map, bus times, school menu, your own dashboard) or a camera next to the calendar. Choose the position, set its size with a slider or by dragging its edge, zoom the page to fit, auto-refresh, rotate several pages, and lock it so taps can't navigate away. Only works with sites that allow being embedded, and over HTTPS only with `https://` pages.
-- 📱 **Readable Month view on phones** – a choice between short event titles in taller day boxes, or a list of the tapped day's events under the month ([#7](https://github.com/mimikm/Home-Calendar-Card/issues/7)).
 - 🚗 **Travel time to events** – for events with a location, show how long the drive from home takes right now, using Home Assistant's Waze Travel Time integration ([#10](https://github.com/mimikm/Home-Calendar-Card/issues/10)).
 - 🗣️ **Voice assistant tip** – a ready-made script and guide for adding events by talking to Assist or a voice speaker with an AI conversation agent.
 
