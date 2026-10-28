@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.15.0";
+const CARD_VERSION = "1.15.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -1290,6 +1290,17 @@ const startOfDay = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); retur
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const parseDate = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
 const sameDay = (a, b) => dayKey(a) === dayKey(b);
+// Calendar list entries: "calendar.x" or { entity: "calendar.x", ... }. Versions up to 1.15.0 could save a plain
+// "calendar.x" as { "0": "c", "1": "a", …, entity: "" } after an edit in the visual editor (#9) – rebuild those.
+const fixCalEntry = (c) => {
+  if (typeof c === "string") return c;
+  if (!c || typeof c !== "object") return c;
+  if (c.entity || !("0" in c)) return c;
+  const keys = Object.keys(c).filter((k) => /^\d+$/.test(k)).sort((a, b) => a - b);
+  const entity = keys.map((k) => c[k]).join("");
+  const rest = Object.fromEntries(Object.entries(c).filter(([k]) => !/^\d+$/.test(k) && k !== "entity"));
+  return Object.keys(rest).length ? { entity, ...rest } : entity;
+};
 // ISO 8601 week number (weeks start on Monday; week 1 contains the first Thursday of the year)
 const isoWeek = (d) => {
   const x = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -1357,6 +1368,7 @@ class HomeCalendarCard extends HTMLElement {
       ...config,
     };
     this._calendars = config.calendars
+      .map(fixCalEntry)
       .map((c, i) => {
         const o = typeof c === "string" ? { entity: c } : { ...c };
         const pal = themePalette(config.theme);
@@ -4407,7 +4419,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     await Promise.race([customElements.whenDefined("ha-form"), new Promise((r) => setTimeout(r, 3000))]);
   }
 
-  _cals() { return (this._config.calendars || []).map((c) => (typeof c === "string" ? { entity: c } : { ...c })); }
+  _cals() { return (this._config.calendars || []).map(fixCalEntry).map((c) => (typeof c === "string" ? { entity: c } : { ...c })); }
 
   _objCfg(v) { return v === true ? { enabled: true } : v && typeof v === "object" ? v : {}; }
 
@@ -4419,7 +4431,8 @@ class HomeCalendarCardEditor extends HTMLElement {
   _emit(config, rerender = false) {
     const clean = { ...config };
     if (Array.isArray(clean.calendars)) {
-      clean.calendars = clean.calendars.map((c) => {
+      clean.calendars = clean.calendars.map(fixCalEntry).map((c) => {
+        if (typeof c === "string") return c;
         const o = {};
         Object.entries(c).forEach(([k, v]) => { if (v !== "" && v != null && !(k === "type" && v === "events")) o[k] = v; });
         if (!("entity" in o)) o.entity = "";
