@@ -707,6 +707,8 @@ Your own `event_types` names, calendar names and `todo_title` are shown exactly 
 
 - **No weather on days** – your weather entity must support a *daily* forecast. Hourly-only providers will show the current conditions in the header only.
 - **"Event" button missing** – none of the configured calendars support creating events. Check the calendar's integration.
+- **"+ Event" button disappeared after using the visual editor** – fixed in v1.15.1. Older versions could save a calendar written as a plain `- calendar.xyz` line as a long list of single letters (`'0': c`, `'1': a`, …). v1.15.1 reads those correctly and tidies them up the next time you save in the visual editor; you can also replace the list with `- calendar.xyz` by hand.
+- **"This calendar can't edit/delete events"** – the card offers Edit and Delete only when the calendar's integration supports it in Home Assistant. Some integrations can only create events, and read-only feeds can't change anything.
 - **New event doesn't appear immediately** – some providers (especially iCloud via CalDAV) take a few seconds to sync; the card refreshes again automatically.
 
 ## Roadmap
@@ -716,6 +718,8 @@ Planned features – ideas and votes are welcome in [Issues](https://github.com/
 - 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in all the card's languages. The microphone needs HTTPS.
 - 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
 - 🌐 **Web panel for wall displays** – show a web page (radar map, bus times, school menu, your own dashboard) or a camera next to the calendar. Choose the position, set its size with a slider or by dragging its edge, zoom the page to fit, auto-refresh, rotate several pages, and lock it so taps can't navigate away. Only works with sites that allow being embedded, and over HTTPS only with `https://` pages.
+- 📱 **Readable Month view on phones** – a choice between short event titles in taller day boxes, or a list of the tapped day's events under the month ([#7](https://github.com/mimikm/Home-Calendar-Card/issues/7)).
+- 🚗 **Travel time to events** – for events with a location, show how long the drive from home takes right now, using Home Assistant's Waze Travel Time integration ([#10](https://github.com/mimikm/Home-Calendar-Card/issues/10)).
 - 🗣️ **Voice assistant tip** – a ready-made script and guide for adding events by talking to Assist or a voice speaker with an AI conversation agent.
 
 ## Support
