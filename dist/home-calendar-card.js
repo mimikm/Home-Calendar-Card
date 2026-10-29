@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.16.0";
+const CARD_VERSION = "1.17.0-beta.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -108,6 +108,8 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    ld_drag_line: "Drag to make the columns or rows on each side bigger or smaller",
+    ld_title: "Layout designer", ld_on: "on", ld_intro: "Arrange the card on a grid: move and resize blocks like the date, clock, weather, calendar and to-do list. Your current layout stays as it is until you start.", ld_start: "Design my own layout", ld_or_preset: "or start from", ld_pre_classic: "Classic", ld_pre_wall: "Wall display", ld_pre_tv: "TV – no buttons", ld_pre_phone: "Compact phone", ld_desktop: "Desktop", ld_phone: "Phone", ld_presets: "Presets", ld_reset: "Reset", ld_phone_auto: "Phones stack the blocks automatically. Create a phone layout to arrange them yourself.", ld_make_phone: "Create phone layout", ld_copy_desktop: "Copy desktop layout", ld_del_phone: "Remove phone layout", ld_bp: "Phone layout below (px)", ld_off: "Back to the classic layout", ld_help: "Drag a block to move it, drag its edge or corner to resize. Everything snaps to the grid. Tap a block for its settings.", ld_cols: "Columns", ld_rows: "Rows", ld_rows_auto: "Auto", ld_gap: "Gap (px)", ld_more: "More grid options", ld_col_sizes: "Column sizes", ld_row_sizes: "Row sizes", ld_sizes_help: "Relative sizes like 1 2 1, or px values – leave empty for equal sizes", ld_row_h: "Row height in a normal card (px)", ld_ah_secs: "Auto-hide after (seconds)", ld_padding: "Padding (px)", ld_hidden: "Hidden", ld_hidden_help: "Drop a block here to hide it", ld_unhide: "Show again", ld_tap_block: "Tap a block to change its visibility, size and options.", ld_vis: "Visibility", ld_show: "Show", ld_hide: "Hide", ld_autohide: "Auto-hide", ld_ah_help: "Hidden until someone taps the screen, then hides again. Auto-hide blocks may sit on top of others.", ld_size: "Size", ld_pos: "Position", ld_agenda_date: "Date in Agenda", l_agenda_date: "Date in Agenda view", o_ad_both: "Left and above", o_ad_left: "Left", o_ad_above: "Above", lb_date: "Date", lb_clock: "Clock", lb_weather: "Weather", lb_countdowns: "Countdowns", lb_views: "View buttons", lb_nav: "Date navigation", lb_add: "+ Event", lb_chips: "Calendar buttons", lb_calendar: "Calendar", lb_todo: "To-do list",
     edit_task: "Edit task", task_for: "For", replace_note: "This calendar can't change events directly, so saving replaces the event with a new one. Guests, reminders and colours set in the calendar app are not copied.", l_planner_days: "Days in Planner", l_planner_start: "Planner starts on", o_pl_week: "Start of the week", o_pl_today: "Today", o_pc_own: "Own column", o_pc_group: "Group column", o_pc_side: "Next to the date", l_month_mobile: "Month view on phones", o_mm_list: "List of the tapped day", o_mm_text: "Short titles", o_mm_dots: "Dots only", ed_layout: "Layout", l_sections: "Sections above the calendar (drag to reorder, untick to hide)", o_sec_header: "Date & weather", o_sec_countdowns: "Countdowns", o_sec_toolbar: "View buttons & date navigation", o_sec_chips: "Calendar buttons", l_show_view_selector: "Show view buttons (Agenda / Week / …)", l_show_date_navigation: "Show date navigation (‹ Today ›)", l_event_time_position: "Event time", o_tp_above: "Above the title", o_tp_left: "Left of the title", o_tp_right: "Right of the title", l_show_event_location: "Show event location", l_show_event_calendar: "Show calendar name on events", l_planner_column: "Planner view", ed_planner_help: "Own column, a shared column for its group, or next to the date",
     private_ev: "Private", private_sw: "Private", private_help: "Show only \"Private\" and the time on the screen", l_show_clock: "Show clock", l_clock_seconds: "Clock seconds", l_clock_format: "Clock format",
     wk: "Week {n}", wk_short: "Wk", l_show_week_numbers: "Show week numbers",
@@ -169,6 +171,8 @@ const I18N = {
     ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
+    ld_drag_line: "Przeciągnij, aby powiększyć lub zmniejszyć kolumny albo wiersze po obu stronach",
+    ld_title: "Projektant układu", ld_on: "włączony", ld_intro: "Ułóż kartę na siatce: przesuwaj i zmieniaj rozmiar bloków, takich jak data, zegar, pogoda, kalendarz i lista zadań. Obecny układ się nie zmieni, dopóki nie zaczniesz.", ld_start: "Zaprojektuj własny układ", ld_or_preset: "albo zacznij od", ld_pre_classic: "Klasyczny", ld_pre_wall: "Ekran ścienny", ld_pre_tv: "TV – bez przycisków", ld_pre_phone: "Kompaktowy na telefon", ld_desktop: "Komputer", ld_phone: "Telefon", ld_presets: "Szablony", ld_reset: "Resetuj", ld_phone_auto: "Na telefonie bloki układają się automatycznie jeden pod drugim. Utwórz układ telefonu, aby ułożyć je samodzielnie.", ld_make_phone: "Utwórz układ telefonu", ld_copy_desktop: "Skopiuj układ z komputera", ld_del_phone: "Usuń układ telefonu", ld_bp: "Układ telefonu poniżej (px)", ld_off: "Wróć do klasycznego układu", ld_help: "Przeciągnij blok, aby go przesunąć; przeciągnij krawędź lub róg, aby zmienić rozmiar. Wszystko przyciąga się do siatki. Dotknij bloku, aby zobaczyć jego ustawienia.", ld_cols: "Kolumny", ld_rows: "Wiersze", ld_rows_auto: "Auto", ld_gap: "Odstęp (px)", ld_more: "Więcej opcji siatki", ld_col_sizes: "Rozmiary kolumn", ld_row_sizes: "Rozmiary wierszy", ld_sizes_help: "Względne rozmiary, np. 1 2 1, albo wartości w px – puste = równe", ld_row_h: "Wysokość wiersza w zwykłej karcie (px)", ld_ah_secs: "Ukryj po (sekundy)", ld_padding: "Margines wewnętrzny (px)", ld_hidden: "Ukryte", ld_hidden_help: "Upuść tu blok, aby go ukryć", ld_unhide: "Pokaż ponownie", ld_tap_block: "Dotknij bloku, aby zmienić widoczność, rozmiar i opcje.", ld_vis: "Widoczność", ld_show: "Pokaż", ld_hide: "Ukryj", ld_autohide: "Autoukrywanie", ld_ah_help: "Ukryty, dopóki ktoś nie dotknie ekranu, potem znowu się chowa. Bloki z autoukrywaniem mogą nachodzić na inne.", ld_size: "Rozmiar", ld_pos: "Pozycja", ld_agenda_date: "Data w Agendzie", l_agenda_date: "Data w widoku Agenda", o_ad_both: "Z lewej i nad", o_ad_left: "Z lewej", o_ad_above: "Nad", lb_date: "Data", lb_clock: "Zegar", lb_weather: "Pogoda", lb_countdowns: "Odliczania", lb_views: "Przyciski widoków", lb_nav: "Nawigacja dat", lb_add: "+ Wydarzenie", lb_chips: "Przyciski kalendarzy", lb_calendar: "Kalendarz", lb_todo: "Lista zadań",
     edit_task: "Edytuj zadanie", task_for: "Dla", replace_note: "Ten kalendarz nie pozwala zmieniać wydarzeń, więc zapis zastąpi wydarzenie nowym. Goście, przypomnienia i kolory ustawione w aplikacji kalendarza nie zostaną skopiowane.", l_planner_days: "Dni w Planerze", l_planner_start: "Planer zaczyna się od", o_pl_week: "Początku tygodnia", o_pl_today: "Dzisiaj", o_pc_own: "Własna kolumna", o_pc_group: "Kolumna grupy", o_pc_side: "Obok daty", l_month_mobile: "Widok miesiąca na telefonie", o_mm_list: "Lista wybranego dnia", o_mm_text: "Krótkie tytuły", o_mm_dots: "Tylko kropki", ed_layout: "Układ", l_sections: "Sekcje nad kalendarzem (przeciągnij, by zmienić kolejność; odznacz, by ukryć)", o_sec_header: "Data i pogoda", o_sec_countdowns: "Odliczania", o_sec_toolbar: "Przyciski widoków i nawigacja dat", o_sec_chips: "Przyciski kalendarzy", l_show_view_selector: "Pokaż przyciski widoków (Agenda / Tydzień / …)", l_show_date_navigation: "Pokaż nawigację dat (‹ Dzisiaj ›)", l_event_time_position: "Godzina wydarzenia", o_tp_above: "Nad tytułem", o_tp_left: "Na lewo od tytułu", o_tp_right: "Na prawo od tytułu", l_show_event_location: "Pokaż miejsce wydarzenia", l_show_event_calendar: "Pokaż nazwę kalendarza przy wydarzeniach", l_planner_column: "Widok Planer", ed_planner_help: "Własna kolumna, wspólna kolumna grupy albo obok daty",
     private_ev: "Prywatne", private_sw: "Prywatne", private_help: "Na ekranie pokaż tylko \"Prywatne\" i godzinę", l_show_clock: "Pokaż zegar", l_clock_seconds: "Sekundy na zegarze", l_clock_format: "Format zegara",
     wk: "Tydzień {n}", wk_short: "Tydz.", l_show_week_numbers: "Pokaż numery tygodni",
@@ -229,6 +233,8 @@ const I18N = {
     ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
+    ld_drag_line: "Arrastra para agrandar o reducir las columnas o filas a cada lado",
+    ld_title: "Diseñador de diseño", ld_on: "activado", ld_intro: "Organiza la tarjeta en una cuadrícula: mueve y cambia el tamaño de bloques como la fecha, el reloj, el tiempo, el calendario y las tareas. Tu diseño actual no cambia hasta que empieces.", ld_start: "Diseñar mi propio diseño", ld_or_preset: "o empieza con", ld_pre_classic: "Clásico", ld_pre_wall: "Pantalla de pared", ld_pre_tv: "TV – sin botones", ld_pre_phone: "Móvil compacto", ld_desktop: "Escritorio", ld_phone: "Móvil", ld_presets: "Plantillas", ld_reset: "Restablecer", ld_phone_auto: "En el móvil los bloques se apilan automáticamente. Crea un diseño para móvil para colocarlos tú.", ld_make_phone: "Crear diseño para móvil", ld_copy_desktop: "Copiar diseño de escritorio", ld_del_phone: "Quitar diseño para móvil", ld_bp: "Diseño de móvil por debajo de (px)", ld_off: "Volver al diseño clásico", ld_help: "Arrastra un bloque para moverlo; arrastra su borde o esquina para cambiar el tamaño. Todo se ajusta a la cuadrícula. Toca un bloque para ver sus ajustes.", ld_cols: "Columnas", ld_rows: "Filas", ld_rows_auto: "Auto", ld_gap: "Espacio (px)", ld_more: "Más opciones de cuadrícula", ld_col_sizes: "Tamaños de columnas", ld_row_sizes: "Tamaños de filas", ld_sizes_help: "Tamaños relativos como 1 2 1, o valores en px – vacío = iguales", ld_row_h: "Altura de fila en una tarjeta normal (px)", ld_ah_secs: "Ocultar tras (segundos)", ld_padding: "Relleno (px)", ld_hidden: "Ocultos", ld_hidden_help: "Suelta aquí un bloque para ocultarlo", ld_unhide: "Mostrar de nuevo", ld_tap_block: "Toca un bloque para cambiar su visibilidad, tamaño y opciones.", ld_vis: "Visibilidad", ld_show: "Mostrar", ld_hide: "Ocultar", ld_autohide: "Autoocultar", ld_ah_help: "Oculto hasta que alguien toca la pantalla, luego se oculta de nuevo. Los bloques autoocultos pueden quedar encima de otros.", ld_size: "Tamaño", ld_pos: "Posición", ld_agenda_date: "Fecha en Agenda", l_agenda_date: "Fecha en la vista Agenda", o_ad_both: "A la izquierda y encima", o_ad_left: "A la izquierda", o_ad_above: "Encima", lb_date: "Fecha", lb_clock: "Reloj", lb_weather: "Tiempo", lb_countdowns: "Cuentas atrás", lb_views: "Botones de vista", lb_nav: "Navegación de fechas", lb_add: "+ Evento", lb_chips: "Botones de calendarios", lb_calendar: "Calendario", lb_todo: "Tareas",
     edit_task: "Editar tarea", task_for: "Para", replace_note: "Este calendario no permite cambiar eventos, así que al guardar se sustituye por uno nuevo. No se copian invitados, recordatorios ni colores de la app de calendario.", l_planner_days: "Días en el planificador", l_planner_start: "El planificador empieza", o_pl_week: "Al inicio de la semana", o_pl_today: "Hoy", o_pc_own: "Columna propia", o_pc_group: "Columna del grupo", o_pc_side: "Junto a la fecha", l_month_mobile: "Vista de mes en el móvil", o_mm_list: "Lista del día pulsado", o_mm_text: "Títulos cortos", o_mm_dots: "Solo puntos", ed_layout: "Diseño", l_sections: "Secciones sobre el calendario (arrastra para ordenar, desmarca para ocultar)", o_sec_header: "Fecha y tiempo", o_sec_countdowns: "Cuentas atrás", o_sec_toolbar: "Botones de vista y navegación", o_sec_chips: "Botones de calendarios", l_show_view_selector: "Mostrar botones de vista (Agenda / Semana / …)", l_show_date_navigation: "Mostrar navegación de fechas (‹ Hoy ›)", l_event_time_position: "Hora del evento", o_tp_above: "Encima del título", o_tp_left: "A la izquierda del título", o_tp_right: "A la derecha del título", l_show_event_location: "Mostrar ubicación del evento", l_show_event_calendar: "Mostrar nombre del calendario en los eventos", l_planner_column: "Vista planificador", ed_planner_help: "Columna propia, columna compartida del grupo o junto a la fecha",
     private_ev: "Privado", private_sw: "Privado", private_help: "Mostrar solo \"Privado\" y la hora en la pantalla", l_show_clock: "Mostrar reloj", l_clock_seconds: "Segundos en el reloj", l_clock_format: "Formato del reloj",
     wk: "Semana {n}", wk_short: "Sem.", l_show_week_numbers: "Mostrar números de semana",
@@ -289,6 +295,8 @@ const I18N = {
     ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
   it: {
+    ld_drag_line: "Trascina per allargare o restringere le colonne o righe ai due lati",
+    ld_title: "Designer del layout", ld_on: "attivo", ld_intro: "Disponi la card su una griglia: sposta e ridimensiona blocchi come data, orologio, meteo, calendario e attività. Il layout attuale resta com'è finché non inizi.", ld_start: "Crea il mio layout", ld_or_preset: "oppure parti da", ld_pre_classic: "Classico", ld_pre_wall: "Display a parete", ld_pre_tv: "TV – senza pulsanti", ld_pre_phone: "Telefono compatto", ld_desktop: "Desktop", ld_phone: "Telefono", ld_presets: "Modelli", ld_reset: "Ripristina", ld_phone_auto: "Sul telefono i blocchi si impilano automaticamente. Crea un layout per telefono per disporli tu.", ld_make_phone: "Crea layout per telefono", ld_copy_desktop: "Copia layout desktop", ld_del_phone: "Rimuovi layout per telefono", ld_bp: "Layout telefono sotto (px)", ld_off: "Torna al layout classico", ld_help: "Trascina un blocco per spostarlo; trascina bordo o angolo per ridimensionarlo. Tutto si aggancia alla griglia. Tocca un blocco per le sue impostazioni.", ld_cols: "Colonne", ld_rows: "Righe", ld_rows_auto: "Auto", ld_gap: "Spaziatura (px)", ld_more: "Altre opzioni della griglia", ld_col_sizes: "Larghezze colonne", ld_row_sizes: "Altezze righe", ld_sizes_help: "Dimensioni relative come 1 2 1, o valori in px – vuoto = uguali", ld_row_h: "Altezza riga in una card normale (px)", ld_ah_secs: "Nascondi dopo (secondi)", ld_padding: "Margine interno (px)", ld_hidden: "Nascosti", ld_hidden_help: "Trascina qui un blocco per nasconderlo", ld_unhide: "Mostra di nuovo", ld_tap_block: "Tocca un blocco per cambiarne visibilità, dimensione e opzioni.", ld_vis: "Visibilità", ld_show: "Mostra", ld_hide: "Nascondi", ld_autohide: "Nascondi automaticamente", ld_ah_help: "Nascosto finché qualcuno tocca lo schermo, poi si nasconde di nuovo. Può sovrapporsi ad altri blocchi.", ld_size: "Dimensione", ld_pos: "Posizione", ld_agenda_date: "Data nell'Agenda", l_agenda_date: "Data nella vista Agenda", o_ad_both: "A sinistra e sopra", o_ad_left: "A sinistra", o_ad_above: "Sopra", lb_date: "Data", lb_clock: "Orologio", lb_weather: "Meteo", lb_countdowns: "Conti alla rovescia", lb_views: "Pulsanti vista", lb_nav: "Navigazione date", lb_add: "+ Evento", lb_chips: "Pulsanti calendari", lb_calendar: "Calendario", lb_todo: "Attività",
     edit_task: "Modifica attività", task_for: "Per", replace_note: "Questo calendario non può modificare gli eventi, quindi salvando l'evento viene sostituito da uno nuovo. Invitati, promemoria e colori impostati nell'app del calendario non vengono copiati.", l_planner_days: "Giorni nel Planner", l_planner_start: "Il Planner inizia", o_pl_week: "Dall'inizio della settimana", o_pl_today: "Da oggi", o_pc_own: "Colonna propria", o_pc_group: "Colonna del gruppo", o_pc_side: "Accanto alla data", l_month_mobile: "Vista mese sul telefono", o_mm_list: "Elenco del giorno toccato", o_mm_text: "Titoli brevi", o_mm_dots: "Solo puntini", ed_layout: "Layout", l_sections: "Sezioni sopra il calendario (trascina per riordinare, deseleziona per nascondere)", o_sec_header: "Data e meteo", o_sec_countdowns: "Conti alla rovescia", o_sec_toolbar: "Pulsanti vista e navigazione date", o_sec_chips: "Pulsanti dei calendari", l_show_view_selector: "Mostra pulsanti vista (Agenda / Settimana / …)", l_show_date_navigation: "Mostra navigazione date (‹ Oggi ›)", l_event_time_position: "Orario dell'evento", o_tp_above: "Sopra il titolo", o_tp_left: "A sinistra del titolo", o_tp_right: "A destra del titolo", l_show_event_location: "Mostra luogo dell'evento", l_show_event_calendar: "Mostra nome del calendario negli eventi", l_planner_column: "Vista Planner", ed_planner_help: "Colonna propria, colonna condivisa del gruppo o accanto alla data",
     wk: "Settimana {n}",
     wk_short: "Sett.",
@@ -525,6 +533,8 @@ const I18N = {
     ed_media_help: "es. media-source://media_source/local/photos – lascia vuoto per un salvaschermo con solo orologio",
   },
   nl: {
+    ld_drag_line: "Sleep om de kolommen of rijen aan weerszijden groter of kleiner te maken",
+    ld_title: "Indelingsontwerper", ld_on: "aan", ld_intro: "Zet de kaart op een raster: verplaats blokken zoals datum, klok, weer, agenda en takenlijst en pas hun grootte aan. Je huidige indeling blijft hetzelfde tot je begint.", ld_start: "Mijn eigen indeling maken", ld_or_preset: "of begin met", ld_pre_classic: "Klassiek", ld_pre_wall: "Wandscherm", ld_pre_tv: "TV – zonder knoppen", ld_pre_phone: "Compacte telefoon", ld_desktop: "Desktop", ld_phone: "Telefoon", ld_presets: "Sjablonen", ld_reset: "Herstellen", ld_phone_auto: "Op een telefoon worden de blokken automatisch onder elkaar gezet. Maak een telefoonindeling om ze zelf te plaatsen.", ld_make_phone: "Telefoonindeling maken", ld_copy_desktop: "Desktopindeling kopiëren", ld_del_phone: "Telefoonindeling verwijderen", ld_bp: "Telefoonindeling onder (px)", ld_off: "Terug naar de klassieke indeling", ld_help: "Sleep een blok om het te verplaatsen; sleep de rand of hoek om de grootte te wijzigen. Alles klikt vast op het raster. Tik op een blok voor de instellingen.", ld_cols: "Kolommen", ld_rows: "Rijen", ld_rows_auto: "Auto", ld_gap: "Tussenruimte (px)", ld_more: "Meer rasteropties", ld_col_sizes: "Kolombreedtes", ld_row_sizes: "Rijhoogtes", ld_sizes_help: "Relatieve groottes zoals 1 2 1, of px-waarden – leeg = gelijk", ld_row_h: "Rijhoogte in een gewone kaart (px)", ld_ah_secs: "Verbergen na (seconden)", ld_padding: "Binnenmarge (px)", ld_hidden: "Verborgen", ld_hidden_help: "Sleep een blok hierheen om het te verbergen", ld_unhide: "Weer tonen", ld_tap_block: "Tik op een blok om zichtbaarheid, grootte en opties te wijzigen.", ld_vis: "Zichtbaarheid", ld_show: "Tonen", ld_hide: "Verbergen", ld_autohide: "Automatisch verbergen", ld_ah_help: "Verborgen tot iemand op het scherm tikt, daarna weer weg. Deze blokken mogen over andere heen liggen.", ld_size: "Grootte", ld_pos: "Positie", ld_agenda_date: "Datum in Agenda", l_agenda_date: "Datum in de Agenda-weergave", o_ad_both: "Links en boven", o_ad_left: "Links", o_ad_above: "Boven", lb_date: "Datum", lb_clock: "Klok", lb_weather: "Weer", lb_countdowns: "Aftellers", lb_views: "Weergaveknoppen", lb_nav: "Datumnavigatie", lb_add: "+ Afspraak", lb_chips: "Agendaknoppen", lb_calendar: "Agenda", lb_todo: "Takenlijst",
     edit_task: "Taak bewerken", task_for: "Voor", replace_note: "Deze agenda kan afspraken niet direct wijzigen, dus bij opslaan wordt de afspraak vervangen door een nieuwe. Gasten, herinneringen en kleuren uit de agenda-app worden niet overgenomen.", l_planner_days: "Dagen in de Planner", l_planner_start: "Planner begint", o_pl_week: "Aan het begin van de week", o_pl_today: "Vandaag", o_pc_own: "Eigen kolom", o_pc_group: "Groepskolom", o_pc_side: "Naast de datum", l_month_mobile: "Maandweergave op telefoon", o_mm_list: "Lijst van de aangetikte dag", o_mm_text: "Korte titels", o_mm_dots: "Alleen stippen", ed_layout: "Indeling", l_sections: "Onderdelen boven de agenda (sleep om te ordenen, vink uit om te verbergen)", o_sec_header: "Datum & weer", o_sec_countdowns: "Aftellers", o_sec_toolbar: "Weergaveknoppen & datumnavigatie", o_sec_chips: "Agendaknoppen", l_show_view_selector: "Weergaveknoppen tonen (Agenda / Week / …)", l_show_date_navigation: "Datumnavigatie tonen (‹ Vandaag ›)", l_event_time_position: "Tijd van de afspraak", o_tp_above: "Boven de titel", o_tp_left: "Links van de titel", o_tp_right: "Rechts van de titel", l_show_event_location: "Locatie van afspraak tonen", l_show_event_calendar: "Agendanaam bij afspraken tonen", l_planner_column: "Planner-weergave", ed_planner_help: "Eigen kolom, gedeelde groepskolom of naast de datum",
     wk: "Week {n}",
     wk_short: "Wk",
@@ -761,6 +771,8 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    ld_drag_line: "Ziehen, um die Spalten oder Zeilen auf beiden Seiten größer oder kleiner zu machen",
+    ld_title: "Layout-Designer", ld_on: "an", ld_intro: "Ordne die Karte in einem Raster an: verschiebe Blöcke wie Datum, Uhr, Wetter, Kalender und Aufgaben und ändere ihre Größe. Dein aktuelles Layout bleibt, bis du anfängst.", ld_start: "Eigenes Layout gestalten", ld_or_preset: "oder starte mit", ld_pre_classic: "Klassisch", ld_pre_wall: "Wanddisplay", ld_pre_tv: "TV – ohne Tasten", ld_pre_phone: "Kompakt fürs Handy", ld_desktop: "Desktop", ld_phone: "Handy", ld_presets: "Vorlagen", ld_reset: "Zurücksetzen", ld_phone_auto: "Auf dem Handy werden die Blöcke automatisch untereinander gestapelt. Erstelle ein Handy-Layout, um sie selbst anzuordnen.", ld_make_phone: "Handy-Layout erstellen", ld_copy_desktop: "Desktop-Layout kopieren", ld_del_phone: "Handy-Layout entfernen", ld_bp: "Handy-Layout unter (px)", ld_off: "Zurück zum klassischen Layout", ld_help: "Ziehe einen Block, um ihn zu verschieben; ziehe Rand oder Ecke, um die Größe zu ändern. Alles rastet im Raster ein. Tippe auf einen Block für seine Einstellungen.", ld_cols: "Spalten", ld_rows: "Zeilen", ld_rows_auto: "Auto", ld_gap: "Abstand (px)", ld_more: "Weitere Rasteroptionen", ld_col_sizes: "Spaltenbreiten", ld_row_sizes: "Zeilenhöhen", ld_sizes_help: "Relative Größen wie 1 2 1 oder px-Werte – leer = gleich groß", ld_row_h: "Zeilenhöhe in einer normalen Karte (px)", ld_ah_secs: "Ausblenden nach (Sekunden)", ld_padding: "Innenabstand (px)", ld_hidden: "Ausgeblendet", ld_hidden_help: "Block hier ablegen, um ihn auszublenden", ld_unhide: "Wieder anzeigen", ld_tap_block: "Tippe auf einen Block, um Sichtbarkeit, Größe und Optionen zu ändern.", ld_vis: "Sichtbarkeit", ld_show: "Anzeigen", ld_hide: "Ausblenden", ld_autohide: "Auto-Ausblenden", ld_ah_help: "Ausgeblendet, bis jemand auf den Bildschirm tippt, dann wieder weg. Auto-Ausblenden-Blöcke dürfen über anderen liegen.", ld_size: "Größe", ld_pos: "Position", ld_agenda_date: "Datum in der Agenda", l_agenda_date: "Datum in der Agenda-Ansicht", o_ad_both: "Links und oben", o_ad_left: "Links", o_ad_above: "Oben", lb_date: "Datum", lb_clock: "Uhr", lb_weather: "Wetter", lb_countdowns: "Countdowns", lb_views: "Ansichtstasten", lb_nav: "Datumsnavigation", lb_add: "+ Termin", lb_chips: "Kalender-Schaltflächen", lb_calendar: "Kalender", lb_todo: "Aufgaben",
     edit_task: "Aufgabe bearbeiten", task_for: "Für", replace_note: "Dieser Kalender kann Termine nicht direkt ändern, daher ersetzt das Speichern den Termin durch einen neuen. Gäste, Erinnerungen und Farben aus der Kalender-App werden nicht übernommen.", l_planner_days: "Tage im Planer", l_planner_start: "Planer beginnt", o_pl_week: "Am Wochenanfang", o_pl_today: "Heute", o_pc_own: "Eigene Spalte", o_pc_group: "Gruppenspalte", o_pc_side: "Neben dem Datum", l_month_mobile: "Monatsansicht auf dem Handy", o_mm_list: "Liste des angetippten Tages", o_mm_text: "Kurze Titel", o_mm_dots: "Nur Punkte", ed_layout: "Layout", l_sections: "Bereiche über dem Kalender (ziehen zum Sortieren, abwählen zum Ausblenden)", o_sec_header: "Datum & Wetter", o_sec_countdowns: "Countdowns", o_sec_toolbar: "Ansichtstasten & Datumsnavigation", o_sec_chips: "Kalender-Schaltflächen", l_show_view_selector: "Ansichtstasten anzeigen (Agenda / Woche / …)", l_show_date_navigation: "Datumsnavigation anzeigen (‹ Heute ›)", l_event_time_position: "Uhrzeit des Termins", o_tp_above: "Über dem Titel", o_tp_left: "Links vom Titel", o_tp_right: "Rechts vom Titel", l_show_event_location: "Ort des Termins anzeigen", l_show_event_calendar: "Kalendername bei Terminen anzeigen", l_planner_column: "Planer-Ansicht", ed_planner_help: "Eigene Spalte, gemeinsame Gruppenspalte oder neben dem Datum",
     wk: "KW {n}",
     wk_short: "KW",
@@ -997,6 +1009,8 @@ const I18N = {
     ed_media_help: "z. B. media-source://media_source/local/photos – leer lassen für einen Bildschirmschoner nur mit Uhr",
   },
   hu: {
+    ld_drag_line: "Húzd a két oldalán lévő oszlopok vagy sorok átméretezéséhez",
+    ld_title: "Elrendezés-tervező", ld_on: "bekapcsolva", ld_intro: "Rendezd el a kártyát egy rácson: mozgasd és méretezd át a blokkokat, például a dátumot, az órát, az időjárást, a naptárat és a teendőket. A mostani elrendezés marad, amíg el nem kezded.", ld_start: "Saját elrendezés tervezése", ld_or_preset: "vagy kezdd ezzel", ld_pre_classic: "Klasszikus", ld_pre_wall: "Fali kijelző", ld_pre_tv: "TV – gombok nélkül", ld_pre_phone: "Kompakt telefon", ld_desktop: "Asztali", ld_phone: "Telefon", ld_presets: "Sablonok", ld_reset: "Visszaállítás", ld_phone_auto: "Telefonon a blokkok automatikusan egymás alá kerülnek. Hozz létre telefonos elrendezést, ha magad szeretnéd elrendezni őket.", ld_make_phone: "Telefonos elrendezés létrehozása", ld_copy_desktop: "Asztali elrendezés másolása", ld_del_phone: "Telefonos elrendezés törlése", ld_bp: "Telefonos elrendezés ez alatt (px)", ld_off: "Vissza a klasszikus elrendezéshez", ld_help: "Húzd a blokkot a mozgatáshoz, a szélét vagy sarkát az átméretezéshez. Minden a rácshoz igazodik. Érintsd meg a blokkot a beállításaihoz.", ld_cols: "Oszlopok", ld_rows: "Sorok", ld_rows_auto: "Auto", ld_gap: "Térköz (px)", ld_more: "További rácsbeállítások", ld_col_sizes: "Oszlopszélességek", ld_row_sizes: "Sormagasságok", ld_sizes_help: "Arányos méretek, pl. 1 2 1, vagy px értékek – üresen egyenlő", ld_row_h: "Sormagasság normál kártyában (px)", ld_ah_secs: "Elrejtés ennyi után (mp)", ld_padding: "Belső margó (px)", ld_hidden: "Rejtett", ld_hidden_help: "Húzz ide egy blokkot az elrejtéshez", ld_unhide: "Újra megjelenítés", ld_tap_block: "Érints meg egy blokkot a láthatóság, a méret és a beállítások módosításához.", ld_vis: "Láthatóság", ld_show: "Látható", ld_hide: "Rejtett", ld_autohide: "Automatikus elrejtés", ld_ah_help: "Rejtve marad, amíg valaki meg nem érinti a képernyőt, aztán újra elrejtőzik. Átfedhet más blokkokat.", ld_size: "Méret", ld_pos: "Pozíció", ld_agenda_date: "Dátum a Napirendben", l_agenda_date: "Dátum a Napirend nézetben", o_ad_both: "Balra és felül", o_ad_left: "Balra", o_ad_above: "Felül", lb_date: "Dátum", lb_clock: "Óra", lb_weather: "Időjárás", lb_countdowns: "Visszaszámlálások", lb_views: "Nézetgombok", lb_nav: "Dátumnavigáció", lb_add: "+ Esemény", lb_chips: "Naptárgombok", lb_calendar: "Naptár", lb_todo: "Teendők",
     edit_task: "Teendő szerkesztése", task_for: "Kinek", replace_note: "Ez a naptár nem tudja közvetlenül módosítani az eseményeket, ezért mentéskor az esemény egy újra cserélődik. A naptáralkalmazásban beállított vendégek, emlékeztetők és színek nem másolódnak át.", l_planner_days: "Napok a Tervezőben", l_planner_start: "A Tervező kezdete", o_pl_week: "A hét elejétől", o_pl_today: "Mától", o_pc_own: "Saját oszlop", o_pc_group: "Csoport oszlopa", o_pc_side: "A dátum mellett", l_month_mobile: "Havi nézet telefonon", o_mm_list: "A megérintett nap listája", o_mm_text: "Rövid címek", o_mm_dots: "Csak pontok", ed_layout: "Elrendezés", l_sections: "Részek a naptár felett (húzással rendezhető, kipipálás nélkül rejtve)", o_sec_header: "Dátum és időjárás", o_sec_countdowns: "Visszaszámlálások", o_sec_toolbar: "Nézetgombok és dátumnavigáció", o_sec_chips: "Naptárgombok", l_show_view_selector: "Nézetgombok megjelenítése (Napirend / Hét / …)", l_show_date_navigation: "Dátumnavigáció megjelenítése (‹ Ma ›)", l_event_time_position: "Esemény időpontja", o_tp_above: "A cím felett", o_tp_left: "A címtől balra", o_tp_right: "A címtől jobbra", l_show_event_location: "Helyszín megjelenítése", l_show_event_calendar: "Naptár nevének megjelenítése az eseményeknél", l_planner_column: "Tervező nézet", ed_planner_help: "Saját oszlop, közös csoportoszlop vagy a dátum mellett",
     wk: "{n}. hét",
     wk_short: "Hét",
@@ -1289,6 +1303,106 @@ const startOfDay = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); retur
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
 const parseDate = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
 const sameDay = (a, b) => dayKey(a) === dayKey(b);
+// ---- Grid layout (v1.17): the card is a grid of blocks the user can move and resize in the editor.
+const GRID_BLOCKS = ["date", "clock", "weather", "countdowns", "views", "nav", "add", "chips", "calendar", "todo"];
+const BLOCK_ICONS = { date: "mdi:calendar-today", clock: "mdi:clock-outline", weather: "mdi:weather-partly-cloudy", countdowns: "mdi:timer-sand",
+  views: "mdi:view-week-outline", nav: "mdi:arrow-left-right", add: "mdi:plus-circle-outline", chips: "mdi:toggle-switch-outline",
+  calendar: "mdi:calendar-month-outline", todo: "mdi:checkbox-marked-circle-outline" };
+const BLOCK_MIN = { calendar: [2, 1], todo: [2, 1] };
+const clampInt = (v, lo, hi, d) => { const n = Math.round(Number(v)); return Number.isFinite(n) ? Math.max(lo, Math.min(hi, n)) : d; };
+// One layout (desktop or phone): { columns, rows ("auto" | n), col_sizes, row_sizes, blocks: { name: { col, row, w, h, show } } }
+const normLayout = (L) => {
+  const cols = clampInt(L?.columns, 1, 24, 12);
+  const fixed = L?.rows !== undefined && L?.rows !== "auto" && Number(L.rows) > 0 ? clampInt(L.rows, 1, 24, 6) : 0;
+  const blocks = [];
+  const src = L?.blocks && typeof L.blocks === "object" ? L.blocks : {};
+  GRID_BLOCKS.forEach((name) => {
+    const b = src[name];
+    if (!b || typeof b !== "object") { if (name === "calendar") blocks.push({ name, col: 1, row: 99, w: cols, h: 1, show: "show" }); return; }
+    const show = ["hide", "autohide"].includes(b.show) ? b.show : "show";
+    const col = clampInt(b.col, 1, cols, 1);
+    const w = clampInt(b.w, 1, cols - col + 1, Math.min(cols, 4));
+    blocks.push({ name, col, row: clampInt(b.row, 1, 99, 1), w, h: clampInt(b.h, 1, 24, 1), show: name === "calendar" && show === "hide" ? "show" : show });
+  });
+  return { columns: cols, rows: fixed || "auto", col_sizes: L?.col_sizes, row_sizes: L?.row_sizes, blocks };
+};
+const trackList = (sizes, n, fallback) => {
+  const arr = Array.isArray(sizes) ? sizes : typeof sizes === "string" && sizes.trim() ? sizes.trim().split(/[\s,]+/) : null;
+  if (!arr || !arr.length) return null;
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const v = String(arr[i] ?? arr[arr.length - 1]).trim();
+    if (/^\d+(\.\d+)?$/.test(v)) out.push(`minmax(0, ${v}fr)`);
+    else if (/^\d+(\.\d+)?(px|%|rem|em)$|^auto$|^min-content$|^max-content$/.test(v)) out.push(v);
+    else out.push(fallback);
+  }
+  return out.join(" ");
+};
+
+// Starting layout built from the current (classic) settings, so switching to the designer changes nothing visible.
+const defaultGrid = (c) => {
+  const blocks = {};
+  const hide = (n) => { blocks[n] = { col: 1, row: 1, w: 1, h: 1, show: "hide" }; };
+  let pos = String(c.todo_position || "auto").toLowerCase();
+  if (pos === "side") pos = "right";
+  if (!["top", "bottom", "left", "right"].includes(pos)) pos = !c.layout || c.layout === "card" ? "bottom" : "right";
+  const side = c.todo_entity && (pos === "left" || pos === "right");
+  const M = side ? 8 : 12;
+  const O = side && pos === "left" ? 4 : 0;
+  let row = c.todo_entity && pos === "top" ? 2 : 1;
+  const put = (items) => { // items: [name, fraction]; fills one row of the main area
+    let col = 1;
+    items.forEach(([n, f], i) => {
+      const w = i === items.length - 1 ? M - col + 1 : Math.max(1, Math.round(f * M));
+      blocks[n] = { col: O + col, row, w, h: 1, show: "show" };
+      col += w;
+    });
+    row++;
+  };
+  const secs = sectionList(c);
+  const all = ["header", "countdowns", "toolbar", "chips"];
+  all.filter((x) => !secs.includes(x)).forEach((x) => (x === "header" ? ["date", "clock", "weather"] : x === "toolbar" ? ["views", "nav", "add"] : [x]).forEach(hide));
+  secs.forEach((x) => {
+    if (x === "header") {
+      if (c.show_clock) put([["date", 5 / 12], ["clock", 3 / 12], ["weather", 4 / 12]]); else { hide("clock"); put([["date", 8 / 12], ["weather", 4 / 12]]); }
+    } else if (x === "toolbar") {
+      const items = [];
+      if (c.show_view_selector !== false) items.push(["views", 5 / 12]); else hide("views");
+      if (c.show_date_navigation !== false) items.push(["nav", 5 / 12]); else hide("nav");
+      items.push(["add", 2 / 12]);
+      put(items);
+    } else put([[x, 1]]);
+  });
+  put([["calendar", 1]]);
+  if (!c.todo_entity) hide("todo");
+  else if (side) blocks.todo = { col: pos === "left" ? 1 : 9, row: 1, w: 4, h: row - 1, show: "show" };
+  else blocks.todo = { col: 1, row: pos === "top" ? 1 : row, w: 12, h: 1, show: "show" };
+  return { columns: 12, rows: "auto", blocks };
+};
+const B = (col, row, w, h = 1, show = "show") => ({ col, row, w, h, show });
+const presetGrid = (name, c) => {
+  const todo = !!c.todo_entity;
+  if (name === "wall") {
+    const W = todo ? 9 : 12;
+    return { columns: 12, rows: 8, blocks: {
+      date: B(1, 1, 4), clock: B(5, 1, 4), weather: B(9, 1, 4), countdowns: B(1, 2, W), calendar: B(1, 3, W, 6),
+      views: B(1, 3, 4, 1, "autohide"), nav: B(5, 3, 4, 1, "autohide"), add: B(W, 3, 1, 1, "autohide"), chips: B(1, 8, W, 1, "autohide"),
+      todo: todo ? B(10, 2, 3, 7) : B(1, 1, 1, 1, "hide") } };
+  }
+  if (name === "tv") {
+    return { columns: 12, rows: "auto", blocks: {
+      date: B(1, 1, 6), clock: B(7, 1, 3), weather: B(10, 1, 3), countdowns: B(1, 2, 12), calendar: B(1, 3, todo ? 9 : 12),
+      todo: todo ? B(10, 3, 3) : B(1, 1, 1, 1, "hide"),
+      views: B(1, 1, 1, 1, "hide"), nav: B(1, 1, 1, 1, "hide"), add: B(1, 1, 1, 1, "hide"), chips: B(1, 1, 1, 1, "hide") } };
+  }
+  if (name === "phone") {
+    return { columns: 4, rows: "auto", blocks: {
+      date: B(1, 1, 2), weather: B(3, 1, 2), clock: B(1, 1, 1, 1, "hide"), countdowns: B(1, 2, 4), views: B(1, 3, 4), nav: B(1, 4, 3), add: B(4, 4, 1),
+      chips: B(1, 5, 4), calendar: B(1, 6, 4), todo: todo ? B(1, 7, 4) : B(1, 1, 1, 1, "hide") } };
+  }
+  return defaultGrid(c);
+};
+
 // Layout configurator (#11, #14): the parts above the calendar, in order. Missing = hidden.
 const SECTIONS = ["header", "countdowns", "toolbar", "chips"];
 const sectionList = (c) => {
@@ -1462,6 +1576,7 @@ class HomeCalendarCard extends HTMLElement {
     this._onResize = () => { cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(() => this._applyLayout(true)); };
     this._onVis = () => this._keepAwake();
     window.addEventListener("resize", this._onResize);
+    if (window.ResizeObserver && !this._ro) { this._ro = new ResizeObserver(() => { if (this._gridOn()) this._onResize(); }); this._ro.observe(this); }
     document.addEventListener("visibilitychange", this._onVis);
     this._keepAwake();
     this._ambientStart();
@@ -1494,6 +1609,8 @@ class HomeCalendarCard extends HTMLElement {
     clearInterval(this._clockTimer);
     clearInterval(this._refresh);
     window.removeEventListener("resize", this._onResize);
+    if (this._ro) { this._ro.disconnect(); this._ro = null; }
+    clearTimeout(this._ahTimer);
     document.removeEventListener("visibilitychange", this._onVis);
     if (this._wakeLock) { this._wakeLock.release().catch(() => {}); this._wakeLock = null; }
     clearTimeout(this._refetchTimer);
@@ -2422,6 +2539,9 @@ class HomeCalendarCard extends HTMLElement {
   _build() {
     this.shadowRoot.innerHTML = `<style>${STYLES}</style><ha-card><div class="inner"><div class="wrap"></div><div class="todo" hidden></div></div><div class="amb night"></div><div class="amb saver"></div><div class="fs-ctl"></div><div class="hcc-toast"></div></ha-card><dialog></dialog>`;
     this._main = this.shadowRoot.querySelector(".wrap");
+    const card = this.shadowRoot.querySelector("ha-card");
+    card.addEventListener("pointerdown", (e) => this._ahPointer(e), true);
+    card.addEventListener("click", (e) => { if (this._ahSwallow) { this._ahSwallow = false; e.stopPropagation(); e.preventDefault(); } }, true);
     this._todoBox = this.shadowRoot.querySelector(".todo");
     ["pointerdown", "keydown", "input", "focusin"].forEach((ev) => this._todoBox.addEventListener(ev, () => this._todoActivity()));
     this._inner = this.shadowRoot.querySelector(".inner");
@@ -2806,6 +2926,12 @@ class HomeCalendarCard extends HTMLElement {
     this.style.setProperty("--cd-scale", String(pct(this._config.countdown_size, 0.5, 1.5)));
     this.style.setProperty("--ev-scale", String(pct(this._config.event_size, 0.8, 1.6)));
     this._inner.classList.toggle("has-todo", !!this._config.todo_entity);
+    if (this._gridOn()) {
+      const bp = clampInt(this._config.grid.phone_breakpoint, 200, 2000, 600);
+      const w = this.clientWidth || 9999;
+      if (fromResize && (w < bp) !== !!this._isPhone) this._render();
+      return;
+    }
     let pos = String(this._config.todo_position || "auto").toLowerCase();
     if (pos === "side") pos = "right";
     if (!["top", "bottom", "left", "right"].includes(pos)) pos = mode === "card" ? "bottom" : "right";
@@ -2864,6 +2990,8 @@ class HomeCalendarCard extends HTMLElement {
     const c = this._config;
     const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._view === "planner" ? this._renderPlanner() : this._renderAgenda();
     const maxH = c.max_height ? ` style="max-height:${esc(c.max_height)};overflow:auto"` : "";
+    if (this._gridOn()) { this._renderGrid(body, maxH); return; }
+    if (this._inner.classList.contains("lg")) this._leaveGrid();
     const part = {
       header: () => this._renderHeader(),
       countdowns: () => this._renderCountdowns(),
@@ -2875,6 +3003,134 @@ class HomeCalendarCard extends HTMLElement {
       <div class="progress ${this._loading ? "on" : ""}"></div>
       ${this._error ? `<div class="error"><ha-icon icon="mdi:alert-circle-outline"></ha-icon>${esc(this._error)}</div>` : ""}
       <div class="body view-${this._view}"${maxH}>${body}</div>`;
+  }
+
+  /* ------------------------------------------------------------- grid layout */
+
+  _gridOn() { const g = this._config?.grid; return !!(g && typeof g === "object" && g.blocks && typeof g.blocks === "object"); }
+
+  // The layout in use right now: the phone layout on narrow cards, else desktop. Without a phone layout,
+  // narrow cards stack the desktop blocks full-width in reading order.
+  _activeLayout() {
+    const g = this._config.grid;
+    const bp = clampInt(g.phone_breakpoint, 200, 2000, 600);
+    const w = this.clientWidth || this.getBoundingClientRect().width || 9999;
+    this._isPhone = w > 0 && w < bp;
+    if (this._isPhone && g.phone?.blocks) return { ...normLayout(g.phone), phone: true };
+    const L = normLayout(g);
+    if (!this._isPhone) return L;
+    // phones are touched anyway, so auto-hide blocks simply show in the stack
+    const rank = (b) => (b.name === "calendar" ? 1e4 : b.name === "todo" ? 2e4 : b.row * 100 + b.col);
+    const order = L.blocks.filter((b) => b.show !== "hide").sort((a, b) => rank(a) - rank(b));
+    const blocks = order.map((b, i) => ({ ...b, col: 1, w: 1, h: 1, row: i + 1, show: "show" }));
+    return { columns: 1, rows: "auto", blocks, phone: true, stacked: true };
+  }
+
+  _gridTemplate(L) {
+    const full = this._mode !== "card";
+    const cols = trackList(L.col_sizes, L.columns, "minmax(0, 1fr)") || `repeat(${L.columns}, minmax(0, 1fr))`;
+    const vis = L.blocks.filter((b) => b.show !== "hide");
+    const used = Math.max(1, ...vis.map((b) => b.row + b.h - 1));
+    let rows;
+    if (L.rows !== "auto") {
+      const n = Math.max(L.rows, used);
+      const rowH = `${clampInt(this._config.grid.row_height, 20, 600, 80)}px`;
+      rows = trackList(L.row_sizes, n, full ? "minmax(0, 1fr)" : `minmax(${rowH}, auto)`)
+        || (full ? `repeat(${n}, minmax(0, 1fr))` : `repeat(${n}, minmax(${rowH}, auto))`);
+    } else {
+      // auto rows: the calendar's rows stretch to fill the screen, the rest fit their content
+      const grow = new Set();
+      vis.filter((b) => b.name === "calendar")
+        .forEach((b) => { for (let r = b.row; r < b.row + b.h; r++) grow.add(r); });
+      rows = trackList(L.row_sizes, used, "auto")
+        || Array.from({ length: used }, (_, i) => (grow.has(i + 1) && full ? "minmax(0, 1fr)" : "auto")).join(" ");
+    }
+    return { cols, rows };
+  }
+
+  _renderGrid(body, maxH) {
+    const c = this._config;
+    const g = c.grid;
+    const L = this._activeLayout();
+    const inner = this._inner;
+    inner.classList.add("lg");
+    inner.classList.toggle("lg-phone", !!L.phone);
+    inner.classList.toggle("lg-fixed", L.rows !== "auto" && this._mode !== "card");
+    ["top", "bottom", "left", "right"].forEach((p) => inner.classList.remove(`pos-${p}`));
+    const { cols, rows } = this._gridTemplate(L);
+    inner.style.gridTemplateColumns = cols;
+    inner.style.gridTemplateRows = rows;
+    const gap = clampInt(g.gap, 0, 64, 12);
+    inner.style.gap = `${gap}px`;
+    if (g.padding !== undefined && g.padding !== "") inner.style.padding = `${clampInt(g.padding, 0, 80, 0)}px`; else inner.style.removeProperty("padding");
+    const area = (b) => `grid-area:${b.row} / ${b.col} / span ${b.h} / span ${b.w}`;
+    const editing = this._inEditor();
+    const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")], ["planner", this._t("planner")]];
+    const canAdd = c.allow_add !== false && this._writable().length > 0;
+    const parts = {
+      date: () => `<div class="title-block"><div class="eyebrow">${esc(c.title || this._fmt({ weekday: "long" }).format(new Date()))}</div><div class="big">${esc(c.title
+        ? this._fmt({ weekday: "long", day: "numeric", month: "long" }).format(new Date()) : this._fmt({ day: "numeric", month: "long" }).format(new Date()))}</div></div>`,
+      clock: () => `<div class="hclock">${this._clockHtml()}</div>`,
+      weather: () => this._renderNowWeather(),
+      countdowns: () => this._renderCountdowns(),
+      views: () => `<div class="seg">${views.map(([v, l]) => `<button class="${this._view === v ? "on" : ""}" data-action="view" data-view="${v}">${l}</button>`).join("")}</div>`,
+      nav: () => `<div class="nav">
+        <button class="icon" data-action="prev" title="${esc(this._t("prev"))}"><ha-icon icon="mdi:chevron-left"></ha-icon></button>
+        <button class="today" data-action="today">${esc(this._t("today"))}</button>
+        <button class="icon" data-action="next" title="${esc(this._t("next"))}"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
+        <span class="range">${esc(this._rangeLabel())}</span>
+        ${c.layout === "fullscreen" && this._mode === "fill" && !editing ? `<button class="icon" data-action="fs-on" title="${esc(this._t("back_fs"))}"><ha-icon icon="mdi:fullscreen"></ha-icon></button>` : ""}
+      </div>`,
+      add: () => (canAdd ? `<button class="add" data-action="add"><ha-icon icon="mdi:plus"></ha-icon><span>${esc(this._t("event_btn"))}</span></button>` : ""),
+      chips: () => (this._calendars.length > 1 ? this._renderChips() : ""),
+      calendar: () => `<div class="body view-${this._view}"${maxH}>${body}</div>`,
+    };
+    let html = "";
+    let hasAh = false;
+    L.blocks.forEach((b) => {
+      if (b.name === "todo" || b.show === "hide") return;
+      const inner = parts[b.name]();
+      if (!inner && b.name !== "calendar") return;
+      if (b.show === "autohide") hasAh = true;
+      html += `<div class="lb lb-${b.name} ${b.show === "autohide" ? "ah" : ""}" style="${area(b)}">${inner}</div>`;
+    });
+    this._main.innerHTML = `${html}
+      <div class="progress ${this._loading ? "on" : ""}"></div>
+      ${this._error ? `<div class="error"><ha-icon icon="mdi:alert-circle-outline"></ha-icon>${esc(this._error)}</div>` : ""}`;
+    // the to-do list is a persistent element, so it's placed rather than re-drawn
+    const tb = L.blocks.find((b) => b.name === "todo");
+    const box = this._todoBox;
+    if (box) {
+      const showTodo = !!c.todo_entity && tb && tb.show !== "hide";
+      box.classList.toggle("lg-off", !showTodo);
+      box.classList.toggle("ah", !!showTodo && tb.show === "autohide");
+      if (showTodo) { box.style.gridArea = `${tb.row} / ${tb.col} / span ${tb.h} / span ${tb.w}`; if (tb.show === "autohide") hasAh = true; }
+    }
+    this._hasAh = hasAh;
+    inner.classList.toggle("ah-show", editing || !!this._ahShown);
+  }
+
+  _leaveGrid() {
+    const inner = this._inner;
+    inner.classList.remove("lg", "lg-phone", "lg-fixed", "ah-show");
+    ["gridTemplateColumns", "gridTemplateRows", "gap", "padding"].forEach((k) => { inner.style[k] = ""; });
+    if (this._todoBox) { this._todoBox.style.gridArea = ""; this._todoBox.classList.remove("lg-off", "ah"); }
+    this._hasAh = false;
+    this._applyLayout();
+  }
+
+  // Auto-hide blocks: the first tap shows them (and is swallowed so it doesn't also press something),
+  // they hide again after grid.autohide_seconds without a tap.
+  _ahPointer(e) {
+    if (!this._hasAh || !this._gridOn() || this._inEditor()) return;
+    const secs = clampInt(this._config.grid.autohide_seconds, 2, 600, 10);
+    clearTimeout(this._ahTimer);
+    if (!this._ahShown) {
+      this._ahShown = true;
+      this._ahSwallow = true;
+      this._inner.classList.add("ah-show");
+    }
+    this._ahTimer = setTimeout(() => { this._ahShown = false; this._inner?.classList.remove("ah-show"); }, secs * 1000);
   }
 
   _renderHeader() {
@@ -2918,7 +3174,7 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _clockTick() {
-    if (!this._config?.show_clock || !this.shadowRoot) return;
+    if (!this.shadowRoot) return;
     const el = this.shadowRoot.querySelector(".hclock");
     if (el) el.innerHTML = this._clockHtml();
   }
@@ -3022,6 +3278,9 @@ class HomeCalendarCard extends HTMLElement {
 
   _renderAgenda() {
     const { start, days } = this._range();
+    // where the date goes: "both" (left column + heading), "left" or "above" (#14)
+    const adPos = ["left", "above"].includes(this._config.agenda_date) ? this._config.agenda_date : "both";
+    const longFmt = this._fmt({ weekday: "long", day: "numeric", month: "long" });
     const today = dayKey(new Date());
     let out = "";
     for (let i = 0; i < days; i++) {
@@ -3030,14 +3289,14 @@ class HomeCalendarCard extends HTMLElement {
       const hols = this._holidayTags(d);
       const isToday = dayKey(d) === today;
       if (!evs.length && !hols && !isToday && !this._config.show_empty_days) continue;
-      out += `<div class="aday ${isToday ? "is-today" : ""}">
+      out += `<div class="aday ${isToday ? "is-today" : ""} ad-${adPos}">
         <button class="aday-date" data-action="open-day" data-date="${dayKey(d)}">
           <div class="wd">${esc(this._fmt({ weekday: "short" }).format(d))}</div>
           <div class="dn">${d.getDate()}</div>
           <div class="mo">${esc(this._fmt({ month: "short" }).format(d))}</div>
         </button>
         <div class="aday-main">
-          <div class="aday-head"><div class="head-l"><span class="rel">${esc(this._relDay(d))}</span>${hols}</div>${this._wxBadge(d)}</div>
+          <div class="aday-head"><div class="head-l"><span class="rel">${esc(adPos === "above" && Math.abs(Math.round((startOfDay(d) - startOfDay(new Date())) / 864e5)) <= 1 ? `${this._relDay(d)} · ${longFmt.format(d)}` : this._relDay(d))}</span>${hols}</div>${this._wxBadge(d)}</div>
           ${evs.length ? evs.map((ev) => this._eventRow(ev, d)).join("") : hols ? "" : `<div class="empty-day">${esc(this._t("nothing"))}</div>`}
         </div>
       </div>`;
@@ -4025,6 +4284,42 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .mev.allday { background: var(--c); color: #fff; }
 .mev.allday .mdot { display: none; }
 .more { font-size: .68rem; color: var(--hcc-muted); font-weight: 700; padding-left: 4px; }
+/* ---- grid layout (v1.17) */
+.inner.lg { display: grid !important; position: relative; align-items: stretch; }
+.inner.lg > .wrap { display: contents !important; }
+.inner.lg > .todo { margin: 0 !important; padding: 0 !important; border: none !important; width: auto !important; max-height: none !important; min-width: 0; min-height: 0; overflow: auto; }
+.inner.lg > .todo.lg-off, .inner.lg > .todo[hidden] { display: none !important; }
+.lb { min-width: 0; min-height: 0; container-type: inline-size; position: relative; }
+.lb > .cds { margin: 0; padding: 2px 0 4px; }
+.lb > .chips, .lb > .toolbar { margin: 0; }
+.lb-date { align-self: center; }
+.lb-clock { display: flex; align-items: center; justify-content: center; }
+.lb-clock .hclock { font-size: clamp(1.6rem, 20cqi, 6rem); align-self: auto; }
+/* with fixed rows on a wall screen the clock grows with its block in both directions */
+.inner.lg.lg-fixed .lb-clock { container-type: size; overflow: hidden; }
+.inner.lg.lg-fixed .lb-clock .hclock { font-size: max(1rem, min(20cqi, 72cqh)); }
+.lb-weather { display: flex; align-items: center; justify-content: flex-end; }
+.lb-views, .lb-nav, .lb-add, .lb-chips { display: flex; align-items: center; min-width: 0; }
+.lb-views .seg { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.lb-add { justify-content: flex-end; }
+.lb-add .add span { display: inline !important; }
+@container (max-width: 110px) { .lb-add .add span { display: none !important; } .lb-add .add { padding: 8px; } }
+.lb-chips .chips { flex-wrap: wrap; }
+.lb-calendar { display: flex; flex-direction: column; }
+.lb-calendar > .body { flex: 1 1 auto; min-height: 0; }
+:host([layout="fill"]) .lb-calendar > .body, :host([layout="fullscreen"]) .lb-calendar > .body { overflow: auto; max-height: none !important; }
+:host([layout="fill"]) .lb-calendar > .body.view-month, :host([layout="fullscreen"]) .lb-calendar > .body.view-month,
+:host([layout="fill"]) .lb-calendar > .body.view-week, :host([layout="fullscreen"]) .lb-calendar > .body.view-week { overflow: hidden; }
+.inner.lg .progress { position: absolute; left: 0; right: 0; top: 0; margin: 0; z-index: 5; }
+.inner.lg .error { grid-column: 1 / -1; grid-row: 1; align-self: start; z-index: 6; background: var(--hcc-bg); padding: 6px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
+/* auto-hide blocks: invisible until a tap, then they fade in on top (they may overlap other blocks) */
+.inner.lg .ah { z-index: 4; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .2s, transform .2s; }
+.inner.lg.ah-show .ah { opacity: 1; pointer-events: auto; transform: none; }
+.inner.lg .lb.ah { background: color-mix(in srgb, var(--hcc-bg) 92%, transparent); border-radius: 14px; padding: 6px 8px; box-shadow: 0 6px 24px rgba(0,0,0,.18); backdrop-filter: blur(6px); }
+/* Agenda date position */
+.aday.ad-left .rel { display: none; }
+.aday.ad-left .aday-head .head-l:empty + .wx, .aday.ad-left .aday-head { min-height: 0; }
+.aday.ad-above .aday-date { display: none; }
 .mlist { display: none; margin-top: 12px; border-top: 1px solid var(--hcc-line); padding-top: 10px; }
 .mlist-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-weight: 700; }
 .mlist-head .sp { flex: 1; }
@@ -4453,15 +4748,15 @@ const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, 
 // editor defaults that are not written to YAML until changed
 const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
   clock_format: "auto", show_view_selector: true, show_date_navigation: true, event_time_position: "above", show_event_location: true,
-  show_event_calendar: true, planner_days: 7, planner_start: "week" };
+  show_event_calendar: true, planner_days: 7, planner_start: "week", agenda_date: "both" };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "todo_group_by", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile",
-  "sections", "show_view_selector", "show_date_navigation", "event_time_position", "show_event_location", "show_event_calendar",
+  "sections", "show_view_selector", "show_date_navigation", "agenda_date", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
   "default_view", "days_to_show", "show_week_numbers", "planner_days", "planner_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
-const generalSchema = (t) => {
+const generalSchema = (t, hasGrid = false) => {
   const o = (value, key) => ({ value, label: t(key) });
   return [
     { type: "grid", name: "", schema: [
@@ -4514,11 +4809,14 @@ const generalSchema = (t) => {
       ] },
     ] },
     { type: "expandable", name: "layout_cfg", flatten: true, title: t("ed_layout"), icon: "mdi:view-dashboard-edit-outline", schema: [
-      { name: "sections", selector: { select: { multiple: true, reorder: true, mode: "list", options: SECTIONS.map((k) => o(k, `o_sec_${k}`)) } } },
-      { type: "grid", name: "", schema: [
-        { name: "show_view_selector", selector: { boolean: {} } },
-        { name: "show_date_navigation", selector: { boolean: {} } },
-      ] },
+      ...(hasGrid ? [] : [
+        { name: "sections", selector: { select: { multiple: true, reorder: true, mode: "list", options: SECTIONS.map((k) => o(k, `o_sec_${k}`)) } } },
+        { type: "grid", name: "", schema: [
+          { name: "show_view_selector", selector: { boolean: {} } },
+          { name: "show_date_navigation", selector: { boolean: {} } },
+        ] },
+      ]),
+      { name: "agenda_date", selector: { select: { mode: "dropdown", options: [o("both", "o_ad_both"), o("left", "o_ad_left"), o("above", "o_ad_above")] } } },
       { name: "event_time_position", selector: { select: { mode: "dropdown", options: [o("above", "o_tp_above"), o("left", "o_tp_left"), o("right", "o_tp_right")] } } },
       { type: "grid", name: "", schema: [
         { name: "show_event_location", selector: { boolean: {} } },
@@ -4567,6 +4865,592 @@ const calSchema = (t) => {
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
   ];
 };
+
+
+/* ============================================================ layout designer */
+
+// Drag-and-drop grid designer used inside the visual editor (v1.17). Blocks snap to the grid; drag the body to
+// move, the corner / edges to resize. Blocks that land on others push them down; auto-hide blocks may overlap.
+const LD_ROW = 44;
+const LD_GAP = 6;
+const LD_STYLES = `
+:host { display: block; }
+* { box-sizing: border-box; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+.sub { font-size: .85rem; color: var(--secondary-text-color); margin: 4px 0 10px; line-height: 1.4; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+.seg { display: inline-flex; background: var(--secondary-background-color, rgba(127,127,127,.12)); border-radius: 10px; padding: 3px; }
+.seg button { padding: 6px 12px; border-radius: 8px; font-size: .85rem; font-weight: 600; color: var(--secondary-text-color); }
+.seg button.on { background: var(--card-background-color, #fff); color: var(--primary-text-color); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+.btn { padding: 7px 12px; border-radius: 10px; border: 1px solid var(--divider-color, rgba(127,127,127,.3)); font-size: .85rem; font-weight: 600; }
+.btn.primary { background: var(--primary-color); color: var(--text-primary-color, #fff); border-color: transparent; }
+.btn ha-icon { --mdc-icon-size: 18px; vertical-align: -4px; margin-right: 4px; }
+.link { color: var(--primary-color); font-size: .85rem; font-weight: 600; padding: 4px 2px; }
+.sp { flex: 1; }
+select, input { font: inherit; color: var(--primary-text-color); background: var(--card-background-color, #fff); border: 1px solid var(--divider-color, rgba(127,127,127,.35)); border-radius: 8px; padding: 6px 8px; }
+input[type=number] { width: 70px; }
+label.f { display: inline-flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--secondary-text-color); }
+details { margin: 0 0 10px; font-size: .85rem; }
+details summary { cursor: pointer; color: var(--secondary-text-color); font-weight: 600; padding: 4px 0; }
+details .grid2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 14px; padding: 6px 0; }
+details .grid2 label { display: flex; flex-direction: column; gap: 4px; color: var(--secondary-text-color); }
+details .grid2 input { width: 100%; }
+.hint { font-size: .75rem; color: var(--secondary-text-color); }
+.canvas { position: relative; display: grid; gap: ${LD_GAP}px; padding: 0; user-select: none; -webkit-user-select: none;
+  background-image: none; border-radius: 12px; }
+.cwrap { position: relative; padding: 14px 0 0 14px; }
+.gl { position: absolute; z-index: 7; touch-action: none; }
+.gl.gc { top: 0; width: 16px; height: 14px; margin-left: -8px; cursor: col-resize; }
+.gl.gr { left: 0; height: 16px; width: 14px; margin-top: -8px; cursor: row-resize; }
+.gl::after { content: ""; position: absolute; border-radius: 3px; background: color-mix(in srgb, var(--primary-color) 55%, transparent); }
+.gl.gc::after { left: 6px; top: 2px; width: 4px; height: 10px; }
+.gl.gr::after { top: 6px; left: 2px; height: 4px; width: 10px; }
+.gl:hover::after, .gl.on::after { background: var(--primary-color); }
+.gl.on[data-v]::before { content: attr(data-v); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+  font-size: .7rem; font-weight: 700; padding: 1px 6px; border-radius: 6px; background: var(--primary-color); color: var(--text-primary-color, #fff); }
+.cell { border: 1px dashed var(--divider-color, rgba(127,127,127,.35)); border-radius: 8px; min-width: 0; }
+.blk { position: relative; z-index: 2; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 10px; overflow: hidden; touch-action: none;
+  background: color-mix(in srgb, var(--primary-color) 16%, var(--card-background-color, #fff)); border: 2px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+  font-size: .8rem; font-weight: 600; cursor: grab; min-width: 0; }
+.blk ha-icon { --mdc-icon-size: 18px; flex: none; color: var(--primary-color); }
+.blk .nm { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.blk .sz { margin-left: auto; font-size: .7rem; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; flex: none; }
+.blk.cal { background: color-mix(in srgb, var(--primary-color) 26%, var(--card-background-color, #fff)); }
+.blk.ah { z-index: 3; border-style: dashed; background: color-mix(in srgb, var(--accent-color, #ff9800) 18%, var(--card-background-color, #fff));
+  border-color: color-mix(in srgb, var(--accent-color, #ff9800) 60%, transparent); opacity: .92; }
+.blk.ah ha-icon { color: var(--accent-color, #ff9800); }
+.blk.sel { box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 45%, transparent); }
+.blk.to-tray { opacity: .45; }
+.tray.over { border-color: var(--primary-color); background: color-mix(in srgb, var(--primary-color) 10%, transparent); }
+.blk.drag { z-index: 6; cursor: grabbing; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+.blk.bad { border-color: var(--error-color, #db4437); }
+.rs { position: absolute; z-index: 4; touch-action: none; }
+.rs.e { top: 0; right: -2px; width: 12px; height: 100%; cursor: ew-resize; }
+.rs.s { left: 0; bottom: -2px; height: 12px; width: 100%; cursor: ns-resize; }
+.rs.se { right: -2px; bottom: -2px; width: 20px; height: 20px; cursor: nwse-resize;
+  background: linear-gradient(135deg, transparent 50%, color-mix(in srgb, var(--primary-color) 70%, transparent) 50%); border-radius: 0 0 8px 0; }
+.tray { margin-top: 10px; padding: 10px; border-radius: 12px; border: 2px dashed var(--divider-color, rgba(127,127,127,.35)); min-height: 52px;
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .8rem; color: var(--secondary-text-color); }
+.tray.over { border-color: var(--error-color, #db4437); background: color-mix(in srgb, var(--error-color, #db4437) 8%, transparent); }
+.tray .chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px 5px 6px; border-radius: 999px; font-weight: 600;
+  background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
+.tray .chip ha-icon { --mdc-icon-size: 16px; }
+.panel { margin-top: 10px; padding: 12px; border-radius: 12px; background: var(--secondary-background-color, rgba(127,127,127,.08)); display: grid; gap: 10px; }
+.panel .ph { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.panel .ph ha-icon { color: var(--primary-color); }
+.step { display: inline-flex; align-items: center; gap: 4px; }
+.step button { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--divider-color, rgba(127,127,127,.35)); font-weight: 700; }
+.step b { min-width: 26px; text-align: center; font-variant-numeric: tabular-nums; }
+.note { font-size: .8rem; color: var(--secondary-text-color); padding: 10px 12px; border-radius: 10px; background: var(--secondary-background-color, rgba(127,127,127,.08)); }
+`;
+
+class HccLayoutDesigner extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.state = { tab: "desktop", sel: null };
+    this.shadowRoot.addEventListener("click", (e) => {
+      const el = e.composedPath().find((n) => n instanceof HTMLElement && n.dataset && n.dataset.ld);
+      if (el && this.shadowRoot.contains(el)) this._act(el);
+    });
+    this.shadowRoot.addEventListener("change", (e) => this._change(e));
+    this.shadowRoot.addEventListener("pointerdown", (e) => this._down(e));
+    this.shadowRoot.addEventListener("keydown", (e) => e.stopPropagation());
+  }
+
+  setup({ config, t, onChange, onOption, state }) {
+    this.cfg = config;
+    this.t = t;
+    this.onChange = onChange;
+    this.onOption = onOption;
+    if (state) this.state = state;
+    this._render();
+  }
+
+  // the layout being edited (desktop or phone), as a plain editable object with every block present
+  _lay() {
+    const g = this.cfg.grid;
+    const src = this.state.tab === "phone" ? g.phone : g;
+    const L = { columns: clampInt(src.columns, 1, 24, 12), rows: src.rows && src.rows !== "auto" ? clampInt(src.rows, 1, 24, 6) : "auto",
+      col_sizes: src.col_sizes, row_sizes: src.row_sizes, blocks: {} };
+    GRID_BLOCKS.forEach((n) => {
+      const b = src.blocks?.[n];
+      L.blocks[n] = b ? { col: clampInt(b.col, 1, L.columns, 1), row: clampInt(b.row, 1, 99, 1), w: clampInt(b.w, 1, L.columns, 1), h: clampInt(b.h, 1, 24, 1),
+        show: ["hide", "autohide"].includes(b.show) ? b.show : "show" } : { col: 1, row: 1, w: Math.min(4, L.columns), h: 1, show: n === "calendar" ? "show" : "hide" };
+      const B = L.blocks[n];
+      if (B.col + B.w - 1 > L.columns) B.w = Math.max(1, L.columns - B.col + 1);
+    });
+    if (L.blocks.calendar.show === "hide") L.blocks.calendar.show = "show";
+    return L;
+  }
+
+  _save(L) {
+    const g = { ...this.cfg.grid };
+    const clean = { columns: L.columns, rows: L.rows, blocks: {} };
+    if (L.col_sizes) clean.col_sizes = L.col_sizes;
+    if (L.row_sizes) clean.row_sizes = L.row_sizes;
+    GRID_BLOCKS.forEach((n) => {
+      const b = L.blocks[n];
+      clean.blocks[n] = b.show === "show" ? { col: b.col, row: b.row, w: b.w, h: b.h } : { col: b.col, row: b.row, w: b.w, h: b.h, show: b.show };
+    });
+    let next;
+    if (this.state.tab === "phone") next = { ...g, phone: clean };
+    else {
+      next = { ...g, ...clean };
+      if (!clean.col_sizes) delete next.col_sizes;
+      if (!clean.row_sizes) delete next.row_sizes;
+    }
+    this._emitGrid(next);
+  }
+
+  _emitGrid(grid) {
+    this.cfg = { ...this.cfg, grid };
+    if (!grid) delete this.cfg.grid;
+    this.onChange(grid);
+    this._render();
+  }
+
+  _overlap(a, b) { return a.col < b.col + b.w && b.col < a.col + a.w && a.row < b.row + b.h && b.row < a.row + a.h; }
+
+  // push shown (non auto-hide) blocks down until nothing overlaps; the block just placed stays where it is
+  _resolve(L, fixed) {
+    const base = GRID_BLOCKS.filter((n) => L.blocks[n].show === "show");
+    for (let guard = 0; guard < 300; guard++) {
+      let moved = false;
+      for (const an of base) {
+        for (const bn of base) {
+          if (an === bn) continue;
+          const a = L.blocks[an];
+          const b = L.blocks[bn];
+          if (!this._overlap(a, b)) continue;
+          const [mover, other] = bn === fixed ? [a, b] : an === fixed ? [b, a] : a.row <= b.row ? [b, a] : [a, b];
+          mover.row = other.row + other.h;
+          moved = true;
+        }
+      }
+      if (!moved) break;
+    }
+  }
+
+  _firstFree(L, w, h) {
+    const base = GRID_BLOCKS.filter((n) => L.blocks[n].show === "show").map((n) => L.blocks[n]);
+    for (let row = 1; row < 200; row++) {
+      for (let col = 1; col + w - 1 <= L.columns; col++) {
+        const t = { col, row, w, h };
+        if (!base.some((b) => this._overlap(t, b))) return t;
+      }
+    }
+    return { col: 1, row: 1, w, h };
+  }
+
+  _render() {
+    const t = this.t;
+    const g = this.cfg.grid;
+    if (!g) {
+      this.shadowRoot.innerHTML = `<style>${LD_STYLES}</style>
+        <div class="sub">${esc(t("ld_intro"))}</div>
+        <div class="row"><button class="btn primary" data-ld="start"><ha-icon icon="mdi:view-dashboard-edit-outline"></ha-icon>${esc(t("ld_start"))}</button>
+        <span class="hint">${esc(t("ld_or_preset"))}</span>
+        ${["wall", "tv"].map((p) => `<button class="btn" data-ld="preset-start" data-p="${p}">${esc(t(`ld_pre_${p}`))}</button>`).join("")}</div>`;
+      return;
+    }
+    const tab = this.state.tab;
+    const phone = tab === "phone";
+    const head = `<div class="row">
+        <div class="seg"><button class="${!phone ? "on" : ""}" data-ld="tab" data-tab="desktop"><ha-icon icon="mdi:monitor"></ha-icon> ${esc(t("ld_desktop"))}</button>
+        <button class="${phone ? "on" : ""}" data-ld="tab" data-tab="phone"><ha-icon icon="mdi:cellphone"></ha-icon> ${esc(t("ld_phone"))}</button></div>
+        <span class="sp"></span>
+        <select data-ld-sel="preset"><option value="">${esc(t("ld_presets"))}…</option>
+          ${(phone ? ["phone", "classic"] : ["classic", "wall", "tv"]).map((p) => `<option value="${p}">${esc(t(`ld_pre_${p}`))}</option>`).join("")}</select>
+        <button class="btn" data-ld="reset">${esc(t("ld_reset"))}</button>
+      </div>`;
+    if (phone && !g.phone) {
+      this.shadowRoot.innerHTML = `<style>${LD_STYLES}</style>${head}
+        <div class="note">${esc(t("ld_phone_auto"))}</div>
+        <div class="row" style="margin-top:10px"><button class="btn primary" data-ld="make-phone">${esc(t("ld_make_phone"))}</button>
+        <button class="btn" data-ld="copy-desktop">${esc(t("ld_copy_desktop"))}</button></div>
+        <div class="row"><label class="f">${esc(t("ld_bp"))} <input type="number" min="200" max="2000" step="10" data-ld-in="phone_breakpoint" value="${esc(g.phone_breakpoint ?? 600)}"></label></div>
+        <div class="row"><button class="link" data-ld="off">${esc(t("ld_off"))}</button></div>`;
+      return;
+    }
+    const L = this._lay();
+    const used = Math.max(1, ...GRID_BLOCKS.filter((n) => L.blocks[n].show !== "hide").map((n) => L.blocks[n].row + L.blocks[n].h - 1));
+    const R = L.rows === "auto" ? used + 1 : Math.max(L.rows, used);
+    this._L = L;
+    this._R = R;
+    let cells = "";
+    for (let r = 1; r <= R; r++) for (let c = 1; c <= L.columns; c++) cells += `<div class="cell" ${r === 1 ? `data-c="${c}"` : ""} ${c === 1 ? `data-r="${r}"` : ""} style="grid-area:${r} / ${c}"></div>`;
+    this._cw = this._weights(L.col_sizes, L.columns);
+    this._rw = L.rows === "auto" ? Array(R).fill(1) : this._weights(L.row_sizes, R);
+    const blk = (n) => {
+      const b = L.blocks[n];
+      if (b.show === "hide") return "";
+      return `<div class="blk ${n === "calendar" ? "cal" : ""} ${b.show === "autohide" ? "ah" : ""} ${this.state.sel === n ? "sel" : ""}" data-b="${n}" style="grid-area:${b.row} / ${b.col} / span ${b.h} / span ${b.w}" title="${esc(t(`lb_${n}`))}">
+        <ha-icon icon="${b.show === "autohide" ? "mdi:eye-off-outline" : BLOCK_ICONS[n]}"></ha-icon><span class="nm">${esc(t(`lb_${n}`))}</span><span class="sz">${b.w}×${b.h}</span>
+        <div class="rs e" data-rs="e"></div><div class="rs s" data-rs="s"></div><div class="rs se" data-rs="se"></div></div>`;
+    };
+    const hidden = GRID_BLOCKS.filter((n) => L.blocks[n].show === "hide");
+    const sel = this.state.sel && L.blocks[this.state.sel] && L.blocks[this.state.sel].show !== "hide" ? this.state.sel : null;
+    const rowsVal = L.rows === "auto" ? "auto" : String(L.rows);
+    this.shadowRoot.innerHTML = `<style>${LD_STYLES}</style>${head}
+      <div class="sub">${esc(t("ld_help"))}</div>
+      <div class="row">
+        <label class="f">${esc(t("ld_cols"))} <input type="number" min="1" max="24" data-ld-in="columns" value="${L.columns}"></label>
+        <label class="f">${esc(t("ld_rows"))} <select data-ld-sel="rows"><option value="auto" ${rowsVal === "auto" ? "selected" : ""}>${esc(t("ld_rows_auto"))}</option>
+          ${Array.from({ length: 24 }, (_, i) => `<option value="${i + 1}" ${rowsVal === String(i + 1) ? "selected" : ""}>${i + 1}</option>`).join("")}</select></label>
+        ${!phone ? `<label class="f">${esc(t("ld_gap"))} <input type="number" min="0" max="64" data-ld-in="gap" value="${esc(g.gap ?? 12)}"></label>` : ""}
+      </div>
+      <details ${this.state.more ? "open" : ""} data-ld-more>
+        <summary>${esc(t("ld_more"))}</summary>
+        <div class="grid2">
+          <label>${esc(t("ld_col_sizes"))}<input data-ld-in="col_sizes" placeholder="1 1 2 …" value="${esc(Array.isArray(L.col_sizes) ? L.col_sizes.join(" ") : L.col_sizes || "")}"><span class="hint">${esc(t("ld_sizes_help"))}</span></label>
+          <label>${esc(t("ld_row_sizes"))}<input data-ld-in="row_sizes" placeholder="1 1 6 …" value="${esc(Array.isArray(L.row_sizes) ? L.row_sizes.join(" ") : L.row_sizes || "")}"><span class="hint">${esc(t("ld_sizes_help"))}</span></label>
+          ${!phone ? `<label>${esc(t("ld_row_h"))}<input type="number" min="20" max="600" data-ld-in="row_height" value="${esc(g.row_height ?? 80)}"></label>
+          <label>${esc(t("ld_ah_secs"))}<input type="number" min="2" max="600" data-ld-in="autohide_seconds" value="${esc(g.autohide_seconds ?? 10)}"></label>
+          <label>${esc(t("ld_padding"))}<input type="number" min="0" max="80" data-ld-in="padding" value="${esc(g.padding ?? "")}" placeholder="–"></label>` : `
+          <label>${esc(t("ld_bp"))}<input type="number" min="200" max="2000" step="10" data-ld-in="phone_breakpoint" value="${esc(g.phone_breakpoint ?? 600)}"></label>`}
+        </div>
+      </details>
+      <div class="cwrap ${L.rows === "auto" ? "" : "rows-on"}"><div class="canvas" style="${this._canvasTpl()}">${cells}${GRID_BLOCKS.map(blk).join("")}</div></div>
+      <div class="tray" data-tray>${esc(t("ld_hidden"))}: ${hidden.length ? hidden.map((n) => `<button class="chip" data-ld="unhide" data-b="${n}" title="${esc(t("ld_unhide"))}"><ha-icon icon="${BLOCK_ICONS[n]}"></ha-icon>${esc(t(`lb_${n}`))}</button>`).join("") : `<span class="hint">${esc(t("ld_hidden_help"))}</span>`}</div>
+      ${sel ? this._panel(L, sel) : `<div class="hint" style="margin-top:8px">${esc(t("ld_tap_block"))}</div>`}
+      <div class="row" style="margin-top:12px">
+        ${phone ? `<button class="link" data-ld="copy-desktop">${esc(t("ld_copy_desktop"))}</button><button class="link" data-ld="del-phone">${esc(t("ld_del_phone"))}</button>` : ""}
+        <span class="sp"></span><button class="link" data-ld="off">${esc(t("ld_off"))}</button>
+      </div>`;
+    this.shadowRoot.querySelector("[data-ld-more]")?.addEventListener("toggle", (e) => { this.state.more = e.target.open; });
+    requestAnimationFrame(() => this._placeLines());
+  }
+
+  // Track weights for the canvas: numbers are relative sizes (fr); px/auto values count as 1 and get no handle.
+  _weights(sizes, n) {
+    const arr = Array.isArray(sizes) ? sizes : typeof sizes === "string" && sizes.trim() ? sizes.trim().split(/[\s,]+/) : [];
+    return Array.from({ length: n }, (_, i) => {
+      const v = arr.length ? arr[Math.min(i, arr.length - 1)] : 1;
+      return /^\d+(\.\d+)?$/.test(String(v)) && Number(v) > 0 ? Number(v) : null;
+    });
+  }
+
+  _canvasTpl() {
+    const cols = this._cw.map((w) => `minmax(0, ${w || 1}fr)`).join(" ");
+    const rows = this._rw.map((w) => `${Math.round(LD_ROW * Math.max(0.5, Math.min(3, w || 1)))}px`).join(" ");
+    return `grid-template-columns: ${cols}; grid-template-rows: ${rows}`;
+  }
+
+  // Handles on the grid lines: drag them to make columns (and fixed rows) wider or narrower.
+  _placeLines() {
+    const wrap = this.shadowRoot.querySelector(".cwrap");
+    if (!wrap) return;
+    wrap.querySelectorAll(".gl").forEach((x) => x.remove());
+    const wr = wrap.getBoundingClientRect();
+    const colCells = [...wrap.querySelectorAll(".cell[data-c]")].sort((a, b) => a.dataset.c - b.dataset.c);
+    const rowCells = [...wrap.querySelectorAll(".cell[data-r]")].sort((a, b) => a.dataset.r - b.dataset.r);
+    let html = "";
+    for (let i = 0; i < colCells.length - 1; i++) {
+      if (!this._cw[i] || !this._cw[i + 1]) continue;
+      const x = (colCells[i].getBoundingClientRect().right + colCells[i + 1].getBoundingClientRect().left) / 2 - wr.left;
+      html += `<div class="gl gc" data-gl="c" data-i="${i}" style="left:${x}px" title="${esc(this.t("ld_drag_line"))}"></div>`;
+    }
+    if (wrap.classList.contains("rows-on")) {
+      for (let i = 0; i < rowCells.length - 1; i++) {
+        if (!this._rw[i] || !this._rw[i + 1]) continue;
+        const y = (rowCells[i].getBoundingClientRect().bottom + rowCells[i + 1].getBoundingClientRect().top) / 2 - wr.top;
+        html += `<div class="gl gr" data-gl="r" data-i="${i}" style="top:${y}px" title="${esc(this.t("ld_drag_line"))}"></div>`;
+      }
+    }
+    wrap.insertAdjacentHTML("beforeend", html);
+  }
+
+  _lineDown(e, el) {
+    const axis = el.dataset.gl;
+    const i = Number(el.dataset.i);
+    const cells = [...this.shadowRoot.querySelectorAll(axis === "c" ? ".cell[data-c]" : ".cell[data-r]")]
+      .sort((a, b) => (axis === "c" ? a.dataset.c - b.dataset.c : a.dataset.r - b.dataset.r));
+    const size = (c) => { const r = c.getBoundingClientRect(); return axis === "c" ? r.width : r.height; };
+    const W = axis === "c" ? [...this._cw] : [...this._rw];
+    const p1 = size(cells[i]);
+    const p2 = size(cells[i + 1]);
+    const start = axis === "c" ? e.clientX : e.clientY;
+    const total = W[i] + W[i + 1];
+    el.setPointerCapture?.(e.pointerId);
+    el.classList.add("on");
+    const move = (ev) => {
+      const d = (axis === "c" ? ev.clientX : ev.clientY) - start;
+      const np = Math.max(16, Math.min(p1 + p2 - 16, p1 + d));
+      const snap = (v) => Math.max(0.25, Math.round(v * 4) / 4);
+      W[i] = snap(total * np / (p1 + p2));
+      W[i + 1] = snap(total - W[i]);
+      if (axis === "c") this._cw = W; else this._rw = W;
+      this.shadowRoot.querySelector(".canvas").setAttribute("style", this._canvasTpl());
+      el.dataset.v = `${W[i]} : ${W[i + 1]}`;
+    };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      const L = this._lay();
+      const key = axis === "c" ? "col_sizes" : "row_sizes";
+      const n = axis === "c" ? L.columns : this._R;
+      const old = this._weights(L[key], n);
+      // keep px/auto entries as they were, store the new relative sizes
+      const src = Array.isArray(L[key]) ? L[key] : typeof L[key] === "string" && L[key].trim() ? L[key].trim().split(/[\s,]+/) : [];
+      const out = W.map((w, k) => (old[k] === null ? src[Math.min(k, src.length - 1)] : w));
+      if (out.every((w) => w === 1)) delete L[key]; else L[key] = out;
+      this._save(L);
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
+    e.preventDefault();
+  }
+
+  _panel(L, n) {
+    const t = this.t;
+    const b = L.blocks[n];
+    const c = this.cfg;
+    const vis = ["show", "hide", "autohide"].filter((v) => !(n === "calendar" && v !== "show"));
+    const step = (k, v) => `<span class="step"><button data-ld="step" data-k="${k}" data-d="-1">−</button><b>${v}</b><button data-ld="step" data-k="${k}" data-d="1">+</button></span>`;
+    const sel = (key, opts, val) => `<select data-ld-opt="${key}">${opts.map(([v, l]) => `<option value="${v}" ${val === v ? "selected" : ""}>${esc(t(l))}</option>`).join("")}</select>`;
+    let extra = "";
+    if (n === "calendar") {
+      extra = `<label class="f">${esc(t("ld_agenda_date"))} ${sel("agenda_date", [["both", "o_ad_both"], ["left", "o_ad_left"], ["above", "o_ad_above"]], c.agenda_date || "both")}</label>
+        <label class="f">${esc(t("l_event_time_position"))} ${sel("event_time_position", [["above", "o_tp_above"], ["left", "o_tp_left"], ["right", "o_tp_right"]], c.event_time_position || "above")}</label>`;
+    } else if (n === "clock") {
+      extra = `<label class="f">${esc(t("l_clock_format"))} ${sel("clock_format", [["auto", "o_tf_auto"], ["24h", "o_24h"], ["12h", "o_12h"]], c.clock_format || "auto")}</label>
+        <label class="f"><input type="checkbox" data-ld-opt="clock_seconds" ${c.clock_seconds !== false ? "checked" : ""}> ${esc(t("l_clock_seconds"))}</label>`;
+    } else if (n === "countdowns") {
+      extra = `<label class="f">${esc(t("l_countdown_style"))} ${sel("countdown_style", [["cards", "o_cards"], ["compact", "o_compact"]], c.countdown_style || "cards")}</label>`;
+    }
+    return `<div class="panel">
+      <div class="ph"><ha-icon icon="${BLOCK_ICONS[n]}"></ha-icon>${esc(t(`lb_${n}`))}<span class="sp"></span><button class="link" data-ld="desel">${esc(t("close"))}</button></div>
+      <div class="row" style="margin:0"><span class="f">${esc(t("ld_vis"))}</span>
+        <div class="seg">${vis.map((v) => `<button class="${b.show === v ? "on" : ""}" data-ld="vis" data-v="${v}">${esc(t(`ld_${v}`))}</button>`).join("")}</div></div>
+      ${b.show === "autohide" ? `<div class="hint">${esc(t("ld_ah_help"))}</div>` : ""}
+      <div class="row" style="margin:0"><span class="f">${esc(t("ld_size"))}</span> ${step("w", b.w)} × ${step("h", b.h)}
+        <span class="f" style="margin-left:12px">${esc(t("ld_pos"))}</span> ${step("col", b.col)} ${step("row", b.row)}</div>
+      ${extra ? `<div class="row" style="margin:0">${extra}</div>` : ""}
+    </div>`;
+  }
+
+  _act(el) {
+    const d = el.dataset;
+    const c = this.cfg;
+    switch (d.ld) {
+      case "start": this._emitGrid(defaultGrid(c)); break;
+      case "preset-start": this._emitGrid(presetGrid(d.p, c)); break;
+      case "off": this.state.sel = null; this._emitGrid(null); break;
+      case "tab": this.state.tab = d.tab; this.state.sel = null; this._render(); break;
+      case "reset":
+        if (this.state.tab === "phone") { const g = { ...c.grid }; delete g.phone; this._emitGrid(g); }
+        else this._emitGrid({ ...c.grid, ...defaultGrid(c), phone: c.grid.phone });
+        break;
+      case "make-phone": this._emitGrid({ ...c.grid, phone: presetGrid("phone", c) }); break;
+      case "copy-desktop": {
+        const { phone, ...desk } = c.grid;
+        this._emitGrid({ ...c.grid, phone: { columns: desk.columns, rows: desk.rows, blocks: JSON.parse(JSON.stringify(desk.blocks || {})) } });
+        break;
+      }
+      case "del-phone": { const g = { ...c.grid }; delete g.phone; this.state.tab = "desktop"; this._emitGrid(g); break; }
+      case "desel": this.state.sel = null; this._render(); break;
+      case "unhide": {
+        const L = this._lay();
+        const b = L.blocks[d.b];
+        const want = { date: 4, clock: 3, weather: 3, views: 4, nav: 4, add: 2, todo: 4 }[d.b] || L.columns;
+        const spot = this._firstFree(L, Math.min(Math.max(b.w, want), L.columns), b.h);
+        Object.assign(b, spot, { show: "show" });
+        this.state.sel = d.b;
+        this._save(L);
+        break;
+      }
+      case "vis": {
+        const L = this._lay();
+        const n = this.state.sel;
+        if (!n) return;
+        L.blocks[n].show = d.v;
+        if (d.v === "show") this._resolve(L, n);
+        if (d.v === "hide") this.state.sel = null;
+        this._save(L);
+        break;
+      }
+      case "step": {
+        const L = this._lay();
+        const n = this.state.sel;
+        if (!n) return;
+        const b = L.blocks[n];
+        const v = b[d.k] + Number(d.d);
+        const [mw, mh] = BLOCK_MIN[n] || [1, 1];
+        if (d.k === "w") b.w = clampInt(v, Math.min(mw, L.columns), L.columns - b.col + 1, b.w);
+        if (d.k === "h") b.h = clampInt(v, mh, 24, b.h);
+        if (d.k === "col") b.col = clampInt(v, 1, L.columns - b.w + 1, b.col);
+        if (d.k === "row") b.row = clampInt(v, 1, 99, b.row);
+        if (b.show === "show") this._resolve(L, n);
+        this._save(L);
+        break;
+      }
+      default:
+    }
+  }
+
+  _change(e) {
+    const el = e.target;
+    const c = this.cfg;
+    if (el.dataset.ldSel === "preset" && el.value) {
+      const name = el.value;
+      if (this.state.tab === "phone") this._emitGrid({ ...c.grid, phone: presetGrid(name, c) });
+      else { const p = presetGrid(name, c); this._emitGrid({ ...c.grid, ...p, phone: c.grid.phone }); }
+      return;
+    }
+    if (el.dataset.ldSel === "rows") {
+      const L = this._lay();
+      L.rows = el.value === "auto" ? "auto" : clampInt(el.value, 1, 24, 6);
+      this._save(L);
+      return;
+    }
+    if (el.dataset.ldOpt) {
+      const v = el.type === "checkbox" ? el.checked : el.value;
+      this.onOption(el.dataset.ldOpt, v);
+      this.cfg = { ...this.cfg, [el.dataset.ldOpt]: v };
+      return;
+    }
+    const k = el.dataset.ldIn;
+    if (!k) return;
+    if (k === "columns") {
+      const L = this._lay();
+      const n = clampInt(el.value, 1, 24, L.columns);
+      if (n === L.columns) return;
+      // scale every block to the new column count so nothing is lost
+      const f = n / L.columns;
+      GRID_BLOCKS.forEach((name) => {
+        const b = L.blocks[name];
+        b.col = clampInt(Math.round((b.col - 1) * f) + 1, 1, n, 1);
+        b.w = clampInt(Math.round(b.w * f), 1, n - b.col + 1, 1);
+      });
+      L.columns = n;
+      if (Array.isArray(L.col_sizes) || L.col_sizes) delete L.col_sizes;
+      GRID_BLOCKS.forEach((name) => { if (L.blocks[name].show === "show") this._resolve(L, name); });
+      this._save(L);
+      return;
+    }
+    if (k === "col_sizes" || k === "row_sizes") {
+      const L = this._lay();
+      const v = el.value.trim();
+      if (v) L[k] = v.split(/[\s,]+/).map((x) => (/^\d+(\.\d+)?$/.test(x) ? Number(x) : x)); else delete L[k];
+      this._save(L);
+      return;
+    }
+    const g = { ...c.grid };
+    if (el.value === "") delete g[k]; else g[k] = Number(el.value);
+    this._emitGrid(g);
+  }
+
+  // ---- drag to move / resize
+  _cellAt(x, y) {
+    const pick = (sel, key, pos, a, b) => {
+      const cells = [...this.shadowRoot.querySelectorAll(sel)].sort((p, q) => p.dataset[key] - q.dataset[key]);
+      for (let i = 0; i < cells.length; i++) {
+        const r = cells[i].getBoundingClientRect();
+        if (pos < r[b] + LD_GAP / 2) return i + 1;
+      }
+      const last = cells[cells.length - 1].getBoundingClientRect();
+      return cells.length + Math.floor((pos - last[b]) / (LD_ROW + LD_GAP)) + 1; // past the last row: keep counting
+    };
+    return { col: pick(".cell[data-c]", "c", x, "left", "right"), row: pick(".cell[data-r]", "r", y, "top", "bottom") };
+  }
+
+  _down(e) {
+    const gl = e.composedPath().find((n) => n instanceof HTMLElement && n.dataset?.gl);
+    if (gl) { this._lineDown(e, gl); return; }
+    const blkEl = e.composedPath().find((n) => n instanceof HTMLElement && n.classList?.contains("blk"));
+    if (!blkEl || e.button > 0) return;
+    const rs = e.composedPath().find((n) => n instanceof HTMLElement && n.dataset?.rs)?.dataset.rs || null;
+    const name = blkEl.dataset.b;
+    const L = this._lay();
+    const b = { ...L.blocks[name] };
+    const at = this._cellAt(e.clientX, e.clientY);
+    this._drag = { name, rs, el: blkEl, maxRow: this._R + 1, tray: this.shadowRoot.querySelector("[data-tray]").getBoundingClientRect(), start: b, cur: { ...b }, off: { col: at.col - b.col, row: at.row - b.row }, x: e.clientX, y: e.clientY, moved: false, overTray: false };
+    blkEl.setPointerCapture?.(e.pointerId);
+    const move = (ev) => this._move(ev);
+    const up = (ev) => { blkEl.removeEventListener("pointermove", move); blkEl.removeEventListener("pointerup", up); blkEl.removeEventListener("pointercancel", up); this._up(ev); };
+    blkEl.addEventListener("pointermove", move);
+    blkEl.addEventListener("pointerup", up);
+    blkEl.addEventListener("pointercancel", up);
+    e.preventDefault();
+  }
+
+  _move(e) {
+    const D = this._drag;
+    if (!D) return;
+    if (!D.moved && Math.hypot(e.clientX - D.x, e.clientY - D.y) < 6) return;
+    D.moved = true;
+    D.el.classList.add("drag");
+    const L = this._L;
+    // over the Hidden tray? Then the block stays put (and the canvas doesn't grow under the pointer)
+    // (where the tray was when the drag started – the preview below can push it further down)
+    const tray = this.shadowRoot.querySelector("[data-tray]");
+    const tr = D.tray;
+    const wasOver = D.overTray;
+    D.overTray = !D.rs && D.name !== "calendar" && e.clientY >= tr.top - 6 && e.clientX >= tr.left && e.clientX <= tr.right;
+    tray.classList.toggle("over", D.overTray);
+    D.el.classList.toggle("to-tray", D.overTray);
+    if (D.overTray) {
+      if (!wasOver) { // put the others back while hovering the tray
+        this.shadowRoot.querySelectorAll(".blk").forEach((x) => {
+          const o = L.blocks[x.dataset.b];
+          if (x !== D.el && o) x.style.gridArea = `${o.row} / ${o.col} / span ${o.h} / span ${o.w}`;
+        });
+      }
+      return;
+    }
+    const at = this._cellAt(e.clientX, e.clientY);
+    const c = D.cur;
+    const [mw, mh] = BLOCK_MIN[D.name] || [1, 1];
+    if (D.rs) {
+      if (D.rs.includes("e")) c.w = clampInt(at.col - c.col + 1, Math.min(mw, L.columns), L.columns - c.col + 1, c.w);
+      if (D.rs.includes("s")) c.h = clampInt(at.row - c.row + 1, mh, Math.max(1, D.maxRow - c.row + 1), c.h);
+    } else {
+      c.col = clampInt(at.col - D.off.col, 1, L.columns - c.w + 1, c.col);
+      c.row = clampInt(at.row - D.off.row, 1, D.maxRow, c.row); // at most one new row below the layout
+    }
+    D.el.style.gridArea = `${c.row} / ${c.col} / span ${c.h} / span ${c.w}`;
+    const sz = D.el.querySelector(".sz");
+    if (sz) sz.textContent = `${c.w}×${c.h}`;
+    // grow the canvas while dragging past the last row
+    const cv = this.shadowRoot.querySelector(".canvas");
+    const need = c.row + c.h;
+    if (need > this._R) {
+      this._R = need;
+      while (this._rw.length < need) this._rw.push(1);
+      cv.setAttribute("style", this._canvasTpl());
+    }
+    // live preview: the other blocks move out of the way while you drag
+    {
+      const T = { ...L, blocks: Object.fromEntries(Object.entries(L.blocks).map(([k, v]) => [k, { ...v }])) };
+      Object.assign(T.blocks[D.name], { col: c.col, row: c.row, w: c.w, h: c.h });
+      if (T.blocks[D.name].show === "show") this._resolve(T, D.name);
+      this.shadowRoot.querySelectorAll(".blk").forEach((x) => {
+        const o = T.blocks[x.dataset.b];
+        if (x !== D.el && o) x.style.gridArea = `${o.row} / ${o.col} / span ${o.h} / span ${o.w}`;
+      });
+    }
+  }
+
+  _up() {
+    const D = this._drag;
+    this._drag = null;
+    if (!D) return;
+    if (!D.moved) { this.state.sel = this.state.sel === D.name ? null : D.name; this._render(); return; }
+    const L = this._lay();
+    const b = L.blocks[D.name];
+    if (D.overTray) {
+      b.show = "hide";
+      if (this.state.sel === D.name) this.state.sel = null;
+    } else {
+      Object.assign(b, { col: D.cur.col, row: D.cur.row, w: D.cur.w, h: D.cur.h });
+      if (b.show === "show") this._resolve(L, D.name);
+      this.state.sel = D.name;
+    }
+    this._save(L);
+  }
+}
+if (!customElements.get("home-calendar-card-layout")) customElements.define("home-calendar-card-layout", HccLayoutDesigner);
 
 const EDITOR_STYLES = `
 :host { display: block; }
@@ -4684,6 +5568,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     }
     this._config = clean;
     this._lastJson = JSON.stringify(clean);
+    if (this._layEl) this._layEl.cfg = clean; // keep the designer's copy current (presets look at the to-do list etc.)
     this.dispatchEvent(new CustomEvent("config-changed", { detail: { config: clean }, bubbles: true, composed: true }));
     if (rerender) this._render();
   }
@@ -4743,6 +5628,10 @@ class HomeCalendarCardEditor extends HTMLElement {
         <button class="addcal" data-act="add"><ha-icon icon="mdi:plus"></ha-icon>${esc(this._t("ed_add_cal"))}</button>
       </div>
       <div class="sec">
+        <div class="h">${esc(this._t("ld_title"))}${this._config.grid ? `<span class="count">${esc(this._t("ld_on"))}</span>` : ""}</div>
+        <div class="slot-layout"></div>
+      </div>
+      <div class="sec">
         <div class="h">${esc(this._t("ed_display"))}</div>
         <div class="slot-general"></div>
         <div class="note">${esc(this._t("ed_note"))}</div>
@@ -4777,7 +5666,22 @@ class HomeCalendarCardEditor extends HTMLElement {
       slot.appendChild(f);
     });
 
-    const gen = this._makeForm(generalSchema((k) => this._t(k)), {
+    const lay = document.createElement("home-calendar-card-layout");
+    this._layEl = lay;
+    this._ldState = this._ldState || { tab: "desktop", sel: null };
+    lay.setup({
+      config: this._config, t: (k, v) => this._t(k, v), state: this._ldState,
+      onChange: (grid) => {
+        const next = { ...this._config };
+        if (grid) next.grid = grid; else delete next.grid;
+        const had = !!this._config.grid;
+        this._emit(next, had !== !!grid); // the Display form changes when the designer is switched on/off
+      },
+      onOption: (k, v) => { this._emit({ ...this._config, [k]: v }); },
+    });
+    this.shadowRoot.querySelector(".slot-layout").appendChild(lay);
+
+    const gen = this._makeForm(generalSchema((k) => this._t(k), !!this._config.grid), {
       ...LOOK_DEFAULTS, language: "auto", ...this._config, sections: sectionList(this._config),
       night_mode: { ...NIGHT_DEFAULTS, ...this._objCfg(this._config.night_mode) },
       screensaver: { ...SAVER_DEFAULTS, ...this._objCfg(this._config.screensaver) },

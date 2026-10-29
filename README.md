@@ -653,6 +653,61 @@ show_calendar_chips: false   # hide the calendar buttons row
 
 All of these are in the visual editor under **Appearance**, with sliders for the two sizes.
 
+### Layout designer (beta)
+
+> **Beta** – this is in the `beta` branch for testing (v1.17.0-beta). Feedback and bug reports are very welcome in [Issues](https://github.com/mimikm/Home-Calendar-Card/issues).
+
+Design the whole card on a grid, like a dashboard of its own. Open **Layout designer** in the visual editor and press **Design my own layout** – it starts from exactly what you have now, so nothing changes until you move something. Or start from a preset: *Wall display*, *TV – no buttons*, *Compact phone* or *Classic*.
+
+![Layout designer](images/layout-designer.png)
+
+**Blocks** – the card is split into blocks you can place anywhere: *Date*, *Clock*, *Weather*, *Countdowns*, *View buttons*, *Date navigation*, *+ Event*, *Calendar buttons*, *Calendar* and *To-do list*.
+
+- **Move** – drag a block. The others move out of the way while you drag, and it snaps to the grid when you let go.
+- **Resize** – drag a block's right edge, bottom edge or corner. Its size shows while you drag (e.g. *6×2*).
+- **Hide** – drag a block onto **Hidden** (or pick *Hide* in its settings). Tap it in *Hidden* to bring it back.
+- **Settings** – tap a block for its visibility, exact size and position (± buttons) and its own options, e.g. the **Calendar** block sets where the date sits in Agenda view (*left*, *above* or *both* – [#14](https://github.com/mimikm/Home-Calendar-Card/issues/14)) and the event time position; the **Clock** block sets 24h/12h and seconds.
+
+**The grid is yours to define**
+
+- **Columns** – 1 to 24 (default 12). Changing the number scales every block so nothing is lost.
+- **Rows** – *Auto* (rows fit their content – best for a normal card) or a fixed number, e.g. 8 (the screen is split into 8 rows – best for wall displays, what you see in the designer is what the screen shows).
+- **Row and column sizes** – drag the small handles on the grid lines (above the columns, left of the rows) to make columns or rows wider or narrower. Or type relative sizes like `1 2 1`, or px values, under *More grid options*.
+- **Gap** and **padding** around the blocks, and the row height for a normal card.
+
+**Auto-hide** – set any block to *Auto-hide* and it stays hidden until someone taps the screen, then slides in and hides again after a few seconds (`autohide_seconds`, default 10). The first tap only shows the blocks, so it never presses a button by accident. Auto-hide blocks may sit **on top of** other blocks – put the view buttons over the top of the calendar and they float over it when shown, so the calendar keeps the whole space the rest of the time.
+
+![Wall display layout with auto-hide buttons](images/layout-wall.png)
+
+**Phone layout** – switch to **📱 Phone**. Without a phone layout, phones simply stack the blocks one under another. Press **Create phone layout** (or *Copy desktop layout*) to arrange them yourself, e.g. 4 columns. It's used when the card is narrower than 600 px (`phone_breakpoint`).
+
+**Back to normal** – *Back to the classic layout* removes the grid; your other settings are untouched. Without a `grid:` the card works exactly as before.
+
+In YAML it's one `grid:` section, for example:
+
+```yaml
+grid:
+  columns: 12
+  rows: 8
+  row_sizes: [auto, auto, 1, 1, 1, 1, 1, 1]   # optional: rows 1–2 fit their content, the rest share the space
+  gap: 12
+  autohide_seconds: 10
+  blocks:
+    date:       { col: 1,  row: 1, w: 4 }
+    clock:      { col: 5,  row: 1, w: 4 }
+    weather:    { col: 9,  row: 1, w: 4 }
+    countdowns: { col: 1,  row: 2, w: 9 }
+    calendar:   { col: 1,  row: 3, w: 9, h: 6 }
+    views:      { col: 1,  row: 3, w: 4, show: autohide }
+    nav:        { col: 5,  row: 3, w: 4, show: autohide }
+    todo:       { col: 10, row: 2, w: 3, h: 7 }
+    add:        { show: hide }
+    chips:      { show: hide }
+  phone:                                  # optional
+    columns: 4
+    blocks: { ... }
+```
+
 ### Layout
 
 Arrange the card to suit your screen – handy for a TV that nobody touches, or a compact phone dashboard. In the visual editor open **Layout**, or:
@@ -787,6 +842,7 @@ Your own `event_types` names, calendar names and `todo_title` are shown exactly 
 
 Planned features – ideas and votes are welcome in [Issues](https://github.com/mimikm/Home-Calendar-Card/issues).
 
+- 🧩 **Visual layout designer – in beta now** – drag, resize and hide blocks on a grid you define, auto-hide blocks, phone layouts and presets. Try it from the `beta` branch – see *Layout designer (beta)*. Planned for v1.17.0.
 - 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in all the card's languages. The microphone needs HTTPS.
 - 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
 - 🌐 **Web panel for wall displays** – show a web page (radar map, bus times, school menu, your own dashboard) or a camera next to the calendar. Choose the position, set its size with a slider or by dragging its edge, zoom the page to fit, auto-refresh, rotate several pages, and lock it so taps can't navigate away. Only works with sites that allow being embedded, and over HTTPS only with `https://` pages.
