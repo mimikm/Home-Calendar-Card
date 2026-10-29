@@ -30,7 +30,8 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 
 ## Features
 
-- 🧩 **Layout configurator** – reorder or hide the parts above the calendar, and put event times next to the title for a compact Agenda
+- 🧩 **Layout designer** – design the card on your own grid: drag, resize and hide blocks (date, clock, weather, countdowns, buttons, calendar, to-do), auto-hide blocks until tapped, separate phone layout and presets
+- ⚙️ **Layout options** – reorder or hide the parts above the calendar, and put event times next to the title for a compact Agenda
 - 📱 **Phone-friendly Month view** – tap a day to list its events under the month, or show short titles in the day boxes
 - 🔢 **Week numbers** – ISO week numbers in Month, Week and Planner views
 - 📅 **Four views** – Agenda (grouped by day), Week (7 columns, stacks on phones), Month (grid, dots on phones) and Planner (a column per person, like a printed family planner)
@@ -205,6 +206,8 @@ max_height: 640px
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
+| `grid` | object | – | Your own grid layout from the Layout designer – see *Layout designer* |
+| `agenda_date` | `both` \| `left` \| `above` | `both` | Where the date sits in Agenda view |
 | `sections` | list | `[header, countdowns, toolbar, chips]` | Which parts appear above the calendar, in this order – see *Layout* |
 | `show_view_selector` | boolean | `true` | Show the Agenda / Week / Month / Planner buttons |
 | `show_date_navigation` | boolean | `true` | Show ‹ Today › and the date range |
@@ -653,9 +656,7 @@ show_calendar_chips: false   # hide the calendar buttons row
 
 All of these are in the visual editor under **Appearance**, with sliders for the two sizes.
 
-### Layout designer (beta)
-
-> **Beta** – this is in the `beta` branch for testing (v1.17.0-beta). Feedback and bug reports are very welcome in [Issues](https://github.com/mimikm/Home-Calendar-Card/issues).
+### Layout designer
 
 Design the whole card on a grid, like a dashboard of its own. Open **Layout designer** in the visual editor and press **Design my own layout** – it starts from exactly what you have now, so nothing changes until you move something. Or start from a preset: *Wall display*, *TV – no buttons*, *Compact phone* or *Classic*.
 
@@ -842,7 +843,6 @@ Your own `event_types` names, calendar names and `todo_title` are shown exactly 
 
 Planned features – ideas and votes are welcome in [Issues](https://github.com/mimikm/Home-Calendar-Card/issues).
 
-- 🧩 **Visual layout designer – in beta now** – drag, resize and hide blocks on a grid you define, auto-hide blocks, phone layouts and presets. Try it from the `beta` branch – see *Layout designer (beta)*. Planned for v1.17.0.
 - 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in all the card's languages. The microphone needs HTTPS.
 - 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
 - 🌐 **Web panel for wall displays** – show a web page (radar map, bus times, school menu, your own dashboard) or a camera next to the calendar. Choose the position, set its size with a slider or by dragging its edge, zoom the page to fit, auto-refresh, rotate several pages, and lock it so taps can't navigate away. Only works with sites that allow being embedded, and over HTTPS only with `https://` pages.
