@@ -680,6 +680,8 @@ Design the whole card on a grid, like a dashboard of its own. Open **Layout desi
 
 ![Wall display layout with auto-hide buttons](images/layout-wall.png)
 
+**To-do list as a pop-up** – set the *To-do list* block to **Auto-hide** and it turns into a pop-up: a small round button with the number of tasks sits in the corner, and tapping it opens the list over the calendar. The calendar takes over the to-do list's space. The pop-up closes when you tap outside it, or after 30 seconds without use (change it in the block's settings – it's `todo_autohide`). While the Layout designer is on, the classic *To-do position* and *To-do auto-hide* settings are replaced by the designer, so they're hidden from the editor.
+
 **Phone layout** – switch to **📱 Phone**. Without a phone layout, phones simply stack the blocks one under another. Press **Create phone layout** (or *Copy desktop layout*) to arrange them yourself, e.g. 4 columns. It's used when the card is narrower than 600 px (`phone_breakpoint`).
 
 **Back to normal** – *Back to the classic layout* removes the grid; your other settings are untouched. Without a `grid:` the card works exactly as before.

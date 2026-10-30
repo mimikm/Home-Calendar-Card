@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.17.0";
+const CARD_VERSION = "1.17.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -108,6 +108,7 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
     ld_drag_line: "Drag to make the columns or rows on each side bigger or smaller",
     ld_title: "Layout designer", ld_on: "on", ld_intro: "Arrange the card on a grid: move and resize blocks like the date, clock, weather, calendar and to-do list. Your current layout stays as it is until you start.", ld_start: "Design my own layout", ld_or_preset: "or start from", ld_pre_classic: "Classic", ld_pre_wall: "Wall display", ld_pre_tv: "TV – no buttons", ld_pre_phone: "Compact phone", ld_desktop: "Desktop", ld_phone: "Phone", ld_presets: "Presets", ld_reset: "Reset", ld_phone_auto: "Phones stack the blocks automatically. Create a phone layout to arrange them yourself.", ld_make_phone: "Create phone layout", ld_copy_desktop: "Copy desktop layout", ld_del_phone: "Remove phone layout", ld_bp: "Phone layout below (px)", ld_off: "Back to the classic layout", ld_help: "Drag a block to move it, drag its edge or corner to resize. Everything snaps to the grid. Tap a block for its settings.", ld_cols: "Columns", ld_rows: "Rows", ld_rows_auto: "Auto", ld_gap: "Gap (px)", ld_more: "More grid options", ld_col_sizes: "Column sizes", ld_row_sizes: "Row sizes", ld_sizes_help: "Relative sizes like 1 2 1, or px values – leave empty for equal sizes", ld_row_h: "Row height in a normal card (px)", ld_ah_secs: "Auto-hide after (seconds)", ld_padding: "Padding (px)", ld_hidden: "Hidden", ld_hidden_help: "Drop a block here to hide it", ld_unhide: "Show again", ld_tap_block: "Tap a block to change its visibility, size and options.", ld_vis: "Visibility", ld_show: "Show", ld_hide: "Hide", ld_autohide: "Auto-hide", ld_ah_help: "Hidden until someone taps the screen, then hides again. Auto-hide blocks may sit on top of others.", ld_size: "Size", ld_pos: "Position", ld_agenda_date: "Date in Agenda", l_agenda_date: "Date in Agenda view", o_ad_both: "Left and above", o_ad_left: "Left", o_ad_above: "Above", lb_date: "Date", lb_clock: "Clock", lb_weather: "Weather", lb_countdowns: "Countdowns", lb_views: "View buttons", lb_nav: "Date navigation", lb_add: "+ Event", lb_chips: "Calendar buttons", lb_calendar: "Calendar", lb_todo: "To-do list",
     edit_task: "Edit task", task_for: "For", replace_note: "This calendar can't change events directly, so saving replaces the event with a new one. Guests, reminders and colours set in the calendar app are not copied.", l_planner_days: "Days in Planner", l_planner_start: "Planner starts on", o_pl_week: "Start of the week", o_pl_today: "Today", o_pc_own: "Own column", o_pc_group: "Group column", o_pc_side: "Next to the date", l_month_mobile: "Month view on phones", o_mm_list: "List of the tapped day", o_mm_text: "Short titles", o_mm_dots: "Dots only", ed_layout: "Layout", l_sections: "Sections above the calendar (drag to reorder, untick to hide)", o_sec_header: "Date & weather", o_sec_countdowns: "Countdowns", o_sec_toolbar: "View buttons & date navigation", o_sec_chips: "Calendar buttons", l_show_view_selector: "Show view buttons (Agenda / Week / …)", l_show_date_navigation: "Show date navigation (‹ Today ›)", l_event_time_position: "Event time", o_tp_above: "Above the title", o_tp_left: "Left of the title", o_tp_right: "Right of the title", l_show_event_location: "Show event location", l_show_event_calendar: "Show calendar name on events", l_planner_column: "Planner view", ed_planner_help: "Own column, a shared column for its group, or next to the date",
@@ -171,6 +172,7 @@ const I18N = {
     ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
+    ld_todo_pop: "Pokazywana jako okienko otwierane małym przyciskiem w rogu – kalendarz zajmuje jej miejsce.", ld_todo_close: "Zamknij okienko po (sekundy)",
     ld_drag_line: "Przeciągnij, aby powiększyć lub zmniejszyć kolumny albo wiersze po obu stronach",
     ld_title: "Projektant układu", ld_on: "włączony", ld_intro: "Ułóż kartę na siatce: przesuwaj i zmieniaj rozmiar bloków, takich jak data, zegar, pogoda, kalendarz i lista zadań. Obecny układ się nie zmieni, dopóki nie zaczniesz.", ld_start: "Zaprojektuj własny układ", ld_or_preset: "albo zacznij od", ld_pre_classic: "Klasyczny", ld_pre_wall: "Ekran ścienny", ld_pre_tv: "TV – bez przycisków", ld_pre_phone: "Kompaktowy na telefon", ld_desktop: "Komputer", ld_phone: "Telefon", ld_presets: "Szablony", ld_reset: "Resetuj", ld_phone_auto: "Na telefonie bloki układają się automatycznie jeden pod drugim. Utwórz układ telefonu, aby ułożyć je samodzielnie.", ld_make_phone: "Utwórz układ telefonu", ld_copy_desktop: "Skopiuj układ z komputera", ld_del_phone: "Usuń układ telefonu", ld_bp: "Układ telefonu poniżej (px)", ld_off: "Wróć do klasycznego układu", ld_help: "Przeciągnij blok, aby go przesunąć; przeciągnij krawędź lub róg, aby zmienić rozmiar. Wszystko przyciąga się do siatki. Dotknij bloku, aby zobaczyć jego ustawienia.", ld_cols: "Kolumny", ld_rows: "Wiersze", ld_rows_auto: "Auto", ld_gap: "Odstęp (px)", ld_more: "Więcej opcji siatki", ld_col_sizes: "Rozmiary kolumn", ld_row_sizes: "Rozmiary wierszy", ld_sizes_help: "Względne rozmiary, np. 1 2 1, albo wartości w px – puste = równe", ld_row_h: "Wysokość wiersza w zwykłej karcie (px)", ld_ah_secs: "Ukryj po (sekundy)", ld_padding: "Margines wewnętrzny (px)", ld_hidden: "Ukryte", ld_hidden_help: "Upuść tu blok, aby go ukryć", ld_unhide: "Pokaż ponownie", ld_tap_block: "Dotknij bloku, aby zmienić widoczność, rozmiar i opcje.", ld_vis: "Widoczność", ld_show: "Pokaż", ld_hide: "Ukryj", ld_autohide: "Autoukrywanie", ld_ah_help: "Ukryty, dopóki ktoś nie dotknie ekranu, potem znowu się chowa. Bloki z autoukrywaniem mogą nachodzić na inne.", ld_size: "Rozmiar", ld_pos: "Pozycja", ld_agenda_date: "Data w Agendzie", l_agenda_date: "Data w widoku Agenda", o_ad_both: "Z lewej i nad", o_ad_left: "Z lewej", o_ad_above: "Nad", lb_date: "Data", lb_clock: "Zegar", lb_weather: "Pogoda", lb_countdowns: "Odliczania", lb_views: "Przyciski widoków", lb_nav: "Nawigacja dat", lb_add: "+ Wydarzenie", lb_chips: "Przyciski kalendarzy", lb_calendar: "Kalendarz", lb_todo: "Lista zadań",
     edit_task: "Edytuj zadanie", task_for: "Dla", replace_note: "Ten kalendarz nie pozwala zmieniać wydarzeń, więc zapis zastąpi wydarzenie nowym. Goście, przypomnienia i kolory ustawione w aplikacji kalendarza nie zostaną skopiowane.", l_planner_days: "Dni w Planerze", l_planner_start: "Planer zaczyna się od", o_pl_week: "Początku tygodnia", o_pl_today: "Dzisiaj", o_pc_own: "Własna kolumna", o_pc_group: "Kolumna grupy", o_pc_side: "Obok daty", l_month_mobile: "Widok miesiąca na telefonie", o_mm_list: "Lista wybranego dnia", o_mm_text: "Krótkie tytuły", o_mm_dots: "Tylko kropki", ed_layout: "Układ", l_sections: "Sekcje nad kalendarzem (przeciągnij, by zmienić kolejność; odznacz, by ukryć)", o_sec_header: "Data i pogoda", o_sec_countdowns: "Odliczania", o_sec_toolbar: "Przyciski widoków i nawigacja dat", o_sec_chips: "Przyciski kalendarzy", l_show_view_selector: "Pokaż przyciski widoków (Agenda / Tydzień / …)", l_show_date_navigation: "Pokaż nawigację dat (‹ Dzisiaj ›)", l_event_time_position: "Godzina wydarzenia", o_tp_above: "Nad tytułem", o_tp_left: "Na lewo od tytułu", o_tp_right: "Na prawo od tytułu", l_show_event_location: "Pokaż miejsce wydarzenia", l_show_event_calendar: "Pokaż nazwę kalendarza przy wydarzeniach", l_planner_column: "Widok Planer", ed_planner_help: "Własna kolumna, wspólna kolumna grupy albo obok daty",
@@ -233,6 +235,7 @@ const I18N = {
     ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
+    ld_todo_pop: "Se muestra como ventana emergente desde un pequeño botón en la esquina; el calendario ocupa su espacio.", ld_todo_close: "Cerrar la ventana tras (segundos)",
     ld_drag_line: "Arrastra para agrandar o reducir las columnas o filas a cada lado",
     ld_title: "Diseñador de diseño", ld_on: "activado", ld_intro: "Organiza la tarjeta en una cuadrícula: mueve y cambia el tamaño de bloques como la fecha, el reloj, el tiempo, el calendario y las tareas. Tu diseño actual no cambia hasta que empieces.", ld_start: "Diseñar mi propio diseño", ld_or_preset: "o empieza con", ld_pre_classic: "Clásico", ld_pre_wall: "Pantalla de pared", ld_pre_tv: "TV – sin botones", ld_pre_phone: "Móvil compacto", ld_desktop: "Escritorio", ld_phone: "Móvil", ld_presets: "Plantillas", ld_reset: "Restablecer", ld_phone_auto: "En el móvil los bloques se apilan automáticamente. Crea un diseño para móvil para colocarlos tú.", ld_make_phone: "Crear diseño para móvil", ld_copy_desktop: "Copiar diseño de escritorio", ld_del_phone: "Quitar diseño para móvil", ld_bp: "Diseño de móvil por debajo de (px)", ld_off: "Volver al diseño clásico", ld_help: "Arrastra un bloque para moverlo; arrastra su borde o esquina para cambiar el tamaño. Todo se ajusta a la cuadrícula. Toca un bloque para ver sus ajustes.", ld_cols: "Columnas", ld_rows: "Filas", ld_rows_auto: "Auto", ld_gap: "Espacio (px)", ld_more: "Más opciones de cuadrícula", ld_col_sizes: "Tamaños de columnas", ld_row_sizes: "Tamaños de filas", ld_sizes_help: "Tamaños relativos como 1 2 1, o valores en px – vacío = iguales", ld_row_h: "Altura de fila en una tarjeta normal (px)", ld_ah_secs: "Ocultar tras (segundos)", ld_padding: "Relleno (px)", ld_hidden: "Ocultos", ld_hidden_help: "Suelta aquí un bloque para ocultarlo", ld_unhide: "Mostrar de nuevo", ld_tap_block: "Toca un bloque para cambiar su visibilidad, tamaño y opciones.", ld_vis: "Visibilidad", ld_show: "Mostrar", ld_hide: "Ocultar", ld_autohide: "Autoocultar", ld_ah_help: "Oculto hasta que alguien toca la pantalla, luego se oculta de nuevo. Los bloques autoocultos pueden quedar encima de otros.", ld_size: "Tamaño", ld_pos: "Posición", ld_agenda_date: "Fecha en Agenda", l_agenda_date: "Fecha en la vista Agenda", o_ad_both: "A la izquierda y encima", o_ad_left: "A la izquierda", o_ad_above: "Encima", lb_date: "Fecha", lb_clock: "Reloj", lb_weather: "Tiempo", lb_countdowns: "Cuentas atrás", lb_views: "Botones de vista", lb_nav: "Navegación de fechas", lb_add: "+ Evento", lb_chips: "Botones de calendarios", lb_calendar: "Calendario", lb_todo: "Tareas",
     edit_task: "Editar tarea", task_for: "Para", replace_note: "Este calendario no permite cambiar eventos, así que al guardar se sustituye por uno nuevo. No se copian invitados, recordatorios ni colores de la app de calendario.", l_planner_days: "Días en el planificador", l_planner_start: "El planificador empieza", o_pl_week: "Al inicio de la semana", o_pl_today: "Hoy", o_pc_own: "Columna propia", o_pc_group: "Columna del grupo", o_pc_side: "Junto a la fecha", l_month_mobile: "Vista de mes en el móvil", o_mm_list: "Lista del día pulsado", o_mm_text: "Títulos cortos", o_mm_dots: "Solo puntos", ed_layout: "Diseño", l_sections: "Secciones sobre el calendario (arrastra para ordenar, desmarca para ocultar)", o_sec_header: "Fecha y tiempo", o_sec_countdowns: "Cuentas atrás", o_sec_toolbar: "Botones de vista y navegación", o_sec_chips: "Botones de calendarios", l_show_view_selector: "Mostrar botones de vista (Agenda / Semana / …)", l_show_date_navigation: "Mostrar navegación de fechas (‹ Hoy ›)", l_event_time_position: "Hora del evento", o_tp_above: "Encima del título", o_tp_left: "A la izquierda del título", o_tp_right: "A la derecha del título", l_show_event_location: "Mostrar ubicación del evento", l_show_event_calendar: "Mostrar nombre del calendario en los eventos", l_planner_column: "Vista planificador", ed_planner_help: "Columna propia, columna compartida del grupo o junto a la fecha",
@@ -295,6 +298,7 @@ const I18N = {
     ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
   it: {
+    ld_todo_pop: "Si apre come pop-up da un piccolo pulsante nell'angolo – il calendario occupa il suo spazio.", ld_todo_close: "Chiudi il pop-up dopo (secondi)",
     ld_drag_line: "Trascina per allargare o restringere le colonne o righe ai due lati",
     ld_title: "Designer del layout", ld_on: "attivo", ld_intro: "Disponi la card su una griglia: sposta e ridimensiona blocchi come data, orologio, meteo, calendario e attività. Il layout attuale resta com'è finché non inizi.", ld_start: "Crea il mio layout", ld_or_preset: "oppure parti da", ld_pre_classic: "Classico", ld_pre_wall: "Display a parete", ld_pre_tv: "TV – senza pulsanti", ld_pre_phone: "Telefono compatto", ld_desktop: "Desktop", ld_phone: "Telefono", ld_presets: "Modelli", ld_reset: "Ripristina", ld_phone_auto: "Sul telefono i blocchi si impilano automaticamente. Crea un layout per telefono per disporli tu.", ld_make_phone: "Crea layout per telefono", ld_copy_desktop: "Copia layout desktop", ld_del_phone: "Rimuovi layout per telefono", ld_bp: "Layout telefono sotto (px)", ld_off: "Torna al layout classico", ld_help: "Trascina un blocco per spostarlo; trascina bordo o angolo per ridimensionarlo. Tutto si aggancia alla griglia. Tocca un blocco per le sue impostazioni.", ld_cols: "Colonne", ld_rows: "Righe", ld_rows_auto: "Auto", ld_gap: "Spaziatura (px)", ld_more: "Altre opzioni della griglia", ld_col_sizes: "Larghezze colonne", ld_row_sizes: "Altezze righe", ld_sizes_help: "Dimensioni relative come 1 2 1, o valori in px – vuoto = uguali", ld_row_h: "Altezza riga in una card normale (px)", ld_ah_secs: "Nascondi dopo (secondi)", ld_padding: "Margine interno (px)", ld_hidden: "Nascosti", ld_hidden_help: "Trascina qui un blocco per nasconderlo", ld_unhide: "Mostra di nuovo", ld_tap_block: "Tocca un blocco per cambiarne visibilità, dimensione e opzioni.", ld_vis: "Visibilità", ld_show: "Mostra", ld_hide: "Nascondi", ld_autohide: "Nascondi automaticamente", ld_ah_help: "Nascosto finché qualcuno tocca lo schermo, poi si nasconde di nuovo. Può sovrapporsi ad altri blocchi.", ld_size: "Dimensione", ld_pos: "Posizione", ld_agenda_date: "Data nell'Agenda", l_agenda_date: "Data nella vista Agenda", o_ad_both: "A sinistra e sopra", o_ad_left: "A sinistra", o_ad_above: "Sopra", lb_date: "Data", lb_clock: "Orologio", lb_weather: "Meteo", lb_countdowns: "Conti alla rovescia", lb_views: "Pulsanti vista", lb_nav: "Navigazione date", lb_add: "+ Evento", lb_chips: "Pulsanti calendari", lb_calendar: "Calendario", lb_todo: "Attività",
     edit_task: "Modifica attività", task_for: "Per", replace_note: "Questo calendario non può modificare gli eventi, quindi salvando l'evento viene sostituito da uno nuovo. Invitati, promemoria e colori impostati nell'app del calendario non vengono copiati.", l_planner_days: "Giorni nel Planner", l_planner_start: "Il Planner inizia", o_pl_week: "Dall'inizio della settimana", o_pl_today: "Da oggi", o_pc_own: "Colonna propria", o_pc_group: "Colonna del gruppo", o_pc_side: "Accanto alla data", l_month_mobile: "Vista mese sul telefono", o_mm_list: "Elenco del giorno toccato", o_mm_text: "Titoli brevi", o_mm_dots: "Solo puntini", ed_layout: "Layout", l_sections: "Sezioni sopra il calendario (trascina per riordinare, deseleziona per nascondere)", o_sec_header: "Data e meteo", o_sec_countdowns: "Conti alla rovescia", o_sec_toolbar: "Pulsanti vista e navigazione date", o_sec_chips: "Pulsanti dei calendari", l_show_view_selector: "Mostra pulsanti vista (Agenda / Settimana / …)", l_show_date_navigation: "Mostra navigazione date (‹ Oggi ›)", l_event_time_position: "Orario dell'evento", o_tp_above: "Sopra il titolo", o_tp_left: "A sinistra del titolo", o_tp_right: "A destra del titolo", l_show_event_location: "Mostra luogo dell'evento", l_show_event_calendar: "Mostra nome del calendario negli eventi", l_planner_column: "Vista Planner", ed_planner_help: "Colonna propria, colonna condivisa del gruppo o accanto alla data",
@@ -533,6 +537,7 @@ const I18N = {
     ed_media_help: "es. media-source://media_source/local/photos – lascia vuoto per un salvaschermo con solo orologio",
   },
   nl: {
+    ld_todo_pop: "Verschijnt als pop-up via een knopje in de hoek – de agenda neemt de ruimte in.", ld_todo_close: "Pop-up sluiten na (seconden)",
     ld_drag_line: "Sleep om de kolommen of rijen aan weerszijden groter of kleiner te maken",
     ld_title: "Indelingsontwerper", ld_on: "aan", ld_intro: "Zet de kaart op een raster: verplaats blokken zoals datum, klok, weer, agenda en takenlijst en pas hun grootte aan. Je huidige indeling blijft hetzelfde tot je begint.", ld_start: "Mijn eigen indeling maken", ld_or_preset: "of begin met", ld_pre_classic: "Klassiek", ld_pre_wall: "Wandscherm", ld_pre_tv: "TV – zonder knoppen", ld_pre_phone: "Compacte telefoon", ld_desktop: "Desktop", ld_phone: "Telefoon", ld_presets: "Sjablonen", ld_reset: "Herstellen", ld_phone_auto: "Op een telefoon worden de blokken automatisch onder elkaar gezet. Maak een telefoonindeling om ze zelf te plaatsen.", ld_make_phone: "Telefoonindeling maken", ld_copy_desktop: "Desktopindeling kopiëren", ld_del_phone: "Telefoonindeling verwijderen", ld_bp: "Telefoonindeling onder (px)", ld_off: "Terug naar de klassieke indeling", ld_help: "Sleep een blok om het te verplaatsen; sleep de rand of hoek om de grootte te wijzigen. Alles klikt vast op het raster. Tik op een blok voor de instellingen.", ld_cols: "Kolommen", ld_rows: "Rijen", ld_rows_auto: "Auto", ld_gap: "Tussenruimte (px)", ld_more: "Meer rasteropties", ld_col_sizes: "Kolombreedtes", ld_row_sizes: "Rijhoogtes", ld_sizes_help: "Relatieve groottes zoals 1 2 1, of px-waarden – leeg = gelijk", ld_row_h: "Rijhoogte in een gewone kaart (px)", ld_ah_secs: "Verbergen na (seconden)", ld_padding: "Binnenmarge (px)", ld_hidden: "Verborgen", ld_hidden_help: "Sleep een blok hierheen om het te verbergen", ld_unhide: "Weer tonen", ld_tap_block: "Tik op een blok om zichtbaarheid, grootte en opties te wijzigen.", ld_vis: "Zichtbaarheid", ld_show: "Tonen", ld_hide: "Verbergen", ld_autohide: "Automatisch verbergen", ld_ah_help: "Verborgen tot iemand op het scherm tikt, daarna weer weg. Deze blokken mogen over andere heen liggen.", ld_size: "Grootte", ld_pos: "Positie", ld_agenda_date: "Datum in Agenda", l_agenda_date: "Datum in de Agenda-weergave", o_ad_both: "Links en boven", o_ad_left: "Links", o_ad_above: "Boven", lb_date: "Datum", lb_clock: "Klok", lb_weather: "Weer", lb_countdowns: "Aftellers", lb_views: "Weergaveknoppen", lb_nav: "Datumnavigatie", lb_add: "+ Afspraak", lb_chips: "Agendaknoppen", lb_calendar: "Agenda", lb_todo: "Takenlijst",
     edit_task: "Taak bewerken", task_for: "Voor", replace_note: "Deze agenda kan afspraken niet direct wijzigen, dus bij opslaan wordt de afspraak vervangen door een nieuwe. Gasten, herinneringen en kleuren uit de agenda-app worden niet overgenomen.", l_planner_days: "Dagen in de Planner", l_planner_start: "Planner begint", o_pl_week: "Aan het begin van de week", o_pl_today: "Vandaag", o_pc_own: "Eigen kolom", o_pc_group: "Groepskolom", o_pc_side: "Naast de datum", l_month_mobile: "Maandweergave op telefoon", o_mm_list: "Lijst van de aangetikte dag", o_mm_text: "Korte titels", o_mm_dots: "Alleen stippen", ed_layout: "Indeling", l_sections: "Onderdelen boven de agenda (sleep om te ordenen, vink uit om te verbergen)", o_sec_header: "Datum & weer", o_sec_countdowns: "Aftellers", o_sec_toolbar: "Weergaveknoppen & datumnavigatie", o_sec_chips: "Agendaknoppen", l_show_view_selector: "Weergaveknoppen tonen (Agenda / Week / …)", l_show_date_navigation: "Datumnavigatie tonen (‹ Vandaag ›)", l_event_time_position: "Tijd van de afspraak", o_tp_above: "Boven de titel", o_tp_left: "Links van de titel", o_tp_right: "Rechts van de titel", l_show_event_location: "Locatie van afspraak tonen", l_show_event_calendar: "Agendanaam bij afspraken tonen", l_planner_column: "Planner-weergave", ed_planner_help: "Eigen kolom, gedeelde groepskolom of naast de datum",
@@ -771,6 +776,7 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    ld_todo_pop: "Erscheint als Pop-up über eine kleine Taste in der Ecke – der Kalender nutzt den Platz.", ld_todo_close: "Pop-up schließen nach (Sekunden)",
     ld_drag_line: "Ziehen, um die Spalten oder Zeilen auf beiden Seiten größer oder kleiner zu machen",
     ld_title: "Layout-Designer", ld_on: "an", ld_intro: "Ordne die Karte in einem Raster an: verschiebe Blöcke wie Datum, Uhr, Wetter, Kalender und Aufgaben und ändere ihre Größe. Dein aktuelles Layout bleibt, bis du anfängst.", ld_start: "Eigenes Layout gestalten", ld_or_preset: "oder starte mit", ld_pre_classic: "Klassisch", ld_pre_wall: "Wanddisplay", ld_pre_tv: "TV – ohne Tasten", ld_pre_phone: "Kompakt fürs Handy", ld_desktop: "Desktop", ld_phone: "Handy", ld_presets: "Vorlagen", ld_reset: "Zurücksetzen", ld_phone_auto: "Auf dem Handy werden die Blöcke automatisch untereinander gestapelt. Erstelle ein Handy-Layout, um sie selbst anzuordnen.", ld_make_phone: "Handy-Layout erstellen", ld_copy_desktop: "Desktop-Layout kopieren", ld_del_phone: "Handy-Layout entfernen", ld_bp: "Handy-Layout unter (px)", ld_off: "Zurück zum klassischen Layout", ld_help: "Ziehe einen Block, um ihn zu verschieben; ziehe Rand oder Ecke, um die Größe zu ändern. Alles rastet im Raster ein. Tippe auf einen Block für seine Einstellungen.", ld_cols: "Spalten", ld_rows: "Zeilen", ld_rows_auto: "Auto", ld_gap: "Abstand (px)", ld_more: "Weitere Rasteroptionen", ld_col_sizes: "Spaltenbreiten", ld_row_sizes: "Zeilenhöhen", ld_sizes_help: "Relative Größen wie 1 2 1 oder px-Werte – leer = gleich groß", ld_row_h: "Zeilenhöhe in einer normalen Karte (px)", ld_ah_secs: "Ausblenden nach (Sekunden)", ld_padding: "Innenabstand (px)", ld_hidden: "Ausgeblendet", ld_hidden_help: "Block hier ablegen, um ihn auszublenden", ld_unhide: "Wieder anzeigen", ld_tap_block: "Tippe auf einen Block, um Sichtbarkeit, Größe und Optionen zu ändern.", ld_vis: "Sichtbarkeit", ld_show: "Anzeigen", ld_hide: "Ausblenden", ld_autohide: "Auto-Ausblenden", ld_ah_help: "Ausgeblendet, bis jemand auf den Bildschirm tippt, dann wieder weg. Auto-Ausblenden-Blöcke dürfen über anderen liegen.", ld_size: "Größe", ld_pos: "Position", ld_agenda_date: "Datum in der Agenda", l_agenda_date: "Datum in der Agenda-Ansicht", o_ad_both: "Links und oben", o_ad_left: "Links", o_ad_above: "Oben", lb_date: "Datum", lb_clock: "Uhr", lb_weather: "Wetter", lb_countdowns: "Countdowns", lb_views: "Ansichtstasten", lb_nav: "Datumsnavigation", lb_add: "+ Termin", lb_chips: "Kalender-Schaltflächen", lb_calendar: "Kalender", lb_todo: "Aufgaben",
     edit_task: "Aufgabe bearbeiten", task_for: "Für", replace_note: "Dieser Kalender kann Termine nicht direkt ändern, daher ersetzt das Speichern den Termin durch einen neuen. Gäste, Erinnerungen und Farben aus der Kalender-App werden nicht übernommen.", l_planner_days: "Tage im Planer", l_planner_start: "Planer beginnt", o_pl_week: "Am Wochenanfang", o_pl_today: "Heute", o_pc_own: "Eigene Spalte", o_pc_group: "Gruppenspalte", o_pc_side: "Neben dem Datum", l_month_mobile: "Monatsansicht auf dem Handy", o_mm_list: "Liste des angetippten Tages", o_mm_text: "Kurze Titel", o_mm_dots: "Nur Punkte", ed_layout: "Layout", l_sections: "Bereiche über dem Kalender (ziehen zum Sortieren, abwählen zum Ausblenden)", o_sec_header: "Datum & Wetter", o_sec_countdowns: "Countdowns", o_sec_toolbar: "Ansichtstasten & Datumsnavigation", o_sec_chips: "Kalender-Schaltflächen", l_show_view_selector: "Ansichtstasten anzeigen (Agenda / Woche / …)", l_show_date_navigation: "Datumsnavigation anzeigen (‹ Heute ›)", l_event_time_position: "Uhrzeit des Termins", o_tp_above: "Über dem Titel", o_tp_left: "Links vom Titel", o_tp_right: "Rechts vom Titel", l_show_event_location: "Ort des Termins anzeigen", l_show_event_calendar: "Kalendername bei Terminen anzeigen", l_planner_column: "Planer-Ansicht", ed_planner_help: "Eigene Spalte, gemeinsame Gruppenspalte oder neben dem Datum",
@@ -1009,6 +1015,7 @@ const I18N = {
     ed_media_help: "z. B. media-source://media_source/local/photos – leer lassen für einen Bildschirmschoner nur mit Uhr",
   },
   hu: {
+    ld_todo_pop: "Felugró ablakként nyílik egy kis gombbal a sarokban – a naptár kitölti a helyét.", ld_todo_close: "Felugró ablak bezárása ennyi után (mp)",
     ld_drag_line: "Húzd a két oldalán lévő oszlopok vagy sorok átméretezéséhez",
     ld_title: "Elrendezés-tervező", ld_on: "bekapcsolva", ld_intro: "Rendezd el a kártyát egy rácson: mozgasd és méretezd át a blokkokat, például a dátumot, az órát, az időjárást, a naptárat és a teendőket. A mostani elrendezés marad, amíg el nem kezded.", ld_start: "Saját elrendezés tervezése", ld_or_preset: "vagy kezdd ezzel", ld_pre_classic: "Klasszikus", ld_pre_wall: "Fali kijelző", ld_pre_tv: "TV – gombok nélkül", ld_pre_phone: "Kompakt telefon", ld_desktop: "Asztali", ld_phone: "Telefon", ld_presets: "Sablonok", ld_reset: "Visszaállítás", ld_phone_auto: "Telefonon a blokkok automatikusan egymás alá kerülnek. Hozz létre telefonos elrendezést, ha magad szeretnéd elrendezni őket.", ld_make_phone: "Telefonos elrendezés létrehozása", ld_copy_desktop: "Asztali elrendezés másolása", ld_del_phone: "Telefonos elrendezés törlése", ld_bp: "Telefonos elrendezés ez alatt (px)", ld_off: "Vissza a klasszikus elrendezéshez", ld_help: "Húzd a blokkot a mozgatáshoz, a szélét vagy sarkát az átméretezéshez. Minden a rácshoz igazodik. Érintsd meg a blokkot a beállításaihoz.", ld_cols: "Oszlopok", ld_rows: "Sorok", ld_rows_auto: "Auto", ld_gap: "Térköz (px)", ld_more: "További rácsbeállítások", ld_col_sizes: "Oszlopszélességek", ld_row_sizes: "Sormagasságok", ld_sizes_help: "Arányos méretek, pl. 1 2 1, vagy px értékek – üresen egyenlő", ld_row_h: "Sormagasság normál kártyában (px)", ld_ah_secs: "Elrejtés ennyi után (mp)", ld_padding: "Belső margó (px)", ld_hidden: "Rejtett", ld_hidden_help: "Húzz ide egy blokkot az elrejtéshez", ld_unhide: "Újra megjelenítés", ld_tap_block: "Érints meg egy blokkot a láthatóság, a méret és a beállítások módosításához.", ld_vis: "Láthatóság", ld_show: "Látható", ld_hide: "Rejtett", ld_autohide: "Automatikus elrejtés", ld_ah_help: "Rejtve marad, amíg valaki meg nem érinti a képernyőt, aztán újra elrejtőzik. Átfedhet más blokkokat.", ld_size: "Méret", ld_pos: "Pozíció", ld_agenda_date: "Dátum a Napirendben", l_agenda_date: "Dátum a Napirend nézetben", o_ad_both: "Balra és felül", o_ad_left: "Balra", o_ad_above: "Felül", lb_date: "Dátum", lb_clock: "Óra", lb_weather: "Időjárás", lb_countdowns: "Visszaszámlálások", lb_views: "Nézetgombok", lb_nav: "Dátumnavigáció", lb_add: "+ Esemény", lb_chips: "Naptárgombok", lb_calendar: "Naptár", lb_todo: "Teendők",
     edit_task: "Teendő szerkesztése", task_for: "Kinek", replace_note: "Ez a naptár nem tudja közvetlenül módosítani az eseményeket, ezért mentéskor az esemény egy újra cserélődik. A naptáralkalmazásban beállított vendégek, emlékeztetők és színek nem másolódnak át.", l_planner_days: "Napok a Tervezőben", l_planner_start: "A Tervező kezdete", o_pl_week: "A hét elejétől", o_pl_today: "Mától", o_pc_own: "Saját oszlop", o_pc_group: "Csoport oszlopa", o_pc_side: "A dátum mellett", l_month_mobile: "Havi nézet telefonon", o_mm_list: "A megérintett nap listája", o_mm_text: "Rövid címek", o_mm_dots: "Csak pontok", ed_layout: "Elrendezés", l_sections: "Részek a naptár felett (húzással rendezhető, kipipálás nélkül rejtve)", o_sec_header: "Dátum és időjárás", o_sec_countdowns: "Visszaszámlálások", o_sec_toolbar: "Nézetgombok és dátumnavigáció", o_sec_chips: "Naptárgombok", l_show_view_selector: "Nézetgombok megjelenítése (Napirend / Hét / …)", l_show_date_navigation: "Dátumnavigáció megjelenítése (‹ Ma ›)", l_event_time_position: "Esemény időpontja", o_tp_above: "A cím felett", o_tp_left: "A címtől balra", o_tp_right: "A címtől jobbra", l_show_event_location: "Helyszín megjelenítése", l_show_event_calendar: "Naptár nevének megjelenítése az eseményeknél", l_planner_column: "Tervező nézet", ed_planner_help: "Saját oszlop, közös csoportoszlop vagy a dátum mellett",
@@ -1766,6 +1773,7 @@ class HomeCalendarCard extends HTMLElement {
 
   // Auto-hide: seconds of inactivity before the list folds away (0 = off).
   _todoAutohide() {
+    if (this._gridOn?.()) return 0; // the Layout designer uses a pop-up instead (see _todoPopup)
     const a = this._config?.todo_autohide;
     if (a === true) return 30;
     const n = Number(a);
@@ -1783,7 +1791,34 @@ class HomeCalendarCard extends HTMLElement {
     box.classList.toggle("collapsed", !!auto && !this._todoOpen);
   }
 
+  // Layout designer: a to-do block set to Auto-hide becomes a pop-up opened from a small button.
+  _todoPopup() { return !!this._todoPopMode; }
+
+  _todoPopSecs() {
+    const a = this._config?.todo_autohide;
+    const n = a === true ? 30 : Number(a);
+    return n > 0 ? n : 30;
+  }
+
+  _setTodoPop(open) {
+    this._todoPopOpen = !!open;
+    this._todoBox?.classList.toggle("pop-open", this._todoPopOpen);
+    this.shadowRoot.querySelector(".todo-fab")?.classList.toggle("on", this._todoPopOpen);
+    clearTimeout(this._todoHideTimer);
+    if (open) this._todoActivity();
+  }
+
   _todoActivity() {
+    if (this._todoPopup()) {
+      clearTimeout(this._todoHideTimer);
+      if (!this._todoPopOpen) return;
+      this._todoHideTimer = setTimeout(() => {
+        const t = this._todoBox?.querySelector("#t-text");
+        if (t && (t.value || this.shadowRoot.activeElement === t) || this._dlg?.open) { this._todoActivity(); return; }
+        this._setTodoPop(false);
+      }, this._todoPopSecs() * 1000);
+      return;
+    }
     const auto = this._todoAutohide();
     clearTimeout(this._todoHideTimer);
     if (!auto || !this._todoOpen) return;
@@ -1966,6 +2001,8 @@ class HomeCalendarCard extends HTMLElement {
       if (upcoming.length) groups.push({ name: this._t("tg_upcoming"), icon: "mdi:calendar-clock", upcomingGroup: true, items: upcoming });
     }
     box.querySelector(".todo-count").textContent = items.length ? String(items.length) : "";
+    const fabN = this.shadowRoot.querySelector(".todo-fab .n");
+    if (fabN) fabN.textContent = items.length ? String(items.length) : "";
     const shown = groups.filter((g) => g.items.length);
     const due = o.groupBy === "due";
     let html = shown.length ? shown.map((g) => {
@@ -3064,6 +3101,21 @@ class HomeCalendarCard extends HTMLElement {
     inner.style.gap = `${gap}px`;
     if (g.padding !== undefined && g.padding !== "") inner.style.padding = `${clampInt(g.padding, 0, 80, 0)}px`; else inner.style.removeProperty("padding");
     const area = (b) => `grid-area:${b.row} / ${b.col} / span ${b.h} / span ${b.w}`;
+    // To-do block on Auto-hide = a pop-up opened from a small button; the calendar grows into its space if it can.
+    const tbk = L.blocks.find((b) => b.name === "todo");
+    const pop = !!c.todo_entity && !!tbk && tbk.show === "autohide";
+    if (pop !== this._todoPopMode) { this._todoPopMode = pop; if (!pop) this._todoPopOpen = false; }
+    let calRect = null;
+    if (pop) {
+      const cal = L.blocks.find((b) => b.name === "calendar");
+      const others = L.blocks.filter((b) => b.show === "show" && b.name !== "calendar" && b.name !== "todo" && (b.name !== "todo"));
+      const box = (r1, c1, r2, c2) => ({ row: r1, col: c1, h: r2 - r1 + 1, w: c2 - c1 + 1 });
+      const r1 = Math.min(cal.row, tbk.row); const r2 = Math.max(cal.row + cal.h, tbk.row + tbk.h) - 1;
+      const c1 = Math.min(cal.col, tbk.col); const c2 = Math.max(cal.col + cal.w, tbk.col + tbk.w) - 1;
+      const hit = (a) => others.some((b) => a.col < b.col + b.w && b.col < a.col + a.w && a.row < b.row + b.h && b.row < a.row + a.h);
+      calRect = [box(r1, c1, r2, c2), box(cal.row, c1, cal.row + cal.h - 1, c2), box(r1, cal.col, r2, cal.col + cal.w - 1)]
+        .find((a) => !hit(a)) || null;
+    }
     const editing = this._inEditor();
     const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")], ["planner", this._t("planner")]];
     const canAdd = c.allow_add !== false && this._writable().length > 0;
@@ -3092,8 +3144,9 @@ class HomeCalendarCard extends HTMLElement {
       const inner = parts[b.name]();
       if (!inner && b.name !== "calendar") return;
       if (b.show === "autohide") hasAh = true;
-      html += `<div class="lb lb-${b.name} ${b.show === "autohide" ? "ah" : ""}" style="${area(b)}">${inner}</div>`;
+      html += `<div class="lb lb-${b.name} ${b.show === "autohide" ? "ah" : ""}" style="${area(b.name === "calendar" && calRect ? calRect : b)}">${inner}</div>`;
     });
+    if (pop) html += `<button class="todo-fab ${this._todoPopOpen ? "on" : ""}" data-action="todo-pop" title="${esc(c.todo_title || this._t("todo"))}"><ha-icon icon="mdi:checkbox-marked-circle-outline"></ha-icon><span class="n"></span></button>`;
     this._main.innerHTML = `${html}
       <div class="progress ${this._loading ? "on" : ""}"></div>
       ${this._error ? `<div class="error"><ha-icon icon="mdi:alert-circle-outline"></ha-icon>${esc(this._error)}</div>` : ""}`;
@@ -3103,8 +3156,12 @@ class HomeCalendarCard extends HTMLElement {
     if (box) {
       const showTodo = !!c.todo_entity && tb && tb.show !== "hide";
       box.classList.toggle("lg-off", !showTodo);
-      box.classList.toggle("ah", !!showTodo && tb.show === "autohide");
-      if (showTodo) { box.style.gridArea = `${tb.row} / ${tb.col} / span ${tb.h} / span ${tb.w}`; if (tb.show === "autohide") hasAh = true; }
+      box.classList.remove("ah");
+      box.classList.toggle("todo-pop", !!showTodo && pop);
+      box.classList.toggle("pop-open", !!showTodo && pop && !!this._todoPopOpen);
+      if (showTodo && !pop) box.style.gridArea = `${tb.row} / ${tb.col} / span ${tb.h} / span ${tb.w}`;
+      else box.style.gridArea = "";
+      if (pop) { const n = box.querySelector(".todo-count")?.textContent || ""; const f = this.shadowRoot.querySelector(".todo-fab .n"); if (f) f.textContent = n; }
     }
     this._hasAh = hasAh;
     inner.classList.toggle("ah-show", editing || !!this._ahShown);
@@ -3114,7 +3171,9 @@ class HomeCalendarCard extends HTMLElement {
     const inner = this._inner;
     inner.classList.remove("lg", "lg-phone", "lg-fixed", "ah-show");
     ["gridTemplateColumns", "gridTemplateRows", "gap", "padding"].forEach((k) => { inner.style[k] = ""; });
-    if (this._todoBox) { this._todoBox.style.gridArea = ""; this._todoBox.classList.remove("lg-off", "ah"); }
+    if (this._todoBox) { this._todoBox.style.gridArea = ""; this._todoBox.classList.remove("lg-off", "ah", "todo-pop", "pop-open"); }
+    this._todoPopMode = false;
+    this._todoPopOpen = false;
     this._hasAh = false;
     this._applyLayout();
   }
@@ -3122,6 +3181,10 @@ class HomeCalendarCard extends HTMLElement {
   // Auto-hide blocks: the first tap shows them (and is swallowed so it doesn't also press something),
   // they hide again after grid.autohide_seconds without a tap.
   _ahPointer(e) {
+    if (this._todoPopOpen && !e.composedPath().some((n) => n === this._todoBox || n === this._dlg || n?.classList?.contains?.("todo-fab"))) {
+      this._setTodoPop(false); // tap outside the to-do pop-up closes it
+    }
+    if (e.composedPath().some((n) => n === this._todoBox || n?.classList?.contains?.("todo-fab"))) return;
     if (!this._hasAh || !this._gridOn() || this._inEditor()) return;
     const secs = clampInt(this._config.grid.autohide_seconds, 2, 600, 10);
     clearTimeout(this._ahTimer);
@@ -3920,6 +3983,7 @@ class HomeCalendarCard extends HTMLElement {
     }
     const el = e.composedPath().find((n) => n instanceof HTMLElement && n.dataset && n.dataset.action);
     if (!el) return;
+    if (el.dataset.action === "todo-pop") { this._setTodoPop(!this._todoPopOpen); return; }
     const { action } = el.dataset;
     switch (action) {
       case "view":
@@ -4313,6 +4377,19 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .inner.lg .progress { position: absolute; left: 0; right: 0; top: 0; margin: 0; z-index: 5; }
 .inner.lg .error { grid-column: 1 / -1; grid-row: 1; align-self: start; z-index: 6; background: var(--hcc-bg); padding: 6px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
 /* auto-hide blocks: invisible until a tap, then they fade in on top (they may overlap other blocks) */
+/* to-do pop-up (Layout designer, to-do block on Auto-hide) */
+.inner.lg > .todo.todo-pop { position: absolute; right: 12px; bottom: 72px; top: auto; width: min(420px, calc(100% - 24px)) !important; max-height: min(75%, 640px) !important;
+  z-index: 9; display: flex !important; flex-direction: column; padding: 14px 16px !important; border-radius: 18px; background: var(--hcc-bg);
+  box-shadow: 0 12px 40px rgba(0,0,0,.28), 0 0 0 1px var(--hcc-line); opacity: 0; transform: translateY(12px) scale(.98); transform-origin: bottom right;
+  pointer-events: none; transition: opacity .18s, transform .18s; overflow: hidden; }
+.inner.lg > .todo.todo-pop.pop-open { opacity: 1; transform: none; pointer-events: auto; }
+.inner.lg > .todo.todo-pop .todo-list { flex: 1; min-height: 0; overflow: auto; }
+.todo-fab { position: absolute; right: 16px; bottom: 16px; z-index: 10; display: inline-flex; align-items: center; gap: 8px; height: 46px; min-width: 46px;
+  justify-content: center; padding: 0 14px; border-radius: 999px; border: none; cursor: pointer; background: var(--hcc-accent); color: #fff; font: inherit;
+  font-weight: 800; box-shadow: 0 6px 18px color-mix(in srgb, var(--hcc-accent) 45%, transparent); }
+.todo-fab ha-icon { --mdc-icon-size: 22px; }
+.todo-fab .n:empty { display: none; }
+.todo-fab.on { background: var(--hcc-text); color: var(--hcc-bg); }
 .inner.lg .ah { z-index: 4; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .2s, transform .2s; }
 .inner.lg.ah-show .ah { opacity: 1; pointer-events: auto; transform: none; }
 .inner.lg .lb.ah { background: color-mix(in srgb, var(--hcc-bg) 92%, transparent); border-radius: 14px; padding: 6px 8px; box-shadow: 0 6px 24px rgba(0,0,0,.18); backdrop-filter: blur(6px); }
@@ -4768,9 +4845,10 @@ const generalSchema = (t, hasGrid = false) => {
     { type: "grid", name: "", schema: [
       { name: "todo_entity", selector: { entity: { domain: "todo" } } },
       { name: "todo_title", selector: { text: {} } },
-      { name: "todo_position", selector: { select: { mode: "dropdown", options: [
+      // with the Layout designer on, the to-do block's place and auto-hide are set in the designer instead
+      ...(hasGrid ? [] : [{ name: "todo_position", selector: { select: { mode: "dropdown", options: [
         o("auto", "o_auto"), o("top", "o_top"), o("bottom", "o_bottom"), o("left", "o_left"), o("right", "o_right")] } } },
-        { name: "todo_autohide", selector: { number: { min: 0, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } },
+      { name: "todo_autohide", selector: { number: { min: 0, max: 600, step: 5, mode: "box", unit_of_measurement: "s" } } }]),
       { name: "todo_group_by", selector: { select: { mode: "dropdown", options: [o("person", "o_group_person"), o("due", "o_group_due")] } } },
       { name: "todo_days_ahead", selector: { number: { min: 0, max: 60, step: 1, mode: "box" } } },
       { name: "todo_calendar", selector: { entity: { domain: "calendar" } } },
@@ -5216,6 +5294,9 @@ class HccLayoutDesigner extends HTMLElement {
     } else if (n === "clock") {
       extra = `<label class="f">${esc(t("l_clock_format"))} ${sel("clock_format", [["auto", "o_tf_auto"], ["24h", "o_24h"], ["12h", "o_12h"]], c.clock_format || "auto")}</label>
         <label class="f"><input type="checkbox" data-ld-opt="clock_seconds" ${c.clock_seconds !== false ? "checked" : ""}> ${esc(t("l_clock_seconds"))}</label>`;
+    } else if (n === "todo") {
+      extra = b.show === "autohide" ? `<div class="hint" style="flex-basis:100%">${esc(t("ld_todo_pop"))}</div>
+        <label class="f">${esc(t("ld_todo_close"))} <input type="number" min="5" max="600" step="5" data-ld-opt="todo_autohide" value="${esc(Number(c.todo_autohide) > 0 ? c.todo_autohide : 30)}"></label>` : "";
     } else if (n === "countdowns") {
       extra = `<label class="f">${esc(t("l_countdown_style"))} ${sel("countdown_style", [["cards", "o_cards"], ["compact", "o_compact"]], c.countdown_style || "cards")}</label>`;
     }
@@ -5223,7 +5304,7 @@ class HccLayoutDesigner extends HTMLElement {
       <div class="ph"><ha-icon icon="${BLOCK_ICONS[n]}"></ha-icon>${esc(t(`lb_${n}`))}<span class="sp"></span><button class="link" data-ld="desel">${esc(t("close"))}</button></div>
       <div class="row" style="margin:0"><span class="f">${esc(t("ld_vis"))}</span>
         <div class="seg">${vis.map((v) => `<button class="${b.show === v ? "on" : ""}" data-ld="vis" data-v="${v}">${esc(t(`ld_${v}`))}</button>`).join("")}</div></div>
-      ${b.show === "autohide" ? `<div class="hint">${esc(t("ld_ah_help"))}</div>` : ""}
+      ${b.show === "autohide" && n !== "todo" ? `<div class="hint">${esc(t("ld_ah_help"))}</div>` : ""}
       <div class="row" style="margin:0"><span class="f">${esc(t("ld_size"))}</span> ${step("w", b.w)} × ${step("h", b.h)}
         <span class="f" style="margin-left:12px">${esc(t("ld_pos"))}</span> ${step("col", b.col)} ${step("row", b.row)}</div>
       ${extra ? `<div class="row" style="margin:0">${extra}</div>` : ""}
@@ -5305,7 +5386,7 @@ class HccLayoutDesigner extends HTMLElement {
       return;
     }
     if (el.dataset.ldOpt) {
-      const v = el.type === "checkbox" ? el.checked : el.value;
+      const v = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value) || 0 : el.value;
       this.onOption(el.dataset.ldOpt, v);
       this.cfg = { ...this.cfg, [el.dataset.ldOpt]: v };
       return;
