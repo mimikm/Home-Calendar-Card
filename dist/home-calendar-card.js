@@ -1747,6 +1747,7 @@ class HomeCalendarCard extends HTMLElement {
         <span class="todo-title">${esc(this._config.todo_title || this._t("todo"))}</span>
         <span class="todo-count"></span>
         ${this._todoAutohide() ? `<ha-icon class="todo-chev" icon="mdi:chevron-down"></ha-icon>` : ""}
+        <button class="todo-x" data-action="todo-pop" title="${esc(this._t("close"))}"><ha-icon icon="mdi:close"></ha-icon></button>
       </div>
       <div class="todo-err"></div>
       <div class="todo-list"></div>
@@ -3159,7 +3160,8 @@ class HomeCalendarCard extends HTMLElement {
       box.classList.remove("ah");
       box.classList.toggle("todo-pop", !!showTodo && pop);
       box.classList.toggle("pop-open", !!showTodo && pop && !!this._todoPopOpen);
-      if (showTodo && !pop) box.style.gridArea = `${tb.row} / ${tb.col} / span ${tb.h} / span ${tb.w}`;
+      // the pop-up opens in the place and size given to the to-do block in the designer, on top of the calendar
+      if (showTodo) box.style.gridArea = `${tb.row} / ${tb.col} / span ${tb.h} / span ${tb.w}`;
       else box.style.gridArea = "";
       if (pop) { const n = box.querySelector(".todo-count")?.textContent || ""; const f = this.shadowRoot.querySelector(".todo-fab .n"); if (f) f.textContent = n; }
     }
@@ -4378,9 +4380,8 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .inner.lg .error { grid-column: 1 / -1; grid-row: 1; align-self: start; z-index: 6; background: var(--hcc-bg); padding: 6px 10px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
 /* auto-hide blocks: invisible until a tap, then they fade in on top (they may overlap other blocks) */
 /* to-do pop-up (Layout designer, to-do block on Auto-hide) */
-.inner.lg > .todo.todo-pop { position: absolute; right: 12px; bottom: 72px; top: auto; width: min(420px, calc(100% - 24px)) !important; max-height: min(75%, 640px) !important;
-  z-index: 9; display: flex !important; flex-direction: column; padding: 14px 16px !important; border-radius: 18px; background: var(--hcc-bg);
-  box-shadow: 0 12px 40px rgba(0,0,0,.28), 0 0 0 1px var(--hcc-line); opacity: 0; transform: translateY(12px) scale(.98); transform-origin: bottom right;
+.inner.lg > .todo.todo-pop { position: relative; z-index: 9; display: flex !important; align-self: stretch; min-height: 0; flex-direction: column; padding: 14px 16px !important; border-radius: 18px; background: var(--hcc-bg);
+  box-shadow: 0 12px 40px rgba(0,0,0,.28), 0 0 0 1px var(--hcc-line); opacity: 0; transform: translateY(10px) scale(.98); transform-origin: center;
   pointer-events: none; transition: opacity .18s, transform .18s; overflow: hidden; }
 .inner.lg > .todo.todo-pop.pop-open { opacity: 1; transform: none; pointer-events: auto; }
 .inner.lg > .todo.todo-pop .todo-list { flex: 1; min-height: 0; overflow: auto; }
@@ -4389,7 +4390,10 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
   font-weight: 800; box-shadow: 0 6px 18px color-mix(in srgb, var(--hcc-accent) 45%, transparent); }
 .todo-fab ha-icon { --mdc-icon-size: 22px; }
 .todo-fab .n:empty { display: none; }
-.todo-fab.on { background: var(--hcc-text); color: var(--hcc-bg); }
+.todo-fab.on { opacity: 0; pointer-events: none; }
+.todo-x { display: none; margin-left: auto; width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--hcc-soft); color: var(--hcc-text); cursor: pointer; }
+.todo-x ha-icon { --mdc-icon-size: 18px; }
+.todo.todo-pop .todo-x { display: inline-grid; place-items: center; }
 .inner.lg .ah { z-index: 4; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .2s, transform .2s; }
 .inner.lg.ah-show .ah { opacity: 1; pointer-events: auto; transform: none; }
 .inner.lg .lb.ah { background: color-mix(in srgb, var(--hcc-bg) 92%, transparent); border-radius: 14px; padding: 6px 8px; box-shadow: 0 6px 24px rgba(0,0,0,.18); backdrop-filter: blur(6px); }
