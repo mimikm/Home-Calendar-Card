@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.17.1";
+const CARD_VERSION = "1.18.0";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -108,6 +108,7 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    l_exclude: "Hide events containing", l_include: "Only show events containing", l_exclude_all_day: "Hide all-day events", ed_exclude_help: "Words in the title, separated by | – e.g. vacation|out of office", ed_include_help: "Leave empty to show everything", ed_filtered: "filtered", ed_travel: "Travel time (Waze)", l_origin: "Drive from", ed_origin_help: "Usually zone.home. Needs the Waze Travel Time integration (Settings → Devices & services).", l_region: "Waze region", o_reg_auto: "Automatic", o_reg_eu: "Europe", o_reg_us: "United States", o_reg_na: "North America", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehicle", o_car: "Car", o_taxi: "Taxi", o_motorcycle: "Motorcycle", l_hours_ahead: "For events in the next (hours)", l_avoid_toll_roads: "Avoid toll roads", l_avoid_ferries: "Avoid ferries", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} drive", tt_leave_by: "Leave by {t}", tt_leave_now: "Leave now",
     ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
     ld_drag_line: "Drag to make the columns or rows on each side bigger or smaller",
     ld_title: "Layout designer", ld_on: "on", ld_intro: "Arrange the card on a grid: move and resize blocks like the date, clock, weather, calendar and to-do list. Your current layout stays as it is until you start.", ld_start: "Design my own layout", ld_or_preset: "or start from", ld_pre_classic: "Classic", ld_pre_wall: "Wall display", ld_pre_tv: "TV – no buttons", ld_pre_phone: "Compact phone", ld_desktop: "Desktop", ld_phone: "Phone", ld_presets: "Presets", ld_reset: "Reset", ld_phone_auto: "Phones stack the blocks automatically. Create a phone layout to arrange them yourself.", ld_make_phone: "Create phone layout", ld_copy_desktop: "Copy desktop layout", ld_del_phone: "Remove phone layout", ld_bp: "Phone layout below (px)", ld_off: "Back to the classic layout", ld_help: "Drag a block to move it, drag its edge or corner to resize. Everything snaps to the grid. Tap a block for its settings.", ld_cols: "Columns", ld_rows: "Rows", ld_rows_auto: "Auto", ld_gap: "Gap (px)", ld_more: "More grid options", ld_col_sizes: "Column sizes", ld_row_sizes: "Row sizes", ld_sizes_help: "Relative sizes like 1 2 1, or px values – leave empty for equal sizes", ld_row_h: "Row height in a normal card (px)", ld_ah_secs: "Auto-hide after (seconds)", ld_padding: "Padding (px)", ld_hidden: "Hidden", ld_hidden_help: "Drop a block here to hide it", ld_unhide: "Show again", ld_tap_block: "Tap a block to change its visibility, size and options.", ld_vis: "Visibility", ld_show: "Show", ld_hide: "Hide", ld_autohide: "Auto-hide", ld_ah_help: "Hidden until someone taps the screen, then hides again. Auto-hide blocks may sit on top of others.", ld_size: "Size", ld_pos: "Position", ld_agenda_date: "Date in Agenda", l_agenda_date: "Date in Agenda view", o_ad_both: "Left and above", o_ad_left: "Left", o_ad_above: "Above", lb_date: "Date", lb_clock: "Clock", lb_weather: "Weather", lb_countdowns: "Countdowns", lb_views: "View buttons", lb_nav: "Date navigation", lb_add: "+ Event", lb_chips: "Calendar buttons", lb_calendar: "Calendar", lb_todo: "To-do list",
@@ -172,6 +173,7 @@ const I18N = {
     ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
+    l_exclude: "Ukryj wydarzenia zawierające", l_include: "Pokaż tylko wydarzenia zawierające", l_exclude_all_day: "Ukryj wydarzenia całodniowe", ed_exclude_help: "Słowa w tytule rozdzielone | – np. urlop|poza biurem", ed_include_help: "Zostaw puste, aby pokazać wszystko", ed_filtered: "filtr", ed_travel: "Czas dojazdu (Waze)", l_origin: "Dojazd z", ed_origin_help: "Zwykle zone.home. Wymaga integracji Waze Travel Time (Ustawienia → Urządzenia i usługi).", l_region: "Region Waze", o_reg_auto: "Automatycznie", o_reg_eu: "Europa", o_reg_us: "Stany Zjednoczone", o_reg_na: "Ameryka Północna", o_reg_il: "Izrael", o_reg_au: "Australia", l_vehicle_type: "Pojazd", o_car: "Samochód", o_taxi: "Taxi", o_motorcycle: "Motocykl", l_hours_ahead: "Dla wydarzeń w ciągu (godzin)", l_avoid_toll_roads: "Unikaj dróg płatnych", l_avoid_ferries: "Unikaj promów", tt_min: "{n} min", tt_hm: "{h} godz. {m} min", tt_drive: "{d} jazdy", tt_leave_by: "Wyjedź o {t}", tt_leave_now: "Czas wyjeżdżać",
     ld_todo_pop: "Pokazywana jako okienko otwierane małym przyciskiem w rogu – kalendarz zajmuje jej miejsce.", ld_todo_close: "Zamknij okienko po (sekundy)",
     ld_drag_line: "Przeciągnij, aby powiększyć lub zmniejszyć kolumny albo wiersze po obu stronach",
     ld_title: "Projektant układu", ld_on: "włączony", ld_intro: "Ułóż kartę na siatce: przesuwaj i zmieniaj rozmiar bloków, takich jak data, zegar, pogoda, kalendarz i lista zadań. Obecny układ się nie zmieni, dopóki nie zaczniesz.", ld_start: "Zaprojektuj własny układ", ld_or_preset: "albo zacznij od", ld_pre_classic: "Klasyczny", ld_pre_wall: "Ekran ścienny", ld_pre_tv: "TV – bez przycisków", ld_pre_phone: "Kompaktowy na telefon", ld_desktop: "Komputer", ld_phone: "Telefon", ld_presets: "Szablony", ld_reset: "Resetuj", ld_phone_auto: "Na telefonie bloki układają się automatycznie jeden pod drugim. Utwórz układ telefonu, aby ułożyć je samodzielnie.", ld_make_phone: "Utwórz układ telefonu", ld_copy_desktop: "Skopiuj układ z komputera", ld_del_phone: "Usuń układ telefonu", ld_bp: "Układ telefonu poniżej (px)", ld_off: "Wróć do klasycznego układu", ld_help: "Przeciągnij blok, aby go przesunąć; przeciągnij krawędź lub róg, aby zmienić rozmiar. Wszystko przyciąga się do siatki. Dotknij bloku, aby zobaczyć jego ustawienia.", ld_cols: "Kolumny", ld_rows: "Wiersze", ld_rows_auto: "Auto", ld_gap: "Odstęp (px)", ld_more: "Więcej opcji siatki", ld_col_sizes: "Rozmiary kolumn", ld_row_sizes: "Rozmiary wierszy", ld_sizes_help: "Względne rozmiary, np. 1 2 1, albo wartości w px – puste = równe", ld_row_h: "Wysokość wiersza w zwykłej karcie (px)", ld_ah_secs: "Ukryj po (sekundy)", ld_padding: "Margines wewnętrzny (px)", ld_hidden: "Ukryte", ld_hidden_help: "Upuść tu blok, aby go ukryć", ld_unhide: "Pokaż ponownie", ld_tap_block: "Dotknij bloku, aby zmienić widoczność, rozmiar i opcje.", ld_vis: "Widoczność", ld_show: "Pokaż", ld_hide: "Ukryj", ld_autohide: "Autoukrywanie", ld_ah_help: "Ukryty, dopóki ktoś nie dotknie ekranu, potem znowu się chowa. Bloki z autoukrywaniem mogą nachodzić na inne.", ld_size: "Rozmiar", ld_pos: "Pozycja", ld_agenda_date: "Data w Agendzie", l_agenda_date: "Data w widoku Agenda", o_ad_both: "Z lewej i nad", o_ad_left: "Z lewej", o_ad_above: "Nad", lb_date: "Data", lb_clock: "Zegar", lb_weather: "Pogoda", lb_countdowns: "Odliczania", lb_views: "Przyciski widoków", lb_nav: "Nawigacja dat", lb_add: "+ Wydarzenie", lb_chips: "Przyciski kalendarzy", lb_calendar: "Kalendarz", lb_todo: "Lista zadań",
@@ -235,6 +237,7 @@ const I18N = {
     ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
+    l_exclude: "Ocultar eventos que contengan", l_include: "Mostrar solo eventos que contengan", l_exclude_all_day: "Ocultar eventos de todo el día", ed_exclude_help: "Palabras del título separadas por | – p. ej. vacaciones|fuera de la oficina", ed_include_help: "Déjalo vacío para mostrar todo", ed_filtered: "filtrado", ed_travel: "Tiempo de viaje (Waze)", l_origin: "Salir desde", ed_origin_help: "Normalmente zone.home. Necesita la integración Waze Travel Time (Ajustes → Dispositivos y servicios).", l_region: "Región de Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "Norteamérica", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehículo", o_car: "Coche", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos en las próximas (horas)", l_avoid_toll_roads: "Evitar peajes", l_avoid_ferries: "Evitar ferris", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} en coche", tt_leave_by: "Sal a las {t}", tt_leave_now: "Sal ya",
     ld_todo_pop: "Se muestra como ventana emergente desde un pequeño botón en la esquina; el calendario ocupa su espacio.", ld_todo_close: "Cerrar la ventana tras (segundos)",
     ld_drag_line: "Arrastra para agrandar o reducir las columnas o filas a cada lado",
     ld_title: "Diseñador de diseño", ld_on: "activado", ld_intro: "Organiza la tarjeta en una cuadrícula: mueve y cambia el tamaño de bloques como la fecha, el reloj, el tiempo, el calendario y las tareas. Tu diseño actual no cambia hasta que empieces.", ld_start: "Diseñar mi propio diseño", ld_or_preset: "o empieza con", ld_pre_classic: "Clásico", ld_pre_wall: "Pantalla de pared", ld_pre_tv: "TV – sin botones", ld_pre_phone: "Móvil compacto", ld_desktop: "Escritorio", ld_phone: "Móvil", ld_presets: "Plantillas", ld_reset: "Restablecer", ld_phone_auto: "En el móvil los bloques se apilan automáticamente. Crea un diseño para móvil para colocarlos tú.", ld_make_phone: "Crear diseño para móvil", ld_copy_desktop: "Copiar diseño de escritorio", ld_del_phone: "Quitar diseño para móvil", ld_bp: "Diseño de móvil por debajo de (px)", ld_off: "Volver al diseño clásico", ld_help: "Arrastra un bloque para moverlo; arrastra su borde o esquina para cambiar el tamaño. Todo se ajusta a la cuadrícula. Toca un bloque para ver sus ajustes.", ld_cols: "Columnas", ld_rows: "Filas", ld_rows_auto: "Auto", ld_gap: "Espacio (px)", ld_more: "Más opciones de cuadrícula", ld_col_sizes: "Tamaños de columnas", ld_row_sizes: "Tamaños de filas", ld_sizes_help: "Tamaños relativos como 1 2 1, o valores en px – vacío = iguales", ld_row_h: "Altura de fila en una tarjeta normal (px)", ld_ah_secs: "Ocultar tras (segundos)", ld_padding: "Relleno (px)", ld_hidden: "Ocultos", ld_hidden_help: "Suelta aquí un bloque para ocultarlo", ld_unhide: "Mostrar de nuevo", ld_tap_block: "Toca un bloque para cambiar su visibilidad, tamaño y opciones.", ld_vis: "Visibilidad", ld_show: "Mostrar", ld_hide: "Ocultar", ld_autohide: "Autoocultar", ld_ah_help: "Oculto hasta que alguien toca la pantalla, luego se oculta de nuevo. Los bloques autoocultos pueden quedar encima de otros.", ld_size: "Tamaño", ld_pos: "Posición", ld_agenda_date: "Fecha en Agenda", l_agenda_date: "Fecha en la vista Agenda", o_ad_both: "A la izquierda y encima", o_ad_left: "A la izquierda", o_ad_above: "Encima", lb_date: "Fecha", lb_clock: "Reloj", lb_weather: "Tiempo", lb_countdowns: "Cuentas atrás", lb_views: "Botones de vista", lb_nav: "Navegación de fechas", lb_add: "+ Evento", lb_chips: "Botones de calendarios", lb_calendar: "Calendario", lb_todo: "Tareas",
@@ -298,6 +301,7 @@ const I18N = {
     ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
   it: {
+    l_exclude: "Nascondi eventi che contengono", l_include: "Mostra solo eventi che contengono", l_exclude_all_day: "Nascondi eventi di tutto il giorno", ed_exclude_help: "Parole nel titolo separate da | – es. ferie|fuori ufficio", ed_include_help: "Lascia vuoto per mostrare tutto", ed_filtered: "filtrato", ed_travel: "Tempo di viaggio (Waze)", l_origin: "Partenza da", ed_origin_help: "Di solito zone.home. Richiede l'integrazione Waze Travel Time (Impostazioni → Dispositivi e servizi).", l_region: "Regione Waze", o_reg_auto: "Automatica", o_reg_eu: "Europa", o_reg_us: "Stati Uniti", o_reg_na: "Nord America", o_reg_il: "Israele", o_reg_au: "Australia", l_vehicle_type: "Veicolo", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Per eventi nelle prossime (ore)", l_avoid_toll_roads: "Evita pedaggi", l_avoid_ferries: "Evita traghetti", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} in auto", tt_leave_by: "Parti alle {t}", tt_leave_now: "Parti ora",
     ld_todo_pop: "Si apre come pop-up da un piccolo pulsante nell'angolo – il calendario occupa il suo spazio.", ld_todo_close: "Chiudi il pop-up dopo (secondi)",
     ld_drag_line: "Trascina per allargare o restringere le colonne o righe ai due lati",
     ld_title: "Designer del layout", ld_on: "attivo", ld_intro: "Disponi la card su una griglia: sposta e ridimensiona blocchi come data, orologio, meteo, calendario e attività. Il layout attuale resta com'è finché non inizi.", ld_start: "Crea il mio layout", ld_or_preset: "oppure parti da", ld_pre_classic: "Classico", ld_pre_wall: "Display a parete", ld_pre_tv: "TV – senza pulsanti", ld_pre_phone: "Telefono compatto", ld_desktop: "Desktop", ld_phone: "Telefono", ld_presets: "Modelli", ld_reset: "Ripristina", ld_phone_auto: "Sul telefono i blocchi si impilano automaticamente. Crea un layout per telefono per disporli tu.", ld_make_phone: "Crea layout per telefono", ld_copy_desktop: "Copia layout desktop", ld_del_phone: "Rimuovi layout per telefono", ld_bp: "Layout telefono sotto (px)", ld_off: "Torna al layout classico", ld_help: "Trascina un blocco per spostarlo; trascina bordo o angolo per ridimensionarlo. Tutto si aggancia alla griglia. Tocca un blocco per le sue impostazioni.", ld_cols: "Colonne", ld_rows: "Righe", ld_rows_auto: "Auto", ld_gap: "Spaziatura (px)", ld_more: "Altre opzioni della griglia", ld_col_sizes: "Larghezze colonne", ld_row_sizes: "Altezze righe", ld_sizes_help: "Dimensioni relative come 1 2 1, o valori in px – vuoto = uguali", ld_row_h: "Altezza riga in una card normale (px)", ld_ah_secs: "Nascondi dopo (secondi)", ld_padding: "Margine interno (px)", ld_hidden: "Nascosti", ld_hidden_help: "Trascina qui un blocco per nasconderlo", ld_unhide: "Mostra di nuovo", ld_tap_block: "Tocca un blocco per cambiarne visibilità, dimensione e opzioni.", ld_vis: "Visibilità", ld_show: "Mostra", ld_hide: "Nascondi", ld_autohide: "Nascondi automaticamente", ld_ah_help: "Nascosto finché qualcuno tocca lo schermo, poi si nasconde di nuovo. Può sovrapporsi ad altri blocchi.", ld_size: "Dimensione", ld_pos: "Posizione", ld_agenda_date: "Data nell'Agenda", l_agenda_date: "Data nella vista Agenda", o_ad_both: "A sinistra e sopra", o_ad_left: "A sinistra", o_ad_above: "Sopra", lb_date: "Data", lb_clock: "Orologio", lb_weather: "Meteo", lb_countdowns: "Conti alla rovescia", lb_views: "Pulsanti vista", lb_nav: "Navigazione date", lb_add: "+ Evento", lb_chips: "Pulsanti calendari", lb_calendar: "Calendario", lb_todo: "Attività",
@@ -537,6 +541,7 @@ const I18N = {
     ed_media_help: "es. media-source://media_source/local/photos – lascia vuoto per un salvaschermo con solo orologio",
   },
   nl: {
+    l_exclude: "Afspraken verbergen met", l_include: "Alleen afspraken tonen met", l_exclude_all_day: "Hele-dag-afspraken verbergen", ed_exclude_help: "Woorden in de titel, gescheiden door | – bijv. vakantie|afwezig", ed_include_help: "Leeg laten om alles te tonen", ed_filtered: "gefilterd", ed_travel: "Reistijd (Waze)", l_origin: "Vertrek vanaf", ed_origin_help: "Meestal zone.home. Vereist de integratie Waze Travel Time (Instellingen → Apparaten & diensten).", l_region: "Waze-regio", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "Verenigde Staten", o_reg_na: "Noord-Amerika", o_reg_il: "Israël", o_reg_au: "Australië", l_vehicle_type: "Voertuig", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Voor afspraken in de komende (uur)", l_avoid_toll_roads: "Tolwegen vermijden", l_avoid_ferries: "Veerponten vermijden", tt_min: "{n} min", tt_hm: "{h} u {m} min", tt_drive: "{d} rijden", tt_leave_by: "Vertrek om {t}", tt_leave_now: "Nu vertrekken",
     ld_todo_pop: "Verschijnt als pop-up via een knopje in de hoek – de agenda neemt de ruimte in.", ld_todo_close: "Pop-up sluiten na (seconden)",
     ld_drag_line: "Sleep om de kolommen of rijen aan weerszijden groter of kleiner te maken",
     ld_title: "Indelingsontwerper", ld_on: "aan", ld_intro: "Zet de kaart op een raster: verplaats blokken zoals datum, klok, weer, agenda en takenlijst en pas hun grootte aan. Je huidige indeling blijft hetzelfde tot je begint.", ld_start: "Mijn eigen indeling maken", ld_or_preset: "of begin met", ld_pre_classic: "Klassiek", ld_pre_wall: "Wandscherm", ld_pre_tv: "TV – zonder knoppen", ld_pre_phone: "Compacte telefoon", ld_desktop: "Desktop", ld_phone: "Telefoon", ld_presets: "Sjablonen", ld_reset: "Herstellen", ld_phone_auto: "Op een telefoon worden de blokken automatisch onder elkaar gezet. Maak een telefoonindeling om ze zelf te plaatsen.", ld_make_phone: "Telefoonindeling maken", ld_copy_desktop: "Desktopindeling kopiëren", ld_del_phone: "Telefoonindeling verwijderen", ld_bp: "Telefoonindeling onder (px)", ld_off: "Terug naar de klassieke indeling", ld_help: "Sleep een blok om het te verplaatsen; sleep de rand of hoek om de grootte te wijzigen. Alles klikt vast op het raster. Tik op een blok voor de instellingen.", ld_cols: "Kolommen", ld_rows: "Rijen", ld_rows_auto: "Auto", ld_gap: "Tussenruimte (px)", ld_more: "Meer rasteropties", ld_col_sizes: "Kolombreedtes", ld_row_sizes: "Rijhoogtes", ld_sizes_help: "Relatieve groottes zoals 1 2 1, of px-waarden – leeg = gelijk", ld_row_h: "Rijhoogte in een gewone kaart (px)", ld_ah_secs: "Verbergen na (seconden)", ld_padding: "Binnenmarge (px)", ld_hidden: "Verborgen", ld_hidden_help: "Sleep een blok hierheen om het te verbergen", ld_unhide: "Weer tonen", ld_tap_block: "Tik op een blok om zichtbaarheid, grootte en opties te wijzigen.", ld_vis: "Zichtbaarheid", ld_show: "Tonen", ld_hide: "Verbergen", ld_autohide: "Automatisch verbergen", ld_ah_help: "Verborgen tot iemand op het scherm tikt, daarna weer weg. Deze blokken mogen over andere heen liggen.", ld_size: "Grootte", ld_pos: "Positie", ld_agenda_date: "Datum in Agenda", l_agenda_date: "Datum in de Agenda-weergave", o_ad_both: "Links en boven", o_ad_left: "Links", o_ad_above: "Boven", lb_date: "Datum", lb_clock: "Klok", lb_weather: "Weer", lb_countdowns: "Aftellers", lb_views: "Weergaveknoppen", lb_nav: "Datumnavigatie", lb_add: "+ Afspraak", lb_chips: "Agendaknoppen", lb_calendar: "Agenda", lb_todo: "Takenlijst",
@@ -776,6 +781,7 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    l_exclude: "Termine ausblenden mit", l_include: "Nur Termine anzeigen mit", l_exclude_all_day: "Ganztägige Termine ausblenden", ed_exclude_help: "Wörter im Titel, getrennt durch | – z. B. Urlaub|abwesend", ed_include_help: "Leer lassen, um alles anzuzeigen", ed_filtered: "gefiltert", ed_travel: "Fahrzeit (Waze)", l_origin: "Abfahrt von", ed_origin_help: "Meist zone.home. Benötigt die Integration Waze Travel Time (Einstellungen → Geräte & Dienste).", l_region: "Waze-Region", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "USA", o_reg_na: "Nordamerika", o_reg_il: "Israel", o_reg_au: "Australien", l_vehicle_type: "Fahrzeug", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motorrad", l_hours_ahead: "Für Termine in den nächsten (Stunden)", l_avoid_toll_roads: "Mautstraßen meiden", l_avoid_ferries: "Fähren meiden", tt_min: "{n} Min.", tt_hm: "{h} Std. {m} Min.", tt_drive: "{d} Fahrt", tt_leave_by: "Losfahren um {t}", tt_leave_now: "Jetzt losfahren",
     ld_todo_pop: "Erscheint als Pop-up über eine kleine Taste in der Ecke – der Kalender nutzt den Platz.", ld_todo_close: "Pop-up schließen nach (Sekunden)",
     ld_drag_line: "Ziehen, um die Spalten oder Zeilen auf beiden Seiten größer oder kleiner zu machen",
     ld_title: "Layout-Designer", ld_on: "an", ld_intro: "Ordne die Karte in einem Raster an: verschiebe Blöcke wie Datum, Uhr, Wetter, Kalender und Aufgaben und ändere ihre Größe. Dein aktuelles Layout bleibt, bis du anfängst.", ld_start: "Eigenes Layout gestalten", ld_or_preset: "oder starte mit", ld_pre_classic: "Klassisch", ld_pre_wall: "Wanddisplay", ld_pre_tv: "TV – ohne Tasten", ld_pre_phone: "Kompakt fürs Handy", ld_desktop: "Desktop", ld_phone: "Handy", ld_presets: "Vorlagen", ld_reset: "Zurücksetzen", ld_phone_auto: "Auf dem Handy werden die Blöcke automatisch untereinander gestapelt. Erstelle ein Handy-Layout, um sie selbst anzuordnen.", ld_make_phone: "Handy-Layout erstellen", ld_copy_desktop: "Desktop-Layout kopieren", ld_del_phone: "Handy-Layout entfernen", ld_bp: "Handy-Layout unter (px)", ld_off: "Zurück zum klassischen Layout", ld_help: "Ziehe einen Block, um ihn zu verschieben; ziehe Rand oder Ecke, um die Größe zu ändern. Alles rastet im Raster ein. Tippe auf einen Block für seine Einstellungen.", ld_cols: "Spalten", ld_rows: "Zeilen", ld_rows_auto: "Auto", ld_gap: "Abstand (px)", ld_more: "Weitere Rasteroptionen", ld_col_sizes: "Spaltenbreiten", ld_row_sizes: "Zeilenhöhen", ld_sizes_help: "Relative Größen wie 1 2 1 oder px-Werte – leer = gleich groß", ld_row_h: "Zeilenhöhe in einer normalen Karte (px)", ld_ah_secs: "Ausblenden nach (Sekunden)", ld_padding: "Innenabstand (px)", ld_hidden: "Ausgeblendet", ld_hidden_help: "Block hier ablegen, um ihn auszublenden", ld_unhide: "Wieder anzeigen", ld_tap_block: "Tippe auf einen Block, um Sichtbarkeit, Größe und Optionen zu ändern.", ld_vis: "Sichtbarkeit", ld_show: "Anzeigen", ld_hide: "Ausblenden", ld_autohide: "Auto-Ausblenden", ld_ah_help: "Ausgeblendet, bis jemand auf den Bildschirm tippt, dann wieder weg. Auto-Ausblenden-Blöcke dürfen über anderen liegen.", ld_size: "Größe", ld_pos: "Position", ld_agenda_date: "Datum in der Agenda", l_agenda_date: "Datum in der Agenda-Ansicht", o_ad_both: "Links und oben", o_ad_left: "Links", o_ad_above: "Oben", lb_date: "Datum", lb_clock: "Uhr", lb_weather: "Wetter", lb_countdowns: "Countdowns", lb_views: "Ansichtstasten", lb_nav: "Datumsnavigation", lb_add: "+ Termin", lb_chips: "Kalender-Schaltflächen", lb_calendar: "Kalender", lb_todo: "Aufgaben",
@@ -1015,6 +1021,7 @@ const I18N = {
     ed_media_help: "z. B. media-source://media_source/local/photos – leer lassen für einen Bildschirmschoner nur mit Uhr",
   },
   hu: {
+    l_exclude: "Elrejtés, ha tartalmazza", l_include: "Csak ezeket tartalmazók", l_exclude_all_day: "Egész napos események elrejtése", ed_exclude_help: "Szavak a címben | jellel elválasztva – pl. szabadság|házon kívül", ed_include_help: "Hagyd üresen, ha mindent mutatna", ed_filtered: "szűrt", ed_travel: "Utazási idő (Waze)", l_origin: "Indulás innen", ed_origin_help: "Általában zone.home. A Waze Travel Time integráció kell hozzá (Beállítások → Eszközök és szolgáltatások).", l_region: "Waze régió", o_reg_auto: "Automatikus", o_reg_eu: "Európa", o_reg_us: "Egyesült Államok", o_reg_na: "Észak-Amerika", o_reg_il: "Izrael", o_reg_au: "Ausztrália", l_vehicle_type: "Jármű", o_car: "Autó", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Események a következő (óra) belül", l_avoid_toll_roads: "Fizetős utak elkerülése", l_avoid_ferries: "Kompok elkerülése", tt_min: "{n} perc", tt_hm: "{h} ó {m} perc", tt_drive: "{d} autóval", tt_leave_by: "Indulj {t}-kor", tt_leave_now: "Indulj most",
     ld_todo_pop: "Felugró ablakként nyílik egy kis gombbal a sarokban – a naptár kitölti a helyét.", ld_todo_close: "Felugró ablak bezárása ennyi után (mp)",
     ld_drag_line: "Húzd a két oldalán lévő oszlopok vagy sorok átméretezéséhez",
     ld_title: "Elrendezés-tervező", ld_on: "bekapcsolva", ld_intro: "Rendezd el a kártyát egy rácson: mozgasd és méretezd át a blokkokat, például a dátumot, az órát, az időjárást, a naptárat és a teendőket. A mostani elrendezés marad, amíg el nem kezded.", ld_start: "Saját elrendezés tervezése", ld_or_preset: "vagy kezdd ezzel", ld_pre_classic: "Klasszikus", ld_pre_wall: "Fali kijelző", ld_pre_tv: "TV – gombok nélkül", ld_pre_phone: "Kompakt telefon", ld_desktop: "Asztali", ld_phone: "Telefon", ld_presets: "Sablonok", ld_reset: "Visszaállítás", ld_phone_auto: "Telefonon a blokkok automatikusan egymás alá kerülnek. Hozz létre telefonos elrendezést, ha magad szeretnéd elrendezni őket.", ld_make_phone: "Telefonos elrendezés létrehozása", ld_copy_desktop: "Asztali elrendezés másolása", ld_del_phone: "Telefonos elrendezés törlése", ld_bp: "Telefonos elrendezés ez alatt (px)", ld_off: "Vissza a klasszikus elrendezéshez", ld_help: "Húzd a blokkot a mozgatáshoz, a szélét vagy sarkát az átméretezéshez. Minden a rácshoz igazodik. Érintsd meg a blokkot a beállításaihoz.", ld_cols: "Oszlopok", ld_rows: "Sorok", ld_rows_auto: "Auto", ld_gap: "Térköz (px)", ld_more: "További rácsbeállítások", ld_col_sizes: "Oszlopszélességek", ld_row_sizes: "Sormagasságok", ld_sizes_help: "Arányos méretek, pl. 1 2 1, vagy px értékek – üresen egyenlő", ld_row_h: "Sormagasság normál kártyában (px)", ld_ah_secs: "Elrejtés ennyi után (mp)", ld_padding: "Belső margó (px)", ld_hidden: "Rejtett", ld_hidden_help: "Húzz ide egy blokkot az elrejtéshez", ld_unhide: "Újra megjelenítés", ld_tap_block: "Érints meg egy blokkot a láthatóság, a méret és a beállítások módosításához.", ld_vis: "Láthatóság", ld_show: "Látható", ld_hide: "Rejtett", ld_autohide: "Automatikus elrejtés", ld_ah_help: "Rejtve marad, amíg valaki meg nem érinti a képernyőt, aztán újra elrejtőzik. Átfedhet más blokkokat.", ld_size: "Méret", ld_pos: "Pozíció", ld_agenda_date: "Dátum a Napirendben", l_agenda_date: "Dátum a Napirend nézetben", o_ad_both: "Balra és felül", o_ad_left: "Balra", o_ad_above: "Felül", lb_date: "Dátum", lb_clock: "Óra", lb_weather: "Időjárás", lb_countdowns: "Visszaszámlálások", lb_views: "Nézetgombok", lb_nav: "Dátumnavigáció", lb_add: "+ Esemény", lb_chips: "Naptárgombok", lb_calendar: "Naptár", lb_todo: "Teendők",
@@ -1504,6 +1511,13 @@ class HomeCalendarCard extends HTMLElement {
         o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : t.startsWith("anniversar") ? "anniversary"
           : (t.startsWith("nameday") || t.startsWith("imieniny")) ? "nameday" : "events";
         // icon_rules: [{ match: "glass|bottle", icon: "mdi:bottle-wine" }] – icon by title keyword ("|" = or). Thanks @wit3 (PR #5)
+        // Calendar filters: exclude / include ("word|other words", case-insensitive), exclude_all_day, match_in
+        const words = (v) => (Array.isArray(v) ? v.join("|") : String(v ?? "")).toLowerCase().split("|").map((w) => w.trim()).filter(Boolean);
+        o._excl = words(o.exclude);
+        o._incl = words(o.include);
+        const mi = Array.isArray(o.match_in) ? o.match_in : String(o.match_in || "title").split(/[\s,|]+/);
+        o._matchIn = ["title", "description", "location"].filter((k) => mi.map((x) => String(x).toLowerCase()).includes(k));
+        if (!o._matchIn.length) o._matchIn = ["title"];
         o._iconRules = (Array.isArray(o.icon_rules) ? o.icon_rules : [])
           .map((r) => ({ words: String(r?.match || "").toLowerCase().split("|").map((w) => w.trim()).filter(Boolean), icon: r?.icon }))
           .filter((r) => r.words.length && r.icon);
@@ -1603,6 +1617,8 @@ class HomeCalendarCard extends HTMLElement {
     }, 60 * 1000);
     const mins = Math.max(1, Number(this._config?.refresh_interval) || 5);
     this._refresh = setInterval(() => { this._fetchEvents(); this._fetchCountdowns(); this._fetchTodoCal(); }, mins * 60 * 1000);
+    clearInterval(this._travelTimer);
+    this._travelTimer = setInterval(() => this._updateTravel(), 60 * 1000); // re-checks every minute; each place is refreshed after `refresh` minutes
     if (this._hass && this._config) {
       this._subscribeWeather();
       this._subscribeTodo();
@@ -1614,6 +1630,7 @@ class HomeCalendarCard extends HTMLElement {
   disconnectedCallback() {
     clearInterval(this._tick);
     clearInterval(this._clockTimer);
+    clearInterval(this._travelTimer);
     clearInterval(this._refresh);
     window.removeEventListener("resize", this._onResize);
     if (this._ro) { this._ro.disconnect(); this._ro = null; }
@@ -2194,7 +2211,7 @@ class HomeCalendarCard extends HTMLElement {
       try {
         const res = await this._hass.callApi("GET",
           `calendars/${cal.entity}?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
-        return (res || []).map((e) => this._normalize(e, cal));
+        return (res || []).filter((e) => this._keep(e, cal)).map((e) => this._normalize(e, cal));
       } catch (e) {
         errors.push(`${cal.entity}: ${e?.body?.message || e?.message || "could not load events"}`);
         return [];
@@ -2205,6 +2222,107 @@ class HomeCalendarCard extends HTMLElement {
     this._error = errors.length ? errors.join(" · ") : null;
     this._loading = false;
     this._render();
+    this._updateTravel();
+  }
+
+  /* --------------------------------------------------------- travel time (#10) */
+  // Live drive time to upcoming events with a location, from Home Assistant's Waze Travel Time integration
+  // (action waze_travel_time.get_travel_times). Results are cached per location and refreshed every few minutes.
+  _travelCfg() {
+    const v = this._config?.travel_time;
+    if (!v) return null;
+    const o = v === true ? {} : typeof v === "object" ? v : null;
+    if (!o || o.enabled === false) return null;
+    const country = String(this._hass?.config?.country || "").toUpperCase();
+    const autoRegion = country === "US" ? "us" : country === "CA" || country === "MX" ? "na" : country === "IL" ? "il" : ["AU", "NZ"].includes(country) ? "au" : "eu";
+    return {
+      origin: o.origin || "zone.home",
+      region: ["us", "na", "eu", "il", "au"].includes(o.region) ? o.region : autoRegion,
+      vehicle_type: ["car", "taxi", "motorcycle"].includes(o.vehicle_type) ? o.vehicle_type : "car",
+      units: ["metric", "imperial"].includes(o.units) ? o.units : this._hass?.config?.unit_system?.length === "mi" ? "imperial" : "metric",
+      hours: clampInt(o.hours_ahead, 1, 72, 12),
+      refresh: clampInt(o.refresh, 2, 120, 10),
+      avoid_toll_roads: o.avoid_toll_roads === true,
+      avoid_ferries: o.avoid_ferries === true,
+      avoid_subscription_roads: o.avoid_subscription_roads === true,
+    };
+  }
+
+  _travelAvailable() { return !!this._hass?.services?.waze_travel_time?.get_travel_times; }
+
+  // events that get a drive time: timed, with a location, not private, not over yet and starting within the next `hours`
+  _travelEvent(ev) {
+    const t = this._travelCfg();
+    if (!t || !ev || ev.allDay || ev.private || !ev.location || this._isBanner(ev)) return false;
+    const now = Date.now();
+    return ev.end.getTime() > now && ev.start.getTime() <= now + t.hours * 3600e3;
+  }
+
+  async _updateTravel(force = false) {
+    const t = this._travelCfg();
+    if (!t || !this._hass || !this._travelAvailable() || this._travelBusy) return;
+    this._travel = this._travel || new Map();
+    const key = JSON.stringify([t.origin, t.region, t.vehicle_type, t.units, t.avoid_toll_roads, t.avoid_ferries, t.avoid_subscription_roads]);
+    if (key !== this._travelKey) { this._travel.clear(); this._travelKey = key; }
+    const todo = [...new Set((this._events || []).filter((ev) => this._travelEvent(ev)).map((ev) => ev.location.trim()))]
+      .filter((loc) => {
+        const c = this._travel.get(loc);
+        if (!c) return true;
+        const age = Date.now() - c.at;
+        return force || (c.err ? age > 60 * 60e3 : age > t.refresh * 60e3); // failed lookups are retried after an hour
+      }).slice(0, 8);
+    if (!todo.length) return;
+    this._travelBusy = true;
+    let changed = false;
+    for (const loc of todo) {
+      try {
+        const res = await this._hass.callWS({ type: "call_service", domain: "waze_travel_time", service: "get_travel_times", return_response: true,
+          service_data: { origin: t.origin, destination: loc, region: t.region, vehicle_type: t.vehicle_type, units: t.units, realtime: true,
+            avoid_toll_roads: t.avoid_toll_roads, avoid_ferries: t.avoid_ferries, avoid_subscription_roads: t.avoid_subscription_roads } });
+        const routes = (res?.response?.routes || []).filter((r) => Number(r.duration) > 0);
+        const best = routes.sort((a, b) => a.duration - b.duration)[0];
+        this._travel.set(loc, best ? { min: Number(best.duration), dist: Number(best.distance), at: Date.now() } : { err: true, at: Date.now() });
+      } catch (e) {
+        console.warn("home-calendar-card: travel time failed for", loc, e?.message || e);
+        this._travel.set(loc, { err: true, at: Date.now() });
+      }
+      changed = true;
+    }
+    this._travelBusy = false;
+    if (changed) this._render();
+  }
+
+  _travelInfo(ev) {
+    if (!this._travelAvailable() || !this._travelEvent(ev)) return null;
+    const c = this._travel?.get(ev.location.trim());
+    if (!c || c.err || !(c.min > 0)) return null;
+    const min = Math.round(c.min);
+    const dur = min < 60 ? this._t("tt_min", { n: min }) : this._t("tt_hm", { h: Math.floor(min / 60), m: min % 60 });
+    const leave = new Date(ev.start.getTime() - min * 60e3);
+    const now = new Date();
+    let state = "";
+    if (ev.start > now && now >= leave) state = "now";
+    else if (ev.start > now && leave - now <= 60 * 60e3) state = "soon";
+    const unit = this._travelCfg().units === "imperial" ? "mi" : "km";
+    return { min, dur, leave, state, dist: c.dist > 0 ? `${c.dist >= 10 ? Math.round(c.dist) : Math.round(c.dist * 10) / 10} ${unit}` : "" };
+  }
+
+  _travelChip(ev) {
+    const i = this._travelInfo(ev);
+    if (!i) return "";
+    const extra = i.state === "now" ? ` · ${this._t("tt_leave_now")}` : i.state === "soon" ? ` · ${this._t("tt_leave_by", { t: this._time(i.leave) })}` : "";
+    return `<span class="tt ${i.state}" title="${esc(this._t("tt_drive", { d: i.dur }))}${i.dist ? ` · ${esc(i.dist)}` : ""}"><ha-icon icon="${i.state === "now" ? "mdi:car-clock" : "mdi:car"}"></ha-icon>${esc(i.dur)}${esc(extra)}</span>`;
+  }
+
+  // Calendar filters: false = leave this event out of the card (it stays in Home Assistant).
+  _keep(e, cal) {
+    if (!cal) return true;
+    if (cal.exclude_all_day && e?.start?.date) return false;
+    if (!cal._excl?.length && !cal._incl?.length) return true;
+    const text = cal._matchIn.map((k) => (k === "title" ? e.summary : e[k]) || "").join(" \n ").toLowerCase();
+    if (cal._excl.some((w) => text.includes(w))) return false;
+    if (cal._incl.length && !cal._incl.some((w) => text.includes(w))) return false;
+    return true;
   }
 
   _normalize(e, cal) {
@@ -2319,7 +2437,7 @@ class HomeCalendarCard extends HTMLElement {
       }
       if (!cd.calendar || !this._hass.states[cd.calendar]) return null;
       try {
-        const evs = (await look(cd.calendar)).map((e) => this._normalize(e, cal || { entity: cd.calendar, color }));
+        const evs = (await look(cd.calendar)).filter((e) => this._keep(e, cal)).map((e) => this._normalize(e, cal || { entity: cd.calendar, color }));
         let re = null;
         if (cd.match) {
           try { re = new RegExp(cd.match, "i"); } catch (e) { re = { test: (t) => t.toLowerCase().includes(String(cd.match).toLowerCase()) }; }
@@ -2340,7 +2458,7 @@ class HomeCalendarCard extends HTMLElement {
       const seen = new Set(out.filter(Boolean).map((c) => c.ev && `${c.ev.uid}|${c.start.getTime()}`));
       const auto = await Promise.all(this._calendars.filter((c) => this._hass.states[c.entity] && !this._hidden.has(c.entity)).map(async (cal) => {
         try {
-          return (await look(cal.entity)).map((e) => this._normalize(e, cal)).filter((ev) => {
+          return (await look(cal.entity)).filter((e) => this._keep(e, cal)).map((e) => this._normalize(e, cal)).filter((ev) => {
             if (ev.private || !cdTypes.includes(ev.type) || ev.end <= now) return false;
             const ty = this._ty(ev);
             if (!ev.tagged && !ty.countdown_calendars) return false;
@@ -2730,7 +2848,7 @@ class HomeCalendarCard extends HTMLElement {
       try {
         const res = await this._hass.callApi("GET",
           `calendars/${cal.entity}?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
-        return (res || []).map((e) => this._normalize(e, cal));
+        return (res || []).filter((e) => this._keep(e, cal)).map((e) => this._normalize(e, cal));
       } catch (e) { return []; }
     }));
     this._ambEvents = lists.flat().filter((ev) => !this._isBanner(ev)).sort((a, b) => a.start - b.start);
@@ -3344,7 +3462,11 @@ class HomeCalendarCard extends HTMLElement {
       <div class="ev-body">
         <div class="ev-time">${live ? `<span class="pulse"></span>${esc(this._t("now"))} · ` : ""}${esc(label)}</div>
         <div class="ev-title">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}${esc(ev.summary)}</div>
-        ${ev.location && c.show_event_location !== false ? `<div class="ev-sub"><ha-icon icon="mdi:map-marker-outline"></ha-icon><span>${esc(ev.location)}</span></div>` : ""}
+        ${(() => {
+          const tt = this._travelChip(ev);
+          const loc = ev.location && c.show_event_location !== false;
+          return loc || tt ? `<div class="ev-sub">${loc ? `<ha-icon icon="mdi:map-marker-outline"></ha-icon><span>${esc(ev.location)}</span>` : ""}${tt}</div>` : "";
+        })()}
       </div>
       ${this._calendars.length > 1 && c.show_event_calendar !== false ? `<div class="ev-cal">${this._avatar(ev.cal)}<span class="ev-cal-name">${esc(this._calName(ev.cal))}</span></div>` : ""}
     </div>`;
@@ -3483,8 +3605,8 @@ class HomeCalendarCard extends HTMLElement {
     for (let i = 0; i < days; i++) {
       const d = addDays(start, i);
       if (wn && i % 7 === 0) {
-        const mon = [0, 1, 2, 3, 4, 5, 6].map((k) => addDays(d, k)).find((x) => x.getDay() === 1) || d;
-        const w = isoWeek(mon);
+        // the ISO week most of this row's days belong to (its middle day) – right for rows starting on any weekday
+        const w = isoWeek(addDays(d, 3));
         out += `<div class="mwk" title="${esc(this._t("wk", { n: w }))}">${w}</div>`;
       }
       const evs = this._eventsOn(d);
@@ -3566,6 +3688,12 @@ class HomeCalendarCard extends HTMLElement {
         ${ev.type !== "standard" ? `<div class="row"><ha-icon icon="${esc(this._typeIcon(ev) || "mdi:tag-outline")}" style="color:${esc(ev.cal.color)}"></ha-icon><div>${esc(this._typeName(this._ty(ev)))}</div></div>` : ""}
         ${ev.location ? `<div class="row"><ha-icon icon="mdi:map-marker-outline"></ha-icon><a href="${mapUrl}" target="_blank" rel="noopener">${esc(ev.location)}</a></div>` : ""}
         <div class="row"><ha-icon icon="mdi:calendar-blank-outline"></ha-icon><div class="cal-line">${this._avatar(ev.cal, "sm") || `<span class="cal-dot" style="--c:${esc(ev.cal.color)}"></span>`}${esc(this._calName(ev.cal))}</div></div>
+        ${(() => {
+          const i = this._travelInfo(ev);
+          if (!i) return "";
+          const lead = i.state === "now" ? this._t("tt_leave_now") : ev.start > new Date() ? this._t("tt_leave_by", { t: this._time(i.leave) }) : "";
+          return `<div class="row tt-row ${i.state}"><ha-icon icon="mdi:car"></ha-icon><div>${esc(this._t("tt_drive", { d: i.dur }))}${i.dist ? ` · ${esc(i.dist)}` : ""}${lead ? `<div class="muted">${esc(lead)}</div>` : ""}</div></div>`;
+        })()}
         ${f ? `<div class="row"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><div>${this._forecastText(f)}</div></div>` : ""}
         ${ev.description ? `<div class="row"><ha-icon icon="mdi:text"></ha-icon><div class="desc">${esc(ev.description)}</div></div>` : ""}
         <div class="f-err"></div>
@@ -4320,6 +4448,12 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .ev-sub { font-size: .78rem; color: var(--hcc-muted); display: flex; align-items: center; gap: 3px; margin-top: 2px; min-width: 0; }
 .ev-sub span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ev-sub ha-icon { --mdc-icon-size: 14px; }
+.tt { display: inline-flex; align-items: center; gap: 3px; flex: none; margin-left: 8px; padding: 1px 7px 1px 5px; border-radius: 999px; font-weight: 700;
+  color: var(--hcc-text); background: var(--hcc-soft); white-space: nowrap; }
+.ev-sub .tt:first-child { margin-left: 0; }
+.tt.soon { color: #b45309; background: color-mix(in srgb, #f59e0b 22%, transparent); }
+.tt.now { color: #fff; background: var(--error-color, #db4437); }
+.tt-row.now ha-icon, .tt-row.soon ha-icon { color: #f59e0b; }
 .ev-cal { font-size: .7rem; color: var(--hcc-muted); align-self: center; white-space: nowrap; max-width: 30%; overflow: hidden; text-overflow: ellipsis; }
 .ev.past, .wev.past { opacity: .5; }
 .ev.live { box-shadow: inset 0 0 0 1.5px var(--c); }
@@ -4843,6 +4977,7 @@ ha-card { container: hcc / inline-size; }
 // Editor forms are built per language. `t(key)` translates, `o(value, key)` makes a dropdown option.
 const NIGHT_DEFAULTS = { enabled: false, style: "clock", start: "22:00", end: "06:30", brightness: 30, wake_seconds: 60 };
 const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, show_info: true };
+const TRAVEL_DEFAULTS = { enabled: false, origin: "zone.home", region: "auto", vehicle_type: "car", hours_ahead: 12, avoid_toll_roads: false, avoid_ferries: false };
 // editor defaults that are not written to YAML until changed
 const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
   clock_format: "auto", show_view_selector: true, show_date_navigation: true, event_time_position: "above", show_event_location: true,
@@ -4939,6 +5074,17 @@ const generalSchema = (t, hasGrid = false) => {
       ] },
       { name: "when_entity", selector: { entity: { domain: ["input_boolean", "binary_sensor", "switch", "schedule"] } } },
     ] },
+    { type: "expandable", name: "travel_time", title: t("ed_travel"), icon: "mdi:car-clock", schema: [
+      { type: "grid", name: "", schema: [
+        { name: "enabled", selector: { boolean: {} } },
+        { name: "origin", selector: { entity: { domain: ["zone", "person", "device_tracker"] } } },
+        { name: "region", selector: { select: { mode: "dropdown", options: [o("auto", "o_reg_auto"), o("eu", "o_reg_eu"), o("us", "o_reg_us"), o("na", "o_reg_na"), o("il", "o_reg_il"), o("au", "o_reg_au")] } } },
+        { name: "vehicle_type", selector: { select: { mode: "dropdown", options: [o("car", "o_car"), o("taxi", "o_taxi"), o("motorcycle", "o_motorcycle")] } } },
+        { name: "hours_ahead", selector: { number: { min: 1, max: 72, step: 1, mode: "box", unit_of_measurement: "h" } } },
+        { name: "avoid_toll_roads", selector: { boolean: {} } },
+        { name: "avoid_ferries", selector: { boolean: {} } },
+      ] },
+    ] },
     { type: "expandable", name: "screensaver", title: t("ed_saver"), icon: "mdi:image-multiple", schema: [
       { type: "grid", name: "", schema: [
         { name: "enabled", selector: { boolean: {} } },
@@ -4965,6 +5111,11 @@ const calSchema = (t) => {
         o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
+    { type: "grid", name: "", schema: [
+      { name: "exclude", selector: { text: {} } },
+      { name: "include", selector: { text: {} } },
+    ] },
+    { name: "exclude_all_day", selector: { boolean: {} } },
   ];
 };
 
@@ -5745,11 +5896,15 @@ class HomeCalendarCardEditor extends HTMLElement {
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
       const i = Number(slot.dataset.i);
       const c = cals[i];
-      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column === false ? "side" : c.planner_column === "group" ? "group" : "own" },
+      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column === false ? "side" : c.planner_column === "group" ? "group" : "own",
+        exclude: Array.isArray(c.exclude) ? c.exclude.join("|") : c.exclude || "", include: Array.isArray(c.include) ? c.include.join("|") : c.include || "",
+        exclude_all_day: c.exclude_all_day === true },
         (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),
         (s) => {
           if (s.name === "group") return this._t("ed_group_help");
           if (s.name === "planner_column") return this._t("ed_planner_help");
+          if (s.name === "exclude") return this._t("ed_exclude_help");
+          if (s.name === "include") return this._t("ed_include_help");
           if (s.name !== "name") return undefined;
           const ent = this._cals()[i]?.entity;
           const fn = ent && this._hass?.states[ent]?.attributes?.friendly_name;
@@ -5764,6 +5919,7 @@ class HomeCalendarCardEditor extends HTMLElement {
         if (pc === "side" || pc === false) list[i].planner_column = false;
         else if (pc === "group") list[i].planner_column = "group";
         else delete list[i].planner_column;
+        if (list[i].exclude_all_day !== true) delete list[i].exclude_all_day;
         this._emit({ ...this._config, calendars: list });
         const head = this.shadowRoot.querySelector(`.cal[data-i="${i}"] .ch-txt`);
         if (head) head.innerHTML = this._headHtml(list[i]);
@@ -5789,19 +5945,25 @@ class HomeCalendarCardEditor extends HTMLElement {
     const gen = this._makeForm(generalSchema((k) => this._t(k), !!this._config.grid), {
       ...LOOK_DEFAULTS, language: "auto", ...this._config, sections: sectionList(this._config),
       night_mode: { ...NIGHT_DEFAULTS, ...this._objCfg(this._config.night_mode) },
+      travel_time: { ...TRAVEL_DEFAULTS, ...(this._config.travel_time ? { enabled: true } : {}), ...this._objCfg(this._config.travel_time) },
       screensaver: { ...SAVER_DEFAULTS, ...this._objCfg(this._config.screensaver) },
-    }, (s) => this._t(`l_${s.name}`), (s) => (s.name === "media" ? this._t("ed_media_help") : undefined));
+    }, (s) => this._t(`l_${s.name}`), (s) => (s.name === "media" ? this._t("ed_media_help") : s.name === "origin" ? this._t("ed_origin_help") : undefined));
     gen.addEventListener("value-changed", (ev) => {
       ev.stopPropagation();
       gen.data = ev.detail.value;
       const next = { ...this._config, ...ev.detail.value };
       GENERAL_KEYS.forEach((k) => { if (next[k] === "" || next[k] == null) delete next[k]; });
-      ["night_mode", "screensaver"].forEach((k) => {
+      ["night_mode", "screensaver", "travel_time"].forEach((k) => {
         const v = next[k];
         if (!v || typeof v !== "object") return;
         const clean = Object.fromEntries(Object.entries(v).filter(([, x]) => x !== "" && x != null));
-        const untouched = JSON.stringify(clean) === JSON.stringify(k === "night_mode" ? NIGHT_DEFAULTS : SAVER_DEFAULTS);
-        if (untouched && !this._config[k]) delete next[k]; else next[k] = clean;
+        const defs = k === "night_mode" ? NIGHT_DEFAULTS : k === "screensaver" ? SAVER_DEFAULTS : TRAVEL_DEFAULTS;
+        const untouched = JSON.stringify(clean) === JSON.stringify(defs);
+        if (untouched && !this._config[k]) { delete next[k]; return; }
+        if (k === "travel_time") { // keep only what differs from the defaults (enabled always)
+          Object.keys(clean).forEach((x) => { if (x !== "enabled" && clean[x] === defs[x]) delete clean[x]; });
+        }
+        next[k] = clean;
       });
       if (next.language === "auto") delete next.language;
       // sections replaces the old show_header / show_countdowns / show_calendar_chips switches
@@ -5835,7 +5997,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     const pic = ps?.attributes?.entity_picture;
     const missing = c.entity && this._hass && !st;
     return `<div class="ch-name ${name ? "" : "missing"}">${pic ? `<img class="ch-av" src="${esc(pic)}" alt="">` : ""}<span class="ch-n">${esc(name || this._t("ed_new_cal"))}</span></div>
-      <div class="ch-sub">${c.entity ? `<span class="${missing ? "ch-warn" : ""}">${esc(c.entity)}</span> · ` : ""}${esc(typeTxt)}${c.group ? ` · <span class="ch-grp">${esc(c.group)}</span>` : ""}</div>`;
+      <div class="ch-sub">${c.entity ? `<span class="${missing ? "ch-warn" : ""}">${esc(c.entity)}</span> · ` : ""}${esc(typeTxt)}${c.group ? ` · <span class="ch-grp">${esc(c.group)}</span>` : ""}${c.exclude || c.include || c.exclude_all_day ? ` · <span class="ch-grp">${esc(this._t("ed_filtered"))}</span>` : ""}</div>`;
   }
 
   _refreshHeads() {

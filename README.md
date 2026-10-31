@@ -34,6 +34,9 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - ⚙️ **Layout options** – reorder or hide the parts above the calendar, and put event times next to the title for a compact Agenda
 - 📱 **Phone-friendly Month view** – tap a day to list its events under the month, or show short titles in the day boxes
 - 🔢 **Week numbers** – ISO week numbers in Month, Week and Planner views
+- 🔁 **Rolling views** – Month view as the next few weeks and Week view from today, so what's coming up is always on screen
+- 🔍 **Calendar filters** – hide events by words in the title (e.g. colleagues' holidays in a work calendar), show only matching events, or hide all-day events
+- 🚗 **Travel time** – live drive time and "leave by" for upcoming events with a location, from Home Assistant's Waze Travel Time integration
 - 📅 **Four views** – Agenda (grouped by day), Week (7 columns, stacks on phones), Month (grid, dots on phones) and Planner (a column per person, like a printed family planner)
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
 - ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
@@ -187,6 +190,7 @@ max_height: 640px
 | `todo_show_completed` | boolean | `false` | Show a collapsible **Done** section with recently completed tasks |
 | `todo_completed_days` | number | `7` | How many days back the Done section goes |
 | `todo_record_done_by` | boolean | `true` | When a task is ticked in the card, note who did it ("Done by: Emma") in the task's notes |
+| `travel_time` | `true` \| object | – | Live drive time to upcoming events – see *Travel time to events* |
 | `night_mode` | `true` \| object | – | Night screen for always-on displays – see *Night mode & screensaver* |
 | `screensaver` | `true` \| object | – | Photo slideshow / clock when nobody uses the screen – see *Night mode & screensaver* |
 | `layout` | `card` \| `fill` \| `fullscreen` | `card` | `fill` fills a Panel view below HA's top bar; `fullscreen` covers the whole window – see *Wall display* |
@@ -247,6 +251,10 @@ max_height: 640px
 | `private` | `true` – every event in this calendar shows as "Private" with only its time – see *Private events* |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
 | `icon_rules` | List of `match` / `icon` pairs that give events an icon from words in their title – see *Icons by title* |
+| `exclude` | text | – | Hide this calendar's events whose title contains any of these words, separated by `\|` – see *Calendar filters* |
+| `include` | text | – | Only show this calendar's events whose title contains one of these words |
+| `exclude_all_day` | boolean | `false` | Hide this calendar's all-day events |
+| `match_in` | list | `[title]` | Where `exclude`/`include` look: `title`, `description`, `location` |
 | `planner_column` | Planner view: `true` (default) – its own column; `group` – shares one column with the other calendars of its `group` (e.g. *Kids*); `false` – its events show next to the date instead, handy for a shared Family calendar |
 
 #### Calendar groups
@@ -439,6 +447,68 @@ show_week_numbers: true
 - Numbers follow the **ISO 8601** standard used across Europe (weeks start on Monday, week 1 contains the first Thursday of January), even if your week starts on Sunday – so they match your work and school calendars.
 
 <sub>Requested by [@ydiazvaldivia](https://github.com/ydiazvaldivia) in [#4](https://github.com/mimikm/Home-Calendar-Card/issues/4).</sub>
+
+### Rolling Month and Week views
+
+On a phone or a hallway screen you usually want what's coming up – not a calendar month where today sits in the last row. Set it in the visual editor, or:
+
+```yaml
+month_weeks: 3        # Month view shows 3 weeks (1–6) instead of the calendar month
+month_start: today    # …starting today (or "week" for the start of the week)
+week_start: today     # Week view shows today and the next 6 days
+```
+
+- ‹ › move by the number of weeks shown; **Today** jumps back.
+- Weekday headings follow the start day, and with week numbers on the label shows the range, e.g. *Week 44–46*.
+- On phones, `month_mobile: both` shows short titles in the day boxes **and** the tapped day's list under the month.
+
+<sub>Contributed by [@D3LZ-D3LZ-D3LZ](https://github.com/D3LZ-D3LZ-D3LZ) in [#15](https://github.com/mimikm/Home-Calendar-Card/pull/15) – thank you!</sub>
+
+### Calendar filters
+
+Some calendars are full of things you don't want on the family screen – for example a work calendar that also lists every colleague's holiday. Filter them per calendar (in the visual editor, open the calendar's settings):
+
+```yaml
+calendars:
+  - entity: calendar.work
+    exclude: "vacation|holiday|out of office"   # hide events containing any of these words
+    exclude_all_day: true                       # and hide all-day events
+  - entity: calendar.school
+    include: "match|training"                   # only show events containing one of these words
+    match_in: [title, description]              # look in the title and the notes (default: title only)
+```
+
+- Words are separated by `|`, upper/lower case doesn't matter, and a word matches anywhere (`out of office` matches *Anna – Out of Office*).
+- Filtered events disappear from every view and from countdowns. They're only hidden in the card – they stay in Home Assistant, so automations still see them.
+- Calendars with a filter show **filtered** in the editor's calendar list.
+
+### Travel time to events
+
+How long will it take to get there – right now, with traffic? For upcoming events with a location, the card shows the live drive time and when to leave, using Home Assistant's **Waze Travel Time** integration.
+
+![Travel time on an event](images/travel-time.png)
+
+1. Add the integration: **Settings → Devices & services → Add integration → Waze Travel Time** (any origin/destination – the card only needs the integration installed).
+2. Turn on **Travel time (Waze)** in the visual editor, or:
+
+```yaml
+travel_time: true
+# or with options:
+travel_time:
+  origin: zone.home        # where you drive from – a zone, person or device tracker (default zone.home)
+  region: eu               # eu, us, na, il, au – default: from your Home Assistant country
+  vehicle_type: car        # car, taxi, motorcycle
+  hours_ahead: 12          # only events starting in the next 12 hours
+  avoid_toll_roads: false
+  avoid_ferries: false
+```
+
+- Events show e.g. **🚗 25 min**. An hour before you need to go it says **25 min · Leave by 18:35**, and when it's time it turns red: **Leave now**.
+- Tap the event for the drive time, distance and leave-by time.
+- Shown in Agenda view, the phone Month list and the event pop-up. Only timed events with a location get it – not all-day or private events.
+- Each place is looked up again every 10 minutes (`refresh`), so the times follow the traffic. Places Waze can't find (e.g. *Grandma's*) are skipped – use a real address in the event's location.
+
+<sub>Requested by [@dannybean](https://github.com/dannybean) in [#10](https://github.com/mimikm/Home-Calendar-Card/issues/10).</sub>
 
 ### Private events
 
@@ -850,9 +920,7 @@ Your own `event_types` names, calendar names and `todo_title` are shown exactly 
 Planned features – ideas and votes are welcome in [Issues](https://github.com/mimikm/Home-Calendar-Card/issues).
 
 - 🎤 **Add events by voice** – a microphone button in the *Add event* window: say *"Dentist for Mia next Tuesday at 3pm"* and the title, date, time, calendar and event type are filled in for you to check and save. Uses Home Assistant's own voice pipeline (HA Cloud or local Whisper), so it works in the Companion app and on wall tablets, in all the card's languages. The microphone needs HTTPS.
-- 🔍 **Calendar filters** – hide events from a calendar by words in the title (e.g. colleagues' *vacation* or *out of office* entries in a work calendar), show only matching events, or hide all-day events. Filtered events stay in Home Assistant for automations.
 - 🌐 **Web panel for wall displays** – show a web page (radar map, bus times, school menu, your own dashboard) or a camera next to the calendar. Choose the position, set its size with a slider or by dragging its edge, zoom the page to fit, auto-refresh, rotate several pages, and lock it so taps can't navigate away. Only works with sites that allow being embedded, and over HTTPS only with `https://` pages.
-- 🚗 **Travel time to events** – for events with a location, show how long the drive from home takes right now, using Home Assistant's Waze Travel Time integration ([#10](https://github.com/mimikm/Home-Calendar-Card/issues/10)).
 - 🗣️ **Voice assistant tip** – a ready-made script and guide for adding events by talking to Assist or a voice speaker with an AI conversation agent.
 
 ## Support
