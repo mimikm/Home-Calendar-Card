@@ -3431,14 +3431,13 @@ class HomeCalendarCard extends HTMLElement {
     const evHtml = (ev, d) => `<div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
         <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
       </div>`;
-    // planner_hide_empty_days: days with no events or holidays are left out (today is always shown), like Agenda
-    const shown = [...Array(this._range().days).keys()].map((i) => addDays(start, i)).filter((d) => !this._config.planner_hide_empty_days
-      || dayKey(d) === today || this._eventsOn(d).length || this._holidaysOn(d).length);
-    let out = `<div class="planner" style="--pcols:${cols.length};--prows:${shown.length}"><div class="phead pcorner"></div>`;
+    const { days } = this._range();
+    let out = `<div class="planner" style="--pcols:${cols.length};--prows:${days}"><div class="phead pcorner"></div>`;
     out += cols.map((c) => (c.cal
       ? `<div class="phead" style="--c:${esc(c.color)}">${this._avatar(c.cal, "sm") || `<span class="dot"></span>`}<span class="pname">${esc(this._calName(c.cal))}</span></div>`
       : `<div class="phead grp" style="--c:${esc(c.color)}"><span class="gstack">${c.members.slice(0, 4).map((m) => this._avatar(m, "sm") || `<span class="dot" style="--c:${esc(m.color)}"></span>`).join("")}</span><span class="pname">${esc(c.group)}</span></div>`)).join("");
-    for (const d of shown) {
+    for (let i = 0; i < days; i++) {
+      const d = addDays(start, i);
       const k = dayKey(d);
       const evs = this._eventsOn(d);
       const hol = this._holidaysOn(d)[0];

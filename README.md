@@ -228,7 +228,6 @@ max_height: 640px
 | `allow_delete` | boolean | `true` | Show the **Delete** button on events (turn off for a shared wall screen) |
 | `max_events_per_day` | number | `3` | Events listed per day in Month view before "+N" |
 | `week_start` | `week` \| `today` | `week` | Week view starts at the start of the week, or today (7 days from today) |
-| `planner_hide_empty_days` | boolean | `false` | Leave out Planner days with no events (today is always shown) |
 | `month_weeks` | number | – | Month view shows a rolling grid of this many weeks (1–6) instead of the calendar month; ‹ › move by that many weeks |
 | `month_start` | `week` \| `today` | `week` | With `month_weeks`: the grid starts at the start of the week, or today (no past days) |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
