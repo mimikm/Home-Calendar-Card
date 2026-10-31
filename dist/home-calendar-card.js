@@ -111,7 +111,7 @@ const I18N = {
     ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
     ld_drag_line: "Drag to make the columns or rows on each side bigger or smaller",
     ld_title: "Layout designer", ld_on: "on", ld_intro: "Arrange the card on a grid: move and resize blocks like the date, clock, weather, calendar and to-do list. Your current layout stays as it is until you start.", ld_start: "Design my own layout", ld_or_preset: "or start from", ld_pre_classic: "Classic", ld_pre_wall: "Wall display", ld_pre_tv: "TV – no buttons", ld_pre_phone: "Compact phone", ld_desktop: "Desktop", ld_phone: "Phone", ld_presets: "Presets", ld_reset: "Reset", ld_phone_auto: "Phones stack the blocks automatically. Create a phone layout to arrange them yourself.", ld_make_phone: "Create phone layout", ld_copy_desktop: "Copy desktop layout", ld_del_phone: "Remove phone layout", ld_bp: "Phone layout below (px)", ld_off: "Back to the classic layout", ld_help: "Drag a block to move it, drag its edge or corner to resize. Everything snaps to the grid. Tap a block for its settings.", ld_cols: "Columns", ld_rows: "Rows", ld_rows_auto: "Auto", ld_gap: "Gap (px)", ld_more: "More grid options", ld_col_sizes: "Column sizes", ld_row_sizes: "Row sizes", ld_sizes_help: "Relative sizes like 1 2 1, or px values – leave empty for equal sizes", ld_row_h: "Row height in a normal card (px)", ld_ah_secs: "Auto-hide after (seconds)", ld_padding: "Padding (px)", ld_hidden: "Hidden", ld_hidden_help: "Drop a block here to hide it", ld_unhide: "Show again", ld_tap_block: "Tap a block to change its visibility, size and options.", ld_vis: "Visibility", ld_show: "Show", ld_hide: "Hide", ld_autohide: "Auto-hide", ld_ah_help: "Hidden until someone taps the screen, then hides again. Auto-hide blocks may sit on top of others.", ld_size: "Size", ld_pos: "Position", ld_agenda_date: "Date in Agenda", l_agenda_date: "Date in Agenda view", o_ad_both: "Left and above", o_ad_left: "Left", o_ad_above: "Above", lb_date: "Date", lb_clock: "Clock", lb_weather: "Weather", lb_countdowns: "Countdowns", lb_views: "View buttons", lb_nav: "Date navigation", lb_add: "+ Event", lb_chips: "Calendar buttons", lb_calendar: "Calendar", lb_todo: "To-do list",
-    edit_task: "Edit task", task_for: "For", replace_note: "This calendar can't change events directly, so saving replaces the event with a new one. Guests, reminders and colours set in the calendar app are not copied.", l_planner_days: "Days in Planner", l_planner_start: "Planner starts on", o_pl_week: "Start of the week", o_pl_today: "Today", o_pc_own: "Own column", o_pc_group: "Group column", o_pc_side: "Next to the date", l_month_mobile: "Month view on phones", o_mm_list: "List of the tapped day", o_mm_text: "Short titles", o_mm_dots: "Dots only", ed_layout: "Layout", l_sections: "Sections above the calendar (drag to reorder, untick to hide)", o_sec_header: "Date & weather", o_sec_countdowns: "Countdowns", o_sec_toolbar: "View buttons & date navigation", o_sec_chips: "Calendar buttons", l_show_view_selector: "Show view buttons (Agenda / Week / …)", l_show_date_navigation: "Show date navigation (‹ Today ›)", l_event_time_position: "Event time", o_tp_above: "Above the title", o_tp_left: "Left of the title", o_tp_right: "Right of the title", l_show_event_location: "Show event location", l_show_event_calendar: "Show calendar name on events", l_planner_column: "Planner view", ed_planner_help: "Own column, a shared column for its group, or next to the date",
+    edit_task: "Edit task", task_for: "For", replace_note: "This calendar can't change events directly, so saving replaces the event with a new one. Guests, reminders and colours set in the calendar app are not copied.", l_planner_days: "Days in Planner", l_planner_start: "Planner starts on", o_pl_week: "Start of the week", o_pl_today: "Today", o_pc_own: "Own column", o_pc_group: "Group column", o_pc_side: "Next to the date", l_month_mobile: "Month view on phones", o_mm_list: "List of the tapped day", o_mm_text: "Short titles", o_mm_dots: "Dots only", o_mm_both: "Short titles and list of the tapped day", ed_layout: "Layout", l_sections: "Sections above the calendar (drag to reorder, untick to hide)", o_sec_header: "Date & weather", o_sec_countdowns: "Countdowns", o_sec_toolbar: "View buttons & date navigation", o_sec_chips: "Calendar buttons", l_show_view_selector: "Show view buttons (Agenda / Week / …)", l_show_date_navigation: "Show date navigation (‹ Today ›)", l_event_time_position: "Event time", o_tp_above: "Above the title", o_tp_left: "Left of the title", o_tp_right: "Right of the title", l_show_event_location: "Show event location", l_show_event_calendar: "Show calendar name on events", l_planner_column: "Planner view", ed_planner_help: "Own column, a shared column for its group, or next to the date",
     private_ev: "Private", private_sw: "Private", private_help: "Show only \"Private\" and the time on the screen", l_show_clock: "Show clock", l_clock_seconds: "Clock seconds", l_clock_format: "Clock format",
     wk: "Week {n}", wk_short: "Wk", l_show_week_numbers: "Show week numbers",
     agenda: "Agenda", week: "Week", month: "Month", planner: "Planner", pl_add: "Add event for {n}", pl_none: "No person calendars to show – turn some on above", today: "Today", tomorrow: "Tomorrow", yesterday: "Yesterday",
@@ -2153,6 +2153,12 @@ class HomeCalendarCard extends HTMLElement {
 
   _range() {
     const a = this._anchor;
+    if (this._view === "month" && this._monthWeeks()) {
+      // month_weeks: a rolling grid of N weeks from the week start, or from today / the shown day with month_start: today
+      const n = this._monthWeeks() * 7;
+      const start = this._config.month_start === "today" ? startOfDay(a) : this._startOfWeek(a);
+      return { start, end: addDays(start, n), days: n };
+    }
     if (this._view === "month") {
       const first = new Date(a.getFullYear(), a.getMonth(), 1);
       const start = this._startOfWeek(first);
@@ -2168,7 +2174,8 @@ class HomeCalendarCard extends HTMLElement {
       return { start, end: addDays(start, n), days: n };
     }
     if (this._view === "week") {
-      const start = this._startOfWeek(a);
+      // week_start: today shows 7 days from today / the shown day instead of the calendar week
+      const start = this._config.week_start === "today" ? startOfDay(a) : this._startOfWeek(a);
       return { start, end: addDays(start, 7), days: 7 };
     }
     const n = Math.max(1, Number(this._config.days_to_show) || 7);
@@ -2558,7 +2565,7 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _rangeLabel() {
-    if (this._view === "month") return this._fmt({ month: "long", year: "numeric" }).format(this._anchor);
+    if (this._view === "month" && !this._monthWeeks()) return this._fmt({ month: "long", year: "numeric" }).format(this._anchor);
     const { start, end } = this._range();
     const last = addDays(end, -1);
     const f = this._fmt({ day: "numeric", month: "short" });
@@ -3392,6 +3399,8 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   // Planner: days down the side, one column per person (like a printed family planner).
+  _monthWeeks() { return this._config.month_weeks ? Math.min(6, Math.max(1, Math.round(Number(this._config.month_weeks) || 0))) : 0; }
+
   _plannerDays() { return Math.min(31, Math.max(1, Math.round(Number(this._config.planner_days) || 7))); }
 
   // Planner columns: one per calendar, or one shared column per group for calendars with planner_column: group (#13).
@@ -3422,13 +3431,14 @@ class HomeCalendarCard extends HTMLElement {
     const evHtml = (ev, d) => `<div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
         <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
       </div>`;
-    const { days } = this._range();
-    let out = `<div class="planner" style="--pcols:${cols.length};--prows:${days}"><div class="phead pcorner"></div>`;
+    // planner_hide_empty_days: days with no events or holidays are left out (today is always shown), like Agenda
+    const shown = [...Array(this._range().days).keys()].map((i) => addDays(start, i)).filter((d) => !this._config.planner_hide_empty_days
+      || dayKey(d) === today || this._eventsOn(d).length || this._holidaysOn(d).length);
+    let out = `<div class="planner" style="--pcols:${cols.length};--prows:${shown.length}"><div class="phead pcorner"></div>`;
     out += cols.map((c) => (c.cal
       ? `<div class="phead" style="--c:${esc(c.color)}">${this._avatar(c.cal, "sm") || `<span class="dot"></span>`}<span class="pname">${esc(this._calName(c.cal))}</span></div>`
       : `<div class="phead grp" style="--c:${esc(c.color)}"><span class="gstack">${c.members.slice(0, 4).map((m) => this._avatar(m, "sm") || `<span class="dot" style="--c:${esc(m.color)}"></span>`).join("")}</span><span class="pname">${esc(c.group)}</span></div>`)).join("");
-    for (let i = 0; i < days; i++) {
-      const d = addDays(start, i);
+    for (const d of shown) {
       const k = dayKey(d);
       const evs = this._eventsOn(d);
       const hol = this._holidaysOn(d)[0];
@@ -3461,8 +3471,9 @@ class HomeCalendarCard extends HTMLElement {
     const max = Math.max(1, Number(this._config.max_events_per_day) || (this._mode === "card" ? 3 : 6));
     const wdFmt = this._fmt({ weekday: "short" });
     const wn = !!this._config.show_week_numbers;
-    const mm = ["text", "dots"].includes(this._config.month_mobile) ? this._config.month_mobile : "list";
-    let out = `<div class="month ${wn ? "wn" : ""} mm-${mm}"><div class="mhead">${wn ? `<div class="mwk-h">${esc(this._t("wk_short"))}</div>` : ""}`;
+    const mm = ["text", "dots", "both"].includes(this._config.month_mobile) ? this._config.month_mobile : "list";
+    const list = mm === "list" || mm === "both";
+    let out = `<div class="month ${wn ? "wn" : ""} ${mm === "both" ? "mm-text mm-list" : `mm-${mm}`}"><div class="mhead">${wn ? `<div class="mwk-h">${esc(this._t("wk_short"))}</div>` : ""}`;
     for (let i = 0; i < 7; i++) out += `<div>${esc(wdFmt.format(addDays(start, i)))}</div>`;
     out += `</div><div class="mgrid">`;
     for (let i = 0; i < days; i++) {
@@ -3476,7 +3487,7 @@ class HomeCalendarCard extends HTMLElement {
       const f = this._forecast[dayKey(d)];
       const hol = this._holidaysOn(d)[0];
       const more = evs.length - max;
-      out += `<div class="mcell ${d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${mm === "list" && dayKey(d) === this._mSelKey() ? "msel" : ""} ${hol ? "has-hol" : ""}" ${hol ? `style="--hol:${esc(hol.cal.color)}"` : ""} data-action="open-day" data-date="${dayKey(d)}">
+      out += `<div class="mcell ${!this._monthWeeks() && d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${list && dayKey(d) === this._mSelKey() ? "msel" : ""} ${hol ? "has-hol" : ""}" ${hol ? `style="--hol:${esc(hol.cal.color)}"` : ""} data-action="open-day" data-date="${dayKey(d)}">
         <div class="mtop"><span class="mdn">${d.getDate()}</span>${f ? `<span class="mwx"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><b>${round(f.temperature)}°</b></span>` : ""}</div>
         ${hol ? `<div class="mhol" style="--c:${esc(hol.cal.color)}" title="${esc(hol.summary)}">${esc(hol.summary)}</div>` : ""}
         <div class="mevs">${evs.slice(0, max).map((ev) => `
@@ -3487,7 +3498,7 @@ class HomeCalendarCard extends HTMLElement {
       </div>`;
     }
     out += `</div>`;
-    if (mm === "list") out += this._renderMonthList();
+    if (list) out += this._renderMonthList();
     return out + `</div>`;
   }
 
@@ -3496,7 +3507,8 @@ class HomeCalendarCard extends HTMLElement {
     const { start, end } = this._range();
     const sel = this._mSel && this._mSel >= start && this._mSel < end ? this._mSel : null;
     const now = startOfDay(new Date());
-    const d = sel || (now >= start && now < end && now.getMonth() === this._anchor.getMonth() ? now : new Date(this._anchor.getFullYear(), this._anchor.getMonth(), 1));
+    const d = sel || (now >= start && now < end && (this._monthWeeks() || now.getMonth() === this._anchor.getMonth()) ? now
+      : this._monthWeeks() ? start : new Date(this._anchor.getFullYear(), this._anchor.getMonth(), 1));
     return dayKey(d);
   }
 
@@ -3997,7 +4009,8 @@ class HomeCalendarCard extends HTMLElement {
       case "prev":
       case "next": {
         const dir = action === "next" ? 1 : -1;
-        if (this._view === "month") this._anchor = new Date(this._anchor.getFullYear(), this._anchor.getMonth() + dir, 1);
+        if (this._view === "month" && this._monthWeeks()) this._anchor = addDays(this._config.month_start === "today" ? this._anchor : this._startOfWeek(this._anchor), this._monthWeeks() * 7 * dir);
+        else if (this._view === "month") this._anchor = new Date(this._anchor.getFullYear(), this._anchor.getMonth() + dir, 1);
         else if (this._view === "week") this._anchor = addDays(this._anchor, 7 * dir);
         else if (this._view === "planner") this._anchor = addDays(this._config.planner_start === "today" ? this._anchor : this._startOfWeek(this._anchor), this._plannerDays() * dir);
         else this._anchor = addDays(this._anchor, (Math.max(1, Number(this._config.days_to_show) || 7)) * dir);
@@ -4883,7 +4896,7 @@ const generalSchema = (t, hasGrid = false) => {
       { name: "countdown_style", selector: { select: { mode: "dropdown", options: [o("cards", "o_cards"), o("compact", "o_compact")] } } },
       { name: "countdown_size", selector: { number: { min: 50, max: 150, step: 5, mode: "slider", unit_of_measurement: "%" } } },
       { name: "event_size", selector: { number: { min: 80, max: 160, step: 5, mode: "slider", unit_of_measurement: "%" } } },
-      { name: "month_mobile", selector: { select: { mode: "dropdown", options: [o("list", "o_mm_list"), o("text", "o_mm_text"), o("dots", "o_mm_dots")] } } },
+      { name: "month_mobile", selector: { select: { mode: "dropdown", options: [o("list", "o_mm_list"), o("text", "o_mm_text"), o("both", "o_mm_both"), o("dots", "o_mm_dots")] } } },
       { type: "grid", name: "", schema: [
         { name: "show_clock", selector: { boolean: {} } },
         { name: "clock_seconds", selector: { boolean: {} } },

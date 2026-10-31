@@ -214,7 +214,7 @@ max_height: 640px
 | `event_time_position` | `above` \| `left` \| `right` | `above` | Where an event's time sits in Agenda view – `left`/`right` put it on the title's line |
 | `show_event_location` | boolean | `true` | Show the location line on events in Agenda view |
 | `show_event_calendar` | boolean | `true` | Show the calendar name/photo on events in Agenda view |
-| `month_mobile` | `list` \| `text` \| `dots` | `list` | Month view on phones – see *Month view on phones* |
+| `month_mobile` | `list` \| `text` \| `both` \| `dots` | `list` | Month view on phones – see *Month view on phones* |
 | `planner_days` | number | `7` | Days shown in Planner view (1–31) |
 | `planner_start` | `week` \| `today` | `week` | Planner starts at the start of the week, or today (no past days) |
 | `allow_edit_tasks` | boolean | `true` | Tap a task to edit or delete it – see *To-do list* |
@@ -227,6 +227,10 @@ max_height: 640px
 | `allow_edit` | boolean | `true` | Show the **Edit** button on events |
 | `allow_delete` | boolean | `true` | Show the **Delete** button on events (turn off for a shared wall screen) |
 | `max_events_per_day` | number | `3` | Events listed per day in Month view before "+N" |
+| `week_start` | `week` \| `today` | `week` | Week view starts at the start of the week, or today (7 days from today) |
+| `planner_hide_empty_days` | boolean | `false` | Leave out Planner days with no events (today is always shown) |
+| `month_weeks` | number | – | Month view shows a rolling grid of this many weeks (1–6) instead of the calendar month; ‹ › move by that many weeks |
+| `month_start` | `week` \| `today` | `week` | With `month_weeks`: the grid starts at the start of the week, or today (no past days) |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
 | `refresh_interval` | minutes | `5` | How often events are re-fetched |
 
@@ -739,6 +743,7 @@ On a phone the day boxes are only about 45px wide, so Month view needs a differe
 |---|---|
 | `list` (default) | Dots in the grid; **tap a day** and its events are listed under the month, like the phone calendar apps. Today is selected to start with |
 | `text` | Taller day boxes with short event titles (up to 3, then *+N*) |
+| `both` | Short event titles in the day boxes, **and** the tapped day's events listed under the month |
 | `dots` | Coloured dots only (the previous behaviour) |
 
 ![Phone Month view: list (left) and text (right)](images/phone-month.png)
