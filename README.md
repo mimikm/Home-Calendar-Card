@@ -34,6 +34,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - ⚙️ **Layout options** – reorder or hide the parts above the calendar, and put event times next to the title for a compact Agenda
 - 📱 **Phone-friendly Month view** – tap a day to list its events under the month, or show short titles in the day boxes
 - 🔢 **Week numbers** – ISO week numbers in Month, Week and Planner views
+- 📏 **Multi-day events as one bar** – trips, holidays and conferences stretch across their days in Month, Week and Planner views
 - 🔁 **Rolling views** – Month view as the next few weeks and Week view from today, so what's coming up is always on screen
 - 🔍 **Calendar filters** – hide events by words in the title (e.g. colleagues' holidays in a work calendar), show only matching events, or hide all-day events
 - 🚗 **Travel time** – live drive time and "leave by" for upcoming events with a location, from Home Assistant's Waze Travel Time integration
@@ -206,6 +207,7 @@ max_height: 640px
 | `days_to_show` | number | `7` | Number of days in Agenda view |
 | `first_day_of_week` | `monday` \| `sunday` \| `saturday` | `monday` | Start of week in Week and Month views |
 | `show_week_numbers` | boolean | `false` | ISO week numbers – a slim column in Month view and *Week 43* in Week and Planner – see *Week numbers* |
+| `multiday_bars` | boolean | `true` | All-day events lasting 2+ days show as one continuous bar – see *Multi-day events* |
 | `time_format` | `auto` \| `24h` \| `12h` | `auto` | `auto` follows your HA user profile |
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
 | `show_header` | boolean | `true` | Show the big date and current weather |
@@ -463,6 +465,25 @@ week_start: today     # Week view shows today and the next 6 days
 - On phones, `month_mobile: both` shows short titles in the day boxes **and** the tapped day's list under the month.
 
 <sub>Contributed by [@D3LZ-D3LZ-D3LZ](https://github.com/D3LZ-D3LZ-D3LZ) in [#15](https://github.com/mimikm/Home-Calendar-Card/pull/15) – thank you!</sub>
+
+### Multi-day events
+
+All-day events that last two days or more – a holiday, a school trip, a conference – show as **one continuous bar** across their days instead of a copy in every day box.
+
+![Month view with multi-day bars](images/multiday-bars.png)
+
+- **Month view** – the bar spans the days in each week row (continuing on the next row with a square edge); a few lanes are shown, extra ones fold into *+N*.
+- **Week view** – bars sit in a strip under the day headings, above the timed events. On phones, where days stack, each day lists the event as before.
+- **Planner view** – a bar runs down the person's column for each day of the event.
+- Tap a bar to open the event, same as any other event.
+
+Prefer the old look? Turn off **Multi-day events as one bar** in the visual editor, or:
+
+```yaml
+multiday_bars: false
+```
+
+<sub>Requested by [@NorthPacific45](https://github.com/NorthPacific45) in [#16](https://github.com/mimikm/Home-Calendar-Card/issues/16).</sub>
 
 ### Calendar filters
 

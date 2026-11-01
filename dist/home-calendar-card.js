@@ -108,6 +108,7 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    l_multiday_bars: "Multi-day events as one bar",
     l_exclude: "Hide events containing", l_include: "Only show events containing", l_exclude_all_day: "Hide all-day events", ed_exclude_help: "Words in the title, separated by | – e.g. vacation|out of office", ed_include_help: "Leave empty to show everything", ed_filtered: "filtered", ed_travel: "Travel time (Waze)", l_origin: "Drive from", ed_origin_help: "Usually zone.home. Needs the Waze Travel Time integration (Settings → Devices & services).", l_region: "Waze region", o_reg_auto: "Automatic", o_reg_eu: "Europe", o_reg_us: "United States", o_reg_na: "North America", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehicle", o_car: "Car", o_taxi: "Taxi", o_motorcycle: "Motorcycle", l_hours_ahead: "For events in the next (hours)", l_avoid_toll_roads: "Avoid toll roads", l_avoid_ferries: "Avoid ferries", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} drive", tt_leave_by: "Leave by {t}", tt_leave_now: "Leave now",
     ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
     ld_drag_line: "Drag to make the columns or rows on each side bigger or smaller",
@@ -173,6 +174,7 @@ const I18N = {
     ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
+    l_multiday_bars: "Wydarzenia wielodniowe jako jeden pasek",
     l_exclude: "Ukryj wydarzenia zawierające", l_include: "Pokaż tylko wydarzenia zawierające", l_exclude_all_day: "Ukryj wydarzenia całodniowe", ed_exclude_help: "Słowa w tytule rozdzielone | – np. urlop|poza biurem", ed_include_help: "Zostaw puste, aby pokazać wszystko", ed_filtered: "filtr", ed_travel: "Czas dojazdu (Waze)", l_origin: "Dojazd z", ed_origin_help: "Zwykle zone.home. Wymaga integracji Waze Travel Time (Ustawienia → Urządzenia i usługi).", l_region: "Region Waze", o_reg_auto: "Automatycznie", o_reg_eu: "Europa", o_reg_us: "Stany Zjednoczone", o_reg_na: "Ameryka Północna", o_reg_il: "Izrael", o_reg_au: "Australia", l_vehicle_type: "Pojazd", o_car: "Samochód", o_taxi: "Taxi", o_motorcycle: "Motocykl", l_hours_ahead: "Dla wydarzeń w ciągu (godzin)", l_avoid_toll_roads: "Unikaj dróg płatnych", l_avoid_ferries: "Unikaj promów", tt_min: "{n} min", tt_hm: "{h} godz. {m} min", tt_drive: "{d} jazdy", tt_leave_by: "Wyjedź o {t}", tt_leave_now: "Czas wyjeżdżać",
     ld_todo_pop: "Pokazywana jako okienko otwierane małym przyciskiem w rogu – kalendarz zajmuje jej miejsce.", ld_todo_close: "Zamknij okienko po (sekundy)",
     ld_drag_line: "Przeciągnij, aby powiększyć lub zmniejszyć kolumny albo wiersze po obu stronach",
@@ -237,6 +239,7 @@ const I18N = {
     ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
+    l_multiday_bars: "Eventos de varios días como una barra",
     l_exclude: "Ocultar eventos que contengan", l_include: "Mostrar solo eventos que contengan", l_exclude_all_day: "Ocultar eventos de todo el día", ed_exclude_help: "Palabras del título separadas por | – p. ej. vacaciones|fuera de la oficina", ed_include_help: "Déjalo vacío para mostrar todo", ed_filtered: "filtrado", ed_travel: "Tiempo de viaje (Waze)", l_origin: "Salir desde", ed_origin_help: "Normalmente zone.home. Necesita la integración Waze Travel Time (Ajustes → Dispositivos y servicios).", l_region: "Región de Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "Norteamérica", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehículo", o_car: "Coche", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos en las próximas (horas)", l_avoid_toll_roads: "Evitar peajes", l_avoid_ferries: "Evitar ferris", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} en coche", tt_leave_by: "Sal a las {t}", tt_leave_now: "Sal ya",
     ld_todo_pop: "Se muestra como ventana emergente desde un pequeño botón en la esquina; el calendario ocupa su espacio.", ld_todo_close: "Cerrar la ventana tras (segundos)",
     ld_drag_line: "Arrastra para agrandar o reducir las columnas o filas a cada lado",
@@ -301,6 +304,7 @@ const I18N = {
     ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
   it: {
+    l_multiday_bars: "Eventi di più giorni come una barra",
     l_exclude: "Nascondi eventi che contengono", l_include: "Mostra solo eventi che contengono", l_exclude_all_day: "Nascondi eventi di tutto il giorno", ed_exclude_help: "Parole nel titolo separate da | – es. ferie|fuori ufficio", ed_include_help: "Lascia vuoto per mostrare tutto", ed_filtered: "filtrato", ed_travel: "Tempo di viaggio (Waze)", l_origin: "Partenza da", ed_origin_help: "Di solito zone.home. Richiede l'integrazione Waze Travel Time (Impostazioni → Dispositivi e servizi).", l_region: "Regione Waze", o_reg_auto: "Automatica", o_reg_eu: "Europa", o_reg_us: "Stati Uniti", o_reg_na: "Nord America", o_reg_il: "Israele", o_reg_au: "Australia", l_vehicle_type: "Veicolo", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Per eventi nelle prossime (ore)", l_avoid_toll_roads: "Evita pedaggi", l_avoid_ferries: "Evita traghetti", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} in auto", tt_leave_by: "Parti alle {t}", tt_leave_now: "Parti ora",
     ld_todo_pop: "Si apre come pop-up da un piccolo pulsante nell'angolo – il calendario occupa il suo spazio.", ld_todo_close: "Chiudi il pop-up dopo (secondi)",
     ld_drag_line: "Trascina per allargare o restringere le colonne o righe ai due lati",
@@ -541,6 +545,7 @@ const I18N = {
     ed_media_help: "es. media-source://media_source/local/photos – lascia vuoto per un salvaschermo con solo orologio",
   },
   nl: {
+    l_multiday_bars: "Meerdaagse afspraken als één balk",
     l_exclude: "Afspraken verbergen met", l_include: "Alleen afspraken tonen met", l_exclude_all_day: "Hele-dag-afspraken verbergen", ed_exclude_help: "Woorden in de titel, gescheiden door | – bijv. vakantie|afwezig", ed_include_help: "Leeg laten om alles te tonen", ed_filtered: "gefilterd", ed_travel: "Reistijd (Waze)", l_origin: "Vertrek vanaf", ed_origin_help: "Meestal zone.home. Vereist de integratie Waze Travel Time (Instellingen → Apparaten & diensten).", l_region: "Waze-regio", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "Verenigde Staten", o_reg_na: "Noord-Amerika", o_reg_il: "Israël", o_reg_au: "Australië", l_vehicle_type: "Voertuig", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Voor afspraken in de komende (uur)", l_avoid_toll_roads: "Tolwegen vermijden", l_avoid_ferries: "Veerponten vermijden", tt_min: "{n} min", tt_hm: "{h} u {m} min", tt_drive: "{d} rijden", tt_leave_by: "Vertrek om {t}", tt_leave_now: "Nu vertrekken",
     ld_todo_pop: "Verschijnt als pop-up via een knopje in de hoek – de agenda neemt de ruimte in.", ld_todo_close: "Pop-up sluiten na (seconden)",
     ld_drag_line: "Sleep om de kolommen of rijen aan weerszijden groter of kleiner te maken",
@@ -781,6 +786,7 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    l_multiday_bars: "Mehrtägige Termine als ein Balken",
     l_exclude: "Termine ausblenden mit", l_include: "Nur Termine anzeigen mit", l_exclude_all_day: "Ganztägige Termine ausblenden", ed_exclude_help: "Wörter im Titel, getrennt durch | – z. B. Urlaub|abwesend", ed_include_help: "Leer lassen, um alles anzuzeigen", ed_filtered: "gefiltert", ed_travel: "Fahrzeit (Waze)", l_origin: "Abfahrt von", ed_origin_help: "Meist zone.home. Benötigt die Integration Waze Travel Time (Einstellungen → Geräte & Dienste).", l_region: "Waze-Region", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "USA", o_reg_na: "Nordamerika", o_reg_il: "Israel", o_reg_au: "Australien", l_vehicle_type: "Fahrzeug", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motorrad", l_hours_ahead: "Für Termine in den nächsten (Stunden)", l_avoid_toll_roads: "Mautstraßen meiden", l_avoid_ferries: "Fähren meiden", tt_min: "{n} Min.", tt_hm: "{h} Std. {m} Min.", tt_drive: "{d} Fahrt", tt_leave_by: "Losfahren um {t}", tt_leave_now: "Jetzt losfahren",
     ld_todo_pop: "Erscheint als Pop-up über eine kleine Taste in der Ecke – der Kalender nutzt den Platz.", ld_todo_close: "Pop-up schließen nach (Sekunden)",
     ld_drag_line: "Ziehen, um die Spalten oder Zeilen auf beiden Seiten größer oder kleiner zu machen",
@@ -1021,6 +1027,7 @@ const I18N = {
     ed_media_help: "z. B. media-source://media_source/local/photos – leer lassen für einen Bildschirmschoner nur mit Uhr",
   },
   hu: {
+    l_multiday_bars: "Többnapos események egy sávként",
     l_exclude: "Elrejtés, ha tartalmazza", l_include: "Csak ezeket tartalmazók", l_exclude_all_day: "Egész napos események elrejtése", ed_exclude_help: "Szavak a címben | jellel elválasztva – pl. szabadság|házon kívül", ed_include_help: "Hagyd üresen, ha mindent mutatna", ed_filtered: "szűrt", ed_travel: "Utazási idő (Waze)", l_origin: "Indulás innen", ed_origin_help: "Általában zone.home. A Waze Travel Time integráció kell hozzá (Beállítások → Eszközök és szolgáltatások).", l_region: "Waze régió", o_reg_auto: "Automatikus", o_reg_eu: "Európa", o_reg_us: "Egyesült Államok", o_reg_na: "Észak-Amerika", o_reg_il: "Izrael", o_reg_au: "Ausztrália", l_vehicle_type: "Jármű", o_car: "Autó", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Események a következő (óra) belül", l_avoid_toll_roads: "Fizetős utak elkerülése", l_avoid_ferries: "Kompok elkerülése", tt_min: "{n} perc", tt_hm: "{h} ó {m} perc", tt_drive: "{d} autóval", tt_leave_by: "Indulj {t}-kor", tt_leave_now: "Indulj most",
     ld_todo_pop: "Felugró ablakként nyílik egy kis gombbal a sarokban – a naptár kitölti a helyét.", ld_todo_close: "Felugró ablak bezárása ennyi után (mp)",
     ld_drag_line: "Húzd a két oldalán lévő oszlopok vagy sorok átméretezéséhez",
@@ -1594,7 +1601,7 @@ class HomeCalendarCard extends HTMLElement {
 
   connectedCallback() {
     this._today = dayKey(new Date());
-    this._onResize = () => { cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(() => this._applyLayout(true)); };
+    this._onResize = () => { cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(() => { this._applyLayout(true); this._placeWeekBars(); }); };
     this._onVis = () => this._keepAwake();
     window.addEventListener("resize", this._onResize);
     if (window.ResizeObserver && !this._ro) { this._ro = new ResizeObserver(() => { if (this._gridOn()) this._onResize(); }); this._ro.observe(this); }
@@ -2383,6 +2390,47 @@ class HomeCalendarCard extends HTMLElement {
   _ty(ev) { return this._typeById(ev.type); }
 
   _isBanner(ev) { return this._ty(ev).style === "banner"; }
+
+  /* ------------------------------------------- multi-day bars (#16) */
+  // All-day events lasting 2+ days are drawn as one continuous bar across their days (multiday_bars: false = per day).
+  _multiBars() { return this._config.multiday_bars !== false; }
+
+  _isMulti(ev) { return !!ev?.allDay && ev.end - ev.start > 864e5 * 1.5; }
+
+  // pieces of multi-day events inside the n days from `start`: a/b = first/last day index, cl/cr = continues left/right
+  _barSegs(start, n, filter) {
+    const end = addDays(start, n);
+    const idx = (d) => Math.round((startOfDay(d) - start) / 864e5);
+    return (this._events || []).filter((ev) => !this._hidden.has(ev.cal.entity) && this._isMulti(ev) && ev.start < end && ev.end > start && (!filter || filter(ev)))
+      .map((ev) => {
+        const a = idx(ev.start);
+        const b = idx(addDays(ev.end, -1));
+        return { ev, a: Math.max(0, a), b: Math.min(n - 1, b), cl: a < 0, cr: b > n - 1 };
+      })
+      .sort((x, y) => x.a - y.a || (y.b - y.a) - (x.b - x.a) || x.ev.summary.localeCompare(y.ev.summary));
+  }
+
+  // stack the pieces in lanes (rows); pieces that don't fit in `max` lanes stay as per-day events
+  _barLanes(segs, max) {
+    const ends = [];
+    const bars = [];
+    const over = [];
+    segs.forEach((sg) => {
+      let k = ends.findIndex((e) => e < sg.a);
+      if (k < 0 && ends.length < max) { k = ends.length; ends.push(-1); }
+      if (k < 0) { over.push(sg); return; }
+      ends[k] = sg.b;
+      bars.push({ ...sg, lane: k });
+    });
+    return { bars, over, lanes: ends.length };
+  }
+
+  _barHtml(sg, cls, style) {
+    const ev = sg.ev;
+    const ban = this._isBanner(ev);
+    const icon = ban ? (ev.tagged ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper" : this._typeIcon(ev);
+    return `<div class="${cls} ${ban ? "ban" : ""} ${sg.cl ? "cl" : ""} ${sg.cr ? "cr" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)};--lane:${sg.lane};${style}" data-action="open-event" data-id="${ev.id}" title="${esc(`${ev.summary} · ${this._whenText(ev)}`)}">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}<span>${esc(ev.summary)}</span></div>`;
+  }
 
   // Birthdays and anniversaries: all-day, yearly, with an age/years count.
   _isBday(ev) { return ["birthday", "anniversary", "nameday"].includes(this._ty(ev).style); }
@@ -3503,23 +3551,43 @@ class HomeCalendarCard extends HTMLElement {
   _renderWeek() {
     const { start } = this._range();
     const today = dayKey(new Date());
-    let out = `<div class="week">`;
+    // multi-day bars (#16): a strip under the day headings; phones (stacked days) keep the per-day copies
+    const wb = this._multiBars() ? this._barLanes(this._barSegs(start, 7), 4) : { bars: [], lanes: 0 };
+    const inBar = new Set(wb.bars.map((b) => b.ev.id));
+    let out = `<div class="week ${wb.lanes ? "has-bars" : ""}" style="--wl:${wb.lanes}">`;
     for (let i = 0; i < 7; i++) {
       const d = addDays(start, i);
       const evs = this._eventsOn(d);
+      const copy = (ev) => (inBar.has(ev.id) ? " bar-copy" : "");
       out += `<div class="wcol ${dayKey(d) === today ? "is-today" : ""}">
         <button class="whead" data-action="open-day" data-date="${dayKey(d)}">
           <div class="wd">${esc(this._fmt({ weekday: "short" }).format(d))}</div>
           <div class="dn">${d.getDate()}</div>
           ${this._wxBadge(d, true)}
         </button>
-        <div class="wevs">${this._holidaysOn(d).map((ev) => `<div class="whol" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">${esc(ev.summary)}</div>`).join("")}${evs.map((ev) => `
-          <div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
+        ${wb.lanes ? `<div class="wlanes"></div>` : ""}
+        <div class="wevs">${this._holidaysOn(d).map((ev) => `<div class="whol${copy(ev)}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">${esc(ev.summary)}</div>`).join("")}${evs.map((ev) => `
+          <div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}${copy(ev)}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}">
             <div class="t"><span class="short">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</span><span class="full">${esc(this._isBday(ev) ? this._yearlyLabel(ev) : this._timeLabel(ev, d))}</span></div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
           </div>`).join("")}</div>
       </div>`;
     }
+    out += wb.bars.map((b) => this._barHtml(b, "wbar", `--a:${b.a};--n:${b.b - b.a + 1}`)).join("");
+    if (wb.lanes) requestAnimationFrame(() => this._placeWeekBars());
     return out + `</div>`;
+  }
+
+  // Week bars sit just under the tallest day heading
+  _placeWeekBars() {
+    const wk = this._main?.querySelector(".week.has-bars");
+    if (!wk) return;
+    const heads = [...wk.querySelectorAll(".whead")];
+    heads.forEach((h) => { h.style.minHeight = ""; });
+    const zoom = parseFloat(getComputedStyle(heads[0] || wk).zoom) || 1;
+    const tallest = Math.max(...heads.map((h) => h.getBoundingClientRect().height));
+    heads.forEach((h) => { h.style.minHeight = `${tallest / zoom}px`; });
+    const top = Math.max(...heads.map((h) => h.getBoundingClientRect().bottom)) - wk.getBoundingClientRect().top;
+    wk.style.setProperty("--wtop", `${top + 6}px`);
   }
 
   // Planner: days down the side, one column per person (like a printed family planner).
@@ -3559,10 +3627,16 @@ class HomeCalendarCard extends HTMLElement {
         <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
       </div>`;
     const { days } = this._range();
-    let out = `<div class="planner" style="--pcols:${cols.length};--prows:${days}"><div class="phead pcorner"></div>`;
-    out += cols.map((c) => (c.cal
-      ? `<div class="phead" style="--c:${esc(c.color)}">${this._avatar(c.cal, "sm") || `<span class="dot"></span>`}<span class="pname">${esc(this._calName(c.cal))}</span></div>`
-      : `<div class="phead grp" style="--c:${esc(c.color)}"><span class="gstack">${c.members.slice(0, 4).map((m) => this._avatar(m, "sm") || `<span class="dot" style="--c:${esc(m.color)}"></span>`).join("")}</span><span class="pname">${esc(c.group)}</span></div>`)).join("");
+    // multi-day bars (#16): a vertical strip down the person's column
+    const pBars = cols.map((c) => {
+      const ents = new Set(c.members.map((m) => m.entity));
+      return this._multiBars() ? this._barLanes(this._barSegs(start, days, (ev) => ents.has(ev.cal.entity)), 2) : { bars: [], lanes: 0 };
+    });
+    const pInBar = new Set(pBars.flatMap((x) => x.bars.map((b) => b.ev.id)));
+    let out = `<div class="planner" style="--pcols:${cols.length};--prows:${days}"><div class="phead pcorner" style="grid-area:1 / 1"></div>`;
+    out += cols.map((c, ci) => (c.cal
+      ? `<div class="phead" style="grid-area:1 / ${ci + 2};--c:${esc(c.color)}">${this._avatar(c.cal, "sm") || `<span class="dot"></span>`}<span class="pname">${esc(this._calName(c.cal))}</span></div>`
+      : `<div class="phead grp" style="grid-area:1 / ${ci + 2};--c:${esc(c.color)}"><span class="gstack">${c.members.slice(0, 4).map((m) => this._avatar(m, "sm") || `<span class="dot" style="--c:${esc(m.color)}"></span>`).join("")}</span><span class="pname">${esc(c.group)}</span></div>`)).join("");
     for (let i = 0; i < days; i++) {
       const d = addDays(start, i);
       const k = dayKey(d);
@@ -3570,23 +3644,24 @@ class HomeCalendarCard extends HTMLElement {
       const hol = this._holidaysOn(d)[0];
       const shared = evs.filter((ev) => !colSet.has(ev.cal.entity));
       const rowCls = `${k === today ? "is-today" : ""} ${[0, 6].includes(d.getDay()) ? "wkend" : ""} ${hol ? "has-hol" : ""}`;
-      const holStyle = hol ? ` style="--hol:${esc(hol.cal.color)}"` : "";
-      out += `<div class="pday ${rowCls}"${holStyle}>
+      out += `<div class="pday ${rowCls}" style="grid-area:${i + 2} / 1;${hol ? `--hol:${esc(hol.cal.color)}` : ""}">
         <button class="pdate" data-action="open-day" data-date="${k}"><span class="wd">${esc(wd.format(d))}</span><span class="dn">${d.getDate()}</span><span class="mo">${esc(mo.format(d))}</span></button>
         ${this._wxBadge(d, true)}
         ${this._holidayTags(d) ? `<div class="phols">${this._holidayTags(d)}</div>` : ""}
         ${shared.length ? `<div class="pshared">${shared.map((ev) => evHtml(ev, d)).join("")}</div>` : ""}
       </div>`;
-      out += cols.map((c) => {
+      out += cols.map((c, ci) => {
         const ents = new Set(c.members.map((m) => m.entity));
-        const mine = evs.filter((ev) => ents.has(ev.cal.entity));
+        const mine = evs.filter((ev) => ents.has(ev.cal.entity) && !pInBar.has(ev.id));
+        const lanesHere = pBars[ci].bars.filter((b) => b.a <= i && b.b >= i).length ? pBars[ci].lanes : 0;
         const target = c.members.find((m) => writable.has(m.entity)); // a group column adds to its first writable member
         const add = canAdd && !!target;
-        return `<div class="pcell ${rowCls}" style="--c:${esc(c.color)}${hol ? `;--hol:${esc(hol.cal.color)}` : ""}" ${add ? `data-action="add-for" data-entity="${esc(target.entity)}" data-date="${k}" title="${esc(this._t("pl_add", { n: c.group || this._calName(target) }))}"` : ""}>
+        return `<div class="pcell ${rowCls}" style="grid-area:${i + 2} / ${ci + 2};--c:${esc(c.color)};--pl:${lanesHere}${hol ? `;--hol:${esc(hol.cal.color)}` : ""}" ${add ? `data-action="add-for" data-entity="${esc(target.entity)}" data-date="${k}" title="${esc(this._t("pl_add", { n: c.group || this._calName(target) }))}"` : ""}>
           ${mine.map((ev) => evHtml(ev, d)).join("")}${add ? `<span class="padd"><ha-icon icon="mdi:plus"></ha-icon></span>` : ""}
         </div>`;
       }).join("");
     }
+    pBars.forEach((pb, ci) => { out += pb.bars.map((b) => this._barHtml(b, "pbar", `grid-area:${b.a + 2} / ${ci + 2} / span ${b.b - b.a + 1} / span 1`)).join(""); });
     return out + `</div>`;
   }
 
@@ -3602,20 +3677,34 @@ class HomeCalendarCard extends HTMLElement {
     let out = `<div class="month ${wn ? "wn" : ""} ${mm === "both" ? "mm-text mm-list" : `mm-${mm}`}"><div class="mhead">${wn ? `<div class="mwk-h">${esc(this._t("wk_short"))}</div>` : ""}`;
     for (let i = 0; i < 7; i++) out += `<div>${esc(wdFmt.format(addDays(start, i)))}</div>`;
     out += `</div><div class="mgrid">`;
+    const off = wn ? 1 : 0;
+    const bars = this._multiBars();
+    let rowBars = { bars: [], lanes: 0 };
+    let inBar = new Set();
     for (let i = 0; i < days; i++) {
       const d = addDays(start, i);
-      if (wn && i % 7 === 0) {
-        // the ISO week most of this row's days belong to (its middle day) – right for rows starting on any weekday
-        const w = isoWeek(addDays(d, 3));
-        out += `<div class="mwk" title="${esc(this._t("wk", { n: w }))}">${w}</div>`;
+      const r = Math.floor(i / 7) + 1;
+      const c = (i % 7) + 1 + off;
+      if (i % 7 === 0) {
+        if (wn) {
+          // the ISO week most of this row's days belong to (its middle day) – right for rows starting on any weekday
+          const w = isoWeek(addDays(d, 3));
+          out += `<div class="mwk" style="grid-area:${r} / 1" title="${esc(this._t("wk", { n: w }))}">${w}</div>`;
+        }
+        // multi-day bars for this week row (#16)
+        rowBars = bars ? this._barLanes(this._barSegs(d, 7), this._mode === "card" ? 2 : 3) : { bars: [], lanes: 0 };
+        inBar = new Set(rowBars.bars.map((b) => b.ev.id));
+        out += rowBars.bars.map((b) => this._barHtml(b, "mbar", `grid-row:${r};grid-column:${b.a + 1 + off} / span ${b.b - b.a + 1}`)).join("");
       }
-      const evs = this._eventsOn(d);
+      const evs = this._eventsOn(d).filter((ev) => !inBar.has(ev.id));
       const f = this._forecast[dayKey(d)];
       const hol = this._holidaysOn(d)[0];
+      const holLabel = this._holidaysOn(d).find((ev) => !inBar.has(ev.id));
       const more = evs.length - max;
-      out += `<div class="mcell ${!this._monthWeeks() && d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${list && dayKey(d) === this._mSelKey() ? "msel" : ""} ${hol ? "has-hol" : ""}" ${hol ? `style="--hol:${esc(hol.cal.color)}"` : ""} data-action="open-day" data-date="${dayKey(d)}">
+      out += `<div class="mcell ${!this._monthWeeks() && d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${list && dayKey(d) === this._mSelKey() ? "msel" : ""} ${hol ? "has-hol" : ""}" style="grid-area:${r} / ${c};${hol ? `--hol:${esc(hol.cal.color)}` : ""}" data-action="open-day" data-date="${dayKey(d)}">
         <div class="mtop"><span class="mdn">${d.getDate()}</span>${f ? `<span class="mwx"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><b>${round(f.temperature)}°</b></span>` : ""}</div>
-        ${hol ? `<div class="mhol" style="--c:${esc(hol.cal.color)}" title="${esc(hol.summary)}">${esc(hol.summary)}</div>` : ""}
+        ${rowBars.lanes ? `<div class="mlanes" style="--lanes:${rowBars.lanes}"></div>` : ""}
+        ${holLabel ? `<div class="mhol" style="--c:${esc(holLabel.cal.color)}" title="${esc(holLabel.summary)}">${esc(holLabel.summary)}</div>` : ""}
         <div class="mevs">${evs.slice(0, max).map((ev) => `
           <div class="mev ${ev.allDay && !this._isBday(ev) ? "allday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
             ${this._typeIcon(ev) ? `<ha-icon class="mcake" icon="${esc(this._typeIcon(ev))}"></ha-icon>` : `<span class="mdot"></span>`}<span class="mtxt">${esc(ev.summary)}</span>
@@ -4398,6 +4487,34 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .wev.allday .s ha-icon { color: #fff; }
 .whol { font-size: .66rem; font-weight: 700; text-align: center; padding: 3px 4px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   background: color-mix(in srgb, var(--c) 18%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--hcc-text)); }
+/* multi-day bars (#16) */
+.mbar, .wbar, .pbar { box-sizing: border-box; display: flex; align-items: center; gap: 3px; min-width: 0; overflow: hidden; cursor: pointer; z-index: 2;
+  background: var(--c); color: #fff; font-weight: 700; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.mbar span, .wbar span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mbar.ban, .wbar.ban, .pbar.ban { background: color-mix(in srgb, var(--c) 28%, var(--hcc-bg)); color: color-mix(in srgb, var(--c) 70%, var(--hcc-text)); box-shadow: none; }
+.mbar.past, .wbar.past, .pbar.past { opacity: .55; }
+.mbar.cl, .wbar.cl { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.mbar.cr, .wbar.cr { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.mbar ha-icon, .wbar ha-icon { --mdc-icon-size: 12px; flex: none; }
+.mbar { --s: var(--ev-scale, 1); align-self: start; height: calc(17px * var(--s)); padding: 0 calc(5px * var(--s)); font-size: calc(.66rem * var(--s));
+  margin-top: calc(var(--mpad, 4px) + (24px + 3px + var(--lane) * 19px) * var(--s)); margin-left: 3px; margin-right: 3px; }
+.mbar.cl { margin-left: -1px; } .mbar.cr { margin-right: -1px; }
+.mlanes { height: calc(var(--lanes) * 19px - 3px); flex: none; }
+.mcell { --mpad: 4px; }
+.week.has-bars { position: relative; }
+.wlanes { height: calc(var(--wl) * 22px * var(--ev-scale, 1) - 4px); flex: none; }
+.wbar { position: absolute; top: calc(var(--wtop, 70px) + var(--lane) * 22px * var(--ev-scale, 1)); height: calc(19px * var(--ev-scale, 1));
+  left: calc((100% - 36px) / 7 * var(--a) + 6px * var(--a) + 6px); width: calc((100% - 36px) / 7 * var(--n) + 6px * (var(--n) - 1) - 12px);
+  padding: 0 8px; font-size: calc(.74rem * var(--ev-scale, 1)); }
+.wbar.cl { left: calc((100% - 36px) / 7 * var(--a) + 6px * var(--a)); width: calc((100% - 36px) / 7 * var(--n) + 6px * (var(--n) - 1) - 6px); }
+.wbar.cr { width: calc((100% - 36px) / 7 * var(--n) + 6px * (var(--n) - 1) - 6px); }
+.wbar.cl.cr { width: calc((100% - 36px) / 7 * var(--n) + 6px * (var(--n) - 1)); }
+.week .bar-copy { display: none; }
+.pbar { justify-self: end; align-self: stretch; width: calc(20px * var(--ev-scale, 1)); margin: 6px calc(6px + var(--lane) * 24px * var(--ev-scale, 1)) 6px 0;
+  writing-mode: vertical-rl; justify-content: flex-start; padding: 8px 0; font-size: calc(.68rem * var(--ev-scale, 1)); border-radius: 8px; }
+.pbar span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pbar ha-icon { --mdc-icon-size: 12px; transform: rotate(90deg); }
+.pcell { padding-right: calc(6px + var(--pl, 0) * 24px * var(--ev-scale, 1)) !important; }
 .mcell.has-hol { background: color-mix(in srgb, var(--hol) 12%, transparent); }
 .mhol { font-size: .62rem; font-weight: 700; padding: 0 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 75%, var(--hcc-text)); }
 .mcake { --mdc-icon-size: 11px; color: var(--c); }
@@ -4563,7 +4680,7 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 @container (max-width: 480px) {
   .month.mm-list .mlist { display: block; }
   .month.mm-list .mcell.msel { box-shadow: inset 0 0 0 2px var(--hcc-accent); }
-  .month.mm-text .mcell { min-height: calc(76px * var(--ev-scale, 1)); padding: 3px 2px; }
+  .month.mm-text .mcell { min-height: calc(76px * var(--ev-scale, 1)); padding: 3px 2px; --mpad: 3px; }
   .month.mm-text .mwx { display: none; }
   .month.mm-text .mevs { flex-direction: column; flex-wrap: nowrap; gap: 1px; padding-left: 0; }
   .month.mm-text .mev { padding: 0 2px; border-radius: 3px; background: color-mix(in srgb, var(--c) 18%, transparent); }
@@ -4579,6 +4696,8 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 /* responsive */
 @container (max-width: 600px) {
   .week { grid-template-columns: 1fr; }
+  .week .wbar, .week .wlanes { display: none; }
+  .week .bar-copy { display: block; }
   .wcol { min-height: 0; flex-direction: row; align-items: stretch; padding: 8px; }
   .whead { width: 52px; flex: none; border-bottom: none; border-right: 1px solid var(--hcc-line); padding: 0 6px 0 0; border-radius: 0; justify-content: center; }
   .wevs { flex: 1; justify-content: center; }
@@ -4602,7 +4721,7 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
   .ev-cal-name { display: none; }
   .mhol { display: none; }
   .cd { min-width: 112px; }
-  .mcell { min-height: 56px; padding: 3px; }
+  .mcell { min-height: 56px; padding: 3px; --mpad: 3px; }
   .mwx b { display: none; }
   .mevs { flex-direction: row; flex-wrap: wrap; gap: 3px; padding-left: 3px; }
   .mev, .mev.allday { padding: 0; background: none; }
@@ -4981,13 +5100,13 @@ const TRAVEL_DEFAULTS = { enabled: false, origin: "zone.home", region: "auto", v
 // editor defaults that are not written to YAML until changed
 const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
   clock_format: "auto", show_view_selector: true, show_date_navigation: true, event_time_position: "above", show_event_location: true,
-  show_event_calendar: true, planner_days: 7, planner_start: "week", month_start: "week", week_start: "week", agenda_date: "both" };
+  show_event_calendar: true, multiday_bars: true, planner_days: 7, planner_start: "week", month_start: "week", week_start: "week", agenda_date: "both" };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "todo_group_by", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile",
   "sections", "show_view_selector", "show_date_navigation", "agenda_date", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
-  "default_view", "days_to_show", "show_week_numbers", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
+  "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t, hasGrid = false) => {
   const o = (value, key) => ({ value, label: t(key) });
@@ -5015,6 +5134,7 @@ const generalSchema = (t, hasGrid = false) => {
       { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month"), o("planner", "planner")] } } },
       { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
       { name: "show_week_numbers", selector: { boolean: {} } },
+      { name: "multiday_bars", selector: { boolean: {} } },
       { name: "planner_days", selector: { number: { min: 1, max: 31, mode: "box" } } },
       { name: "planner_start", selector: { select: { mode: "dropdown", options: [o("week", "o_pl_week"), o("today", "o_pl_today")] } } },
       { name: "month_weeks", selector: { number: { min: 1, max: 6, mode: "box" } } },
