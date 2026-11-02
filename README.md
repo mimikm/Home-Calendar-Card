@@ -908,7 +908,7 @@ The card and its visual editor are available in:
 | Italiano | `it` |
 | Nederlands | `nl` |
 | Magyar | `hu` |
-| Português (Brasil) | `pt` |
+| Português (Brasil) | `pt` – thanks to [@DiogoAbu](https://github.com/DiogoAbu) ([#17](https://github.com/mimikm/Home-Calendar-Card/pull/17)) |
 
 The language follows your Home Assistant profile automatically. Set `language: pl` (or pick it in the visual editor) to force one. Dates, weekdays and month names always use your language's normal format.
 
