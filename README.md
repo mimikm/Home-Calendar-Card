@@ -57,7 +57,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
 - 🌙 **Night mode & screensaver** for always-on screens – a dim night clock on a schedule (wake by touch or motion sensor) and a family-photo slideshow with clock, weather and next event when idle
-- 🌍 **7 languages** – English, Polish, Spanish, German, Italian, Dutch and Hungarian; card and visual editor follow your Home Assistant language
+- 🌍 **8 languages** – English, Polish, Spanish, German, Italian, Dutch, Hungarian and Portuguese (Brazil); card and visual editor follow your Home Assistant language
 - 🔒 **Private events** – tick *Private* and the wall screen shows only "Private" and the time
 - 🕐 **Clock** – a big clock with seconds in the header for wall displays, 24h or 12h
 - 🔍 **Appearance controls** – hide or shrink countdowns (compact one-line style, size slider) and enlarge day boxes and events with a slider
@@ -908,10 +908,11 @@ The card and its visual editor are available in:
 | Italiano | `it` |
 | Nederlands | `nl` |
 | Magyar | `hu` |
+| Português (Brasil) | `pt` |
 
 The language follows your Home Assistant profile automatically. Set `language: pl` (or pick it in the visual editor) to force one. Dates, weekdays and month names always use your language's normal format.
 
-**Name days 🌷** – the **Name day** type is available in every language (*imieniny*, *névnap*, *onomastico*, *Namenstag*, *naamdag*, *onomástica*). Name days repeat every year, get their own gold countdown colour, and the next two appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#nameday` (or a translation below). A whole calendar of name days can be set to *Calendar type: Name days* in the editor.
+**Name days 🌷** – the **Name day** type is available in every language (*imieniny*, *névnap*, *onomastico*, *Namenstag*, *naamdag*, *onomástica*, *dia do santo*). Name days repeat every year, get their own gold countdown colour, and the next two appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#nameday` (or a translation below). A whole calendar of name days can be set to *Calendar type: Name days* in the editor.
 
 You can also type these tags in Google or Apple Calendar instead of the English ones (no accents needed):
 
@@ -923,8 +924,11 @@ You can also type these tags in Google or Apple Calendar instead of the English 
 | Italiano | `#compleanno` | `#anniversario` | `#vacanza`, `#ferie` | `#lavoro` | `#onomastico` | `#privato` |
 | Nederlands | `#verjaardag` | `#jubileum` | `#vakantie` | `#werk` | `#naamdag` | `#prive` |
 | Magyar | `#szuletesnap`, `#szulinap` | `#evfordulo` | `#szabadsag` | `#munka` | `#nevnap` | `#privat` |
+| Português | `#niver` | `#bodas` | `#ferias`, `#feriado` | `#trabalho` | `#onomastico`, `#santo` | `#privado` |
 
-**🙏 Help us improve the translations.** German, Italian, Dutch and Hungarian are new, and some wording may sound odd to a native speaker. If you spot something, please [open an issue](https://github.com/mimikm/Home-Calendar-Card/issues) or a pull request with the better wording – every fix is welcome. The texts are in the `I18N` section at the top of `home-calendar-card.js`.
+In Portuguese `#aniversario` would mean a birthday, but the tag already means *Anniversary* in Spanish and Italian, so use `#niver` for birthdays.
+
+**🙏 Help us improve the translations.** German, Italian, Dutch, Hungarian and Portuguese are new, and some wording may sound odd to a native speaker. If you spot something, please [open an issue](https://github.com/mimikm/Home-Calendar-Card/issues) or a pull request with the better wording – every fix is welcome. The texts are in the `I18N` section at the top of `home-calendar-card.js`.
 
 Your own `event_types` names, calendar names and `todo_title` are shown exactly as you write them.
 
