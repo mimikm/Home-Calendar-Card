@@ -909,8 +909,10 @@ The card and its visual editor are available in:
 | Nederlands | `nl` |
 | Magyar | `hu` |
 | Português (Brasil) | `pt` – thanks to [@DiogoAbu](https://github.com/DiogoAbu) ([#17](https://github.com/mimikm/Home-Calendar-Card/pull/17)) |
+| Српски | `sr` |
+| Srpski (latinica) | `sr-Latn` |
 
-The language follows your Home Assistant profile automatically. Set `language: pl` (or pick it in the visual editor) to force one. Dates, weekdays and month names always use your language's normal format.
+The language follows your Home Assistant profile automatically. Set `language: pl`, `language: sr`, or `language: sr-Latn` (or pick it in the visual editor) to force one. Dates, weekdays and month names always use your language's normal format.
 
 **Name days 🌷** – the **Name day** type is available in every language (*imieniny*, *névnap*, *onomastico*, *Namenstag*, *naamdag*, *onomástica*, *dia do santo*). Name days repeat every year, get their own gold countdown colour, and the next two appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#nameday` (or a translation below). A whole calendar of name days can be set to *Calendar type: Name days* in the editor.
 
@@ -925,6 +927,8 @@ You can also type these tags in Google or Apple Calendar instead of the English 
 | Nederlands | `#verjaardag` | `#jubileum` | `#vakantie` | `#werk` | `#naamdag` | `#prive` |
 | Magyar | `#szuletesnap`, `#szulinap` | `#evfordulo` | `#szabadsag` | `#munka` | `#nevnap` | `#privat` |
 | Português | `#niver` | `#bodas` | `#ferias`, `#feriado` | `#trabalho` | `#onomastico`, `#santo` | `#privado` |
+| Српски | `#рођендан`, `#рођ` | `#годишњица` | `#одмор`, `#боловање` | `#посао`, `#праца` | `#имендан` | `#приватно` |
+| Srpski (latinica) | `#rodjendan`, `#rodj` | `#godisnjica` | `#odmor`, `#bolovanje` | `#posao` | `#imendan` | `#privatno` |
 
 In Portuguese `#aniversario` would mean a birthday, but the tag already means *Anniversary* in Spanish and Italian, so use `#niver` for birthdays.
 
