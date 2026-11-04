@@ -100,9 +100,9 @@ const ordinal = (n) => {
 };
 const DONE_BY_RE = /^\s*Done by:\s*(.+?)(?:\s*\((\d{4}-\d{2}-\d{2})(?:[ T](\d{2}:\d{2}))?\))?\s*$/mi;
 const DONE_BY_LINE_RE = /\n?^\s*Done by:.*$/gmi;
-const TAG_RE = /(^|\s)#([a-z0-9_-]+)(?=\s|$)/gi;
+const TAG_RE = /(^|\s)#([\p{L}\p{N}_-]+)(?=\s|$)/giu;
 // "#private" (or a translation) hides an event's details on the screen – it shows as "Private" with its time.
-const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "privato", "privata", "prive", "priv", "privat"];
+const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "privato", "privata", "prive", "priv", "privat", "privatno", "приватно"];
 
 // ------------------------------------------------------------------ translations
 // The UI language follows Home Assistant (or `language:` in the card config).
