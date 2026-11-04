@@ -1843,11 +1843,11 @@ const tr = (lang, key, vars) => {
 // Polish: 1 rok, 2–4 lata (not 12–14), 5+ lat
 const plYears = (n) => (n === 1 ? "rok" : n % 10 >= 2 && n % 10 <= 4 && !(n % 100 >= 12 && n % 100 <= 14) ? "lata" : "lat");
 
-// Serbian Cyrillic: 1 година, 2-4 године (except 12-14), 5+ година
-const srGodine = (n) => (n % 10 === 1 && n % 100 !== 11 ? "година" : n % 10 >= 2 && n % 10 <= 4 && !(n % 100 >= 12 && n % 100 <= 14) ? "године" : "година");
+// Serbian Cyrillic: 1 годину, 2-4 године (except 12-14), 5+ година (за рођендане: "пуни 21 годину")
+const srGodine = (n) => (n % 10 === 1 && n % 100 !== 11 ? "годину" : n % 10 >= 2 && n % 10 <= 4 && !(n % 100 >= 12 && n % 100 <= 14) ? "године" : "година");
 
-// Serbian Latin: 1 godina, 2-4 godine (except 12-14), 5+ godina
-const srGodina = (n) => (n % 10 === 1 && n % 100 !== 11 ? "godina" : n % 10 >= 2 && n % 10 <= 4 && !(n % 100 >= 12 && n % 100 <= 14) ? "godine" : "godina");
+// Serbian Latin: 1 godinu, 2-4 godine (except 12-14), 5+ godina (za rođendane: "puni 21 godinu")
+const srGodina = (n) => (n % 10 === 1 && n % 100 !== 11 ? "godinu" : n % 10 >= 2 && n % 10 <= 4 && !(n % 100 >= 12 && n % 100 <= 14) ? "godine" : "godina");
 
 // Serbian Days: 1 dan, 2-4 dana (except 11-14), 5+ dana (21 dan, 22 dana...)
 const srDani = (n) => (n % 10 === 1 && n % 100 !== 11 ? 0 : 1);
@@ -1876,9 +1876,9 @@ const TYPE_ALIASES = {
   szuletesnap: "birthday", szulinap: "birthday", evfordulo: "anniversary", szabadsag: "holiday", munka: "work", nevnap: "nameday",
   niver: "birthday", bodas: "anniversary", ferias: "holiday", feriado: "holiday", trabalho: "work",
 
-  // Serbian (Cyrillic & Latin normalized without diacritics)
-  rodjendan: "birthday", rodj: "birthday", рођендан: "birthday", рођ: "birthday",
-  godisnjica: "anniversary", годишњица: "anniversary",
+  // Serbian (Cyrillic, Latin with and without diacritics)
+  rodjendan: "birthday", rodj: "birthday", rođendan: "birthday", rođ: "birthday", рођендан: "birthday", рођ: "birthday",
+  godisnjica: "anniversary", godišnjica: "anniversary", годишњица: "anniversary",
   odmor: "holiday", одмор: "holiday",
   bolovanje: "holiday", боловање: "holiday",
   posao: "work", посао: "work",
