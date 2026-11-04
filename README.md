@@ -927,8 +927,9 @@ You can also type these tags in Google or Apple Calendar instead of the English 
 | Nederlands | `#verjaardag` | `#jubileum` | `#vakantie` | `#werk` | `#naamdag` | `#prive` |
 | Magyar | `#szuletesnap`, `#szulinap` | `#evfordulo` | `#szabadsag` | `#munka` | `#nevnap` | `#privat` |
 | Português | `#niver` | `#bodas` | `#ferias`, `#feriado` | `#trabalho` | `#onomastico`, `#santo` | `#privado` |
-| Српски | `#рођендан`, `#рођ` | `#годишњица` | `#одмор`, `#боловање` | `#посао`, `#праца` | `#имендан` | `#приватно` |
-| Srpski (latinica) | `#rodjendan`, `#rodj` | `#godisnjica` | `#odmor`, `#bolovanje` | `#posao` | `#imendan` | `#privatno` |
+| Српски | `#рођендан`, `#рођ` | `#годишњица` | `#одмор`, `#боловање` | `#посао` | `#имендан` | `#приватно` |
+| Srpski (latinica) | `#rođendan`, `#rođ` | `#godišnjica` | `#odmor`, `#bolovanje` | `#posao` | `#imendan` | `#privatno` |
+
 
 In Portuguese `#aniversario` would mean a birthday, but the tag already means *Anniversary* in Spanish and Italian, so use `#niver` for birthdays.
 
