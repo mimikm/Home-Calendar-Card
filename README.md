@@ -214,6 +214,7 @@ max_height: 640px
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
 | `grid` | object | – | Your own grid layout from the Layout designer – see *Layout designer* |
 | `agenda_date` | `both` \| `left` \| `above` | `both` | Where the date sits in Agenda view |
+| `agenda_multiday` | `every` \| `first` | `every` | Multi-day events in Agenda view: on every day, or once on their first day – see *Multi-day events* |
 | `sections` | list | `[header, countdowns, toolbar, chips]` | Which parts appear above the calendar, in this order – see *Layout* |
 | `show_view_selector` | boolean | `true` | Show the Agenda / Week / Month / Planner buttons |
 | `show_date_navigation` | boolean | `true` | Show ‹ Today › and the date range |
@@ -483,7 +484,15 @@ Prefer the old look? Turn off **Multi-day events as one bar** in the visual edit
 multiday_bars: false
 ```
 
-<sub>Requested by [@NorthPacific45](https://github.com/NorthPacific45) in [#16](https://github.com/mimikm/Home-Calendar-Card/issues/16).</sub>
+**Agenda view** lists a multi-day event on every day by default (*All day · 2/5*). To list it **once**, set **Multi-day events in Agenda** to **First day only**:
+
+```yaml
+agenda_multiday: first
+```
+
+It then shows on its first day as *All day · until 13 Nov · 7 days*. An event that's already under way shows once at the top of today as *Until 13 Nov · day 3 of 7*, so it doesn't drop out of the list.
+
+<sub>Requested by [@NorthPacific45](https://github.com/NorthPacific45) and [@renaybbbb](https://github.com/renaybbbb) in [#16](https://github.com/mimikm/Home-Calendar-Card/issues/16).</sub>
 
 ### Calendar filters
 

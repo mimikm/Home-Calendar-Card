@@ -109,6 +109,7 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 const I18N = {
   en: {
     l_multiday_bars: "Multi-day events as one bar",
+    l_agenda_multiday: "Multi-day events in Agenda", o_am_every: "Every day", o_am_first: "First day only", am_until: "until {d}", am_day: "day {n} of {t}",
     l_exclude: "Hide events containing", l_include: "Only show events containing", l_exclude_all_day: "Hide all-day events", ed_exclude_help: "Words in the title, separated by | – e.g. vacation|out of office", ed_include_help: "Leave empty to show everything", ed_filtered: "filtered", ed_travel: "Travel time (Waze)", l_origin: "Drive from", ed_origin_help: "Usually zone.home. Needs the Waze Travel Time integration (Settings → Devices & services).", l_region: "Waze region", o_reg_auto: "Automatic", o_reg_eu: "Europe", o_reg_us: "United States", o_reg_na: "North America", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehicle", o_car: "Car", o_taxi: "Taxi", o_motorcycle: "Motorcycle", l_hours_ahead: "For events in the next (hours)", l_avoid_toll_roads: "Avoid toll roads", l_avoid_ferries: "Avoid ferries", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} drive", tt_leave_by: "Leave by {t}", tt_leave_now: "Leave now",
     ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
     ld_drag_line: "Drag to make the columns or rows on each side bigger or smaller",
@@ -175,6 +176,7 @@ const I18N = {
   },
   pl: {
     l_multiday_bars: "Wydarzenia wielodniowe jako jeden pasek",
+    l_agenda_multiday: "Wydarzenia wielodniowe w Agendzie", o_am_every: "Każdego dnia", o_am_first: "Tylko pierwszego dnia", am_until: "do {d}", am_day: "dzień {n} z {t}",
     l_exclude: "Ukryj wydarzenia zawierające", l_include: "Pokaż tylko wydarzenia zawierające", l_exclude_all_day: "Ukryj wydarzenia całodniowe", ed_exclude_help: "Słowa w tytule rozdzielone | – np. urlop|poza biurem", ed_include_help: "Zostaw puste, aby pokazać wszystko", ed_filtered: "filtr", ed_travel: "Czas dojazdu (Waze)", l_origin: "Dojazd z", ed_origin_help: "Zwykle zone.home. Wymaga integracji Waze Travel Time (Ustawienia → Urządzenia i usługi).", l_region: "Region Waze", o_reg_auto: "Automatycznie", o_reg_eu: "Europa", o_reg_us: "Stany Zjednoczone", o_reg_na: "Ameryka Północna", o_reg_il: "Izrael", o_reg_au: "Australia", l_vehicle_type: "Pojazd", o_car: "Samochód", o_taxi: "Taxi", o_motorcycle: "Motocykl", l_hours_ahead: "Dla wydarzeń w ciągu (godzin)", l_avoid_toll_roads: "Unikaj dróg płatnych", l_avoid_ferries: "Unikaj promów", tt_min: "{n} min", tt_hm: "{h} godz. {m} min", tt_drive: "{d} jazdy", tt_leave_by: "Wyjedź o {t}", tt_leave_now: "Czas wyjeżdżać",
     ld_todo_pop: "Pokazywana jako okienko otwierane małym przyciskiem w rogu – kalendarz zajmuje jej miejsce.", ld_todo_close: "Zamknij okienko po (sekundy)",
     ld_drag_line: "Przeciągnij, aby powiększyć lub zmniejszyć kolumny albo wiersze po obu stronach",
@@ -240,6 +242,7 @@ const I18N = {
   },
   es: {
     l_multiday_bars: "Eventos de varios días como una barra",
+    l_agenda_multiday: "Eventos de varios días en la Agenda", o_am_every: "Cada día", o_am_first: "Solo el primer día", am_until: "hasta el {d}", am_day: "día {n} de {t}",
     l_exclude: "Ocultar eventos que contengan", l_include: "Mostrar solo eventos que contengan", l_exclude_all_day: "Ocultar eventos de todo el día", ed_exclude_help: "Palabras del título separadas por | – p. ej. vacaciones|fuera de la oficina", ed_include_help: "Déjalo vacío para mostrar todo", ed_filtered: "filtrado", ed_travel: "Tiempo de viaje (Waze)", l_origin: "Salir desde", ed_origin_help: "Normalmente zone.home. Necesita la integración Waze Travel Time (Ajustes → Dispositivos y servicios).", l_region: "Región de Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "Norteamérica", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehículo", o_car: "Coche", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos en las próximas (horas)", l_avoid_toll_roads: "Evitar peajes", l_avoid_ferries: "Evitar ferris", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} en coche", tt_leave_by: "Sal a las {t}", tt_leave_now: "Sal ya",
     ld_todo_pop: "Se muestra como ventana emergente desde un pequeño botón en la esquina; el calendario ocupa su espacio.", ld_todo_close: "Cerrar la ventana tras (segundos)",
     ld_drag_line: "Arrastra para agrandar o reducir las columnas o filas a cada lado",
@@ -305,6 +308,7 @@ const I18N = {
   },
   it: {
     l_multiday_bars: "Eventi di più giorni come una barra",
+    l_agenda_multiday: "Eventi di più giorni nell'Agenda", o_am_every: "Ogni giorno", o_am_first: "Solo il primo giorno", am_until: "fino al {d}", am_day: "giorno {n} di {t}",
     l_exclude: "Nascondi eventi che contengono", l_include: "Mostra solo eventi che contengono", l_exclude_all_day: "Nascondi eventi di tutto il giorno", ed_exclude_help: "Parole nel titolo separate da | – es. ferie|fuori ufficio", ed_include_help: "Lascia vuoto per mostrare tutto", ed_filtered: "filtrato", ed_travel: "Tempo di viaggio (Waze)", l_origin: "Partenza da", ed_origin_help: "Di solito zone.home. Richiede l'integrazione Waze Travel Time (Impostazioni → Dispositivi e servizi).", l_region: "Regione Waze", o_reg_auto: "Automatica", o_reg_eu: "Europa", o_reg_us: "Stati Uniti", o_reg_na: "Nord America", o_reg_il: "Israele", o_reg_au: "Australia", l_vehicle_type: "Veicolo", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Per eventi nelle prossime (ore)", l_avoid_toll_roads: "Evita pedaggi", l_avoid_ferries: "Evita traghetti", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} in auto", tt_leave_by: "Parti alle {t}", tt_leave_now: "Parti ora",
     ld_todo_pop: "Si apre come pop-up da un piccolo pulsante nell'angolo – il calendario occupa il suo spazio.", ld_todo_close: "Chiudi il pop-up dopo (secondi)",
     ld_drag_line: "Trascina per allargare o restringere le colonne o righe ai due lati",
@@ -546,6 +550,7 @@ const I18N = {
   },
   nl: {
     l_multiday_bars: "Meerdaagse afspraken als één balk",
+    l_agenda_multiday: "Meerdaagse afspraken in de Agenda", o_am_every: "Elke dag", o_am_first: "Alleen de eerste dag", am_until: "tot {d}", am_day: "dag {n} van {t}",
     l_exclude: "Afspraken verbergen met", l_include: "Alleen afspraken tonen met", l_exclude_all_day: "Hele-dag-afspraken verbergen", ed_exclude_help: "Woorden in de titel, gescheiden door | – bijv. vakantie|afwezig", ed_include_help: "Leeg laten om alles te tonen", ed_filtered: "gefilterd", ed_travel: "Reistijd (Waze)", l_origin: "Vertrek vanaf", ed_origin_help: "Meestal zone.home. Vereist de integratie Waze Travel Time (Instellingen → Apparaten & diensten).", l_region: "Waze-regio", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "Verenigde Staten", o_reg_na: "Noord-Amerika", o_reg_il: "Israël", o_reg_au: "Australië", l_vehicle_type: "Voertuig", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Voor afspraken in de komende (uur)", l_avoid_toll_roads: "Tolwegen vermijden", l_avoid_ferries: "Veerponten vermijden", tt_min: "{n} min", tt_hm: "{h} u {m} min", tt_drive: "{d} rijden", tt_leave_by: "Vertrek om {t}", tt_leave_now: "Nu vertrekken",
     ld_todo_pop: "Verschijnt als pop-up via een knopje in de hoek – de agenda neemt de ruimte in.", ld_todo_close: "Pop-up sluiten na (seconden)",
     ld_drag_line: "Sleep om de kolommen of rijen aan weerszijden groter of kleiner te maken",
@@ -787,6 +792,7 @@ const I18N = {
   },
   de: {
     l_multiday_bars: "Mehrtägige Termine als ein Balken",
+    l_agenda_multiday: "Mehrtägige Termine in der Agenda", o_am_every: "Jeden Tag", o_am_first: "Nur am ersten Tag", am_until: "bis {d}", am_day: "Tag {n} von {t}",
     l_exclude: "Termine ausblenden mit", l_include: "Nur Termine anzeigen mit", l_exclude_all_day: "Ganztägige Termine ausblenden", ed_exclude_help: "Wörter im Titel, getrennt durch | – z. B. Urlaub|abwesend", ed_include_help: "Leer lassen, um alles anzuzeigen", ed_filtered: "gefiltert", ed_travel: "Fahrzeit (Waze)", l_origin: "Abfahrt von", ed_origin_help: "Meist zone.home. Benötigt die Integration Waze Travel Time (Einstellungen → Geräte & Dienste).", l_region: "Waze-Region", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "USA", o_reg_na: "Nordamerika", o_reg_il: "Israel", o_reg_au: "Australien", l_vehicle_type: "Fahrzeug", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motorrad", l_hours_ahead: "Für Termine in den nächsten (Stunden)", l_avoid_toll_roads: "Mautstraßen meiden", l_avoid_ferries: "Fähren meiden", tt_min: "{n} Min.", tt_hm: "{h} Std. {m} Min.", tt_drive: "{d} Fahrt", tt_leave_by: "Losfahren um {t}", tt_leave_now: "Jetzt losfahren",
     ld_todo_pop: "Erscheint als Pop-up über eine kleine Taste in der Ecke – der Kalender nutzt den Platz.", ld_todo_close: "Pop-up schließen nach (Sekunden)",
     ld_drag_line: "Ziehen, um die Spalten oder Zeilen auf beiden Seiten größer oder kleiner zu machen",
@@ -1028,6 +1034,7 @@ const I18N = {
   },
   hu: {
     l_multiday_bars: "Többnapos események egy sávként",
+    l_agenda_multiday: "Többnapos események a Napirendben", o_am_every: "Minden nap", o_am_first: "Csak az első napon", am_until: "{d}-ig", am_day: "{n}. nap / {t}",
     l_exclude: "Elrejtés, ha tartalmazza", l_include: "Csak ezeket tartalmazók", l_exclude_all_day: "Egész napos események elrejtése", ed_exclude_help: "Szavak a címben | jellel elválasztva – pl. szabadság|házon kívül", ed_include_help: "Hagyd üresen, ha mindent mutatna", ed_filtered: "szűrt", ed_travel: "Utazási idő (Waze)", l_origin: "Indulás innen", ed_origin_help: "Általában zone.home. A Waze Travel Time integráció kell hozzá (Beállítások → Eszközök és szolgáltatások).", l_region: "Waze régió", o_reg_auto: "Automatikus", o_reg_eu: "Európa", o_reg_us: "Egyesült Államok", o_reg_na: "Észak-Amerika", o_reg_il: "Izrael", o_reg_au: "Ausztrália", l_vehicle_type: "Jármű", o_car: "Autó", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Események a következő (óra) belül", l_avoid_toll_roads: "Fizetős utak elkerülése", l_avoid_ferries: "Kompok elkerülése", tt_min: "{n} perc", tt_hm: "{h} ó {m} perc", tt_drive: "{d} autóval", tt_leave_by: "Indulj {t}-kor", tt_leave_now: "Indulj most",
     ld_todo_pop: "Felugró ablakként nyílik egy kis gombbal a sarokban – a naptár kitölti a helyét.", ld_todo_close: "Felugró ablak bezárása ennyi után (mp)",
     ld_drag_line: "Húzd a két oldalán lévő oszlopok vagy sorok átméretezéséhez",
@@ -1269,6 +1276,7 @@ const I18N = {
   },
   pt: {
     l_multiday_bars: "Eventos de vários dias como uma barra",
+    l_agenda_multiday: "Eventos de vários dias na Agenda", o_am_every: "Todos os dias", o_am_first: "Só no primeiro dia", am_until: "até {d}", am_day: "dia {n} de {t}",
     l_exclude: "Ocultar eventos que contenham", l_include: "Mostrar só eventos que contenham", l_exclude_all_day: "Ocultar eventos de dia inteiro", ed_exclude_help: "Palavras do título separadas por | – ex.: férias|fora do escritório", ed_include_help: "Deixe vazio para mostrar tudo", ed_filtered: "filtrado", ed_travel: "Tempo de trajeto (Waze)", l_origin: "Sair de", ed_origin_help: "Normalmente zone.home. Precisa da integração Waze Travel Time (Configurações → Dispositivos e serviços).", l_region: "Região do Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "América do Norte", o_reg_il: "Israel", o_reg_au: "Austrália", l_vehicle_type: "Veículo", o_car: "Carro", o_taxi: "Táxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos nas próximas (horas)", l_avoid_toll_roads: "Evitar pedágios", l_avoid_ferries: "Evitar balsas", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} de carro", tt_leave_by: "Saia até {t}", tt_leave_now: "Saia agora",
     ld_todo_pop: "Abre como janela a partir de um pequeno botão no canto – o calendário ocupa o espaço dela.", ld_todo_close: "Fechar a janela após (segundos)",
     ld_drag_line: "Arraste para aumentar ou diminuir as colunas ou linhas de cada lado",
@@ -1335,6 +1343,7 @@ const I18N = {
   },
   sr: {
     l_multiday_bars: "Вишедневни термини као једна трака",
+    l_agenda_multiday: "Вишедневни термини у Агенди", o_am_every: "Сваког дана", o_am_first: "Само првог дана", am_until: "до {d}", am_day: "{n}. дан од {t}",
     l_exclude: "Сакриј термине који садрже", l_include: "Прикажи само термине који садрже", l_exclude_all_day: "Сакриј целодневне термине", ed_exclude_help: "Речи у наслову, одвојене знаком | – нпр. Одмор|одсутан", ed_include_help: "Оставите празно за приказ свега", ed_filtered: "филтрирано", ed_travel: "Време путовања (Waze)", l_origin: "Полазак из", ed_origin_help: "Углавном zone.home. Захтева интеграцију Waze Travel Time (Подешавања → Уређаји и услуге).", l_region: "Waze регион", o_reg_auto: "Аутоматски", o_reg_eu: "Европа", o_reg_us: "САД", o_reg_na: "Северна Америка", o_reg_il: "Израел", o_reg_au: "Аустралија", l_vehicle_type: "Возило", o_car: "Аутомобил", o_taxi: "Такси", o_motorcycle: "Мотоцикл", l_hours_ahead: "За термине у наредних (сати)", l_avoid_toll_roads: "Избегавај путеве са наплатом путарине", l_avoid_ferries: "Избегавај трајекте", tt_min: "{n} мин.", tt_hm: "{h} ч. {m} мин.", tt_drive: "{d} вожње", tt_leave_by: "Крените у {t}", tt_leave_now: "Крените одмах",
     ld_todo_pop: "Појављује се као искачући прозор преко малог дугмета у углу – календар користи сав простор.", ld_todo_close: "Затвори искачући прозор након (секунди)",
     ld_drag_line: "Повуците да бисте повећали или смањили колоне или редове са обе стране",
@@ -1576,6 +1585,7 @@ const I18N = {
   },
   "sr-Latn": {
     l_multiday_bars: "Višednevni termini kao jedna traka",
+    l_agenda_multiday: "Višednevni termini u Agendi", o_am_every: "Svakog dana", o_am_first: "Samo prvog dana", am_until: "do {d}", am_day: "{n}. dan od {t}",
     l_exclude: "Sakrij termine koji sadrže", l_include: "Prikaži samo termine koji sadrže", l_exclude_all_day: "Sakrij celodnevne termine", ed_exclude_help: "Reči u naslovu, odvojene znakom | – npr. Odmor|odsutan", ed_include_help: "Ostavite prazno za prikaz svega", ed_filtered: "filtrirano", ed_travel: "Vreme putovanja (Waze)", l_origin: "Polazak iz", ed_origin_help: "Uglavnom zone.home. Zahteva integraciju Waze Travel Time (Podešavanja → Uređaji i usluge).", l_region: "Waze region", o_reg_auto: "Automatski", o_reg_eu: "Evropa", o_reg_us: "SAD", o_reg_na: "Severna Amerika", o_reg_il: "Izrael", o_reg_au: "Australija", l_vehicle_type: "Vozilo", o_car: "Automobil", o_taxi: "Taksi", o_motorcycle: "Motocikl", l_hours_ahead: "Za termine u narednih (sati)", l_avoid_toll_roads: "Izbegavaj puteve sa naplatom putarine", l_avoid_ferries: "Izbegavaj trajekte", tt_min: "{n} min.", tt_hm: "{h} č. {m} min.", tt_drive: "{d} vožnje", tt_leave_by: "Krenite u {t}", tt_leave_now: "Krenite odmah",
     ld_todo_pop: "Pojavljuje se kao iskačući prozor preko malog dugmeta u uglu – kalendar koristi sav prostor.", ld_todo_close: "Zatvori iskačući prozor nakon (sekundi)",
     ld_drag_line: "Povucite da biste povećali ili smanjili kolone ili redove sa obe strane",
@@ -3275,6 +3285,12 @@ class HomeCalendarCard extends HTMLElement {
       const total = Math.round((ev.end - ev.start) / 864e5);
       if (total > 1 && day) {
         const n = Math.round((startOfDay(day) - ev.start) / 864e5) + 1;
+        // Agenda "First day only" (#16): one entry with the end date instead of a copy per day
+        if (this._agFirst) {
+          const u = this._t("am_until", { d: this._fmt({ day: "numeric", month: "short" }).format(addDays(ev.end, -1)) }).replace(".-", "-");
+          if (n <= 1) return `${this._t("all_day")} · ${u} · ${total} ${this._n().days(total)}`;
+          return `${u.charAt(0).toUpperCase()}${u.slice(1)} · ${this._t("am_day", { n, t: total })}`;
+        }
         return this._t("all_day_n", { n, t: total });
       }
       return this._t("all_day");
@@ -4101,7 +4117,14 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _renderAgenda() {
+    // multi-day events once, on their first visible day (#16)
+    this._agFirst = this._config.agenda_multiday === "first";
+    try { return this._renderAgendaDays(); } finally { this._agFirst = false; }
+  }
+
+  _renderAgendaDays() {
     const { start, days } = this._range();
+    const seen = new Set();
     // where the date goes: "both" (left column + heading), "left" or "above" (#14)
     const adPos = ["left", "above"].includes(this._config.agenda_date) ? this._config.agenda_date : "both";
     const longFmt = this._fmt({ weekday: "long", day: "numeric", month: "long" });
@@ -4109,7 +4132,8 @@ class HomeCalendarCard extends HTMLElement {
     let out = "";
     for (let i = 0; i < days; i++) {
       const d = addDays(start, i);
-      const evs = this._eventsOn(d);
+      let evs = this._eventsOn(d);
+      if (this._agFirst) evs = evs.filter((ev) => !this._isMulti(ev) || (!seen.has(ev.id) && seen.add(ev.id)));
       const hols = this._holidayTags(d);
       const isToday = dayKey(d) === today;
       if (!evs.length && !hols && !isToday && !this._config.show_empty_days) continue;
@@ -5680,11 +5704,11 @@ const TRAVEL_DEFAULTS = { enabled: false, origin: "zone.home", region: "auto", v
 // editor defaults that are not written to YAML until changed
 const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
   clock_format: "auto", show_view_selector: true, show_date_navigation: true, event_time_position: "above", show_event_location: true,
-  show_event_calendar: true, multiday_bars: true, planner_days: 7, planner_start: "week", month_start: "week", week_start: "week", agenda_date: "both" };
+  show_event_calendar: true, multiday_bars: true, agenda_multiday: "every", planner_days: 7, planner_start: "week", month_start: "week", week_start: "week", agenda_date: "both" };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "todo_group_by", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile",
-  "sections", "show_view_selector", "show_date_navigation", "agenda_date", "event_time_position", "show_event_location", "show_event_calendar",
+  "sections", "show_view_selector", "show_date_navigation", "agenda_date", "agenda_multiday", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
   "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
@@ -5754,6 +5778,7 @@ const generalSchema = (t, hasGrid = false) => {
         ] },
       ]),
       { name: "agenda_date", selector: { select: { mode: "dropdown", options: [o("both", "o_ad_both"), o("left", "o_ad_left"), o("above", "o_ad_above")] } } },
+      { name: "agenda_multiday", selector: { select: { mode: "dropdown", options: [o("every", "o_am_every"), o("first", "o_am_first")] } } },
       { name: "event_time_position", selector: { select: { mode: "dropdown", options: [o("above", "o_tp_above"), o("left", "o_tp_left"), o("right", "o_tp_right")] } } },
       { type: "grid", name: "", schema: [
         { name: "show_event_location", selector: { boolean: {} } },
