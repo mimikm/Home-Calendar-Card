@@ -52,7 +52,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🔴 **"Now" highlight** for events in progress, past events faded, multi-day events labelled *Day 2/3*
 - 📱 **Responsive** – adapts to the card's width, works in Sections and Masonry dashboards
 - 🌍 Dates and times follow your HA language and 12/24-hour profile setting
-- ✅ **Shared to-do list** – tasks grouped by person (using your calendar names), optional due date, anyone can add, tick to complete (with Undo); updates live on every device
+- ✅ **To-do lists** – a shared family list and/or each person's own list (e.g. from their phone), grouped by person, optional due date, anyone can add, tick to complete (with Undo); updates live on every device
 - 🖥️ **Wall display mode** – fills the whole screen, stretches Month/Week to the full height, to-do list as a sidebar, auto-scales text for distance viewing and keeps the screen awake
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
@@ -257,6 +257,7 @@ max_height: 640px
 | `exclude` | text | – | Hide this calendar's events whose title contains any of these words, separated by `\|` – see *Calendar filters* |
 | `include` | text | – | Only show this calendar's events whose title contains one of these words |
 | `exclude_all_day` | boolean | `false` | Hide this calendar's all-day events |
+| `todo` | to-do entity | – | This person's own to-do list – see *One list per person* |
 | `match_in` | list | `[title]` | Where `exclude`/`include` look: `title`, `description`, `location` |
 | `planner_column` | Planner view: `true` (default) – its own column; `group` – shares one column with the other calendars of its `group` (e.g. *Kids*); `false` – its events show next to the date instead, handy for a shared Family calendar |
 
@@ -601,6 +602,30 @@ todo_completed_days: 7
 All of these are also in the visual editor under the to-do settings.
 
 How it's stored: the person is saved in the task's description as `For: Emma`, so it's readable in HA's To-do page too. Lists that don't support descriptions get a `[Emma]` prefix in the task name instead. If you rename a calendar later, existing tasks stay under the old name until you edit them.
+
+#### One list per person
+
+If everyone already has their own to-do list in Home Assistant (for example the list on each person's phone, or their own Google Tasks list), link it to their calendar. Every task in that list then belongs to that person automatically, with no `For:` needed, so tasks added from a phone show up in the right place.
+
+In the visual editor, open a calendar's settings and pick its **Own to-do list**. In YAML:
+
+```yaml
+todo_entity: todo.family      # optional shared list – keep it for Everyone / people without a list
+calendars:
+  - entity: calendar.emma
+    person: person.emma
+    todo: todo.emma_phone
+  - entity: calendar.oliver
+    person: person.oliver
+    todo: todo.oliver_phone
+```
+
+- Tasks from all lists are shown together, grouped by person as usual (or by due date).
+- **Adding** a task for Emma puts it in her own list. People without their own list (and *Everyone*) use the shared `todo_entity` with `For: <name>`, as before.
+- **Ticking, editing and deleting** always go to the list the task came from.
+- `todo_entity` is optional: with only personal lists, the person buttons show just the people who have a list.
+
+<sub>Requested by [@xzyriel](https://github.com/xzyriel) in [#20](https://github.com/mimikm/Home-Calendar-Card/issues/20).</sub>
 
 ### Editing events
 

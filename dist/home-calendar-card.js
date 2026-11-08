@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.18.2";
+const CARD_VERSION = "1.19.0-beta.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -109,6 +109,7 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 const I18N = {
   en: {
     l_multiday_bars: "Multi-day events as one bar",
+    l_todo: "Own to-do list (optional)", ed_todo_help: "Tasks in this list belong to this person – no “For:” needed",
     l_agenda_multiday: "Multi-day events in Agenda", o_am_every: "Every day", o_am_first: "First day only", am_until: "until {d}", am_day: "day {n} of {t}",
     l_exclude: "Hide events containing", l_include: "Only show events containing", l_exclude_all_day: "Hide all-day events", ed_exclude_help: "Words in the title, separated by | – e.g. vacation|out of office", ed_include_help: "Leave empty to show everything", ed_filtered: "filtered", ed_travel: "Travel time (Waze)", l_origin: "Drive from", ed_origin_help: "Usually zone.home. Needs the Waze Travel Time integration (Settings → Devices & services).", l_region: "Waze region", o_reg_auto: "Automatic", o_reg_eu: "Europe", o_reg_us: "United States", o_reg_na: "North America", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehicle", o_car: "Car", o_taxi: "Taxi", o_motorcycle: "Motorcycle", l_hours_ahead: "For events in the next (hours)", l_avoid_toll_roads: "Avoid toll roads", l_avoid_ferries: "Avoid ferries", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} drive", tt_leave_by: "Leave by {t}", tt_leave_now: "Leave now",
     ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
@@ -176,6 +177,7 @@ const I18N = {
   },
   pl: {
     l_multiday_bars: "Wydarzenia wielodniowe jako jeden pasek",
+    l_todo: "Własna lista zadań (opcjonalnie)", ed_todo_help: "Zadania z tej listy należą do tej osoby – bez dopisku „For:”",
     l_agenda_multiday: "Wydarzenia wielodniowe w Agendzie", o_am_every: "Każdego dnia", o_am_first: "Tylko pierwszego dnia", am_until: "do {d}", am_day: "dzień {n} z {t}",
     l_exclude: "Ukryj wydarzenia zawierające", l_include: "Pokaż tylko wydarzenia zawierające", l_exclude_all_day: "Ukryj wydarzenia całodniowe", ed_exclude_help: "Słowa w tytule rozdzielone | – np. urlop|poza biurem", ed_include_help: "Zostaw puste, aby pokazać wszystko", ed_filtered: "filtr", ed_travel: "Czas dojazdu (Waze)", l_origin: "Dojazd z", ed_origin_help: "Zwykle zone.home. Wymaga integracji Waze Travel Time (Ustawienia → Urządzenia i usługi).", l_region: "Region Waze", o_reg_auto: "Automatycznie", o_reg_eu: "Europa", o_reg_us: "Stany Zjednoczone", o_reg_na: "Ameryka Północna", o_reg_il: "Izrael", o_reg_au: "Australia", l_vehicle_type: "Pojazd", o_car: "Samochód", o_taxi: "Taxi", o_motorcycle: "Motocykl", l_hours_ahead: "Dla wydarzeń w ciągu (godzin)", l_avoid_toll_roads: "Unikaj dróg płatnych", l_avoid_ferries: "Unikaj promów", tt_min: "{n} min", tt_hm: "{h} godz. {m} min", tt_drive: "{d} jazdy", tt_leave_by: "Wyjedź o {t}", tt_leave_now: "Czas wyjeżdżać",
     ld_todo_pop: "Pokazywana jako okienko otwierane małym przyciskiem w rogu – kalendarz zajmuje jej miejsce.", ld_todo_close: "Zamknij okienko po (sekundy)",
@@ -242,6 +244,7 @@ const I18N = {
   },
   es: {
     l_multiday_bars: "Eventos de varios días como una barra",
+    l_todo: "Lista de tareas propia (opcional)", ed_todo_help: "Las tareas de esta lista son de esta persona, sin necesidad de «For:»",
     l_agenda_multiday: "Eventos de varios días en la Agenda", o_am_every: "Cada día", o_am_first: "Solo el primer día", am_until: "hasta el {d}", am_day: "día {n} de {t}",
     l_exclude: "Ocultar eventos que contengan", l_include: "Mostrar solo eventos que contengan", l_exclude_all_day: "Ocultar eventos de todo el día", ed_exclude_help: "Palabras del título separadas por | – p. ej. vacaciones|fuera de la oficina", ed_include_help: "Déjalo vacío para mostrar todo", ed_filtered: "filtrado", ed_travel: "Tiempo de viaje (Waze)", l_origin: "Salir desde", ed_origin_help: "Normalmente zone.home. Necesita la integración Waze Travel Time (Ajustes → Dispositivos y servicios).", l_region: "Región de Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "Norteamérica", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehículo", o_car: "Coche", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos en las próximas (horas)", l_avoid_toll_roads: "Evitar peajes", l_avoid_ferries: "Evitar ferris", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} en coche", tt_leave_by: "Sal a las {t}", tt_leave_now: "Sal ya",
     ld_todo_pop: "Se muestra como ventana emergente desde un pequeño botón en la esquina; el calendario ocupa su espacio.", ld_todo_close: "Cerrar la ventana tras (segundos)",
@@ -308,6 +311,7 @@ const I18N = {
   },
   it: {
     l_multiday_bars: "Eventi di più giorni come una barra",
+    l_todo: "Lista di cose da fare propria (facoltativa)", ed_todo_help: "Le attività di questa lista appartengono a questa persona, senza bisogno di “For:”",
     l_agenda_multiday: "Eventi di più giorni nell'Agenda", o_am_every: "Ogni giorno", o_am_first: "Solo il primo giorno", am_until: "fino al {d}", am_day: "giorno {n} di {t}",
     l_exclude: "Nascondi eventi che contengono", l_include: "Mostra solo eventi che contengono", l_exclude_all_day: "Nascondi eventi di tutto il giorno", ed_exclude_help: "Parole nel titolo separate da | – es. ferie|fuori ufficio", ed_include_help: "Lascia vuoto per mostrare tutto", ed_filtered: "filtrato", ed_travel: "Tempo di viaggio (Waze)", l_origin: "Partenza da", ed_origin_help: "Di solito zone.home. Richiede l'integrazione Waze Travel Time (Impostazioni → Dispositivi e servizi).", l_region: "Regione Waze", o_reg_auto: "Automatica", o_reg_eu: "Europa", o_reg_us: "Stati Uniti", o_reg_na: "Nord America", o_reg_il: "Israele", o_reg_au: "Australia", l_vehicle_type: "Veicolo", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Per eventi nelle prossime (ore)", l_avoid_toll_roads: "Evita pedaggi", l_avoid_ferries: "Evita traghetti", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} in auto", tt_leave_by: "Parti alle {t}", tt_leave_now: "Parti ora",
     ld_todo_pop: "Si apre come pop-up da un piccolo pulsante nell'angolo – il calendario occupa il suo spazio.", ld_todo_close: "Chiudi il pop-up dopo (secondi)",
@@ -550,6 +554,7 @@ const I18N = {
   },
   nl: {
     l_multiday_bars: "Meerdaagse afspraken als één balk",
+    l_todo: "Eigen takenlijst (optioneel)", ed_todo_help: "Taken in deze lijst horen bij deze persoon – geen “For:” nodig",
     l_agenda_multiday: "Meerdaagse afspraken in de Agenda", o_am_every: "Elke dag", o_am_first: "Alleen de eerste dag", am_until: "tot {d}", am_day: "dag {n} van {t}",
     l_exclude: "Afspraken verbergen met", l_include: "Alleen afspraken tonen met", l_exclude_all_day: "Hele-dag-afspraken verbergen", ed_exclude_help: "Woorden in de titel, gescheiden door | – bijv. vakantie|afwezig", ed_include_help: "Leeg laten om alles te tonen", ed_filtered: "gefilterd", ed_travel: "Reistijd (Waze)", l_origin: "Vertrek vanaf", ed_origin_help: "Meestal zone.home. Vereist de integratie Waze Travel Time (Instellingen → Apparaten & diensten).", l_region: "Waze-regio", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "Verenigde Staten", o_reg_na: "Noord-Amerika", o_reg_il: "Israël", o_reg_au: "Australië", l_vehicle_type: "Voertuig", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Voor afspraken in de komende (uur)", l_avoid_toll_roads: "Tolwegen vermijden", l_avoid_ferries: "Veerponten vermijden", tt_min: "{n} min", tt_hm: "{h} u {m} min", tt_drive: "{d} rijden", tt_leave_by: "Vertrek om {t}", tt_leave_now: "Nu vertrekken",
     ld_todo_pop: "Verschijnt als pop-up via een knopje in de hoek – de agenda neemt de ruimte in.", ld_todo_close: "Pop-up sluiten na (seconden)",
@@ -792,6 +797,7 @@ const I18N = {
   },
   de: {
     l_multiday_bars: "Mehrtägige Termine als ein Balken",
+    l_todo: "Eigene Aufgabenliste (optional)", ed_todo_help: "Aufgaben in dieser Liste gehören dieser Person – kein „For:“ nötig",
     l_agenda_multiday: "Mehrtägige Termine in der Agenda", o_am_every: "Jeden Tag", o_am_first: "Nur am ersten Tag", am_until: "bis {d}", am_day: "Tag {n} von {t}",
     l_exclude: "Termine ausblenden mit", l_include: "Nur Termine anzeigen mit", l_exclude_all_day: "Ganztägige Termine ausblenden", ed_exclude_help: "Wörter im Titel, getrennt durch | – z. B. Urlaub|abwesend", ed_include_help: "Leer lassen, um alles anzuzeigen", ed_filtered: "gefiltert", ed_travel: "Fahrzeit (Waze)", l_origin: "Abfahrt von", ed_origin_help: "Meist zone.home. Benötigt die Integration Waze Travel Time (Einstellungen → Geräte & Dienste).", l_region: "Waze-Region", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "USA", o_reg_na: "Nordamerika", o_reg_il: "Israel", o_reg_au: "Australien", l_vehicle_type: "Fahrzeug", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motorrad", l_hours_ahead: "Für Termine in den nächsten (Stunden)", l_avoid_toll_roads: "Mautstraßen meiden", l_avoid_ferries: "Fähren meiden", tt_min: "{n} Min.", tt_hm: "{h} Std. {m} Min.", tt_drive: "{d} Fahrt", tt_leave_by: "Losfahren um {t}", tt_leave_now: "Jetzt losfahren",
     ld_todo_pop: "Erscheint als Pop-up über eine kleine Taste in der Ecke – der Kalender nutzt den Platz.", ld_todo_close: "Pop-up schließen nach (Sekunden)",
@@ -1034,6 +1040,7 @@ const I18N = {
   },
   hu: {
     l_multiday_bars: "Többnapos események egy sávként",
+    l_todo: "Saját teendőlista (opcionális)", ed_todo_help: "A lista teendői ehhez a személyhez tartoznak – nem kell „For:”",
     l_agenda_multiday: "Többnapos események a Napirendben", o_am_every: "Minden nap", o_am_first: "Csak az első napon", am_until: "{d}-ig", am_day: "{n}. nap / {t}",
     l_exclude: "Elrejtés, ha tartalmazza", l_include: "Csak ezeket tartalmazók", l_exclude_all_day: "Egész napos események elrejtése", ed_exclude_help: "Szavak a címben | jellel elválasztva – pl. szabadság|házon kívül", ed_include_help: "Hagyd üresen, ha mindent mutatna", ed_filtered: "szűrt", ed_travel: "Utazási idő (Waze)", l_origin: "Indulás innen", ed_origin_help: "Általában zone.home. A Waze Travel Time integráció kell hozzá (Beállítások → Eszközök és szolgáltatások).", l_region: "Waze régió", o_reg_auto: "Automatikus", o_reg_eu: "Európa", o_reg_us: "Egyesült Államok", o_reg_na: "Észak-Amerika", o_reg_il: "Izrael", o_reg_au: "Ausztrália", l_vehicle_type: "Jármű", o_car: "Autó", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Események a következő (óra) belül", l_avoid_toll_roads: "Fizetős utak elkerülése", l_avoid_ferries: "Kompok elkerülése", tt_min: "{n} perc", tt_hm: "{h} ó {m} perc", tt_drive: "{d} autóval", tt_leave_by: "Indulj {t}-kor", tt_leave_now: "Indulj most",
     ld_todo_pop: "Felugró ablakként nyílik egy kis gombbal a sarokban – a naptár kitölti a helyét.", ld_todo_close: "Felugró ablak bezárása ennyi után (mp)",
@@ -1276,6 +1283,7 @@ const I18N = {
   },
   pt: {
     l_multiday_bars: "Eventos de vários dias como uma barra",
+    l_todo: "Lista de tarefas própria (opcional)", ed_todo_help: "As tarefas desta lista pertencem a esta pessoa – sem precisar de “For:”",
     l_agenda_multiday: "Eventos de vários dias na Agenda", o_am_every: "Todos os dias", o_am_first: "Só no primeiro dia", am_until: "até {d}", am_day: "dia {n} de {t}",
     l_exclude: "Ocultar eventos que contenham", l_include: "Mostrar só eventos que contenham", l_exclude_all_day: "Ocultar eventos de dia inteiro", ed_exclude_help: "Palavras do título separadas por | – ex.: férias|fora do escritório", ed_include_help: "Deixe vazio para mostrar tudo", ed_filtered: "filtrado", ed_travel: "Tempo de trajeto (Waze)", l_origin: "Sair de", ed_origin_help: "Normalmente zone.home. Precisa da integração Waze Travel Time (Configurações → Dispositivos e serviços).", l_region: "Região do Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "América do Norte", o_reg_il: "Israel", o_reg_au: "Austrália", l_vehicle_type: "Veículo", o_car: "Carro", o_taxi: "Táxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos nas próximas (horas)", l_avoid_toll_roads: "Evitar pedágios", l_avoid_ferries: "Evitar balsas", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} de carro", tt_leave_by: "Saia até {t}", tt_leave_now: "Saia agora",
     ld_todo_pop: "Abre como janela a partir de um pequeno botão no canto – o calendário ocupa o espaço dela.", ld_todo_close: "Fechar a janela após (segundos)",
@@ -1343,6 +1351,7 @@ const I18N = {
   },
   sr: {
     l_multiday_bars: "Вишедневни термини као једна трака",
+    l_todo: "Сопствена листа задатака (опционо)", ed_todo_help: "Задаци са ове листе припадају овој особи – није потребно „For:”",
     l_agenda_multiday: "Вишедневни термини у Агенди", o_am_every: "Сваког дана", o_am_first: "Само првог дана", am_until: "до {d}", am_day: "{n}. дан од {t}",
     l_exclude: "Сакриј термине који садрже", l_include: "Прикажи само термине који садрже", l_exclude_all_day: "Сакриј целодневне термине", ed_exclude_help: "Речи у наслову, одвојене знаком | – нпр. Одмор|одсутан", ed_include_help: "Оставите празно за приказ свега", ed_filtered: "филтрирано", ed_travel: "Време путовања (Waze)", l_origin: "Полазак из", ed_origin_help: "Углавном zone.home. Захтева интеграцију Waze Travel Time (Подешавања → Уређаји и услуге).", l_region: "Waze регион", o_reg_auto: "Аутоматски", o_reg_eu: "Европа", o_reg_us: "САД", o_reg_na: "Северна Америка", o_reg_il: "Израел", o_reg_au: "Аустралија", l_vehicle_type: "Возило", o_car: "Аутомобил", o_taxi: "Такси", o_motorcycle: "Мотоцикл", l_hours_ahead: "За термине у наредних (сати)", l_avoid_toll_roads: "Избегавај путеве са наплатом путарине", l_avoid_ferries: "Избегавај трајекте", tt_min: "{n} мин.", tt_hm: "{h} ч. {m} мин.", tt_drive: "{d} вожње", tt_leave_by: "Крените у {t}", tt_leave_now: "Крените одмах",
     ld_todo_pop: "Појављује се као искачући прозор преко малог дугмета у углу – календар користи сав простор.", ld_todo_close: "Затвори искачући прозор након (секунди)",
@@ -1585,6 +1594,7 @@ const I18N = {
   },
   "sr-Latn": {
     l_multiday_bars: "Višednevni termini kao jedna traka",
+    l_todo: "Sopstvena lista zadataka (opciono)", ed_todo_help: "Zadaci sa ove liste pripadaju ovoj osobi – nije potrebno „For:”",
     l_agenda_multiday: "Višednevni termini u Agendi", o_am_every: "Svakog dana", o_am_first: "Samo prvog dana", am_until: "do {d}", am_day: "{n}. dan od {t}",
     l_exclude: "Sakrij termine koji sadrže", l_include: "Prikaži samo termine koji sadrže", l_exclude_all_day: "Sakrij celodnevne termine", ed_exclude_help: "Reči u naslovu, odvojene znakom | – npr. Odmor|odsutan", ed_include_help: "Ostavite prazno za prikaz svega", ed_filtered: "filtrirano", ed_travel: "Vreme putovanja (Waze)", l_origin: "Polazak iz", ed_origin_help: "Uglavnom zone.home. Zahteva integraciju Waze Travel Time (Podešavanja → Uređaji i usluge).", l_region: "Waze region", o_reg_auto: "Automatski", o_reg_eu: "Evropa", o_reg_us: "SAD", o_reg_na: "Severna Amerika", o_reg_il: "Izrael", o_reg_au: "Australija", l_vehicle_type: "Vozilo", o_car: "Automobil", o_taxi: "Taksi", o_motorcycle: "Motocikl", l_hours_ahead: "Za termine u narednih (sati)", l_avoid_toll_roads: "Izbegavaj puteve sa naplatom putarine", l_avoid_ferries: "Izbegavaj trajekte", tt_min: "{n} min.", tt_hm: "{h} č. {m} min.", tt_drive: "{d} vožnje", tt_leave_by: "Krenite u {t}", tt_leave_now: "Krenite odmah",
     ld_todo_pop: "Pojavljuje se kao iskačući prozor preko malog dugmeta u uglu – kalendar koristi sav prostor.", ld_todo_close: "Zatvori iskačući prozor nakon (sekundi)",
@@ -1951,16 +1961,26 @@ const trackList = (sizes, n, fallback) => {
 };
 
 // Starting layout built from the current (classic) settings, so switching to the designer changes nothing visible.
+// To-do lists (#20): the shared `todo_entity` plus each calendar's own `todo` list (one list per person).
+const todoLists = (c) => {
+  const out = [];
+  const add = (entity, cal) => { if (entity && typeof entity === "string" && !out.some((x) => x.entity === entity)) out.push({ entity, cal }); };
+  add(c?.todo_entity, null);
+  (Array.isArray(c?.calendars) ? c.calendars : []).forEach((x) => { if (x && typeof x === "object" && x.entity) add(x.todo, x.entity); });
+  return out;
+};
+const hasTodo = (c) => todoLists(c).length > 0;
+
 const defaultGrid = (c) => {
   const blocks = {};
   const hide = (n) => { blocks[n] = { col: 1, row: 1, w: 1, h: 1, show: "hide" }; };
   let pos = String(c.todo_position || "auto").toLowerCase();
   if (pos === "side") pos = "right";
   if (!["top", "bottom", "left", "right"].includes(pos)) pos = !c.layout || c.layout === "card" ? "bottom" : "right";
-  const side = c.todo_entity && (pos === "left" || pos === "right");
+  const side = hasTodo(c) && (pos === "left" || pos === "right");
   const M = side ? 8 : 12;
   const O = side && pos === "left" ? 4 : 0;
-  let row = c.todo_entity && pos === "top" ? 2 : 1;
+  let row = hasTodo(c) && pos === "top" ? 2 : 1;
   const put = (items) => { // items: [name, fraction]; fills one row of the main area
     let col = 1;
     items.forEach(([n, f], i) => {
@@ -1985,14 +2005,14 @@ const defaultGrid = (c) => {
     } else put([[x, 1]]);
   });
   put([["calendar", 1]]);
-  if (!c.todo_entity) hide("todo");
+  if (!hasTodo(c)) hide("todo");
   else if (side) blocks.todo = { col: pos === "left" ? 1 : 9, row: 1, w: 4, h: row - 1, show: "show" };
   else blocks.todo = { col: 1, row: pos === "top" ? 1 : row, w: 12, h: 1, show: "show" };
   return { columns: 12, rows: "auto", blocks };
 };
 const B = (col, row, w, h = 1, show = "show") => ({ col, row, w, h, show });
 const presetGrid = (name, c) => {
-  const todo = !!c.todo_entity;
+  const todo = hasTodo(c);
   if (name === "wall") {
     const W = todo ? 9 : 12;
     return { columns: 12, rows: 8, blocks: {
@@ -2091,7 +2111,7 @@ class HomeCalendarCard extends HTMLElement {
       throw new Error("Add at least one calendar entity under 'calendars'");
     }
     const oldWeather = this._config?.weather_entity;
-    const oldTodo = this._config?.todo_entity;
+    const oldTodo = JSON.stringify(todoLists(this._config));
     this._config = {
       default_view: "agenda", days_to_show: 7, first_day_of_week: "monday", time_format: "auto",
       show_empty_days: false, show_header: true, show_calendar_chips: true, allow_add: true,
@@ -2143,7 +2163,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!this._anchor) this._anchor = startOfDay(new Date());
 
     if (oldWeather !== this._config.weather_entity) this._unsubscribeWeather();
-    if (oldTodo !== this._config.todo_entity) { this._unsubscribeTodo(); this._todos = []; }
+    if (oldTodo !== JSON.stringify(todoLists(this._config))) { this._unsubscribeTodo(); this._todos = []; }
     this._todoKey = null; // rebuild the to-do form for the new config
     if (this._hass) {
       this._subscribeWeather();
@@ -2166,8 +2186,9 @@ class HomeCalendarCard extends HTMLElement {
       this._render();
       return;
     }
-    const t = this._config.todo_entity;
-    if (t && old.states[t] !== hass.states[t] && !this._todoLive) this._loadTodos();
+    for (const { entity: t } of todoLists(this._config)) {
+      if (old.states[t] !== hass.states[t] && !this._todoLiveSet?.has(t)) this._loadTodos(t);
+    }
     const tc = this._config.todo_calendar;
     if (tc && old.states[tc] !== hass.states[tc]) this._fetchTodoCal();
     const { night } = this._ambientCfg();
@@ -2245,42 +2266,77 @@ class HomeCalendarCard extends HTMLElement {
   // "For: <name>" in the item's description (or a "[Name] " title prefix when the
   // list doesn't support descriptions), using the calendar's display name.
 
+  // Each list is subscribed separately; items carry their list (_ent) and a key unique across lists (_key).
   _subscribeTodo() {
-    const ent = this._config?.todo_entity;
-    if (!ent || !this._hass || this._todoSub || !this.isConnected) return;
-    this._todoSub = this._hass.connection.subscribeMessage((msg) => {
-      this._todoLive = true;
-      this._todos = msg.items || [];
-      this._todoError = null;
-      this._renderTodoList();
-    }, { type: "todo/item/subscribe", entity_id: ent }).catch((err) => {
-      console.warn("home-calendar-card: live to-do updates unavailable, polling instead", err);
-      this._todoSub = null;
-      this._todoLive = false;
-      this._loadTodos();
-    });
+    if (!this._hass || !this.isConnected) return;
+    this._todoSubs = this._todoSubs || {};
+    this._todoLiveSet = this._todoLiveSet || new Set();
+    for (const { entity: ent } of todoLists(this._config)) {
+      if (this._todoSubs[ent]) continue;
+      this._todoSubs[ent] = this._hass.connection.subscribeMessage((msg) => {
+        this._todoLiveSet.add(ent);
+        this._setTodoItems(ent, msg.items || [], null);
+      }, { type: "todo/item/subscribe", entity_id: ent }).catch((err) => {
+        console.warn("home-calendar-card: live to-do updates unavailable, polling instead", ent, err);
+        this._todoLiveSet.delete(ent);
+        this._loadTodos(ent);
+      });
+    }
   }
 
   _unsubscribeTodo() {
-    if (this._todoSub) {
-      this._todoSub.then((u) => u && u()).catch(() => {});
-      this._todoSub = null;
-    }
-    this._todoLive = false;
+    Object.values(this._todoSubs || {}).forEach((p) => p.then((u) => u && u()).catch(() => {}));
+    this._todoSubs = {};
+    this._todoLiveSet = new Set();
+    this._todoItems = {};
+    this._todoErrs = {};
   }
 
-  async _loadTodos() {
-    const ent = this._config?.todo_entity;
-    if (!ent || !this._hass) return;
-    try {
-      const r = await this._hass.callWS({ type: "todo/item/list", entity_id: ent });
-      this._todos = r.items || [];
-      this._todoError = null;
-    } catch (e) {
-      this._todoError = `${ent}: ${e?.message || "could not load the to-do list"}`;
-    }
+  _setTodoItems(ent, items, err) {
+    this._todoItems = this._todoItems || {};
+    this._todoErrs = this._todoErrs || {};
+    // tasks in the shared list keep their own uid; personal lists get "<list>#<uid>" so ids never clash
+    const shared = ent === this._config?.todo_entity;
+    this._todoItems[ent] = items.map((i) => ({ ...i, _ent: ent, _key: shared ? i.uid : `${ent}#${i.uid}` }));
+    this._todoErrs[ent] = err;
+    const ents = todoLists(this._config).map((l) => l.entity);
+    this._todos = ents.flatMap((e) => this._todoItems[e] || []);
+    this._todoError = ents.map((e) => this._todoErrs[e]).filter(Boolean).join(" · ") || null;
     this._renderTodoList();
   }
+
+  async _loadTodos(only) {
+    if (!this._hass) return;
+    const ents = only ? [only] : todoLists(this._config).map((l) => l.entity);
+    await Promise.all(ents.map(async (ent) => {
+      try {
+        const r = await this._hass.callWS({ type: "todo/item/list", entity_id: ent });
+        this._setTodoItems(ent, r.items || [], null);
+      } catch (e) {
+        this._setTodoItems(ent, this._todoItems?.[ent] || [], `${ent}: ${e?.message || "could not load the to-do list"}`);
+      }
+    }));
+  }
+
+  // after a change: reload that list unless it updates live
+  _todoRefresh(ent) { if (!this._todoLiveSet?.has(ent)) this._loadTodos(ent); }
+
+  _todoLists() {
+    return todoLists(this._config).map((l) => ({ entity: l.entity, cal: l.cal ? this._calendars.find((c) => c.entity === l.cal) || null : null }));
+  }
+
+  // where a new task for this person goes: their own list, or the shared list with "For: <name>"
+  _todoTarget(who) {
+    const lists = this._todoLists();
+    const own = who && lists.find((l) => l.cal?.entity === who);
+    if (own) return { ent: own.entity, name: "" };
+    const shared = lists.find((l) => !l.cal);
+    if (!shared) return null;
+    const cal = this._todoPeople().find((c) => c.entity === who);
+    return { ent: shared.entity, name: cal ? this._calName(cal) : "" };
+  }
+
+  _todoRaw(key) { return (this._todos || []).find((i) => (i._key || i.uid) === key); }
 
   _todoPeople() { return this._calendars.filter((c) => c.type === "events"); }
 
@@ -2291,7 +2347,10 @@ class HomeCalendarCard extends HTMLElement {
     if (pre) { who = pre[1].trim(); summary = summary.slice(pre[0].length); }
     const d = String(it.description || "").match(/^\s*For:\s*(.+?)\s*$/mi);
     if (d) who = d[1];
-    const cal = who ? this._todoPeople().find((c) => this._calName(c).toLowerCase() === who.toLowerCase()) : null;
+    let cal = who ? this._todoPeople().find((c) => this._calName(c).toLowerCase() === who.toLowerCase()) : null;
+    // a task in a person's own list always belongs to that person (#20)
+    const owner = it._ent ? this._todoLists().find((l) => l.entity === it._ent)?.cal : null;
+    if (owner) { cal = owner; who = this._calName(owner); }
     const timed = !!(it.due && String(it.due).length > 10);
     const due = it.due ? (timed ? new Date(it.due) : parseDate(it.due)) : null;
     // "Done by: Dom (2026-10-12 14:30)" is written by this card when a task is ticked
@@ -2299,7 +2358,7 @@ class HomeCalendarCard extends HTMLElement {
     let completedAt = it.completed ? new Date(it.completed) : null;
     if (!completedAt && db?.[2]) completedAt = new Date(`${db[2]}T${db[3] || "12:00"}`);
     if (completedAt && isNaN(completedAt)) completedAt = null;
-    return { raw: it, uid: it.uid, summary, who, cal, due, timed, done: it.status === "completed", doneBy: db ? db[1] : null, completedAt };
+    return { raw: it, uid: it._key || it.uid, ent: it._ent, own: !!owner, summary, who, cal, due, timed, done: it.status === "completed", doneBy: db ? db[1] : null, completedAt };
   }
 
   _todoOpts() {
@@ -2339,21 +2398,23 @@ class HomeCalendarCard extends HTMLElement {
 
   _buildTodo() {
     const box = this._todoBox;
-    const ent = this._config.todo_entity;
     if (!box) return;
-    if (!ent) { box.hidden = true; box.innerHTML = ""; this._todoKey = null; return; }
-    const people = this._todoPeople();
-    const feats = this._features(ent);
+    const lists = this._todoLists();
+    if (!lists.length) { box.hidden = true; box.innerHTML = ""; this._todoKey = null; return; }
+    const shared = lists.some((l) => !l.cal);
+    // people you can add a task for: everyone with the shared list, otherwise those with their own list
+    const people = this._todoPeople().filter((c) => shared || lists.some((l) => l.cal === c));
     const o = this._todoOpts();
-    const key = JSON.stringify([ent, feats, this._config.todo_title, this._config.todo_autohide, o, people.map((c) => [c.entity, this._calName(c), c.color])]);
+    const key = JSON.stringify([lists.map((l) => [l.entity, l.cal?.entity, this._features(l.entity)]), this._config.todo_title, this._config.todo_autohide, o, people.map((c) => [c.entity, this._calName(c), c.color])]);
     if (key === this._todoKey) return;
     this._todoKey = key;
     box.hidden = false;
-    if (this._todoWho === undefined || (this._todoWho && !people.some((c) => c.entity === this._todoWho))) {
+    if (this._todoWho === undefined || (this._todoWho && !people.some((c) => c.entity === this._todoWho)) || (!shared && !this._todoWho)) {
       this._todoWho = people[0]?.entity || "";
     }
-    const canDue = !this._hass || !this._hass.states[ent] || (feats & (16 | 32));
-    const canAdd = !this._hass || !this._hass.states[ent] || (feats & 1);
+    const can = (bits) => lists.some((l) => !this._hass || !this._hass.states[l.entity] || (this._features(l.entity) & bits));
+    const canDue = can(16 | 32);
+    const canAdd = can(1);
     const chip = (entity, label, color, av) => `<button type="button" class="chip ${this._todoWho === entity ? "sel" : ""}" style="--c:${esc(color)}" data-action="todo-who" data-entity="${esc(entity)}">${av || `<span class="dot"></span>`}${esc(label)}</button>`;
     box.innerHTML = `
       <div class="todo-head" ${this._todoAutohide() ? `data-action="todo-toggle" role="button" title="${esc(this._t("todo_toggle"))}"` : ""}>
@@ -2373,7 +2434,7 @@ class HomeCalendarCard extends HTMLElement {
         </div>
         <div class="t-who">
           ${people.map((c) => chip(c.entity, this._calName(c), c.color, this._avatar(c, "sm"))).join("")}
-          ${chip("", this._t("everyone"), "var(--hcc-accent)", `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>`)}
+          ${shared ? chip("", this._t("everyone"), "var(--hcc-accent)", `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>`) : ""}
         </div>
       </form>` : ""}`;
     const form = box.querySelector(".todo-add");
@@ -2470,20 +2531,19 @@ class HomeCalendarCard extends HTMLElement {
     }
     return `<div class="ti" data-uid="${esc(t.uid)}">
       <button class="tick" data-action="todo-done" data-uid="${esc(t.uid)}" title="${esc(this._t("mark_done"))}"><ha-icon icon="mdi:check"></ha-icon></button>
-      <span class="ti-text" ${this._todoCanEdit() ? `data-action="todo-edit" data-uid="${esc(t.uid)}" role="button" title="${esc(this._t("edit_task"))}"` : ""}>${esc(t.summary)}</span>${who}${chip(false)}
+      <span class="ti-text" ${this._todoCanEdit(t.ent) ? `data-action="todo-edit" data-uid="${esc(t.uid)}" role="button" title="${esc(this._t("edit_task"))}"` : ""}>${esc(t.summary)}</span>${who}${chip(false)}
     </div>`;
   }
 
   // Edit / delete tasks (#12). Needs the to-do integration to support updating (4) or deleting (2) items.
-  _todoCanEdit() {
-    const ent = this._config.todo_entity;
+  _todoCanEdit(ent) {
     return this._config.allow_edit_tasks !== false && !!(this._features(ent) & (2 | 4));
   }
 
   _openTodoEdit(uid) {
-    const ent = this._config.todo_entity;
-    const raw = (this._todos || []).find((i) => i.uid === uid);
+    const raw = this._todoRaw(uid);
     if (!raw) return;
+    const ent = raw._ent;
     const t = this._parseTodo(raw);
     const feats = this._features(ent);
     const canUpd = !!(feats & 4);
@@ -2491,7 +2551,7 @@ class HomeCalendarCard extends HTMLElement {
     const canDate = canUpd && !!(feats & (16 | 32));
     const canTime = canUpd && !!(feats & 32);
     const people = this._todoPeople();
-    this._editTodo = { uid, raw, t, who: t.cal ? t.cal.entity : t.who ? `name:${t.who}` : "" };
+    this._editTodo = { uid, ent, raw, t, who: t.cal ? t.cal.entity : t.who ? `name:${t.who}` : "" };
     const chip = (key, label, color, av) => `<button type="button" class="chip ${this._editTodo.who === key ? "sel" : ""}" style="--c:${esc(color)}" data-action="todo-edit-who" data-key="${esc(key)}">${av || `<span class="dot"></span>`}${esc(label)}</button>`;
     const extra = t.who && !t.cal ? chip(`name:${t.who}`, t.who, "var(--hcc-accent)") : "";
     this._openDialog(`
@@ -2504,7 +2564,7 @@ class HomeCalendarCard extends HTMLElement {
         ${canDate ? `<div class="dt"><span class="lbl">${esc(this._t("due"))}</span>
           <input class="inp" type="date" id="te-date" value="${t.due ? dayKey(t.due) : ""}">
           ${canTime ? `<input class="inp" type="time" id="te-time" value="${t.due && t.timed ? timeKey(t.due) : ""}">` : ""}</div>` : ""}
-        ${canUpd && people.length ? `<div><div class="lbl">${esc(this._t("task_for"))}</div><div class="cal-pick">
+        ${canUpd && people.length && !t.own ? `<div><div class="lbl">${esc(this._t("task_for"))}</div><div class="cal-pick">
           ${people.map((c) => chip(c.entity, this._calName(c), c.color, this._avatar(c, "sm"))).join("")}${extra}
           ${chip("", this._t("everyone"), "var(--hcc-accent)", `<ha-icon class="t-all" icon="mdi:account-group"></ha-icon>`)}
         </div></div>` : ""}
@@ -2523,16 +2583,17 @@ class HomeCalendarCard extends HTMLElement {
   async _saveTodoEdit() {
     const ed = this._editTodo;
     if (!ed) return;
-    const ent = this._config.todo_entity;
+    const ent = ed.ent;
     const feats = this._features(ent);
     const title = this._q("#te-title")?.value.trim();
     if (!title) { this._setFormError(this._t("err_title")); return; }
-    const data = { item: ed.uid };
+    const data = { item: ed.raw.uid };
     // person: "For: Name" in the notes when the list supports notes, otherwise a "[Name] " title prefix
     const cal = this._todoPeople().find((c) => c.entity === ed.who);
     const name = cal ? this._calName(cal) : ed.who.startsWith("name:") ? ed.who.slice(5) : "";
     let summary = title;
-    if (feats & 64) {
+    if (ed.t.own) { /* a person's own list: no "For:" needed */ }
+    else if (feats & 64) {
       const base = String(ed.raw.description || "").replace(/^\s*For:.*$\n?/gmi, "").trim();
       const desc = [name ? `For: ${name}` : "", base].filter(Boolean).join("\n");
       if (desc !== String(ed.raw.description || "").trim()) data.description = desc;
@@ -2553,7 +2614,7 @@ class HomeCalendarCard extends HTMLElement {
       await this._hass.callService("todo", "update_item", data, { entity_id: ent });
       this._closeDialog();
       this._toast(this._t("saved", { t: title }));
-      if (!this._todoLive) this._loadTodos();
+      this._todoRefresh(ent);
     } catch (e) {
       if (btn) { btn.disabled = false; btn.textContent = this._t("save"); }
       this._setFormError(e?.message || this._t("err_task_upd"));
@@ -2563,13 +2624,13 @@ class HomeCalendarCard extends HTMLElement {
   async _deleteTodo() {
     const ed = this._editTodo;
     if (!ed) return;
-    const ent = this._config.todo_entity;
+    const ent = ed.ent;
     try {
-      await this._hass.callService("todo", "remove_item", { item: [ed.uid] }, { entity_id: ent });
+      await this._hass.callService("todo", "remove_item", { item: [ed.raw.uid] }, { entity_id: ent });
       this._closeDialog();
       const raw = ed.raw;
       this._notify(this._t("deleted", { t: ed.t.summary }), { text: this._t("undo"), action: () => this._todoUndo(ed.uid, raw, true) });
-      if (!this._todoLive) this._loadTodos();
+      this._todoRefresh(ent);
     } catch (e) { this._setFormError(e?.message || this._t("err_task_upd")); }
   }
 
@@ -2659,14 +2720,14 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   async _addTodo() {
-    const ent = this._config.todo_entity;
     const box = this._todoBox;
     const input = box.querySelector("#t-text");
     const dueInp = box.querySelector("#t-due");
     const text = input.value.trim();
     if (!text) { input.focus(); return; }
-    const cal = this._todoPeople().find((c) => c.entity === this._todoWho);
-    const name = cal ? this._calName(cal) : "";
+    const tg = this._todoTarget(this._todoWho);
+    if (!tg) return;
+    const { ent, name } = tg;
     const feats = this._features(ent);
     const data = { item: text };
     if (name) {
@@ -2681,7 +2742,7 @@ class HomeCalendarCard extends HTMLElement {
       input.value = "";
       if (dueInp) dueInp.value = "";
       input.focus();
-      if (!this._todoLive) this._loadTodos();
+      this._todoRefresh(ent);
     } catch (e) {
       box.querySelector(".todo-err").textContent = e?.message || this._t("err_task_add");
     }
@@ -2689,9 +2750,9 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   async _todoDone(uid) {
-    const ent = this._config.todo_entity;
-    const raw = (this._todos || []).find((i) => i.uid === uid);
+    const raw = this._todoRaw(uid);
     if (!raw) return;
+    const ent = raw._ent;
     const t = this._parseTodo(raw);
     const row = [...this._todoBox.querySelectorAll(".ti")].find((r) => r.dataset.uid === uid);
     row?.classList.add("done");
@@ -2700,9 +2761,9 @@ class HomeCalendarCard extends HTMLElement {
     setTimeout(() => this._renderTodoList(), 550);
     const remove = this._config.todo_on_done === "remove";
     try {
-      if (remove) await this._hass.callService("todo", "remove_item", { item: [uid] }, { entity_id: ent });
+      if (remove) await this._hass.callService("todo", "remove_item", { item: [raw.uid] }, { entity_id: ent });
       else {
-        const data = { item: uid, status: "completed" };
+        const data = { item: raw.uid, status: "completed" };
         const user = this._hass.user?.name;
         if (user && this._todoOpts().recordDoneBy && (this._features(ent) & 64)) {
           const n = new Date();
@@ -2712,7 +2773,7 @@ class HomeCalendarCard extends HTMLElement {
         await this._hass.callService("todo", "update_item", data, { entity_id: ent });
       }
       this._notify(this._t("done", { t: t.summary }), { text: this._t("undo"), action: () => this._todoUndo(uid, raw, remove) });
-      if (!this._todoLive) this._loadTodos();
+      this._todoRefresh(ent);
     } catch (e) {
       this._pendingDone.delete(uid);
       this._renderTodoList();
@@ -2722,20 +2783,20 @@ class HomeCalendarCard extends HTMLElement {
 
   // Un-tick a task from the Done section
   async _todoUndone(uid) {
-    const ent = this._config.todo_entity;
-    const raw = (this._todos || []).find((i) => i.uid === uid);
+    const raw = this._todoRaw(uid);
     if (!raw) return;
+    const ent = raw._ent;
     this._pendingDone?.delete(uid);
-    const data = { item: uid, status: "needs_action" };
+    const data = { item: raw.uid, status: "needs_action" };
     if ((this._features(ent) & 64) && raw.description) data.description = String(raw.description).replace(DONE_BY_LINE_RE, "").trim();
     try {
       await this._hass.callService("todo", "update_item", data, { entity_id: ent });
-      if (!this._todoLive) this._loadTodos();
+      this._todoRefresh(ent);
     } catch (e) { this._toast(e?.message || this._t("err_task_upd")); }
   }
 
   async _todoUndo(uid, raw, removed) {
-    const ent = this._config.todo_entity;
+    const ent = raw._ent || this._config.todo_entity;
     try {
       if (removed) {
         const data = { item: raw.summary };
@@ -2743,13 +2804,13 @@ class HomeCalendarCard extends HTMLElement {
         if (raw.due) data[String(raw.due).length > 10 ? "due_datetime" : "due_date"] = raw.due;
         await this._hass.callService("todo", "add_item", data, { entity_id: ent });
       } else {
-        const data = { item: uid, status: "needs_action" };
+        const data = { item: raw.uid, status: "needs_action" };
         if ((this._features(ent) & 64) && raw.description != null) data.description = String(raw.description).replace(DONE_BY_LINE_RE, "").trim();
         await this._hass.callService("todo", "update_item", data, { entity_id: ent });
       }
     } catch (e) { this._toast(e?.message || this._t("err_undo")); }
     this._pendingDone.delete(uid);
-    if (!this._todoLive) this._loadTodos(); else this._renderTodoList();
+    if (!this._todoLiveSet?.has(ent)) this._loadTodos(ent); else this._renderTodoList();
   }
 
   /* ------------------------------------------------------------------ data */
@@ -3734,7 +3795,7 @@ class HomeCalendarCard extends HTMLElement {
     };
     this.style.setProperty("--cd-scale", String(pct(this._config.countdown_size, 0.5, 1.5)));
     this.style.setProperty("--ev-scale", String(pct(this._config.event_size, 0.8, 1.6)));
-    this._inner.classList.toggle("has-todo", !!this._config.todo_entity);
+    this._inner.classList.toggle("has-todo", hasTodo(this._config));
     if (this._gridOn()) {
       const bp = clampInt(this._config.grid.phone_breakpoint, 200, 2000, 600);
       const w = this.clientWidth || 9999;
@@ -3875,7 +3936,7 @@ class HomeCalendarCard extends HTMLElement {
     const area = (b) => `grid-area:${b.row} / ${b.col} / span ${b.h} / span ${b.w}`;
     // To-do block on Auto-hide = a pop-up opened from a small button; the calendar grows into its space if it can.
     const tbk = L.blocks.find((b) => b.name === "todo");
-    const pop = !!c.todo_entity && !!tbk && tbk.show === "autohide";
+    const pop = hasTodo(c) && !!tbk && tbk.show === "autohide";
     if (pop !== this._todoPopMode) { this._todoPopMode = pop; if (!pop) this._todoPopOpen = false; }
     let calRect = null;
     if (pop) {
@@ -3926,7 +3987,7 @@ class HomeCalendarCard extends HTMLElement {
     const tb = L.blocks.find((b) => b.name === "todo");
     const box = this._todoBox;
     if (box) {
-      const showTodo = !!c.todo_entity && tb && tb.show !== "hide";
+      const showTodo = hasTodo(c) && tb && tb.show !== "hide";
       box.classList.toggle("lg-off", !showTodo);
       box.classList.remove("ah");
       box.classList.toggle("todo-pop", !!showTodo && pop);
@@ -5836,6 +5897,7 @@ const calSchema = (t) => {
         o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
+    { name: "todo", selector: { entity: { domain: "todo" } } },
     { type: "grid", name: "", schema: [
       { name: "exclude", selector: { text: {} } },
       { name: "include", selector: { text: {} } },
@@ -6623,11 +6685,12 @@ class HomeCalendarCardEditor extends HTMLElement {
       const c = cals[i];
       const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column === false ? "side" : c.planner_column === "group" ? "group" : "own",
         exclude: Array.isArray(c.exclude) ? c.exclude.join("|") : c.exclude || "", include: Array.isArray(c.include) ? c.include.join("|") : c.include || "",
-        exclude_all_day: c.exclude_all_day === true },
+        exclude_all_day: c.exclude_all_day === true, todo: c.todo || "" },
         (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),
         (s) => {
           if (s.name === "group") return this._t("ed_group_help");
           if (s.name === "planner_column") return this._t("ed_planner_help");
+          if (s.name === "todo") return this._t("ed_todo_help");
           if (s.name === "exclude") return this._t("ed_exclude_help");
           if (s.name === "include") return this._t("ed_include_help");
           if (s.name !== "name") return undefined;
@@ -6645,6 +6708,7 @@ class HomeCalendarCardEditor extends HTMLElement {
         else if (pc === "group") list[i].planner_column = "group";
         else delete list[i].planner_column;
         if (list[i].exclude_all_day !== true) delete list[i].exclude_all_day;
+        if (!list[i].todo) delete list[i].todo;
         this._emit({ ...this._config, calendars: list });
         const head = this.shadowRoot.querySelector(`.cal[data-i="${i}"] .ch-txt`);
         if (head) head.innerHTML = this._headHtml(list[i]);
