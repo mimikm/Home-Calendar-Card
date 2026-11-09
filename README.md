@@ -186,6 +186,7 @@ max_height: 640px
 | `todo_title` | string | `To-do` | Heading above the to-do list |
 | `todo_on_done` | `complete` \| `remove` | `complete` | What ticking a task does: mark it completed (kept in HA's history) or delete it |
 | `todo_group_by` | `person` \| `due` | `person` | Group tasks by person, or by due date (Overdue / Today / Tomorrow / each day / Anytime) |
+| `todo_show_empty` | boolean | `true` | When grouped by person, keep the box of anyone with their own to-do list even when it's empty – see *One list per person* |
 | `todo_days_ahead` | number | – (all) | Only show tasks due within this many days. Tasks without a date always show |
 | `todo_calendar` | string | – | Calendar with future repeats of recurring chores (e.g. Chore Calendar) – shown read-only |
 | `todo_show_completed` | boolean | `false` | Show a collapsible **Done** section with recently completed tasks |
@@ -624,6 +625,7 @@ calendars:
 - **Adding** a task for Emma puts it in her own list. People without their own list (and *Everyone*) use the shared `todo_entity` with `For: <name>`, as before.
 - **Ticking, editing and deleting** always go to the list the task came from.
 - `todo_entity` is optional: with only personal lists, the person buttons show just the people who have a list.
+- **Empty lists still show** – a person with their own list keeps their box even when it's empty (*Nothing to do*), so it's clear their list is connected. Turn off with `todo_show_empty: false` (or **Show people with an empty own list** in the editor).
 
 <sub>Requested by [@xzyriel](https://github.com/xzyriel) in [#20](https://github.com/mimikm/Home-Calendar-Card/issues/20).</sub>
 
