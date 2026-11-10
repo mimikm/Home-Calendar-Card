@@ -52,7 +52,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🔴 **"Now" highlight** for events in progress, past events faded, multi-day events labelled *Day 2/3*
 - 📱 **Responsive** – adapts to the card's width, works in Sections and Masonry dashboards
 - 🌍 Dates and times follow your HA language and 12/24-hour profile setting
-- ✅ **To-do lists** – a shared family list and/or each person's own list (e.g. from their phone), grouped by person, optional due date, anyone can add, tick to complete (with Undo); updates live on every device
+- ✅ **To-do lists** – a shared family list and/or each person's own list (e.g. from their phone), extra lists like shopping as tabs, grouped by person, optional due date, anyone can add, tick to complete (with Undo); updates live on every device
 - 🖥️ **Wall display mode** – fills the whole screen, stretches Month/Week to the full height, to-do list as a sidebar, auto-scales text for distance viewing and keeps the screen awake
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
@@ -184,6 +184,7 @@ max_height: 640px
 | `weather_entity` | string | – | Weather entity for current conditions and daily forecast |
 | `todo_entity` | string | – | A `todo.*` entity to show the shared to-do list – see *To-do list* |
 | `todo_title` | string | `To-do` | Heading above the to-do list |
+| `todo_lists` | list | – | More to-do lists, each in its own tab (e.g. a shopping list) – see *More lists as tabs* |
 | `todo_on_done` | `complete` \| `remove` | `complete` | What ticking a task does: mark it completed (kept in HA's history) or delete it |
 | `todo_group_by` | `person` \| `due` | `person` | Group tasks by person, or by due date (Overdue / Today / Tomorrow / each day / Anytime) |
 | `todo_show_empty` | boolean | `true` | When grouped by person, keep the box of anyone with their own to-do list even when it's empty – see *One list per person* |
@@ -628,6 +629,26 @@ calendars:
 - **Empty lists still show** – a person with their own list keeps their box even when it's empty (*Nothing to do*), so it's clear their list is connected. Turn off with `todo_show_empty: false` (or **Show people with an empty own list** in the editor).
 
 <sub>Requested by [@xzyriel](https://github.com/xzyriel) in [#20](https://github.com/mimikm/Home-Calendar-Card/issues/20).</sub>
+
+#### More lists as tabs (shopping list etc.)
+
+Add more to-do lists – a shopping list, a DIY list – and each gets its **own tab** at the top of the to-do block. Pick them under **More lists as tabs** in the visual editor, or in YAML:
+
+```yaml
+todo_entity: todo.family          # the main "To-do" tab (shared + personal lists, grouped by person)
+todo_lists:
+  - entity: todo.shopping_list
+    title: Shopping               # optional – defaults to the list's name
+    icon: mdi:cart                # optional
+  - todo.diy                      # just the entity is fine too
+```
+
+- Each tab shows how many open items it has; the pop-up button counts all lists.
+- An extra list is a **plain checklist** – no person grouping or *For:*. Adding, ticking, editing and Undo go to that list.
+- The card remembers the last tab you opened.
+- `todo_entity` is optional here too: with only `todo_lists`, the first list opens straight away (no tabs if there's just one).
+
+<sub>Requested by [@koderthomas](https://github.com/koderthomas) in [#21](https://github.com/mimikm/Home-Calendar-Card/issues/21).</sub>
 
 ### Editing events
 
