@@ -224,6 +224,7 @@ max_height: 640px
 | `show_event_location` | boolean | `true` | Show the location line on events in Agenda view |
 | `show_event_calendar` | boolean | `true` | Show the calendar name/photo on events in Agenda view |
 | `month_mobile` | `list` \| `text` \| `both` \| `dots` | `list` | Month view on phones – see *Month view on phones* |
+| `month_show_time` | boolean | `false` | Show the start time before timed events in Month view, e.g. *7:00 PM Boy Scouts* (follows `time_format`; all-day events unchanged). Requested by [@kruschman](https://github.com/kruschman) in [#22](https://github.com/mimikm/Home-Calendar-Card/issues/22) |
 | `planner_days` | number | `7` | Days shown in Planner view (1–31) |
 | `planner_start` | `week` \| `today` | `week` | Planner starts at the start of the week, or today (no past days) |
 | `allow_edit_tasks` | boolean | `true` | Tap a task to edit or delete it – see *To-do list* |
