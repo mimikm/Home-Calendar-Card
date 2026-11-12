@@ -1015,6 +1015,8 @@ Planned features – ideas and votes are welcome in [Issues](https://github.com/
 
 If you like this card, you can [buy me a coffee ☕](https://buymeacoffee.com/mimikm).
 
+Switching energy supplier in the UK? Joining **Octopus Energy** with my referral code gets us both account credit – find it at [octopusreferralcode.com](https://octopusreferralcode.com) 🐙⚡
+
 ## License
 
 MIT
