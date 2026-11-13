@@ -7,7 +7,7 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.19.1-beta.1";
+const CARD_VERSION = "1.19.1-beta.2";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -113,6 +113,7 @@ const I18N = {
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
     l_todo_lists: "More lists as tabs (e.g. shopping)", ed_todo_lists_help: "Each list gets its own tab in the to-do block. Set a title or icon in YAML.",
     l_month_show_time: "Show start time in Month view",
+    sync: "Sync calendars now", sync_err: "Couldn't sync the calendars", l_show_refresh_button: "Show refresh button", l_calendar_sync_minutes: "Sync calendars every … minutes (0 = off)",
     l_agenda_multiday: "Multi-day events in Agenda", o_am_every: "Every day", o_am_first: "First day only", am_until: "until {d}", am_day: "day {n} of {t}",
     l_exclude: "Hide events containing", l_include: "Only show events containing", l_exclude_all_day: "Hide all-day events", ed_exclude_help: "Words in the title, separated by | – e.g. vacation|out of office", ed_include_help: "Leave empty to show everything", ed_filtered: "filtered", ed_travel: "Travel time (Waze)", l_origin: "Drive from", ed_origin_help: "Usually zone.home. Needs the Waze Travel Time integration (Settings → Devices & services).", l_region: "Waze region", o_reg_auto: "Automatic", o_reg_eu: "Europe", o_reg_us: "United States", o_reg_na: "North America", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehicle", o_car: "Car", o_taxi: "Taxi", o_motorcycle: "Motorcycle", l_hours_ahead: "For events in the next (hours)", l_avoid_toll_roads: "Avoid toll roads", l_avoid_ferries: "Avoid ferries", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} drive", tt_leave_by: "Leave by {t}", tt_leave_now: "Leave now",
     ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
@@ -184,6 +185,7 @@ const I18N = {
     l_todo_show_empty: "Pokaż osoby z pustą własną listą", tg_empty: "Nic do zrobienia",
     l_todo_lists: "Kolejne listy jako karty (np. zakupy)", ed_todo_lists_help: "Każda lista ma własną kartę w bloku zadań. Tytuł lub ikonę ustawisz w YAML.",
     l_month_show_time: "Pokaż godzinę rozpoczęcia w widoku miesiąca",
+    sync: "Synchronizuj kalendarze teraz", sync_err: "Nie udało się zsynchronizować kalendarzy", l_show_refresh_button: "Pokaż przycisk odświeżania", l_calendar_sync_minutes: "Synchronizuj kalendarze co … minut (0 = wył.)",
     l_agenda_multiday: "Wydarzenia wielodniowe w Agendzie", o_am_every: "Każdego dnia", o_am_first: "Tylko pierwszego dnia", am_until: "do {d}", am_day: "dzień {n} z {t}",
     l_exclude: "Ukryj wydarzenia zawierające", l_include: "Pokaż tylko wydarzenia zawierające", l_exclude_all_day: "Ukryj wydarzenia całodniowe", ed_exclude_help: "Słowa w tytule rozdzielone | – np. urlop|poza biurem", ed_include_help: "Zostaw puste, aby pokazać wszystko", ed_filtered: "filtr", ed_travel: "Czas dojazdu (Waze)", l_origin: "Dojazd z", ed_origin_help: "Zwykle zone.home. Wymaga integracji Waze Travel Time (Ustawienia → Urządzenia i usługi).", l_region: "Region Waze", o_reg_auto: "Automatycznie", o_reg_eu: "Europa", o_reg_us: "Stany Zjednoczone", o_reg_na: "Ameryka Północna", o_reg_il: "Izrael", o_reg_au: "Australia", l_vehicle_type: "Pojazd", o_car: "Samochód", o_taxi: "Taxi", o_motorcycle: "Motocykl", l_hours_ahead: "Dla wydarzeń w ciągu (godzin)", l_avoid_toll_roads: "Unikaj dróg płatnych", l_avoid_ferries: "Unikaj promów", tt_min: "{n} min", tt_hm: "{h} godz. {m} min", tt_drive: "{d} jazdy", tt_leave_by: "Wyjedź o {t}", tt_leave_now: "Czas wyjeżdżać",
     ld_todo_pop: "Pokazywana jako okienko otwierane małym przyciskiem w rogu – kalendarz zajmuje jej miejsce.", ld_todo_close: "Zamknij okienko po (sekundy)",
@@ -254,6 +256,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar personas con su lista vacía", tg_empty: "Nada pendiente",
     l_todo_lists: "Más listas como pestañas (p. ej. compra)", ed_todo_lists_help: "Cada lista tiene su propia pestaña en el bloque de tareas. El título o el icono se ajustan en YAML.",
     l_month_show_time: "Mostrar la hora de inicio en la vista Mes",
+    sync: "Sincronizar calendarios ahora", sync_err: "No se pudieron sincronizar los calendarios", l_show_refresh_button: "Mostrar botón de actualizar", l_calendar_sync_minutes: "Sincronizar calendarios cada … minutos (0 = no)",
     l_agenda_multiday: "Eventos de varios días en la Agenda", o_am_every: "Cada día", o_am_first: "Solo el primer día", am_until: "hasta el {d}", am_day: "día {n} de {t}",
     l_exclude: "Ocultar eventos que contengan", l_include: "Mostrar solo eventos que contengan", l_exclude_all_day: "Ocultar eventos de todo el día", ed_exclude_help: "Palabras del título separadas por | – p. ej. vacaciones|fuera de la oficina", ed_include_help: "Déjalo vacío para mostrar todo", ed_filtered: "filtrado", ed_travel: "Tiempo de viaje (Waze)", l_origin: "Salir desde", ed_origin_help: "Normalmente zone.home. Necesita la integración Waze Travel Time (Ajustes → Dispositivos y servicios).", l_region: "Región de Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "Norteamérica", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehículo", o_car: "Coche", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos en las próximas (horas)", l_avoid_toll_roads: "Evitar peajes", l_avoid_ferries: "Evitar ferris", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} en coche", tt_leave_by: "Sal a las {t}", tt_leave_now: "Sal ya",
     ld_todo_pop: "Se muestra como ventana emergente desde un pequeño botón en la esquina; el calendario ocupa su espacio.", ld_todo_close: "Cerrar la ventana tras (segundos)",
@@ -324,6 +327,7 @@ const I18N = {
     l_todo_show_empty: "Mostra le persone con la propria lista vuota", tg_empty: "Niente da fare",
     l_todo_lists: "Altre liste come schede (es. spesa)", ed_todo_lists_help: "Ogni lista ha la sua scheda nel blocco delle cose da fare. Titolo o icona si impostano in YAML.",
     l_month_show_time: "Mostra l'ora di inizio nella vista Mese",
+    sync: "Sincronizza ora i calendari", sync_err: "Impossibile sincronizzare i calendari", l_show_refresh_button: "Mostra il pulsante di aggiornamento", l_calendar_sync_minutes: "Sincronizza i calendari ogni … minuti (0 = mai)",
     l_agenda_multiday: "Eventi di più giorni nell'Agenda", o_am_every: "Ogni giorno", o_am_first: "Solo il primo giorno", am_until: "fino al {d}", am_day: "giorno {n} di {t}",
     l_exclude: "Nascondi eventi che contengono", l_include: "Mostra solo eventi che contengono", l_exclude_all_day: "Nascondi eventi di tutto il giorno", ed_exclude_help: "Parole nel titolo separate da | – es. ferie|fuori ufficio", ed_include_help: "Lascia vuoto per mostrare tutto", ed_filtered: "filtrato", ed_travel: "Tempo di viaggio (Waze)", l_origin: "Partenza da", ed_origin_help: "Di solito zone.home. Richiede l'integrazione Waze Travel Time (Impostazioni → Dispositivi e servizi).", l_region: "Regione Waze", o_reg_auto: "Automatica", o_reg_eu: "Europa", o_reg_us: "Stati Uniti", o_reg_na: "Nord America", o_reg_il: "Israele", o_reg_au: "Australia", l_vehicle_type: "Veicolo", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Per eventi nelle prossime (ore)", l_avoid_toll_roads: "Evita pedaggi", l_avoid_ferries: "Evita traghetti", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} in auto", tt_leave_by: "Parti alle {t}", tt_leave_now: "Parti ora",
     ld_todo_pop: "Si apre come pop-up da un piccolo pulsante nell'angolo – il calendario occupa il suo spazio.", ld_todo_close: "Chiudi il pop-up dopo (secondi)",
@@ -570,6 +574,7 @@ const I18N = {
     l_todo_show_empty: "Personen met een lege eigen lijst tonen", tg_empty: "Niets te doen",
     l_todo_lists: "Meer lijsten als tabbladen (bijv. boodschappen)", ed_todo_lists_help: "Elke lijst krijgt een eigen tabblad in het takenblok. Titel of pictogram stel je in YAML in.",
     l_month_show_time: "Begintijd tonen in de maandweergave",
+    sync: "Agenda's nu synchroniseren", sync_err: "De agenda's konden niet worden gesynchroniseerd", l_show_refresh_button: "Vernieuwknop tonen", l_calendar_sync_minutes: "Agenda's elke … minuten synchroniseren (0 = uit)",
     l_agenda_multiday: "Meerdaagse afspraken in de Agenda", o_am_every: "Elke dag", o_am_first: "Alleen de eerste dag", am_until: "tot {d}", am_day: "dag {n} van {t}",
     l_exclude: "Afspraken verbergen met", l_include: "Alleen afspraken tonen met", l_exclude_all_day: "Hele-dag-afspraken verbergen", ed_exclude_help: "Woorden in de titel, gescheiden door | – bijv. vakantie|afwezig", ed_include_help: "Leeg laten om alles te tonen", ed_filtered: "gefilterd", ed_travel: "Reistijd (Waze)", l_origin: "Vertrek vanaf", ed_origin_help: "Meestal zone.home. Vereist de integratie Waze Travel Time (Instellingen → Apparaten & diensten).", l_region: "Waze-regio", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "Verenigde Staten", o_reg_na: "Noord-Amerika", o_reg_il: "Israël", o_reg_au: "Australië", l_vehicle_type: "Voertuig", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Voor afspraken in de komende (uur)", l_avoid_toll_roads: "Tolwegen vermijden", l_avoid_ferries: "Veerponten vermijden", tt_min: "{n} min", tt_hm: "{h} u {m} min", tt_drive: "{d} rijden", tt_leave_by: "Vertrek om {t}", tt_leave_now: "Nu vertrekken",
     ld_todo_pop: "Verschijnt als pop-up via een knopje in de hoek – de agenda neemt de ruimte in.", ld_todo_close: "Pop-up sluiten na (seconden)",
@@ -816,6 +821,7 @@ const I18N = {
     l_todo_show_empty: "Personen mit leerer eigener Liste anzeigen", tg_empty: "Nichts zu tun",
     l_todo_lists: "Weitere Listen als Tabs (z. B. Einkauf)", ed_todo_lists_help: "Jede Liste bekommt einen eigenen Tab im Aufgabenblock. Titel oder Symbol in YAML festlegen.",
     l_month_show_time: "Startzeit in der Monatsansicht anzeigen",
+    sync: "Kalender jetzt synchronisieren", sync_err: "Kalender konnten nicht synchronisiert werden", l_show_refresh_button: "Aktualisieren-Schaltfläche anzeigen", l_calendar_sync_minutes: "Kalender alle … Minuten synchronisieren (0 = aus)",
     l_agenda_multiday: "Mehrtägige Termine in der Agenda", o_am_every: "Jeden Tag", o_am_first: "Nur am ersten Tag", am_until: "bis {d}", am_day: "Tag {n} von {t}",
     l_exclude: "Termine ausblenden mit", l_include: "Nur Termine anzeigen mit", l_exclude_all_day: "Ganztägige Termine ausblenden", ed_exclude_help: "Wörter im Titel, getrennt durch | – z. B. Urlaub|abwesend", ed_include_help: "Leer lassen, um alles anzuzeigen", ed_filtered: "gefiltert", ed_travel: "Fahrzeit (Waze)", l_origin: "Abfahrt von", ed_origin_help: "Meist zone.home. Benötigt die Integration Waze Travel Time (Einstellungen → Geräte & Dienste).", l_region: "Waze-Region", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "USA", o_reg_na: "Nordamerika", o_reg_il: "Israel", o_reg_au: "Australien", l_vehicle_type: "Fahrzeug", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motorrad", l_hours_ahead: "Für Termine in den nächsten (Stunden)", l_avoid_toll_roads: "Mautstraßen meiden", l_avoid_ferries: "Fähren meiden", tt_min: "{n} Min.", tt_hm: "{h} Std. {m} Min.", tt_drive: "{d} Fahrt", tt_leave_by: "Losfahren um {t}", tt_leave_now: "Jetzt losfahren",
     ld_todo_pop: "Erscheint als Pop-up über eine kleine Taste in der Ecke – der Kalender nutzt den Platz.", ld_todo_close: "Pop-up schließen nach (Sekunden)",
@@ -1062,6 +1068,7 @@ const I18N = {
     l_todo_show_empty: "Üres saját listájú személyek megjelenítése", tg_empty: "Nincs teendő",
     l_todo_lists: "További listák fülként (pl. bevásárlás)", ed_todo_lists_help: "Minden lista saját fület kap a teendők blokkban. A címet vagy ikont YAML-ben lehet megadni.",
     l_month_show_time: "Kezdési idő megjelenítése a havi nézetben",
+    sync: "Naptárak szinkronizálása most", sync_err: "Nem sikerült szinkronizálni a naptárakat", l_show_refresh_button: "Frissítés gomb megjelenítése", l_calendar_sync_minutes: "Naptárak szinkronizálása … percenként (0 = ki)",
     l_agenda_multiday: "Többnapos események a Napirendben", o_am_every: "Minden nap", o_am_first: "Csak az első napon", am_until: "{d}-ig", am_day: "{n}. nap / {t}",
     l_exclude: "Elrejtés, ha tartalmazza", l_include: "Csak ezeket tartalmazók", l_exclude_all_day: "Egész napos események elrejtése", ed_exclude_help: "Szavak a címben | jellel elválasztva – pl. szabadság|házon kívül", ed_include_help: "Hagyd üresen, ha mindent mutatna", ed_filtered: "szűrt", ed_travel: "Utazási idő (Waze)", l_origin: "Indulás innen", ed_origin_help: "Általában zone.home. A Waze Travel Time integráció kell hozzá (Beállítások → Eszközök és szolgáltatások).", l_region: "Waze régió", o_reg_auto: "Automatikus", o_reg_eu: "Európa", o_reg_us: "Egyesült Államok", o_reg_na: "Észak-Amerika", o_reg_il: "Izrael", o_reg_au: "Ausztrália", l_vehicle_type: "Jármű", o_car: "Autó", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Események a következő (óra) belül", l_avoid_toll_roads: "Fizetős utak elkerülése", l_avoid_ferries: "Kompok elkerülése", tt_min: "{n} perc", tt_hm: "{h} ó {m} perc", tt_drive: "{d} autóval", tt_leave_by: "Indulj {t}-kor", tt_leave_now: "Indulj most",
     ld_todo_pop: "Felugró ablakként nyílik egy kis gombbal a sarokban – a naptár kitölti a helyét.", ld_todo_close: "Felugró ablak bezárása ennyi után (mp)",
@@ -1308,6 +1315,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar pessoas com a própria lista vazia", tg_empty: "Nada a fazer",
     l_todo_lists: "Mais listas como abas (ex.: compras)", ed_todo_lists_help: "Cada lista ganha sua própria aba no bloco de tarefas. Título ou ícone podem ser definidos no YAML.",
     l_month_show_time: "Mostrar horário de início na visão Mês",
+    sync: "Sincronizar agendas agora", sync_err: "Não foi possível sincronizar as agendas", l_show_refresh_button: "Mostrar botão de atualizar", l_calendar_sync_minutes: "Sincronizar agendas a cada … minutos (0 = desligado)",
     l_agenda_multiday: "Eventos de vários dias na Agenda", o_am_every: "Todos os dias", o_am_first: "Só no primeiro dia", am_until: "até {d}", am_day: "dia {n} de {t}",
     l_exclude: "Ocultar eventos que contenham", l_include: "Mostrar só eventos que contenham", l_exclude_all_day: "Ocultar eventos de dia inteiro", ed_exclude_help: "Palavras do título separadas por | – ex.: férias|fora do escritório", ed_include_help: "Deixe vazio para mostrar tudo", ed_filtered: "filtrado", ed_travel: "Tempo de trajeto (Waze)", l_origin: "Sair de", ed_origin_help: "Normalmente zone.home. Precisa da integração Waze Travel Time (Configurações → Dispositivos e serviços).", l_region: "Região do Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "América do Norte", o_reg_il: "Israel", o_reg_au: "Austrália", l_vehicle_type: "Veículo", o_car: "Carro", o_taxi: "Táxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos nas próximas (horas)", l_avoid_toll_roads: "Evitar pedágios", l_avoid_ferries: "Evitar balsas", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} de carro", tt_leave_by: "Saia até {t}", tt_leave_now: "Saia agora",
     ld_todo_pop: "Abre como janela a partir de um pequeno botão no canto – o calendário ocupa o espaço dela.", ld_todo_close: "Fechar a janela após (segundos)",
@@ -1379,6 +1387,7 @@ const I18N = {
     l_todo_show_empty: "Прикажи особе са празном сопственом листом", tg_empty: "Нема задатака",
     l_todo_lists: "Још листа као картице (нпр. куповина)", ed_todo_lists_help: "Свака листа добија своју картицу у блоку задатака. Наслов или иконица се подешавају у YAML-у.",
     l_month_show_time: "Прикажи време почетка у месечном приказу",
+    sync: "Синхронизуј календаре сада", sync_err: "Синхронизација календара није успела", l_show_refresh_button: "Прикажи дугме за освежавање", l_calendar_sync_minutes: "Синхронизуј календаре на сваких … минута (0 = искључено)",
     l_agenda_multiday: "Вишедневни термини у Агенди", o_am_every: "Сваког дана", o_am_first: "Само првог дана", am_until: "до {d}", am_day: "{n}. дан од {t}",
     l_exclude: "Сакриј термине који садрже", l_include: "Прикажи само термине који садрже", l_exclude_all_day: "Сакриј целодневне термине", ed_exclude_help: "Речи у наслову, одвојене знаком | – нпр. Одмор|одсутан", ed_include_help: "Оставите празно за приказ свега", ed_filtered: "филтрирано", ed_travel: "Време путовања (Waze)", l_origin: "Полазак из", ed_origin_help: "Углавном zone.home. Захтева интеграцију Waze Travel Time (Подешавања → Уређаји и услуге).", l_region: "Waze регион", o_reg_auto: "Аутоматски", o_reg_eu: "Европа", o_reg_us: "САД", o_reg_na: "Северна Америка", o_reg_il: "Израел", o_reg_au: "Аустралија", l_vehicle_type: "Возило", o_car: "Аутомобил", o_taxi: "Такси", o_motorcycle: "Мотоцикл", l_hours_ahead: "За термине у наредних (сати)", l_avoid_toll_roads: "Избегавај путеве са наплатом путарине", l_avoid_ferries: "Избегавај трајекте", tt_min: "{n} мин.", tt_hm: "{h} ч. {m} мин.", tt_drive: "{d} вожње", tt_leave_by: "Крените у {t}", tt_leave_now: "Крените одмах",
     ld_todo_pop: "Појављује се као искачући прозор преко малог дугмета у углу – календар користи сав простор.", ld_todo_close: "Затвори искачући прозор након (секунди)",
@@ -1625,6 +1634,7 @@ const I18N = {
     l_todo_show_empty: "Prikaži osobe sa praznom sopstvenom listom", tg_empty: "Nema zadataka",
     l_todo_lists: "Još lista kao kartice (npr. kupovina)", ed_todo_lists_help: "Svaka lista dobija svoju karticu u bloku zadataka. Naslov ili ikonica se podešavaju u YAML-u.",
     l_month_show_time: "Prikaži vreme početka u mesečnom prikazu",
+    sync: "Sinhronizuj kalendare sada", sync_err: "Sinhronizacija kalendara nije uspela", l_show_refresh_button: "Prikaži dugme za osvežavanje", l_calendar_sync_minutes: "Sinhronizuj kalendare na svakih … minuta (0 = isključeno)",
     l_agenda_multiday: "Višednevni termini u Agendi", o_am_every: "Svakog dana", o_am_first: "Samo prvog dana", am_until: "do {d}", am_day: "{n}. dan od {t}",
     l_exclude: "Sakrij termine koji sadrže", l_include: "Prikaži samo termine koji sadrže", l_exclude_all_day: "Sakrij celodnevne termine", ed_exclude_help: "Reči u naslovu, odvojene znakom | – npr. Odmor|odsutan", ed_include_help: "Ostavite prazno za prikaz svega", ed_filtered: "filtrirano", ed_travel: "Vreme putovanja (Waze)", l_origin: "Polazak iz", ed_origin_help: "Uglavnom zone.home. Zahteva integraciju Waze Travel Time (Podešavanja → Uređaji i usluge).", l_region: "Waze region", o_reg_auto: "Automatski", o_reg_eu: "Evropa", o_reg_us: "SAD", o_reg_na: "Severna Amerika", o_reg_il: "Izrael", o_reg_au: "Australija", l_vehicle_type: "Vozilo", o_car: "Automobil", o_taxi: "Taksi", o_motorcycle: "Motocikl", l_hours_ahead: "Za termine u narednih (sati)", l_avoid_toll_roads: "Izbegavaj puteve sa naplatom putarine", l_avoid_ferries: "Izbegavaj trajekte", tt_min: "{n} min.", tt_hm: "{h} č. {m} min.", tt_drive: "{d} vožnje", tt_leave_by: "Krenite u {t}", tt_leave_now: "Krenite odmah",
     ld_todo_pop: "Pojavljuje se kao iskačući prozor preko malog dugmeta u uglu – kalendar koristi sav prostor.", ld_todo_close: "Zatvori iskačući prozor nakon (sekundi)",
@@ -2200,6 +2210,7 @@ class HomeCalendarCard extends HTMLElement {
 
     if (oldWeather !== this._config.weather_entity) this._unsubscribeWeather();
     if (oldTodo !== JSON.stringify(todoLists(this._config))) { this._unsubscribeTodo(); this._todos = []; }
+    if (this.isConnected && (Number(this._config.calendar_sync_minutes) || 0) !== (this._syncEvery || 0)) this._startSyncTimer();
     this._todoKey = null; // rebuild the to-do form for the new config
     if (this._hass) {
       this._subscribeWeather();
@@ -2271,6 +2282,7 @@ class HomeCalendarCard extends HTMLElement {
     }, 60 * 1000);
     const mins = Math.max(1, Number(this._config?.refresh_interval) || 5);
     this._refresh = setInterval(() => { this._fetchEvents(); this._fetchCountdowns(); this._fetchTodoCal(); }, mins * 60 * 1000);
+    this._startSyncTimer();
     clearInterval(this._travelTimer);
     this._travelTimer = setInterval(() => this._updateTravel(), 60 * 1000); // re-checks every minute; each place is refreshed after `refresh` minutes
     if (this._hass && this._config) {
@@ -2286,6 +2298,7 @@ class HomeCalendarCard extends HTMLElement {
     clearInterval(this._clockTimer);
     clearInterval(this._travelTimer);
     clearInterval(this._refresh);
+    clearInterval(this._syncTimer);
     window.removeEventListener("resize", this._onResize);
     if (this._ro) { this._ro.disconnect(); this._ro = null; }
     clearTimeout(this._ahTimer);
@@ -4045,6 +4058,7 @@ class HomeCalendarCard extends HTMLElement {
         <button class="icon" data-action="prev" title="${esc(this._t("prev"))}"><ha-icon icon="mdi:chevron-left"></ha-icon></button>
         <button class="today" data-action="today">${esc(this._t("today"))}</button>
         <button class="icon" data-action="next" title="${esc(this._t("next"))}"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
+        ${this._syncBtn()}
         <span class="range">${esc(this._rangeLabel())}</span>
         ${c.layout === "fullscreen" && this._mode === "fill" && !editing ? `<button class="icon" data-action="fs-on" title="${esc(this._t("back_fs"))}"><ha-icon icon="mdi:fullscreen"></ha-icon></button>` : ""}
       </div>`,
@@ -4186,6 +4200,7 @@ class HomeCalendarCard extends HTMLElement {
         <button class="icon" data-action="prev" title="${esc(this._t("prev"))}"><ha-icon icon="mdi:chevron-left"></ha-icon></button>
         <button class="today" data-action="today">${esc(this._t("today"))}</button>
         <button class="icon" data-action="next" title="${esc(this._t("next"))}"><ha-icon icon="mdi:chevron-right"></ha-icon></button>
+        ${this._syncBtn()}
         <span class="range">${esc(this._rangeLabel())}</span>
       </div>` : ""}
       ${this._config.layout === "fullscreen" && this._mode === "fill" && !this._inEditor() ? `<button class="icon" data-action="fs-on" title="${esc(this._t("back_fs"))}"><ha-icon icon="mdi:fullscreen"></ha-icon></button>` : ""}
@@ -4257,6 +4272,45 @@ class HomeCalendarCard extends HTMLElement {
       </div>
       ${this._calendars.length > 1 && c.show_event_calendar !== false ? `<div class="ev-cal">${this._avatar(ev.cal)}<span class="ev-cal-name">${esc(this._calName(ev.cal))}</span></div>` : ""}
     </div>`;
+  }
+
+  // optional: ask HA to sync its calendars with Google/iCloud every N minutes (#23)
+  _startSyncTimer() {
+    clearInterval(this._syncTimer);
+    this._syncTimer = null;
+    const sync = Number(this._config?.calendar_sync_minutes) || 0;
+    this._syncEvery = sync;
+    if (sync > 0 && this.isConnected) this._syncTimer = setInterval(() => this._syncNow(false), Math.max(5, sync) * 60 * 1000);
+  }
+
+  // ⟳ button (#23): HA only syncs Google/CalDAV calendars every ~15 min, so ask it to sync now
+  _syncBtn() {
+    if (this._config.show_refresh_button === false) return "";
+    return `<button class="icon sync ${this._syncing ? "spin" : ""}" data-action="sync" title="${esc(this._t("sync"))}" aria-label="${esc(this._t("sync"))}"><ha-icon icon="mdi:refresh"></ha-icon></button>`;
+  }
+
+  async _syncNow(manual = true) {
+    if (!this._hass || this._syncing) return;
+    const ents = [...new Set([
+      ...this._calendars.map((c) => c.entity),
+      ...todoLists(this._config).map((l) => l.entity),
+      this._config.todo_calendar,
+    ].filter((e) => e && this._hass.states[e]))];
+    if (!ents.length) return;
+    this._syncing = true;
+    if (manual) this.shadowRoot?.querySelectorAll(".icon.sync").forEach((b) => b.classList.add("spin"));
+    try {
+      await this._hass.callService("homeassistant", "update_entity", { entity_id: ents });
+      await new Promise((r) => setTimeout(r, 2500)); // give the integration a moment to finish its sync
+    } catch (e) {
+      if (manual) this._toast(e?.message || this._t("sync_err"));
+    } finally {
+      this._syncing = false;
+      this.shadowRoot?.querySelectorAll(".icon.sync").forEach((b) => b.classList.remove("spin"));
+      this._fetchEvents();
+      this._fetchCountdowns();
+      this._fetchTodoCal();
+    }
   }
 
   _renderAgenda() {
@@ -4989,6 +5043,9 @@ class HomeCalendarCard extends HTMLElement {
         this._anchor = startOfDay(new Date());
         this._fetchEvents();
         break;
+      case "sync":
+        this._syncNow(true);
+        break;
       case "toggle-group": {
         const g = el.dataset.group;
         const members = this._calendars.filter((x) => String(x.group || "").trim() === g);
@@ -5490,6 +5547,8 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 dialog { border: none; padding: 0; border-radius: 22px; width: min(460px, calc(100vw - 24px)); max-height: min(720px, calc(100vh - 32px));
   background: var(--hcc-bg); color: var(--hcc-text); box-shadow: 0 24px 70px rgba(0,0,0,.35); overflow: hidden; }
 dialog[open] { display: flex; flex-direction: column; animation: pop .18s ease-out; }
+.icon.sync.spin ha-icon { animation: hcc-spin .9s linear infinite; }
+@keyframes hcc-spin { to { transform: rotate(360deg); } }
 @keyframes pop { from { transform: translateY(10px) scale(.98); opacity: 0; } }
 dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
 .dlg-head { display: flex; align-items: center; gap: 10px; padding: 18px 12px 10px 20px; }
@@ -5870,12 +5929,12 @@ const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, 
 const TRAVEL_DEFAULTS = { enabled: false, origin: "zone.home", region: "auto", vehicle_type: "car", hours_ahead: 12, avoid_toll_roads: false, avoid_ferries: false };
 // editor defaults that are not written to YAML until changed
 const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
-  clock_format: "auto", show_view_selector: true, show_date_navigation: true, event_time_position: "above", show_event_location: true,
+  clock_format: "auto", show_view_selector: true, show_date_navigation: true, show_refresh_button: true, calendar_sync_minutes: 0, event_time_position: "above", show_event_location: true,
   show_event_calendar: true, multiday_bars: true, agenda_multiday: "every", todo_show_empty: true, planner_days: 7, planner_start: "week", month_start: "week", week_start: "week", agenda_date: "both" };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "todo_lists", "todo_group_by", "todo_show_empty", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile", "month_show_time",
-  "sections", "show_view_selector", "show_date_navigation", "agenda_date", "agenda_multiday", "event_time_position", "show_event_location", "show_event_calendar",
+  "sections", "show_view_selector", "show_date_navigation", "show_refresh_button", "calendar_sync_minutes", "agenda_date", "agenda_multiday", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
   "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
@@ -5947,6 +6006,10 @@ const generalSchema = (t, hasGrid = false) => {
           { name: "show_date_navigation", selector: { boolean: {} } },
         ] },
       ]),
+      { type: "grid", name: "", schema: [
+        { name: "show_refresh_button", selector: { boolean: {} } },
+        { name: "calendar_sync_minutes", selector: { number: { min: 0, max: 120, step: 5, mode: "box" } } },
+      ] },
       { name: "agenda_date", selector: { select: { mode: "dropdown", options: [o("both", "o_ad_both"), o("left", "o_ad_left"), o("above", "o_ad_above")] } } },
       { name: "agenda_multiday", selector: { select: { mode: "dropdown", options: [o("every", "o_am_every"), o("first", "o_am_first")] } } },
       { name: "event_time_position", selector: { select: { mode: "dropdown", options: [o("above", "o_tp_above"), o("left", "o_tp_left"), o("right", "o_tp_right")] } } },

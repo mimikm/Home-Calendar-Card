@@ -220,6 +220,8 @@ max_height: 640px
 | `sections` | list | `[header, countdowns, toolbar, chips]` | Which parts appear above the calendar, in this order – see *Layout* |
 | `show_view_selector` | boolean | `true` | Show the Agenda / Week / Month / Planner buttons |
 | `show_date_navigation` | boolean | `true` | Show ‹ Today › and the date range |
+| `show_refresh_button` | boolean | `true` | ⟳ button next to *Today* that asks Home Assistant to sync your calendars now – see *Calendar updates* |
+| `calendar_sync_minutes` | number | `0` | Ask Home Assistant to sync your calendars every N minutes (min 5, `0` = off) – see *Calendar updates* |
 | `event_time_position` | `above` \| `left` \| `right` | `above` | Where an event's time sits in Agenda view – `left`/`right` put it on the title's line |
 | `show_event_location` | boolean | `true` | Show the location line on events in Agenda view |
 | `show_event_calendar` | boolean | `true` | Show the calendar name/photo on events in Agenda view |
@@ -995,13 +997,38 @@ In Portuguese `#aniversario` would mean a birthday, but the tag already means *A
 
 Your own `event_types` names, calendar names and `todo_title` are shown exactly as you write them.
 
+## Calendar updates
+
+The card re-reads Home Assistant every 5 minutes (`refresh_interval`), but Home Assistant itself only checks **Google Calendar** and **iCloud/CalDAV** for changes about every **15 minutes**. So an event you add, move or delete on your phone can take a while to show up – even after refreshing the page.
+
+- **⟳ button** – tap it next to *Today* to make Home Assistant sync your calendars and to-do lists **now**; the card reloads a couple of seconds later. Hide it with `show_refresh_button: false`.
+- **Sync automatically** – `calendar_sync_minutes: 5` makes the card ask Home Assistant to sync every 5 minutes (minimum 5). It's off by default because **every open screen** does this – with several wall tablets, consider the automation below instead, which runs once for the whole house:
+
+```yaml
+automation:
+  - alias: Sync calendars every 5 minutes
+    triggers:
+      - trigger: time_pattern
+        minutes: "/5"
+    actions:
+      - action: homeassistant.update_entity
+        target:
+          entity_id:
+            - calendar.family
+            - calendar.emma
+```
+
+Both use Home Assistant's `homeassistant.update_entity` action, which tells the calendar's integration to check for changes straight away.
+
+<sub>Requested by [@xzyriel](https://github.com/xzyriel) in [#23](https://github.com/mimikm/Home-Calendar-Card/issues/23).</sub>
+
 ## Troubleshooting
 
 - **No weather on days** – your weather entity must support a *daily* forecast. Hourly-only providers will show the current conditions in the header only.
 - **"Event" button missing** – none of the configured calendars support creating events. Check the calendar's integration.
 - **"+ Event" button disappeared after using the visual editor** – fixed in v1.15.1. Older versions could save a calendar written as a plain `- calendar.xyz` line as a long list of single letters (`'0': c`, `'1': a`, …). v1.15.1 reads those correctly and tidies them up the next time you save in the visual editor; you can also replace the list with `- calendar.xyz` by hand.
 - **"This calendar can't edit/delete events"** – the card offers Edit and Delete only when the calendar's integration supports it in Home Assistant. Google Calendar events are edited by replacing them (see *Editing events*); repeating Google events can only be deleted. Read-only feeds can't change anything.
-- **New event doesn't appear immediately** – some providers (especially iCloud via CalDAV) take a few seconds to sync; the card refreshes again automatically.
+- **New, changed or deleted events take a while to appear** – Home Assistant only checks Google and iCloud about every 15 minutes. Tap ⟳ to sync now, or see *Calendar updates*.
 
 ## Roadmap
 
