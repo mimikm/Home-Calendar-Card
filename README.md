@@ -683,6 +683,43 @@ The Delete button only appears for calendars whose Home Assistant integration su
 
 ### Planner view (a column per person)
 
+One shared calendar can also supply separate columns. List the entity once per
+person with a different `include` filter:
+
+```yaml
+type: custom:home-calendar-card
+default_view: planner
+planner_start: today
+planner_days: 3
+show_calendar_chips: false
+calendars:
+  - entity: calendar.family
+    name: Philipp
+    include: Philipp
+    planner_title_prefix: Philipp
+  - entity: calendar.family
+    name: Noah
+    include: Noah
+    planner_title_prefix: Noah
+  - entity: calendar.family
+    name: Lea
+    include: Lea
+    planner_title_prefix: Lea
+```
+
+The existing filters match text anywhere in the title, case-insensitively, not
+just a name prefix. Entries with overlapping filters show the event in each
+matching column. Calendar visibility remains entity-based, so toggling the
+source calendar affects all its columns. Writes still target the original
+calendar; include the person's name when creating a new event.
+
+Optional `planner_title_prefix` removes a literal leading name from the displayed
+Planner title, including multi-day bars. Matching ignores case and leading
+whitespace and requires a word boundary. Spaces, colons and dashes after the name
+are removed too: `Lea: Piano` becomes `Piano`, but `Leander` is unchanged.
+An empty result keeps the original title. Other views, tooltips and event editing
+retain the original title; the source calendar is never changed.
+
 Like a printed family planner on the fridge: **days down the side, one column per person**, so you can see who's doing what all week at a glance. Pick **Planner** in the view buttons, or make it the default:
 
 ```yaml

@@ -3193,7 +3193,7 @@ class HomeCalendarCard extends HTMLElement {
     const ev = sg.ev;
     const ban = this._isBanner(ev);
     const icon = ban ? (ev.tagged ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper" : this._typeIcon(ev);
-    return `<div class="${cls} ${ban ? "ban" : ""} ${sg.cl ? "cl" : ""} ${sg.cr ? "cr" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)};--lane:${sg.lane};${style}" data-action="open-event" data-id="${ev.id}" title="${esc(`${ev.summary} · ${this._whenText(ev)}`)}">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}<span>${esc(ev.summary)}</span></div>`;
+    return `<div class="${cls} ${ban ? "ban" : ""} ${sg.cl ? "cl" : ""} ${sg.cr ? "cr" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)};--lane:${sg.lane};${style}" data-action="open-event" data-id="${ev.id}" title="${esc(`${ev.summary} · ${this._whenText(ev)}`)}">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}<span>${esc(cls === "pbar" ? this._plannerTitle(ev) : ev.summary)}</span></div>`;
   }
 
   // Birthdays and anniversaries: all-day, yearly, with an age/years count.
@@ -4567,24 +4567,36 @@ class HomeCalendarCard extends HTMLElement {
     return cols;
   }
 
+  // Display-only: never change the event used by the details/edit dialog.
+  _plannerTitle(ev) {
+    const prefix = String(ev.cal.planner_title_prefix || "").trim();
+    const title = ev.summary;
+    if (!prefix || ev.private) return title;
+    const trimmed = title.trimStart();
+    if (!trimmed.toLowerCase().startsWith(prefix.toLowerCase())) return title;
+    const rest = trimmed.slice(prefix.length);
+    if (/^[\p{L}\p{N}_]/u.test(rest)) return title;
+    return rest.replace(/^[\s:–—-]+/u, "") || title;
+  }
+
   _renderPlanner() {
     const { start } = this._range();
     const today = dayKey(new Date());
     const cols = this._plannerCols();
     if (!cols.length) return `<div class="empty"><ha-icon icon="mdi:account-group-outline"></ha-icon><div>${esc(this._t("pl_none"))}</div></div>`;
-    const colSet = new Set(cols.flatMap((c) => c.members.map((m) => m.entity)));
+    const colSet = new Set(cols.flatMap((c) => c.members));
     const canAdd = this._config.allow_add !== false;
     const writable = new Set(this._writable().map((c) => c.entity));
     const wd = this._fmt({ weekday: "short" });
     const mo = this._fmt({ month: "short" });
     const evHtml = (ev, d) => `<div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
-        <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
+        <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(this._plannerTitle(ev))}</div>
       </div>`;
     const { days } = this._range();
     // multi-day bars (#16): a vertical strip down the person's column
     const pBars = cols.map((c) => {
-      const ents = new Set(c.members.map((m) => m.entity));
-      return this._multiBars() ? this._barLanes(this._barSegs(start, days, (ev) => ents.has(ev.cal.entity)), 2) : { bars: [], lanes: 0 };
+      const members = new Set(c.members);
+      return this._multiBars() ? this._barLanes(this._barSegs(start, days, (ev) => members.has(ev.cal)), 2) : { bars: [], lanes: 0 };
     });
     const pInBar = new Set(pBars.flatMap((x) => x.bars.map((b) => b.ev.id)));
     let out = `<div class="planner" style="--pcols:${cols.length};--prows:${days}"><div class="phead pcorner" style="grid-area:1 / 1"></div>`;
@@ -4596,7 +4608,7 @@ class HomeCalendarCard extends HTMLElement {
       const k = dayKey(d);
       const evs = this._eventsOn(d);
       const hol = this._holidaysOn(d)[0];
-      const shared = evs.filter((ev) => !colSet.has(ev.cal.entity));
+      const shared = evs.filter((ev) => !colSet.has(ev.cal));
       const rowCls = `${k === today ? "is-today" : ""} ${[0, 6].includes(d.getDay()) ? "wkend" : ""} ${hol ? "has-hol" : ""}`;
       out += `<div class="pday ${rowCls}" style="grid-area:${i + 2} / 1;${hol ? `--hol:${esc(hol.cal.color)}` : ""}">
         <button class="pdate" data-action="open-day" data-date="${k}"><span class="wd">${esc(wd.format(d))}</span><span class="dn">${d.getDate()}</span><span class="mo">${esc(mo.format(d))}</span></button>
@@ -4605,8 +4617,10 @@ class HomeCalendarCard extends HTMLElement {
         ${shared.length ? `<div class="pshared">${shared.map((ev) => evHtml(ev, d)).join("")}</div>` : ""}
       </div>`;
       out += cols.map((c, ci) => {
-        const ents = new Set(c.members.map((m) => m.entity));
-        const mine = evs.filter((ev) => ents.has(ev.cal.entity) && !pInBar.has(ev.id));
+        // Distinguish configured entries, not entities: one source can be
+        // listed several times with different include/exclude filters.
+        const members = new Set(c.members);
+        const mine = evs.filter((ev) => members.has(ev.cal) && !pInBar.has(ev.id));
         const lanesHere = pBars[ci].bars.filter((b) => b.a <= i && b.b >= i).length ? pBars[ci].lanes : 0;
         const target = c.members.find((m) => writable.has(m.entity)); // a group column adds to its first writable member
         const add = canAdd && !!target;
