@@ -713,8 +713,9 @@ matching column. Calendar visibility remains entity-based, so toggling the
 source calendar affects all its columns. Writes still target the original
 calendar; include the person's name when creating a new event.
 
-Optional `planner_title_prefix` removes a literal leading name from the displayed
-Planner title, including multi-day bars. Matching ignores case and leading
+Optional `planner_title_prefix`, also available in each calendar's visual-editor
+settings, removes a literal leading name from displayed Planner titles, including
+multi-day bars. Matching ignores case and leading
 whitespace and requires a word boundary. Spaces, colons and dashes after the name
 are removed too: `Lea: Piano` becomes `Piano`, but `Leander` is unchanged.
 An empty result keeps the original title. Other views, tooltips and event editing

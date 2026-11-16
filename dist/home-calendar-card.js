@@ -109,6 +109,8 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    l_planner_title_prefix: "Hide this title prefix in Planner",
+    ed_planner_title_prefix_help: "Display only, e.g. Lea: Piano → Piano. Original titles are kept.",
     l_multiday_bars: "Multi-day events as one bar",
     l_todo: "Own to-do list (optional)", ed_todo_help: "Tasks in this list belong to this person – no “For:” needed",
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
@@ -822,6 +824,8 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    l_planner_title_prefix: "Diesen Titelanfang im Planer ausblenden",
+    ed_planner_title_prefix_help: "Nur die Anzeige, z. B. Lea: Klavier → Klavier. Originaltitel bleiben erhalten.",
     l_multiday_bars: "Mehrtägige Termine als ein Balken",
     l_todo: "Eigene Aufgabenliste (optional)", ed_todo_help: "Aufgaben in dieser Liste gehören dieser Person – kein „For:“ nötig",
     l_todo_show_empty: "Personen mit leerer eigener Liste anzeigen", tg_empty: "Nichts zu tun",
@@ -2168,6 +2172,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!config || !Array.isArray(config.calendars) || !config.calendars.length) {
       throw new Error("Add at least one calendar entity under 'calendars'");
     }
+    const oldCals = this._calendars || [];
     const oldWeather = this._config?.weather_entity;
     const oldTodo = JSON.stringify(todoLists(this._config));
     this._config = {
@@ -2199,6 +2204,21 @@ class HomeCalendarCard extends HTMLElement {
         return o;
       })
       .filter((c) => c.entity);
+    // Rebind cached events before the immediate render. Match source/filter
+    // identity rather than position so reordering cannot swap people's events.
+    const key = (c) => JSON.stringify([c.entity, c._incl, c._excl, c._matchIn,
+      !!c.exclude_all_day, c.type, !!c.private]);
+    const available = new Map();
+    this._calendars.forEach((c) => {
+      const k = key(c);
+      if (!available.has(k)) available.set(k, []);
+      available.get(k).push(c);
+    });
+    const rebound = new Map(oldCals.map((c) => [c, available.get(key(c))?.shift()]));
+    this._events = (this._events || []).flatMap((ev) => {
+      const cal = rebound.get(ev.cal);
+      return cal ? [{ ...ev, cal }] : [];
+    });
     const defs = Object.fromEntries(DEFAULT_TYPES.map((t) => [t.id, t]));
     this._configTypes = Array.isArray(config.event_types) && config.event_types.length > 0;
     this._types = Array.isArray(config.event_types) && config.event_types.length
@@ -6307,6 +6327,7 @@ const calSchema = (t) => {
         o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
+    { name: "planner_title_prefix", selector: { text: {} } },
     { name: "todo", selector: { entity: { domain: "todo" } } },
     { name: "year_view", selector: { boolean: {} } },
     { type: "grid", name: "", schema: [
@@ -7105,6 +7126,7 @@ class HomeCalendarCardEditor extends HTMLElement {
           if (s.name === "year_view") return this._t("ed_year_help");
           if (s.name === "exclude") return this._t("ed_exclude_help");
           if (s.name === "include") return this._t("ed_include_help");
+          if (s.name === "planner_title_prefix") return this._t("ed_planner_title_prefix_help");
           if (s.name !== "name") return undefined;
           const ent = this._cals()[i]?.entity;
           const fn = ent && this._hass?.states[ent]?.attributes?.friendly_name;
