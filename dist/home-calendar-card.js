@@ -109,6 +109,8 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    l_planner_title_prefix: "Hide this title prefix in Planner",
+    ed_planner_title_prefix_help: "Display only, e.g. Lea: Piano → Piano. Original titles are kept.",
     l_multiday_bars: "Multi-day events as one bar",
     l_todo: "Own to-do list (optional)", ed_todo_help: "Tasks in this list belong to this person – no “For:” needed",
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
@@ -822,6 +824,8 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    l_planner_title_prefix: "Diesen Titelanfang im Planer ausblenden",
+    ed_planner_title_prefix_help: "Nur die Anzeige, z. B. Lea: Klavier → Klavier. Originaltitel bleiben erhalten.",
     l_multiday_bars: "Mehrtägige Termine als ein Balken",
     l_todo: "Eigene Aufgabenliste (optional)", ed_todo_help: "Aufgaben in dieser Liste gehören dieser Person – kein „For:“ nötig",
     l_todo_show_empty: "Personen mit leerer eigener Liste anzeigen", tg_empty: "Nichts zu tun",
@@ -2168,6 +2172,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!config || !Array.isArray(config.calendars) || !config.calendars.length) {
       throw new Error("Add at least one calendar entity under 'calendars'");
     }
+    const oldCals = this._calendars || [];
     const oldWeather = this._config?.weather_entity;
     const oldTodo = JSON.stringify(todoLists(this._config));
     this._config = {
@@ -2199,6 +2204,21 @@ class HomeCalendarCard extends HTMLElement {
         return o;
       })
       .filter((c) => c.entity);
+    // Rebind cached events before the immediate render. Match source/filter
+    // identity rather than position so reordering cannot swap people's events.
+    const key = (c) => JSON.stringify([c.entity, c._incl, c._excl, c._matchIn,
+      !!c.exclude_all_day, c.type, !!c.private]);
+    const available = new Map();
+    this._calendars.forEach((c) => {
+      const k = key(c);
+      if (!available.has(k)) available.set(k, []);
+      available.get(k).push(c);
+    });
+    const rebound = new Map(oldCals.map((c) => [c, available.get(key(c))?.shift()]));
+    this._events = (this._events || []).flatMap((ev) => {
+      const cal = rebound.get(ev.cal);
+      return cal ? [{ ...ev, cal }] : [];
+    });
     const defs = Object.fromEntries(DEFAULT_TYPES.map((t) => [t.id, t]));
     this._configTypes = Array.isArray(config.event_types) && config.event_types.length > 0;
     this._types = Array.isArray(config.event_types) && config.event_types.length
@@ -3193,7 +3213,7 @@ class HomeCalendarCard extends HTMLElement {
     const ev = sg.ev;
     const ban = this._isBanner(ev);
     const icon = ban ? (ev.tagged ? this._typeIcon(ev) : ev.cal.icon) || "mdi:party-popper" : this._typeIcon(ev);
-    return `<div class="${cls} ${ban ? "ban" : ""} ${sg.cl ? "cl" : ""} ${sg.cr ? "cr" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)};--lane:${sg.lane};${style}" data-action="open-event" data-id="${ev.id}" title="${esc(`${ev.summary} · ${this._whenText(ev)}`)}">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}<span>${esc(ev.summary)}</span></div>`;
+    return `<div class="${cls} ${ban ? "ban" : ""} ${sg.cl ? "cl" : ""} ${sg.cr ? "cr" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)};--lane:${sg.lane};${style}" data-action="open-event" data-id="${ev.id}" title="${esc(`${ev.summary} · ${this._whenText(ev)}`)}">${icon ? `<ha-icon icon="${esc(icon)}"></ha-icon>` : ""}<span>${esc(cls === "pbar" ? this._plannerTitle(ev) : ev.summary)}</span></div>`;
   }
 
   // Birthdays and anniversaries: all-day, yearly, with an age/years count.
@@ -4567,24 +4587,36 @@ class HomeCalendarCard extends HTMLElement {
     return cols;
   }
 
+  // Display-only: never change the event used by the details/edit dialog.
+  _plannerTitle(ev) {
+    const prefix = String(ev.cal.planner_title_prefix || "").trim();
+    const title = ev.summary;
+    if (!prefix || ev.private) return title;
+    const trimmed = title.trimStart();
+    if (!trimmed.toLowerCase().startsWith(prefix.toLowerCase())) return title;
+    const rest = trimmed.slice(prefix.length);
+    if (/^[\p{L}\p{N}_]/u.test(rest)) return title;
+    return rest.replace(/^[\s:–—-]+/u, "") || title;
+  }
+
   _renderPlanner() {
     const { start } = this._range();
     const today = dayKey(new Date());
     const cols = this._plannerCols();
     if (!cols.length) return `<div class="empty"><ha-icon icon="mdi:account-group-outline"></ha-icon><div>${esc(this._t("pl_none"))}</div></div>`;
-    const colSet = new Set(cols.flatMap((c) => c.members.map((m) => m.entity)));
+    const colSet = new Set(cols.flatMap((c) => c.members));
     const canAdd = this._config.allow_add !== false;
     const writable = new Set(this._writable().map((c) => c.entity));
     const wd = this._fmt({ weekday: "short" });
     const mo = this._fmt({ month: "short" });
     const evHtml = (ev, d) => `<div class="wev ${ev.allDay ? "allday" : ""} ${this._isBday(ev) ? "bday" : ""} ${ev.end <= new Date() ? "past" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
-        <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
+        <div class="t">${esc(this._isBday(ev) ? this._yearlyLabel(ev, true) : this._shortLabel(ev, d))}</div><div class="s">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(this._plannerTitle(ev))}</div>
       </div>`;
     const { days } = this._range();
     // multi-day bars (#16): a vertical strip down the person's column
     const pBars = cols.map((c) => {
-      const ents = new Set(c.members.map((m) => m.entity));
-      return this._multiBars() ? this._barLanes(this._barSegs(start, days, (ev) => ents.has(ev.cal.entity)), 2) : { bars: [], lanes: 0 };
+      const members = new Set(c.members);
+      return this._multiBars() ? this._barLanes(this._barSegs(start, days, (ev) => members.has(ev.cal)), 2) : { bars: [], lanes: 0 };
     });
     const pInBar = new Set(pBars.flatMap((x) => x.bars.map((b) => b.ev.id)));
     let out = `<div class="planner" style="--pcols:${cols.length};--prows:${days}"><div class="phead pcorner" style="grid-area:1 / 1"></div>`;
@@ -4596,7 +4628,7 @@ class HomeCalendarCard extends HTMLElement {
       const k = dayKey(d);
       const evs = this._eventsOn(d);
       const hol = this._holidaysOn(d)[0];
-      const shared = evs.filter((ev) => !colSet.has(ev.cal.entity));
+      const shared = evs.filter((ev) => !colSet.has(ev.cal));
       const rowCls = `${k === today ? "is-today" : ""} ${[0, 6].includes(d.getDay()) ? "wkend" : ""} ${hol ? "has-hol" : ""}`;
       out += `<div class="pday ${rowCls}" style="grid-area:${i + 2} / 1;${hol ? `--hol:${esc(hol.cal.color)}` : ""}">
         <button class="pdate" data-action="open-day" data-date="${k}"><span class="wd">${esc(wd.format(d))}</span><span class="dn">${d.getDate()}</span><span class="mo">${esc(mo.format(d))}</span></button>
@@ -4605,8 +4637,10 @@ class HomeCalendarCard extends HTMLElement {
         ${shared.length ? `<div class="pshared">${shared.map((ev) => evHtml(ev, d)).join("")}</div>` : ""}
       </div>`;
       out += cols.map((c, ci) => {
-        const ents = new Set(c.members.map((m) => m.entity));
-        const mine = evs.filter((ev) => ents.has(ev.cal.entity) && !pInBar.has(ev.id));
+        // Distinguish configured entries, not entities: one source can be
+        // listed several times with different include/exclude filters.
+        const members = new Set(c.members);
+        const mine = evs.filter((ev) => members.has(ev.cal) && !pInBar.has(ev.id));
         const lanesHere = pBars[ci].bars.filter((b) => b.a <= i && b.b >= i).length ? pBars[ci].lanes : 0;
         const target = c.members.find((m) => writable.has(m.entity)); // a group column adds to its first writable member
         const add = canAdd && !!target;
@@ -6293,6 +6327,7 @@ const calSchema = (t) => {
         o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
+    { name: "planner_title_prefix", selector: { text: {} } },
     { name: "todo", selector: { entity: { domain: "todo" } } },
     { name: "year_view", selector: { boolean: {} } },
     { type: "grid", name: "", schema: [
@@ -7091,6 +7126,7 @@ class HomeCalendarCardEditor extends HTMLElement {
           if (s.name === "year_view") return this._t("ed_year_help");
           if (s.name === "exclude") return this._t("ed_exclude_help");
           if (s.name === "include") return this._t("ed_include_help");
+          if (s.name === "planner_title_prefix") return this._t("ed_planner_title_prefix_help");
           if (s.name !== "name") return undefined;
           const ent = this._cals()[i]?.entity;
           const fn = ent && this._hass?.states[ent]?.attributes?.friendly_name;
