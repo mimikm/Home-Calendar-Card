@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.1-beta.2";
+const CARD_VERSION = "1.20.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -184,6 +184,8 @@ const I18N = {
     ed_new_cal: "New calendar – pick one", ed_expand: "Show settings", ed_collapse: "Hide settings", ed_expand_all: "Expand all", ed_collapse_all: "Collapse all", tg_overdue: "Overdue", tg_nodate: "Anytime", tg_upcoming: "Upcoming", done_section: "Done", upcoming_hint: "Coming up – can be ticked off when it's due", undo_done: "Mark as not done", l_todo_group_by: "Group tasks by", o_group_person: "Person", o_group_due: "Due date (Overdue / Today / …)", l_todo_days_ahead: "Show tasks due in the next … days (0 = all)", l_todo_calendar: "Calendar with upcoming repeats (optional)", l_todo_show_completed: "Show completed tasks", l_todo_completed_days: "Completed in the last … days", grp_each: "Show or hide each calendar", l_group: "Group (optional)", ed_group_help: "Calendars with the same group name share one button that shows/hides them all, e.g. Kids", ed_look: "Appearance", l_appearance: "Appearance", l_show_countdowns: "Show countdowns", l_countdown_style: "Countdown style", o_cards: "Cards", o_compact: "Compact (one line)", l_countdown_size: "Countdown size", l_event_size: "Day & event size", l_show_calendar_chips: "Show calendar buttons", o_clock: "Clock only", o_dim: "Dim the calendar", ed_media_help: "e.g. media-source://media_source/local/photos – leave empty for a clock-only screensaver",
   },
   pl: {
+    l_planner_title_prefix: "Ukryj ten początek tytułu w Planerze",
+    ed_planner_title_prefix_help: "Tylko wyświetlanie, np. Lea: Pianino → Pianino. Oryginalne tytuły pozostają.",
     l_multiday_bars: "Wydarzenia wielodniowe jako jeden pasek",
     l_todo: "Własna lista zadań (opcjonalnie)", ed_todo_help: "Zadania z tej listy należą do tej osoby – bez dopisku „For:”",
     l_todo_show_empty: "Pokaż osoby z pustą własną listą", tg_empty: "Nic do zrobienia",
@@ -256,6 +258,8 @@ const I18N = {
     ed_new_cal: "Nowy kalendarz – wybierz", ed_expand: "Pokaż ustawienia", ed_collapse: "Ukryj ustawienia", ed_expand_all: "Rozwiń wszystkie", ed_collapse_all: "Zwiń wszystkie", tg_overdue: "Zaległe", tg_nodate: "Bez terminu", tg_upcoming: "Nadchodzące", done_section: "Zrobione", upcoming_hint: "Nadchodzące – odhaczysz, gdy przyjdzie termin", undo_done: "Oznacz jako niezrobione", l_todo_group_by: "Grupuj zadania według", o_group_person: "Osoby", o_group_due: "Terminu (Zaległe / Dzisiaj / …)", l_todo_days_ahead: "Pokaż zadania na najbliższe … dni (0 = wszystkie)", l_todo_calendar: "Kalendarz z kolejnymi powtórzeniami (opcjonalnie)", l_todo_show_completed: "Pokaż zrobione zadania", l_todo_completed_days: "Zrobione w ostatnich … dniach", grp_each: "Pokaż lub ukryj kalendarze osobno", l_group: "Grupa (opcjonalnie)", ed_group_help: "Kalendarze z tą samą nazwą grupy mają jeden przycisk, który pokazuje/ukrywa je wszystkie, np. Dzieci", ed_look: "Wygląd", l_appearance: "Wygląd", l_show_countdowns: "Pokaż odliczania", l_countdown_style: "Styl odliczań", o_cards: "Kafelki", o_compact: "Kompaktowy (jedna linia)", l_countdown_size: "Rozmiar odliczań", l_event_size: "Rozmiar dni i wydarzeń", l_show_calendar_chips: "Pokaż przyciski kalendarzy", o_clock: "Tylko zegar", o_dim: "Przyciemnij kalendarz", ed_media_help: "np. media-source://media_source/local/photos – zostaw puste, aby wygaszacz pokazywał tylko zegar",
   },
   es: {
+    l_planner_title_prefix: "Ocultar este prefijo del título en el Planificador",
+    ed_planner_title_prefix_help: "Solo en pantalla, p. ej. Lea: Piano → Piano. Los títulos originales se mantienen.",
     l_multiday_bars: "Eventos de varios días como una barra",
     l_todo: "Lista de tareas propia (opcional)", ed_todo_help: "Las tareas de esta lista son de esta persona, sin necesidad de «For:»",
     l_todo_show_empty: "Mostrar personas con su lista vacía", tg_empty: "Nada pendiente",
@@ -328,6 +332,8 @@ const I18N = {
     ed_new_cal: "Nuevo calendario – elige uno", ed_expand: "Mostrar ajustes", ed_collapse: "Ocultar ajustes", ed_expand_all: "Expandir todo", ed_collapse_all: "Contraer todo", tg_overdue: "Atrasadas", tg_nodate: "Sin fecha", tg_upcoming: "Próximas", done_section: "Hechas", upcoming_hint: "Próxima: podrás marcarla cuando toque", undo_done: "Marcar como pendiente", l_todo_group_by: "Agrupar tareas por", o_group_person: "Persona", o_group_due: "Fecha (Atrasadas / Hoy / …)", l_todo_days_ahead: "Mostrar tareas de los próximos … días (0 = todas)", l_todo_calendar: "Calendario con próximas repeticiones (opcional)", l_todo_show_completed: "Mostrar tareas hechas", l_todo_completed_days: "Hechas en los últimos … días", grp_each: "Mostrar u ocultar cada calendario", l_group: "Grupo (opcional)", ed_group_help: "Los calendarios con el mismo nombre de grupo comparten un botón que los muestra u oculta todos, p. ej. Niños", ed_look: "Apariencia", l_appearance: "Apariencia", l_show_countdowns: "Mostrar cuentas atrás", l_countdown_style: "Estilo de cuentas atrás", o_cards: "Tarjetas", o_compact: "Compacto (una línea)", l_countdown_size: "Tamaño de cuentas atrás", l_event_size: "Tamaño de días y eventos", l_show_calendar_chips: "Mostrar botones de calendarios", o_clock: "Solo reloj", o_dim: "Atenuar el calendario", ed_media_help: "p. ej. media-source://media_source/local/photos – déjalo vacío para un salvapantallas solo con reloj",
   },
   it: {
+    l_planner_title_prefix: "Nascondi questo prefisso del titolo nel Planner",
+    ed_planner_title_prefix_help: "Solo visualizzazione, es. Lea: Piano → Piano. I titoli originali restano invariati.",
     l_multiday_bars: "Eventi di più giorni come una barra",
     l_todo: "Lista di cose da fare propria (facoltativa)", ed_todo_help: "Le attività di questa lista appartengono a questa persona, senza bisogno di “For:”",
     l_todo_show_empty: "Mostra le persone con la propria lista vuota", tg_empty: "Niente da fare",
@@ -576,6 +582,8 @@ const I18N = {
     ed_media_help: "es. media-source://media_source/local/photos – lascia vuoto per un salvaschermo con solo orologio",
   },
   nl: {
+    l_planner_title_prefix: "Dit titelvoorvoegsel verbergen in de Planner",
+    ed_planner_title_prefix_help: "Alleen weergave, bijv. Lea: Piano → Piano. Oorspronkelijke titels blijven behouden.",
     l_multiday_bars: "Meerdaagse afspraken als één balk",
     l_todo: "Eigen takenlijst (optioneel)", ed_todo_help: "Taken in deze lijst horen bij deze persoon – geen “For:” nodig",
     l_todo_show_empty: "Personen met een lege eigen lijst tonen", tg_empty: "Niets te doen",
@@ -1074,6 +1082,8 @@ const I18N = {
     ed_media_help: "z. B. media-source://media_source/local/photos – leer lassen für einen Bildschirmschoner nur mit Uhr",
   },
   hu: {
+    l_planner_title_prefix: "Ennek a címelőtagnak az elrejtése a Tervezőben",
+    ed_planner_title_prefix_help: "Csak a megjelenítésben, pl. Lea: Zongora → Zongora. Az eredeti címek megmaradnak.",
     l_multiday_bars: "Többnapos események egy sávként",
     l_todo: "Saját teendőlista (opcionális)", ed_todo_help: "A lista teendői ehhez a személyhez tartoznak – nem kell „For:”",
     l_todo_show_empty: "Üres saját listájú személyek megjelenítése", tg_empty: "Nincs teendő",
@@ -1322,6 +1332,8 @@ const I18N = {
     ed_media_help: "pl. media-source://media_source/local/photos – hagyd üresen a csak órát mutató képernyővédőhöz",
   },
   pt: {
+    l_planner_title_prefix: "Ocultar este prefixo do título no Planejador",
+    ed_planner_title_prefix_help: "Só na exibição, ex.: Lea: Piano → Piano. Os títulos originais são mantidos.",
     l_multiday_bars: "Eventos de vários dias como uma barra",
     l_todo: "Lista de tarefas própria (opcional)", ed_todo_help: "As tarefas desta lista pertencem a esta pessoa – sem precisar de “For:”",
     l_todo_show_empty: "Mostrar pessoas com a própria lista vazia", tg_empty: "Nada a fazer",
@@ -1395,6 +1407,8 @@ const I18N = {
     ed_new_cal: "Novo calendário – escolha um", ed_expand: "Mostrar configurações", ed_collapse: "Ocultar configurações", ed_expand_all: "Expandir tudo", ed_collapse_all: "Recolher tudo", tg_overdue: "Atrasadas", tg_nodate: "Sem data", tg_upcoming: "Próximas", done_section: "Concluídas", upcoming_hint: "Em breve – pode ser marcada quando chegar a data", undo_done: "Marcar como não concluída", l_todo_group_by: "Agrupar tarefas por", o_group_person: "Pessoa", o_group_due: "Prazo (Atrasadas / Hoje / …)", l_todo_days_ahead: "Mostrar tarefas com prazo nos próximos … dias (0 = todas)", l_todo_calendar: "Calendário com as próximas repetições (opcional)", l_todo_show_completed: "Mostrar tarefas concluídas", l_todo_completed_days: "Concluídas nos últimos … dias", grp_each: "Mostrar ou ocultar cada calendário", l_group: "Grupo (opcional)", ed_group_help: "Calendários com o mesmo nome de grupo compartilham um botão que mostra/oculta todos, ex.: Crianças", ed_look: "Aparência", l_appearance: "Aparência", l_show_countdowns: "Mostrar contagens regressivas", l_countdown_style: "Estilo das contagens regressivas", o_cards: "Cartões", o_compact: "Compacto (uma linha)", l_countdown_size: "Tamanho das contagens regressivas", l_event_size: "Tamanho dos dias e eventos", l_show_calendar_chips: "Mostrar botões de calendários", o_clock: "Só relógio", o_dim: "Escurecer o calendário", ed_media_help: "ex.: media-source://media_source/local/photos – deixe vazio para uma proteção de tela só com relógio",
   },
   sr: {
+    l_planner_title_prefix: "Сакриј овај префикс наслова у Планеру",
+    ed_planner_title_prefix_help: "Само у приказу, нпр. Lea: Клавир → Клавир. Оригинални наслови остају.",
     l_multiday_bars: "Вишедневни термини као једна трака",
     l_todo: "Сопствена листа задатака (опционо)", ed_todo_help: "Задаци са ове листе припадају овој особи – није потребно „For:”",
     l_todo_show_empty: "Прикажи особе са празном сопственом листом", tg_empty: "Нема задатака",
@@ -1643,6 +1657,8 @@ const I18N = {
     ed_media_help: "нпр. media-source://media_source/local/photos – оставите празно за чувар екрана који приказује само сат",
   },
   "sr-Latn": {
+    l_planner_title_prefix: "Sakrij ovaj prefiks naslova u Planeru",
+    ed_planner_title_prefix_help: "Samo u prikazu, npr. Lea: Klavir → Klavir. Originalni naslovi ostaju.",
     l_multiday_bars: "Višednevni termini kao jedna traka",
     l_todo: "Sopstvena lista zadataka (opciono)", ed_todo_help: "Zadaci sa ove liste pripadaju ovoj osobi – nije potrebno „For:”",
     l_todo_show_empty: "Prikaži osobe sa praznom sopstvenom listom", tg_empty: "Nema zadataka",
@@ -7144,6 +7160,7 @@ class HomeCalendarCardEditor extends HTMLElement {
         if (list[i].exclude_all_day !== true) delete list[i].exclude_all_day;
         if (!list[i].todo) delete list[i].todo;
         if (list[i].year_view !== true) delete list[i].year_view;
+        if (!String(list[i].planner_title_prefix || "").trim()) delete list[i].planner_title_prefix;
         this._emit({ ...this._config, calendars: list });
         const head = this.shadowRoot.querySelector(`.cal[data-i="${i}"] .ch-txt`);
         if (head) head.innerHTML = this._headHtml(list[i]);
