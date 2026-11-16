@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.2-beta.1";
+const CARD_VERSION = "1.20.2-beta.2";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -116,6 +116,7 @@ const I18N = {
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
     l_todo_lists: "More lists as tabs (e.g. shopping)", ed_todo_lists_help: "Each list gets its own tab in the to-do block. Set a title or icon in YAML.",
     l_month_show_time: "Show start time in Month view",
+    ed_backup: "Backup & restore", ed_backup_sub: "Save this card's settings to a file, or load them back – before big changes, or to copy the card to another dashboard.", ed_bk_download: "Download backup", ed_bk_copy: "Copy", ed_bk_copied: "Copied", ed_bk_restore: "Restore from file", ed_bk_confirm: "Replace the current settings with this backup ({d}, {n} calendars)?", ed_bk_replace: "Replace", ed_bk_done: "Settings restored – press Save to keep them.", ed_bk_bad: "This file isn't a Home Calendar Card backup.",
     ed_types: "Event types", ed_types_sub: "Types you can pick when adding an event or for a whole calendar. Rename, re-icon or remove the built-in ones, or add your own.", ed_add_type: "Add type", ed_new_type: "New type…", ed_new_type_help: "Its events get this type's icon and style. You can change it later under Event types.", ed_create_type: "Create type", l_type_name: "Name", l_type_icon: "Icon", l_type_all_day: "All day by default", l_type_countdown: "Countdown card", o_st_normal: "Normal", o_st_banner: "Holiday banner", o_st_birthday: "Birthday (turns X)", o_st_anniversary: "Anniversary (years)", o_st_nameday: "Name day", ed_type_style_help: "A holiday banner, birthday, anniversary or name-day calendar isn't a person: no Planner column.", ed_note2: "Countdowns are set in the code editor – see the README.",
     sync: "Sync calendars now", sync_err: "Couldn't sync the calendars", l_show_refresh_button: "Show refresh button", l_calendar_sync_minutes: "Sync calendars every … minutes (0 = off)",
     year: "Year", l_week_style: "Week view style", o_ws_list: "List", o_ws_timeline: "Timeline (hours, like Outlook)", l_week_hour_start: "Timeline from (hour)", l_week_hour_end: "Timeline to (hour)", l_show_year_view: "Show Year view", l_year_start: "Year view starts", o_ys_jan: "In January", o_ys_month: "This month (next 12 months)", l_year_view: "Show in Year view", ed_year_help: "Its all-day events appear in the Year view. If no calendar is ticked, all are shown.",
@@ -192,6 +193,7 @@ const I18N = {
     l_todo_show_empty: "Pokaż osoby z pustą własną listą", tg_empty: "Nic do zrobienia",
     l_todo_lists: "Kolejne listy jako karty (np. zakupy)", ed_todo_lists_help: "Każda lista ma własną kartę w bloku zadań. Tytuł lub ikonę ustawisz w YAML.",
     l_month_show_time: "Pokaż godzinę rozpoczęcia w widoku miesiąca",
+    ed_backup: "Kopia zapasowa", ed_backup_sub: "Zapisz ustawienia tej karty do pliku albo wczytaj je z powrotem – przed większymi zmianami albo żeby skopiować kartę na inny pulpit.", ed_bk_download: "Pobierz kopię", ed_bk_copy: "Kopiuj", ed_bk_copied: "Skopiowano", ed_bk_restore: "Przywróć z pliku", ed_bk_confirm: "Zastąpić obecne ustawienia tą kopią ({d}, kalendarze: {n})?", ed_bk_replace: "Zastąp", ed_bk_done: "Ustawienia przywrócone – naciśnij Zapisz, żeby je zachować.", ed_bk_bad: "Ten plik nie jest kopią zapasową Home Calendar Card.",
     ed_types: "Typy wydarzeń", ed_types_sub: "Typy do wyboru przy dodawaniu wydarzenia lub dla całego kalendarza. Zmień nazwę lub ikonę wbudowanych, usuń je albo dodaj własne.", ed_add_type: "Dodaj typ", ed_new_type: "Nowy typ…", ed_new_type_help: "Jego wydarzenia dostaną ikonę i styl tego typu. Zmienisz to później w sekcji Typy wydarzeń.", ed_create_type: "Utwórz typ", l_type_name: "Nazwa", l_type_icon: "Ikona", l_type_all_day: "Domyślnie całodniowe", l_type_countdown: "Karta odliczania", o_st_normal: "Zwykły", o_st_banner: "Baner urlopowy", o_st_birthday: "Urodziny (kończy X)", o_st_anniversary: "Rocznica (lata)", o_st_nameday: "Imieniny", ed_type_style_help: "Kalendarz z banerem, urodzinami, rocznicami lub imieninami nie jest osobą: nie ma kolumny w Planerze.", ed_note2: "Odliczania ustawia się w edytorze kodu – zobacz README.",
     sync: "Synchronizuj kalendarze teraz", sync_err: "Nie udało się zsynchronizować kalendarzy", l_show_refresh_button: "Pokaż przycisk odświeżania", l_calendar_sync_minutes: "Synchronizuj kalendarze co … minut (0 = wył.)",
     year: "Rok", l_week_style: "Styl widoku tygodnia", o_ws_list: "Lista", o_ws_timeline: "Oś czasu (godziny, jak w Outlooku)", l_week_hour_start: "Oś czasu od (godzina)", l_week_hour_end: "Oś czasu do (godziny)", l_show_year_view: "Pokaż widok roku", l_year_start: "Widok roku zaczyna się", o_ys_jan: "W styczniu", o_ys_month: "Od bieżącego miesiąca (12 miesięcy)", l_year_view: "Pokaż w widoku roku", ed_year_help: "Jego wydarzenia całodniowe pojawią się w widoku roku. Gdy żaden kalendarz nie jest zaznaczony, widać wszystkie.",
@@ -267,6 +269,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar personas con su lista vacía", tg_empty: "Nada pendiente",
     l_todo_lists: "Más listas como pestañas (p. ej. compra)", ed_todo_lists_help: "Cada lista tiene su propia pestaña en el bloque de tareas. El título o el icono se ajustan en YAML.",
     l_month_show_time: "Mostrar la hora de inicio en la vista Mes",
+    ed_backup: "Copia de seguridad", ed_backup_sub: "Guarda los ajustes de esta tarjeta en un archivo o vuelve a cargarlos: antes de grandes cambios o para copiar la tarjeta a otro panel.", ed_bk_download: "Descargar copia", ed_bk_copy: "Copiar", ed_bk_copied: "Copiado", ed_bk_restore: "Restaurar desde archivo", ed_bk_confirm: "¿Sustituir los ajustes actuales por esta copia ({d}, {n} calendarios)?", ed_bk_replace: "Sustituir", ed_bk_done: "Ajustes restaurados: pulsa Guardar para conservarlos.", ed_bk_bad: "Este archivo no es una copia de Home Calendar Card.",
     ed_types: "Tipos de evento", ed_types_sub: "Tipos que puedes elegir al añadir un evento o para todo un calendario. Cambia el nombre o el icono de los integrados, quítalos o añade los tuyos.", ed_add_type: "Añadir tipo", ed_new_type: "Nuevo tipo…", ed_new_type_help: "Sus eventos tendrán el icono y el estilo de este tipo. Puedes cambiarlo luego en Tipos de evento.", ed_create_type: "Crear tipo", l_type_name: "Nombre", l_type_icon: "Icono", l_type_all_day: "Todo el día por defecto", l_type_countdown: "Tarjeta de cuenta atrás", o_st_normal: "Normal", o_st_banner: "Banner de vacaciones", o_st_birthday: "Cumpleaños (cumple X)", o_st_anniversary: "Aniversario (años)", o_st_nameday: "Onomástica", ed_type_style_help: "Un calendario de vacaciones, cumpleaños, aniversarios u onomásticas no es una persona: no tiene columna en el Planificador.", ed_note2: "Las cuentas atrás se configuran en el editor de código; consulta el README.",
     sync: "Sincronizar calendarios ahora", sync_err: "No se pudieron sincronizar los calendarios", l_show_refresh_button: "Mostrar botón de actualizar", l_calendar_sync_minutes: "Sincronizar calendarios cada … minutos (0 = no)",
     year: "Año", l_week_style: "Estilo de la vista Semana", o_ws_list: "Lista", o_ws_timeline: "Línea de tiempo (horas, como Outlook)", l_week_hour_start: "Línea de tiempo desde (hora)", l_week_hour_end: "Línea de tiempo hasta (hora)", l_show_year_view: "Mostrar vista Año", l_year_start: "La vista Año empieza", o_ys_jan: "En enero", o_ys_month: "Este mes (próximos 12 meses)", l_year_view: "Mostrar en la vista Año", ed_year_help: "Sus eventos de todo el día aparecen en la vista Año. Si no marcas ningún calendario, se muestran todos.",
@@ -342,6 +345,7 @@ const I18N = {
     l_todo_show_empty: "Mostra le persone con la propria lista vuota", tg_empty: "Niente da fare",
     l_todo_lists: "Altre liste come schede (es. spesa)", ed_todo_lists_help: "Ogni lista ha la sua scheda nel blocco delle cose da fare. Titolo o icona si impostano in YAML.",
     l_month_show_time: "Mostra l'ora di inizio nella vista Mese",
+    ed_backup: "Backup e ripristino", ed_backup_sub: "Salva le impostazioni di questa card in un file o ricaricale: prima di grandi modifiche o per copiare la card su un'altra dashboard.", ed_bk_download: "Scarica backup", ed_bk_copy: "Copia", ed_bk_copied: "Copiato", ed_bk_restore: "Ripristina da file", ed_bk_confirm: "Sostituire le impostazioni attuali con questo backup ({d}, {n} calendari)?", ed_bk_replace: "Sostituisci", ed_bk_done: "Impostazioni ripristinate: premi Salva per mantenerle.", ed_bk_bad: "Questo file non è un backup di Home Calendar Card.",
     ed_types: "Tipi di evento", ed_types_sub: "Tipi da scegliere quando aggiungi un evento o per un intero calendario. Rinomina, cambia icona o rimuovi quelli predefiniti, oppure aggiungi i tuoi.", ed_add_type: "Aggiungi tipo", ed_new_type: "Nuovo tipo…", ed_new_type_help: "I suoi eventi avranno l'icona e lo stile di questo tipo. Puoi cambiarlo poi in Tipi di evento.", ed_create_type: "Crea tipo", l_type_name: "Nome", l_type_icon: "Icona", l_type_all_day: "Tutto il giorno di default", l_type_countdown: "Scheda conto alla rovescia", o_st_normal: "Normale", o_st_banner: "Banner vacanza", o_st_birthday: "Compleanno (compie X)", o_st_anniversary: "Anniversario (anni)", o_st_nameday: "Onomastico", ed_type_style_help: "Un calendario di vacanze, compleanni, anniversari od onomastici non è una persona: niente colonna nel Planner.", ed_note2: "I conti alla rovescia si impostano nell'editor di codice – vedi il README.",
     sync: "Sincronizza ora i calendari", sync_err: "Impossibile sincronizzare i calendari", l_show_refresh_button: "Mostra il pulsante di aggiornamento", l_calendar_sync_minutes: "Sincronizza i calendari ogni … minuti (0 = mai)",
     year: "Anno", l_week_style: "Stile della vista Settimana", o_ws_list: "Elenco", o_ws_timeline: "Linea temporale (ore, come Outlook)", l_week_hour_start: "Linea temporale dalle (ora)", l_week_hour_end: "Linea temporale fino alle (ora)", l_show_year_view: "Mostra la vista Anno", l_year_start: "La vista Anno inizia", o_ys_jan: "A gennaio", o_ys_month: "Da questo mese (12 mesi)", l_year_view: "Mostra nella vista Anno", ed_year_help: "I suoi eventi di tutto il giorno compaiono nella vista Anno. Se nessun calendario è selezionato, compaiono tutti.",
@@ -593,6 +597,7 @@ const I18N = {
     l_todo_show_empty: "Personen met een lege eigen lijst tonen", tg_empty: "Niets te doen",
     l_todo_lists: "Meer lijsten als tabbladen (bijv. boodschappen)", ed_todo_lists_help: "Elke lijst krijgt een eigen tabblad in het takenblok. Titel of pictogram stel je in YAML in.",
     l_month_show_time: "Begintijd tonen in de maandweergave",
+    ed_backup: "Back-up en herstel", ed_backup_sub: "Bewaar de instellingen van deze kaart in een bestand of laad ze terug – vóór grote wijzigingen of om de kaart naar een ander dashboard te kopiëren.", ed_bk_download: "Back-up downloaden", ed_bk_copy: "Kopiëren", ed_bk_copied: "Gekopieerd", ed_bk_restore: "Herstellen uit bestand", ed_bk_confirm: "De huidige instellingen vervangen door deze back-up ({d}, {n} agenda's)?", ed_bk_replace: "Vervangen", ed_bk_done: "Instellingen hersteld – druk op Opslaan om ze te bewaren.", ed_bk_bad: "Dit bestand is geen back-up van Home Calendar Card.",
     ed_types: "Soorten afspraken", ed_types_sub: "Soorten om te kiezen bij een nieuwe afspraak of voor een hele agenda. Geef de ingebouwde een andere naam of pictogram, verwijder ze of voeg je eigen toe.", ed_add_type: "Soort toevoegen", ed_new_type: "Nieuwe soort…", ed_new_type_help: "De afspraken krijgen het pictogram en de stijl van deze soort. Je kunt dit later wijzigen onder Soorten afspraken.", ed_create_type: "Soort maken", l_type_name: "Naam", l_type_icon: "Pictogram", l_type_all_day: "Standaard hele dag", l_type_countdown: "Aftelkaart", o_st_normal: "Normaal", o_st_banner: "Vakantiebanner", o_st_birthday: "Verjaardag (wordt X)", o_st_anniversary: "Jubileum (jaren)", o_st_nameday: "Naamdag", ed_type_style_help: "Een agenda met vakanties, verjaardagen, jubilea of naamdagen is geen persoon: geen kolom in de Planner.", ed_note2: "Aftellers stel je in de code-editor in – zie de README.",
     sync: "Agenda's nu synchroniseren", sync_err: "De agenda's konden niet worden gesynchroniseerd", l_show_refresh_button: "Vernieuwknop tonen", l_calendar_sync_minutes: "Agenda's elke … minuten synchroniseren (0 = uit)",
     year: "Jaar", l_week_style: "Stijl van de weekweergave", o_ws_list: "Lijst", o_ws_timeline: "Tijdlijn (uren, zoals Outlook)", l_week_hour_start: "Tijdlijn vanaf (uur)", l_week_hour_end: "Tijdlijn tot (uur)", l_show_year_view: "Jaarweergave tonen", l_year_start: "Jaarweergave begint", o_ys_jan: "In januari", o_ys_month: "Deze maand (komende 12 maanden)", l_year_view: "Tonen in de jaarweergave", ed_year_help: "De hele-dag-afspraken verschijnen in de jaarweergave. Als er geen agenda is aangevinkt, worden ze allemaal getoond.",
@@ -844,6 +849,7 @@ const I18N = {
     l_todo_show_empty: "Personen mit leerer eigener Liste anzeigen", tg_empty: "Nichts zu tun",
     l_todo_lists: "Weitere Listen als Tabs (z. B. Einkauf)", ed_todo_lists_help: "Jede Liste bekommt einen eigenen Tab im Aufgabenblock. Titel oder Symbol in YAML festlegen.",
     l_month_show_time: "Startzeit in der Monatsansicht anzeigen",
+    ed_backup: "Sichern & Wiederherstellen", ed_backup_sub: "Einstellungen dieser Karte in einer Datei sichern oder wieder laden – vor größeren Änderungen oder um die Karte auf ein anderes Dashboard zu übernehmen.", ed_bk_download: "Sicherung herunterladen", ed_bk_copy: "Kopieren", ed_bk_copied: "Kopiert", ed_bk_restore: "Aus Datei wiederherstellen", ed_bk_confirm: "Aktuelle Einstellungen durch diese Sicherung ersetzen ({d}, {n} Kalender)?", ed_bk_replace: "Ersetzen", ed_bk_done: "Einstellungen wiederhergestellt – zum Übernehmen Speichern drücken.", ed_bk_bad: "Diese Datei ist keine Home-Calendar-Card-Sicherung.",
     ed_types: "Terminarten", ed_types_sub: "Arten zur Auswahl beim Hinzufügen eines Termins oder für einen ganzen Kalender. Integrierte umbenennen, Symbol ändern oder entfernen – oder eigene hinzufügen.", ed_add_type: "Art hinzufügen", ed_new_type: "Neue Art…", ed_new_type_help: "Seine Termine bekommen Symbol und Stil dieser Art. Später unter Terminarten änderbar.", ed_create_type: "Art erstellen", l_type_name: "Name", l_type_icon: "Symbol", l_type_all_day: "Standardmäßig ganztägig", l_type_countdown: "Countdown-Karte", o_st_normal: "Normal", o_st_banner: "Urlaubsbanner", o_st_birthday: "Geburtstag (wird X)", o_st_anniversary: "Jahrestag (Jahre)", o_st_nameday: "Namenstag", ed_type_style_help: "Ein Kalender mit Urlaub, Geburtstagen, Jahrestagen oder Namenstagen ist keine Person: keine Spalte im Planer.", ed_note2: "Countdowns werden im Code-Editor eingestellt – siehe README.",
     sync: "Kalender jetzt synchronisieren", sync_err: "Kalender konnten nicht synchronisiert werden", l_show_refresh_button: "Aktualisieren-Schaltfläche anzeigen", l_calendar_sync_minutes: "Kalender alle … Minuten synchronisieren (0 = aus)",
     year: "Jahr", l_week_style: "Stil der Wochenansicht", o_ws_list: "Liste", o_ws_timeline: "Zeitleiste (Stunden, wie Outlook)", l_week_hour_start: "Zeitleiste ab (Uhr)", l_week_hour_end: "Zeitleiste bis (Uhr)", l_show_year_view: "Jahresansicht anzeigen", l_year_start: "Jahresansicht beginnt", o_ys_jan: "Im Januar", o_ys_month: "Diesen Monat (nächste 12 Monate)", l_year_view: "In der Jahresansicht anzeigen", ed_year_help: "Ganztägige Termine dieses Kalenders erscheinen in der Jahresansicht. Ist kein Kalender ausgewählt, werden alle angezeigt.",
@@ -1095,6 +1101,7 @@ const I18N = {
     l_todo_show_empty: "Üres saját listájú személyek megjelenítése", tg_empty: "Nincs teendő",
     l_todo_lists: "További listák fülként (pl. bevásárlás)", ed_todo_lists_help: "Minden lista saját fület kap a teendők blokkban. A címet vagy ikont YAML-ben lehet megadni.",
     l_month_show_time: "Kezdési idő megjelenítése a havi nézetben",
+    ed_backup: "Mentés és visszaállítás", ed_backup_sub: "Mentsd fájlba a kártya beállításait, vagy töltsd vissza őket – nagyobb módosítás előtt, vagy hogy a kártyát egy másik műszerfalra másold.", ed_bk_download: "Mentés letöltése", ed_bk_copy: "Másolás", ed_bk_copied: "Másolva", ed_bk_restore: "Visszaállítás fájlból", ed_bk_confirm: "Lecseréled a jelenlegi beállításokat erre a mentésre ({d}, {n} naptár)?", ed_bk_replace: "Csere", ed_bk_done: "Beállítások visszaállítva – a megtartáshoz nyomd meg a Mentést.", ed_bk_bad: "Ez a fájl nem Home Calendar Card mentés.",
     ed_types: "Eseménytípusok", ed_types_sub: "Választható típusok új eseményhez vagy egy egész naptárhoz. A beépítettek átnevezhetők, ikonjuk módosítható, törölhetők, vagy adj hozzá sajátot.", ed_add_type: "Típus hozzáadása", ed_new_type: "Új típus…", ed_new_type_help: "Eseményei megkapják ennek a típusnak az ikonját és stílusát. Később az Eseménytípusoknál módosítható.", ed_create_type: "Típus létrehozása", l_type_name: "Név", l_type_icon: "Ikon", l_type_all_day: "Alapból egész napos", l_type_countdown: "Visszaszámláló kártya", o_st_normal: "Normál", o_st_banner: "Szabadság szalag", o_st_birthday: "Születésnap (betölti X)", o_st_anniversary: "Évforduló (évek)", o_st_nameday: "Névnap", ed_type_style_help: "A szabadság-, születésnap-, évforduló- vagy névnapnaptár nem személy: nincs oszlopa a Tervezőben.", ed_note2: "A visszaszámlálások a kódszerkesztőben állíthatók – lásd a README-t.",
     sync: "Naptárak szinkronizálása most", sync_err: "Nem sikerült szinkronizálni a naptárakat", l_show_refresh_button: "Frissítés gomb megjelenítése", l_calendar_sync_minutes: "Naptárak szinkronizálása … percenként (0 = ki)",
     year: "Év", l_week_style: "Heti nézet stílusa", o_ws_list: "Lista", o_ws_timeline: "Idővonal (órák, mint az Outlookban)", l_week_hour_start: "Idővonal kezdete (óra)", l_week_hour_end: "Idővonal vége (óra)", l_show_year_view: "Éves nézet megjelenítése", l_year_start: "Az éves nézet kezdete", o_ys_jan: "Januárban", o_ys_month: "Ebben a hónapban (következő 12 hónap)", l_year_view: "Megjelenítés az éves nézetben", ed_year_help: "Az egész napos eseményei megjelennek az éves nézetben. Ha egy naptár sincs bejelölve, mind látszik.",
@@ -1346,6 +1353,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar pessoas com a própria lista vazia", tg_empty: "Nada a fazer",
     l_todo_lists: "Mais listas como abas (ex.: compras)", ed_todo_lists_help: "Cada lista ganha sua própria aba no bloco de tarefas. Título ou ícone podem ser definidos no YAML.",
     l_month_show_time: "Mostrar horário de início na visão Mês",
+    ed_backup: "Backup e restauração", ed_backup_sub: "Salve as configurações deste cartão em um arquivo ou carregue-as de volta – antes de grandes mudanças ou para copiar o cartão para outro painel.", ed_bk_download: "Baixar backup", ed_bk_copy: "Copiar", ed_bk_copied: "Copiado", ed_bk_restore: "Restaurar de arquivo", ed_bk_confirm: "Substituir as configurações atuais por este backup ({d}, {n} agendas)?", ed_bk_replace: "Substituir", ed_bk_done: "Configurações restauradas – toque em Salvar para mantê-las.", ed_bk_bad: "Este arquivo não é um backup do Home Calendar Card.",
     ed_types: "Tipos de evento", ed_types_sub: "Tipos para escolher ao adicionar um evento ou para uma agenda inteira. Renomeie, troque o ícone ou remova os embutidos, ou adicione os seus.", ed_add_type: "Adicionar tipo", ed_new_type: "Novo tipo…", ed_new_type_help: "Os eventos dela recebem o ícone e o estilo deste tipo. Dá para mudar depois em Tipos de evento.", ed_create_type: "Criar tipo", l_type_name: "Nome", l_type_icon: "Ícone", l_type_all_day: "Dia inteiro por padrão", l_type_countdown: "Cartão de contagem regressiva", o_st_normal: "Normal", o_st_banner: "Faixa de férias", o_st_birthday: "Aniversário (faz X)", o_st_anniversary: "Bodas (anos)", o_st_nameday: "Dia do santo", ed_type_style_help: "Uma agenda de férias, aniversários, bodas ou dias do santo não é uma pessoa: sem coluna no Planejador.", ed_note2: "As contagens regressivas são definidas no editor de código – veja o README.",
     sync: "Sincronizar agendas agora", sync_err: "Não foi possível sincronizar as agendas", l_show_refresh_button: "Mostrar botão de atualizar", l_calendar_sync_minutes: "Sincronizar agendas a cada … minutos (0 = desligado)",
     year: "Ano", l_week_style: "Estilo da visão Semana", o_ws_list: "Lista", o_ws_timeline: "Linha do tempo (horas, como no Outlook)", l_week_hour_start: "Linha do tempo a partir de (hora)", l_week_hour_end: "Linha do tempo até (hora)", l_show_year_view: "Mostrar visão Ano", l_year_start: "A visão Ano começa", o_ys_jan: "Em janeiro", o_ys_month: "Neste mês (próximos 12 meses)", l_year_view: "Mostrar na visão Ano", ed_year_help: "Os eventos de dia inteiro desta agenda aparecem na visão Ano. Se nenhuma estiver marcada, todas aparecem.",
@@ -1422,6 +1430,7 @@ const I18N = {
     l_todo_show_empty: "Прикажи особе са празном сопственом листом", tg_empty: "Нема задатака",
     l_todo_lists: "Још листа као картице (нпр. куповина)", ed_todo_lists_help: "Свака листа добија своју картицу у блоку задатака. Наслов или иконица се подешавају у YAML-у.",
     l_month_show_time: "Прикажи време почетка у месечном приказу",
+    ed_backup: "Резервна копија", ed_backup_sub: "Сачувај подешавања ове картице у фајл или их врати – пре већих измена или да копираш картицу на другу контролну таблу.", ed_bk_download: "Преузми копију", ed_bk_copy: "Копирај", ed_bk_copied: "Копирано", ed_bk_restore: "Врати из фајла", ed_bk_confirm: "Заменити тренутна подешавања овом копијом ({d}, календара: {n})?", ed_bk_replace: "Замени", ed_bk_done: "Подешавања враћена – притисни Сачувај да их задржиш.", ed_bk_bad: "Овај фајл није резервна копија Home Calendar Card-а.",
     ed_types: "Типови догађаја", ed_types_sub: "Типови за избор при додавању догађаја или за цео календар. Преименуј, промени иконицу или уклони уграђене, или додај своје.", ed_add_type: "Додај тип", ed_new_type: "Нови тип…", ed_new_type_help: "Његови догађаји добијају иконицу и стил овог типа. Можеш то касније да промениш у Типовима догађаја.", ed_create_type: "Направи тип", l_type_name: "Назив", l_type_icon: "Иконица", l_type_all_day: "Подразумевано целодневно", l_type_countdown: "Картица одбројавања", o_st_normal: "Обично", o_st_banner: "Трака одмора", o_st_birthday: "Рођендан (пуни X)", o_st_anniversary: "Годишњица (године)", o_st_nameday: "Имендан", ed_type_style_help: "Календар одмора, рођендана, годишњица или имендана није особа: нема колону у Планеру.", ed_note2: "Одбројавања се подешавају у уређивачу кода – погледај README.",
     sync: "Синхронизуј календаре сада", sync_err: "Синхронизација календара није успела", l_show_refresh_button: "Прикажи дугме за освежавање", l_calendar_sync_minutes: "Синхронизуј календаре на сваких … минута (0 = искључено)",
     year: "Година", l_week_style: "Стил недељног приказа", o_ws_list: "Листа", o_ws_timeline: "Временска линија (сати, као у Outlook-у)", l_week_hour_start: "Временска линија од (сат)", l_week_hour_end: "Временска линија до (сат)", l_show_year_view: "Прикажи годишњи приказ", l_year_start: "Годишњи приказ почиње", o_ys_jan: "У јануару", o_ys_month: "Од овог месеца (12 месеци)", l_year_view: "Прикажи у годишњем приказу", ed_year_help: "Целодневни догађаји овог календара се приказују у годишњем приказу. Ако ниједан календар није означен, приказују се сви.",
@@ -1673,6 +1682,7 @@ const I18N = {
     l_todo_show_empty: "Prikaži osobe sa praznom sopstvenom listom", tg_empty: "Nema zadataka",
     l_todo_lists: "Još lista kao kartice (npr. kupovina)", ed_todo_lists_help: "Svaka lista dobija svoju karticu u bloku zadataka. Naslov ili ikonica se podešavaju u YAML-u.",
     l_month_show_time: "Prikaži vreme početka u mesečnom prikazu",
+    ed_backup: "Rezervna kopija", ed_backup_sub: "Sačuvaj podešavanja ove kartice u fajl ili ih vrati – pre većih izmena ili da kopiraš karticu na drugu kontrolnu tablu.", ed_bk_download: "Preuzmi kopiju", ed_bk_copy: "Kopiraj", ed_bk_copied: "Kopirano", ed_bk_restore: "Vrati iz fajla", ed_bk_confirm: "Zameniti trenutna podešavanja ovom kopijom ({d}, kalendara: {n})?", ed_bk_replace: "Zameni", ed_bk_done: "Podešavanja vraćena – pritisni Sačuvaj da ih zadržiš.", ed_bk_bad: "Ovaj fajl nije rezervna kopija Home Calendar Card-a.",
     ed_types: "Tipovi događaja", ed_types_sub: "Tipovi za izbor pri dodavanju događaja ili za ceo kalendar. Preimenuj, promeni ikonicu ili ukloni ugrađene, ili dodaj svoje.", ed_add_type: "Dodaj tip", ed_new_type: "Novi tip…", ed_new_type_help: "Njegovi događaji dobijaju ikonicu i stil ovog tipa. Možeš to kasnije da promeniš u Tipovima događaja.", ed_create_type: "Napravi tip", l_type_name: "Naziv", l_type_icon: "Ikonica", l_type_all_day: "Podrazumevano celodnevno", l_type_countdown: "Kartica odbrojavanja", o_st_normal: "Obično", o_st_banner: "Traka odmora", o_st_birthday: "Rođendan (puni X)", o_st_anniversary: "Godišnjica (godine)", o_st_nameday: "Imendan", ed_type_style_help: "Kalendar odmora, rođendana, godišnjica ili imendana nije osoba: nema kolonu u Planeru.", ed_note2: "Odbrojavanja se podešavaju u uređivaču koda – pogledaj README.",
     sync: "Sinhronizuj kalendare sada", sync_err: "Sinhronizacija kalendara nije uspela", l_show_refresh_button: "Prikaži dugme za osvežavanje", l_calendar_sync_minutes: "Sinhronizuj kalendare na svakih … minuta (0 = isključeno)",
     year: "Godina", l_week_style: "Stil nedeljnog prikaza", o_ws_list: "Lista", o_ws_timeline: "Vremenska linija (sati, kao u Outlook-u)", l_week_hour_start: "Vremenska linija od (sat)", l_week_hour_end: "Vremenska linija do (sat)", l_show_year_view: "Prikaži godišnji prikaz", l_year_start: "Godišnji prikaz počinje", o_ys_jan: "U januaru", o_ys_month: "Od ovog meseca (12 meseci)", l_year_view: "Prikaži u godišnjem prikazu", ed_year_help: "Celodnevni događaji ovog kalendara se prikazuju u godišnjem prikazu. Ako nijedan kalendar nije označen, prikazuju se svi.",
@@ -7055,6 +7065,11 @@ const EDITOR_STYLES = `
 .ib ha-icon { --mdc-icon-size: 20px; }
 .tico { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; flex: none; background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
 .tico ha-icon { --mdc-icon-size: 18px; }
+.bk-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.bk-confirm { margin-top: 12px; padding: 12px; border-radius: 12px; border: 1px solid var(--warning-color, #f59e0b);
+  background: color-mix(in srgb, var(--warning-color, #f59e0b) 10%, transparent); font-size: .9rem; }
+.bk-msg { margin-top: 10px; font-size: .85rem; color: var(--success-color, #43a047); }
+.bk-msg.bad { color: var(--error-color, #db4437); }
 .newtype { margin: 12px 0 4px; padding: 12px; border-radius: 12px; border: 1px dashed var(--primary-color); background: color-mix(in srgb, var(--primary-color) 6%, transparent); }
 .newtype.err { border-color: var(--error-color, #db4437); }
 .nt-h { font-weight: 600; margin-bottom: 2px; }
@@ -7294,7 +7309,25 @@ class HomeCalendarCardEditor extends HTMLElement {
         <div class="h">${esc(this._t("ed_display"))}</div>
         <div class="slot-general"></div>
         <div class="note">${esc(this._t("ed_note2"))}</div>
+      </div>
+      <div class="sec">
+        <div class="h">${esc(this._t("ed_backup"))}</div>
+        <div class="sub">${esc(this._t("ed_backup_sub"))}</div>
+        <div class="bk-btns">
+          <button class="addcal" data-act="bk-download"><ha-icon icon="mdi:download"></ha-icon>${esc(this._t("ed_bk_download"))}</button>
+          <button class="addcal" data-act="bk-copy"><ha-icon icon="mdi:content-copy"></ha-icon><span>${esc(this._t("ed_bk_copy"))}</span></button>
+          <button class="addcal" data-act="bk-pick"><ha-icon icon="mdi:upload"></ha-icon>${esc(this._t("ed_bk_restore"))}</button>
+          <input type="file" class="bk-file" accept=".json,application/json,text/plain" hidden>
+        </div>
+        ${this._bkPending ? `<div class="bk-confirm">
+          <div>${esc(this._t("ed_bk_confirm", { d: this._bkPending.when, n: this._bkPending.n }))}</div>
+          <div class="nt-btns"><button class="linkbtn" data-act="bk-cancel">${esc(this._t("cancel"))}</button>
+          <button class="addcal" data-act="bk-apply"><ha-icon icon="mdi:backup-restore"></ha-icon>${esc(this._t("ed_bk_replace"))}</button></div>
+        </div>` : ""}
+        ${this._bkMsg ? `<div class="bk-msg ${this._bkMsg.bad ? "bad" : ""}">${esc(this._bkMsg.text)}</div>` : ""}
       </div>`;
+    const fileIn = this.shadowRoot.querySelector(".bk-file");
+    fileIn?.addEventListener("change", () => { const file = fileIn.files?.[0]; if (file) this._bkRead(file); fileIn.value = ""; });
 
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
       const i = Number(slot.dataset.i);
@@ -7488,6 +7521,76 @@ class HomeCalendarCardEditor extends HTMLElement {
     return f;
   }
 
+  // ---- Backup & restore (1.20.2): the card's settings as a JSON file
+  _bkData() {
+    return { card: "home-calendar-card", version: CARD_VERSION, saved: new Date().toISOString(), config: this._config };
+  }
+
+  _bkAction(b) {
+    switch (b.dataset.act) {
+      case "bk-download": {
+        const blob = new Blob([JSON.stringify(this._bkData(), null, 2)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `home-calendar-card-${dayKey(new Date())}.json`;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        return true;
+      }
+      case "bk-copy": {
+        const txt = JSON.stringify(this._bkData(), null, 2);
+        const done = () => { const sp = b.querySelector("span"); if (sp) { sp.textContent = this._t("ed_bk_copied"); setTimeout(() => { sp.textContent = this._t("ed_bk_copy"); }, 1800); } };
+        if (navigator.clipboard?.writeText) navigator.clipboard.writeText(txt).then(done, () => this._bkFallbackCopy(txt, done));
+        else this._bkFallbackCopy(txt, done);
+        return true;
+      }
+      case "bk-pick": this.shadowRoot.querySelector(".bk-file")?.click(); return true;
+      case "bk-cancel": this._bkPending = null; this._bkMsg = null; this._render(); return true;
+      case "bk-apply": {
+        const cfg = this._bkPending?.config;
+        this._bkPending = null;
+        if (!cfg) return true;
+        this._openCals = new Set(); this._openTypes = new Set();
+        this._bkMsg = { text: this._t("ed_bk_done") };
+        this._emit({ ...cfg, type: this._config?.type || "custom:home-calendar-card" }, true);
+        return true;
+      }
+      default: return false;
+    }
+  }
+
+  _bkFallbackCopy(txt, done) {
+    const ta = document.createElement("textarea");
+    ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+    this.shadowRoot.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { /* nothing more we can do */ }
+    ta.remove();
+  }
+
+  // a backup file, or a bare card config (JSON)
+  _bkParse(text) {
+    let data;
+    try { data = JSON.parse(String(text).replace(/^\uFEFF/, "")); } catch (e) { return null; }
+    const cfg = data && typeof data === "object" && data.card === "home-calendar-card" && data.config ? data.config : data;
+    if (!cfg || typeof cfg !== "object" || !Array.isArray(cfg.calendars) || !cfg.calendars.length) return null;
+    if (cfg.type && !String(cfg.type).includes("home-calendar-card")) return null;
+    return { config: cfg, saved: data.saved || null };
+  }
+
+  _bkRead(file) {
+    const r = new FileReader();
+    r.onload = () => {
+      const got = this._bkParse(r.result);
+      if (!got) { this._bkPending = null; this._bkMsg = { text: this._t("ed_bk_bad"), bad: true }; this._render(); return; }
+      const d = got.saved ? new Date(got.saved) : null;
+      const when = d && !isNaN(d) ? d.toLocaleString(this._hass?.locale?.language || undefined, { dateStyle: "medium", timeStyle: "short" }) : file.name;
+      this._bkPending = { config: got.config, when, n: got.config.calendars.length };
+      this._bkMsg = null;
+      this._render();
+    };
+    r.readAsText(file);
+  }
+
   _typeAction(b) {
     const act = b.dataset.act;
     const i = Number(b.dataset.i);
@@ -7538,7 +7641,7 @@ class HomeCalendarCardEditor extends HTMLElement {
   }
 
   _action(b) {
-    if (this._typeAction(b)) return;
+    if (this._bkAction(b) || this._typeAction(b)) return;
     const list = this._cals();
     const i = Number(b.dataset.i);
     const open = this._openCals;

@@ -1064,6 +1064,17 @@ Everything except countdowns can be set in the visual editor:
 
 Countdowns are kept when you use the visual editor – edit them in the code editor.
 
+### Backup & restore
+
+At the bottom of the visual editor, **Backup & restore** keeps a copy of the card's settings:
+
+- **Download backup** saves everything – calendars, colours, types, layout, to-do lists, countdowns – as a dated file, e.g. `home-calendar-card-2026-11-16.json`.
+- **Copy** puts the same backup on the clipboard (handy on phones and tablets, where downloads can be awkward).
+- **Restore from file** loads a backup back. The card shows when it was made and how many calendars it has, and asks before replacing anything; then press **Save** in Home Assistant to keep it.
+
+Use it before big changes, or to copy your setup to another dashboard or another Home Assistant. A plain card config saved as JSON works as a backup file too.
+
+
 ## Using it
 
 - **Tap a day number** (any view) to see that day's events and add one on that date
