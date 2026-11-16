@@ -7,7 +7,8 @@
  *
  * https://github.com/mimikm/Home-Calendar-Card
  */
-const CARD_VERSION = "1.19.1";
+
+const CARD_VERSION = "1.20.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -114,6 +115,7 @@ const I18N = {
     l_todo_lists: "More lists as tabs (e.g. shopping)", ed_todo_lists_help: "Each list gets its own tab in the to-do block. Set a title or icon in YAML.",
     l_month_show_time: "Show start time in Month view",
     sync: "Sync calendars now", sync_err: "Couldn't sync the calendars", l_show_refresh_button: "Show refresh button", l_calendar_sync_minutes: "Sync calendars every … minutes (0 = off)",
+    year: "Year", l_week_style: "Week view style", o_ws_list: "List", o_ws_timeline: "Timeline (hours, like Outlook)", l_week_hour_start: "Timeline from (hour)", l_week_hour_end: "Timeline to (hour)", l_show_year_view: "Show Year view", l_year_start: "Year view starts", o_ys_jan: "In January", o_ys_month: "This month (next 12 months)", l_year_view: "Show in Year view", ed_year_help: "Its all-day events appear in the Year view. If no calendar is ticked, all are shown.",
     l_agenda_multiday: "Multi-day events in Agenda", o_am_every: "Every day", o_am_first: "First day only", am_until: "until {d}", am_day: "day {n} of {t}",
     l_exclude: "Hide events containing", l_include: "Only show events containing", l_exclude_all_day: "Hide all-day events", ed_exclude_help: "Words in the title, separated by | – e.g. vacation|out of office", ed_include_help: "Leave empty to show everything", ed_filtered: "filtered", ed_travel: "Travel time (Waze)", l_origin: "Drive from", ed_origin_help: "Usually zone.home. Needs the Waze Travel Time integration (Settings → Devices & services).", l_region: "Waze region", o_reg_auto: "Automatic", o_reg_eu: "Europe", o_reg_us: "United States", o_reg_na: "North America", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehicle", o_car: "Car", o_taxi: "Taxi", o_motorcycle: "Motorcycle", l_hours_ahead: "For events in the next (hours)", l_avoid_toll_roads: "Avoid toll roads", l_avoid_ferries: "Avoid ferries", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} drive", tt_leave_by: "Leave by {t}", tt_leave_now: "Leave now",
     ld_todo_pop: "Shown as a pop-up from a small button in the corner – the calendar takes over its space.", ld_todo_close: "Close the pop-up after (seconds)",
@@ -186,6 +188,7 @@ const I18N = {
     l_todo_lists: "Kolejne listy jako karty (np. zakupy)", ed_todo_lists_help: "Każda lista ma własną kartę w bloku zadań. Tytuł lub ikonę ustawisz w YAML.",
     l_month_show_time: "Pokaż godzinę rozpoczęcia w widoku miesiąca",
     sync: "Synchronizuj kalendarze teraz", sync_err: "Nie udało się zsynchronizować kalendarzy", l_show_refresh_button: "Pokaż przycisk odświeżania", l_calendar_sync_minutes: "Synchronizuj kalendarze co … minut (0 = wył.)",
+    year: "Rok", l_week_style: "Styl widoku tygodnia", o_ws_list: "Lista", o_ws_timeline: "Oś czasu (godziny, jak w Outlooku)", l_week_hour_start: "Oś czasu od (godzina)", l_week_hour_end: "Oś czasu do (godziny)", l_show_year_view: "Pokaż widok roku", l_year_start: "Widok roku zaczyna się", o_ys_jan: "W styczniu", o_ys_month: "Od bieżącego miesiąca (12 miesięcy)", l_year_view: "Pokaż w widoku roku", ed_year_help: "Jego wydarzenia całodniowe pojawią się w widoku roku. Gdy żaden kalendarz nie jest zaznaczony, widać wszystkie.",
     l_agenda_multiday: "Wydarzenia wielodniowe w Agendzie", o_am_every: "Każdego dnia", o_am_first: "Tylko pierwszego dnia", am_until: "do {d}", am_day: "dzień {n} z {t}",
     l_exclude: "Ukryj wydarzenia zawierające", l_include: "Pokaż tylko wydarzenia zawierające", l_exclude_all_day: "Ukryj wydarzenia całodniowe", ed_exclude_help: "Słowa w tytule rozdzielone | – np. urlop|poza biurem", ed_include_help: "Zostaw puste, aby pokazać wszystko", ed_filtered: "filtr", ed_travel: "Czas dojazdu (Waze)", l_origin: "Dojazd z", ed_origin_help: "Zwykle zone.home. Wymaga integracji Waze Travel Time (Ustawienia → Urządzenia i usługi).", l_region: "Region Waze", o_reg_auto: "Automatycznie", o_reg_eu: "Europa", o_reg_us: "Stany Zjednoczone", o_reg_na: "Ameryka Północna", o_reg_il: "Izrael", o_reg_au: "Australia", l_vehicle_type: "Pojazd", o_car: "Samochód", o_taxi: "Taxi", o_motorcycle: "Motocykl", l_hours_ahead: "Dla wydarzeń w ciągu (godzin)", l_avoid_toll_roads: "Unikaj dróg płatnych", l_avoid_ferries: "Unikaj promów", tt_min: "{n} min", tt_hm: "{h} godz. {m} min", tt_drive: "{d} jazdy", tt_leave_by: "Wyjedź o {t}", tt_leave_now: "Czas wyjeżdżać",
     ld_todo_pop: "Pokazywana jako okienko otwierane małym przyciskiem w rogu – kalendarz zajmuje jej miejsce.", ld_todo_close: "Zamknij okienko po (sekundy)",
@@ -257,6 +260,7 @@ const I18N = {
     l_todo_lists: "Más listas como pestañas (p. ej. compra)", ed_todo_lists_help: "Cada lista tiene su propia pestaña en el bloque de tareas. El título o el icono se ajustan en YAML.",
     l_month_show_time: "Mostrar la hora de inicio en la vista Mes",
     sync: "Sincronizar calendarios ahora", sync_err: "No se pudieron sincronizar los calendarios", l_show_refresh_button: "Mostrar botón de actualizar", l_calendar_sync_minutes: "Sincronizar calendarios cada … minutos (0 = no)",
+    year: "Año", l_week_style: "Estilo de la vista Semana", o_ws_list: "Lista", o_ws_timeline: "Línea de tiempo (horas, como Outlook)", l_week_hour_start: "Línea de tiempo desde (hora)", l_week_hour_end: "Línea de tiempo hasta (hora)", l_show_year_view: "Mostrar vista Año", l_year_start: "La vista Año empieza", o_ys_jan: "En enero", o_ys_month: "Este mes (próximos 12 meses)", l_year_view: "Mostrar en la vista Año", ed_year_help: "Sus eventos de todo el día aparecen en la vista Año. Si no marcas ningún calendario, se muestran todos.",
     l_agenda_multiday: "Eventos de varios días en la Agenda", o_am_every: "Cada día", o_am_first: "Solo el primer día", am_until: "hasta el {d}", am_day: "día {n} de {t}",
     l_exclude: "Ocultar eventos que contengan", l_include: "Mostrar solo eventos que contengan", l_exclude_all_day: "Ocultar eventos de todo el día", ed_exclude_help: "Palabras del título separadas por | – p. ej. vacaciones|fuera de la oficina", ed_include_help: "Déjalo vacío para mostrar todo", ed_filtered: "filtrado", ed_travel: "Tiempo de viaje (Waze)", l_origin: "Salir desde", ed_origin_help: "Normalmente zone.home. Necesita la integración Waze Travel Time (Ajustes → Dispositivos y servicios).", l_region: "Región de Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "Norteamérica", o_reg_il: "Israel", o_reg_au: "Australia", l_vehicle_type: "Vehículo", o_car: "Coche", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos en las próximas (horas)", l_avoid_toll_roads: "Evitar peajes", l_avoid_ferries: "Evitar ferris", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} en coche", tt_leave_by: "Sal a las {t}", tt_leave_now: "Sal ya",
     ld_todo_pop: "Se muestra como ventana emergente desde un pequeño botón en la esquina; el calendario ocupa su espacio.", ld_todo_close: "Cerrar la ventana tras (segundos)",
@@ -328,6 +332,7 @@ const I18N = {
     l_todo_lists: "Altre liste come schede (es. spesa)", ed_todo_lists_help: "Ogni lista ha la sua scheda nel blocco delle cose da fare. Titolo o icona si impostano in YAML.",
     l_month_show_time: "Mostra l'ora di inizio nella vista Mese",
     sync: "Sincronizza ora i calendari", sync_err: "Impossibile sincronizzare i calendari", l_show_refresh_button: "Mostra il pulsante di aggiornamento", l_calendar_sync_minutes: "Sincronizza i calendari ogni … minuti (0 = mai)",
+    year: "Anno", l_week_style: "Stile della vista Settimana", o_ws_list: "Elenco", o_ws_timeline: "Linea temporale (ore, come Outlook)", l_week_hour_start: "Linea temporale dalle (ora)", l_week_hour_end: "Linea temporale fino alle (ora)", l_show_year_view: "Mostra la vista Anno", l_year_start: "La vista Anno inizia", o_ys_jan: "A gennaio", o_ys_month: "Da questo mese (12 mesi)", l_year_view: "Mostra nella vista Anno", ed_year_help: "I suoi eventi di tutto il giorno compaiono nella vista Anno. Se nessun calendario è selezionato, compaiono tutti.",
     l_agenda_multiday: "Eventi di più giorni nell'Agenda", o_am_every: "Ogni giorno", o_am_first: "Solo il primo giorno", am_until: "fino al {d}", am_day: "giorno {n} di {t}",
     l_exclude: "Nascondi eventi che contengono", l_include: "Mostra solo eventi che contengono", l_exclude_all_day: "Nascondi eventi di tutto il giorno", ed_exclude_help: "Parole nel titolo separate da | – es. ferie|fuori ufficio", ed_include_help: "Lascia vuoto per mostrare tutto", ed_filtered: "filtrato", ed_travel: "Tempo di viaggio (Waze)", l_origin: "Partenza da", ed_origin_help: "Di solito zone.home. Richiede l'integrazione Waze Travel Time (Impostazioni → Dispositivi e servizi).", l_region: "Regione Waze", o_reg_auto: "Automatica", o_reg_eu: "Europa", o_reg_us: "Stati Uniti", o_reg_na: "Nord America", o_reg_il: "Israele", o_reg_au: "Australia", l_vehicle_type: "Veicolo", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Moto", l_hours_ahead: "Per eventi nelle prossime (ore)", l_avoid_toll_roads: "Evita pedaggi", l_avoid_ferries: "Evita traghetti", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} in auto", tt_leave_by: "Parti alle {t}", tt_leave_now: "Parti ora",
     ld_todo_pop: "Si apre come pop-up da un piccolo pulsante nell'angolo – il calendario occupa il suo spazio.", ld_todo_close: "Chiudi il pop-up dopo (secondi)",
@@ -575,6 +580,7 @@ const I18N = {
     l_todo_lists: "Meer lijsten als tabbladen (bijv. boodschappen)", ed_todo_lists_help: "Elke lijst krijgt een eigen tabblad in het takenblok. Titel of pictogram stel je in YAML in.",
     l_month_show_time: "Begintijd tonen in de maandweergave",
     sync: "Agenda's nu synchroniseren", sync_err: "De agenda's konden niet worden gesynchroniseerd", l_show_refresh_button: "Vernieuwknop tonen", l_calendar_sync_minutes: "Agenda's elke … minuten synchroniseren (0 = uit)",
+    year: "Jaar", l_week_style: "Stijl van de weekweergave", o_ws_list: "Lijst", o_ws_timeline: "Tijdlijn (uren, zoals Outlook)", l_week_hour_start: "Tijdlijn vanaf (uur)", l_week_hour_end: "Tijdlijn tot (uur)", l_show_year_view: "Jaarweergave tonen", l_year_start: "Jaarweergave begint", o_ys_jan: "In januari", o_ys_month: "Deze maand (komende 12 maanden)", l_year_view: "Tonen in de jaarweergave", ed_year_help: "De hele-dag-afspraken verschijnen in de jaarweergave. Als er geen agenda is aangevinkt, worden ze allemaal getoond.",
     l_agenda_multiday: "Meerdaagse afspraken in de Agenda", o_am_every: "Elke dag", o_am_first: "Alleen de eerste dag", am_until: "tot {d}", am_day: "dag {n} van {t}",
     l_exclude: "Afspraken verbergen met", l_include: "Alleen afspraken tonen met", l_exclude_all_day: "Hele-dag-afspraken verbergen", ed_exclude_help: "Woorden in de titel, gescheiden door | – bijv. vakantie|afwezig", ed_include_help: "Leeg laten om alles te tonen", ed_filtered: "gefilterd", ed_travel: "Reistijd (Waze)", l_origin: "Vertrek vanaf", ed_origin_help: "Meestal zone.home. Vereist de integratie Waze Travel Time (Instellingen → Apparaten & diensten).", l_region: "Waze-regio", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "Verenigde Staten", o_reg_na: "Noord-Amerika", o_reg_il: "Israël", o_reg_au: "Australië", l_vehicle_type: "Voertuig", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Voor afspraken in de komende (uur)", l_avoid_toll_roads: "Tolwegen vermijden", l_avoid_ferries: "Veerponten vermijden", tt_min: "{n} min", tt_hm: "{h} u {m} min", tt_drive: "{d} rijden", tt_leave_by: "Vertrek om {t}", tt_leave_now: "Nu vertrekken",
     ld_todo_pop: "Verschijnt als pop-up via een knopje in de hoek – de agenda neemt de ruimte in.", ld_todo_close: "Pop-up sluiten na (seconden)",
@@ -822,6 +828,7 @@ const I18N = {
     l_todo_lists: "Weitere Listen als Tabs (z. B. Einkauf)", ed_todo_lists_help: "Jede Liste bekommt einen eigenen Tab im Aufgabenblock. Titel oder Symbol in YAML festlegen.",
     l_month_show_time: "Startzeit in der Monatsansicht anzeigen",
     sync: "Kalender jetzt synchronisieren", sync_err: "Kalender konnten nicht synchronisiert werden", l_show_refresh_button: "Aktualisieren-Schaltfläche anzeigen", l_calendar_sync_minutes: "Kalender alle … Minuten synchronisieren (0 = aus)",
+    year: "Jahr", l_week_style: "Stil der Wochenansicht", o_ws_list: "Liste", o_ws_timeline: "Zeitleiste (Stunden, wie Outlook)", l_week_hour_start: "Zeitleiste ab (Uhr)", l_week_hour_end: "Zeitleiste bis (Uhr)", l_show_year_view: "Jahresansicht anzeigen", l_year_start: "Jahresansicht beginnt", o_ys_jan: "Im Januar", o_ys_month: "Diesen Monat (nächste 12 Monate)", l_year_view: "In der Jahresansicht anzeigen", ed_year_help: "Ganztägige Termine dieses Kalenders erscheinen in der Jahresansicht. Ist kein Kalender ausgewählt, werden alle angezeigt.",
     l_agenda_multiday: "Mehrtägige Termine in der Agenda", o_am_every: "Jeden Tag", o_am_first: "Nur am ersten Tag", am_until: "bis {d}", am_day: "Tag {n} von {t}",
     l_exclude: "Termine ausblenden mit", l_include: "Nur Termine anzeigen mit", l_exclude_all_day: "Ganztägige Termine ausblenden", ed_exclude_help: "Wörter im Titel, getrennt durch | – z. B. Urlaub|abwesend", ed_include_help: "Leer lassen, um alles anzuzeigen", ed_filtered: "gefiltert", ed_travel: "Fahrzeit (Waze)", l_origin: "Abfahrt von", ed_origin_help: "Meist zone.home. Benötigt die Integration Waze Travel Time (Einstellungen → Geräte & Dienste).", l_region: "Waze-Region", o_reg_auto: "Automatisch", o_reg_eu: "Europa", o_reg_us: "USA", o_reg_na: "Nordamerika", o_reg_il: "Israel", o_reg_au: "Australien", l_vehicle_type: "Fahrzeug", o_car: "Auto", o_taxi: "Taxi", o_motorcycle: "Motorrad", l_hours_ahead: "Für Termine in den nächsten (Stunden)", l_avoid_toll_roads: "Mautstraßen meiden", l_avoid_ferries: "Fähren meiden", tt_min: "{n} Min.", tt_hm: "{h} Std. {m} Min.", tt_drive: "{d} Fahrt", tt_leave_by: "Losfahren um {t}", tt_leave_now: "Jetzt losfahren",
     ld_todo_pop: "Erscheint als Pop-up über eine kleine Taste in der Ecke – der Kalender nutzt den Platz.", ld_todo_close: "Pop-up schließen nach (Sekunden)",
@@ -1069,6 +1076,7 @@ const I18N = {
     l_todo_lists: "További listák fülként (pl. bevásárlás)", ed_todo_lists_help: "Minden lista saját fület kap a teendők blokkban. A címet vagy ikont YAML-ben lehet megadni.",
     l_month_show_time: "Kezdési idő megjelenítése a havi nézetben",
     sync: "Naptárak szinkronizálása most", sync_err: "Nem sikerült szinkronizálni a naptárakat", l_show_refresh_button: "Frissítés gomb megjelenítése", l_calendar_sync_minutes: "Naptárak szinkronizálása … percenként (0 = ki)",
+    year: "Év", l_week_style: "Heti nézet stílusa", o_ws_list: "Lista", o_ws_timeline: "Idővonal (órák, mint az Outlookban)", l_week_hour_start: "Idővonal kezdete (óra)", l_week_hour_end: "Idővonal vége (óra)", l_show_year_view: "Éves nézet megjelenítése", l_year_start: "Az éves nézet kezdete", o_ys_jan: "Januárban", o_ys_month: "Ebben a hónapban (következő 12 hónap)", l_year_view: "Megjelenítés az éves nézetben", ed_year_help: "Az egész napos eseményei megjelennek az éves nézetben. Ha egy naptár sincs bejelölve, mind látszik.",
     l_agenda_multiday: "Többnapos események a Napirendben", o_am_every: "Minden nap", o_am_first: "Csak az első napon", am_until: "{d}-ig", am_day: "{n}. nap / {t}",
     l_exclude: "Elrejtés, ha tartalmazza", l_include: "Csak ezeket tartalmazók", l_exclude_all_day: "Egész napos események elrejtése", ed_exclude_help: "Szavak a címben | jellel elválasztva – pl. szabadság|házon kívül", ed_include_help: "Hagyd üresen, ha mindent mutatna", ed_filtered: "szűrt", ed_travel: "Utazási idő (Waze)", l_origin: "Indulás innen", ed_origin_help: "Általában zone.home. A Waze Travel Time integráció kell hozzá (Beállítások → Eszközök és szolgáltatások).", l_region: "Waze régió", o_reg_auto: "Automatikus", o_reg_eu: "Európa", o_reg_us: "Egyesült Államok", o_reg_na: "Észak-Amerika", o_reg_il: "Izrael", o_reg_au: "Ausztrália", l_vehicle_type: "Jármű", o_car: "Autó", o_taxi: "Taxi", o_motorcycle: "Motor", l_hours_ahead: "Események a következő (óra) belül", l_avoid_toll_roads: "Fizetős utak elkerülése", l_avoid_ferries: "Kompok elkerülése", tt_min: "{n} perc", tt_hm: "{h} ó {m} perc", tt_drive: "{d} autóval", tt_leave_by: "Indulj {t}-kor", tt_leave_now: "Indulj most",
     ld_todo_pop: "Felugró ablakként nyílik egy kis gombbal a sarokban – a naptár kitölti a helyét.", ld_todo_close: "Felugró ablak bezárása ennyi után (mp)",
@@ -1316,6 +1324,7 @@ const I18N = {
     l_todo_lists: "Mais listas como abas (ex.: compras)", ed_todo_lists_help: "Cada lista ganha sua própria aba no bloco de tarefas. Título ou ícone podem ser definidos no YAML.",
     l_month_show_time: "Mostrar horário de início na visão Mês",
     sync: "Sincronizar agendas agora", sync_err: "Não foi possível sincronizar as agendas", l_show_refresh_button: "Mostrar botão de atualizar", l_calendar_sync_minutes: "Sincronizar agendas a cada … minutos (0 = desligado)",
+    year: "Ano", l_week_style: "Estilo da visão Semana", o_ws_list: "Lista", o_ws_timeline: "Linha do tempo (horas, como no Outlook)", l_week_hour_start: "Linha do tempo a partir de (hora)", l_week_hour_end: "Linha do tempo até (hora)", l_show_year_view: "Mostrar visão Ano", l_year_start: "A visão Ano começa", o_ys_jan: "Em janeiro", o_ys_month: "Neste mês (próximos 12 meses)", l_year_view: "Mostrar na visão Ano", ed_year_help: "Os eventos de dia inteiro desta agenda aparecem na visão Ano. Se nenhuma estiver marcada, todas aparecem.",
     l_agenda_multiday: "Eventos de vários dias na Agenda", o_am_every: "Todos os dias", o_am_first: "Só no primeiro dia", am_until: "até {d}", am_day: "dia {n} de {t}",
     l_exclude: "Ocultar eventos que contenham", l_include: "Mostrar só eventos que contenham", l_exclude_all_day: "Ocultar eventos de dia inteiro", ed_exclude_help: "Palavras do título separadas por | – ex.: férias|fora do escritório", ed_include_help: "Deixe vazio para mostrar tudo", ed_filtered: "filtrado", ed_travel: "Tempo de trajeto (Waze)", l_origin: "Sair de", ed_origin_help: "Normalmente zone.home. Precisa da integração Waze Travel Time (Configurações → Dispositivos e serviços).", l_region: "Região do Waze", o_reg_auto: "Automática", o_reg_eu: "Europa", o_reg_us: "Estados Unidos", o_reg_na: "América do Norte", o_reg_il: "Israel", o_reg_au: "Austrália", l_vehicle_type: "Veículo", o_car: "Carro", o_taxi: "Táxi", o_motorcycle: "Moto", l_hours_ahead: "Para eventos nas próximas (horas)", l_avoid_toll_roads: "Evitar pedágios", l_avoid_ferries: "Evitar balsas", tt_min: "{n} min", tt_hm: "{h} h {m} min", tt_drive: "{d} de carro", tt_leave_by: "Saia até {t}", tt_leave_now: "Saia agora",
     ld_todo_pop: "Abre como janela a partir de um pequeno botão no canto – o calendário ocupa o espaço dela.", ld_todo_close: "Fechar a janela após (segundos)",
@@ -1388,6 +1397,7 @@ const I18N = {
     l_todo_lists: "Још листа као картице (нпр. куповина)", ed_todo_lists_help: "Свака листа добија своју картицу у блоку задатака. Наслов или иконица се подешавају у YAML-у.",
     l_month_show_time: "Прикажи време почетка у месечном приказу",
     sync: "Синхронизуј календаре сада", sync_err: "Синхронизација календара није успела", l_show_refresh_button: "Прикажи дугме за освежавање", l_calendar_sync_minutes: "Синхронизуј календаре на сваких … минута (0 = искључено)",
+    year: "Година", l_week_style: "Стил недељног приказа", o_ws_list: "Листа", o_ws_timeline: "Временска линија (сати, као у Outlook-у)", l_week_hour_start: "Временска линија од (сат)", l_week_hour_end: "Временска линија до (сат)", l_show_year_view: "Прикажи годишњи приказ", l_year_start: "Годишњи приказ почиње", o_ys_jan: "У јануару", o_ys_month: "Од овог месеца (12 месеци)", l_year_view: "Прикажи у годишњем приказу", ed_year_help: "Целодневни догађаји овог календара се приказују у годишњем приказу. Ако ниједан календар није означен, приказују се сви.",
     l_agenda_multiday: "Вишедневни термини у Агенди", o_am_every: "Сваког дана", o_am_first: "Само првог дана", am_until: "до {d}", am_day: "{n}. дан од {t}",
     l_exclude: "Сакриј термине који садрже", l_include: "Прикажи само термине који садрже", l_exclude_all_day: "Сакриј целодневне термине", ed_exclude_help: "Речи у наслову, одвојене знаком | – нпр. Одмор|одсутан", ed_include_help: "Оставите празно за приказ свега", ed_filtered: "филтрирано", ed_travel: "Време путовања (Waze)", l_origin: "Полазак из", ed_origin_help: "Углавном zone.home. Захтева интеграцију Waze Travel Time (Подешавања → Уређаји и услуге).", l_region: "Waze регион", o_reg_auto: "Аутоматски", o_reg_eu: "Европа", o_reg_us: "САД", o_reg_na: "Северна Америка", o_reg_il: "Израел", o_reg_au: "Аустралија", l_vehicle_type: "Возило", o_car: "Аутомобил", o_taxi: "Такси", o_motorcycle: "Мотоцикл", l_hours_ahead: "За термине у наредних (сати)", l_avoid_toll_roads: "Избегавај путеве са наплатом путарине", l_avoid_ferries: "Избегавај трајекте", tt_min: "{n} мин.", tt_hm: "{h} ч. {m} мин.", tt_drive: "{d} вожње", tt_leave_by: "Крените у {t}", tt_leave_now: "Крените одмах",
     ld_todo_pop: "Појављује се као искачући прозор преко малог дугмета у углу – календар користи сав простор.", ld_todo_close: "Затвори искачући прозор након (секунди)",
@@ -1635,6 +1645,7 @@ const I18N = {
     l_todo_lists: "Još lista kao kartice (npr. kupovina)", ed_todo_lists_help: "Svaka lista dobija svoju karticu u bloku zadataka. Naslov ili ikonica se podešavaju u YAML-u.",
     l_month_show_time: "Prikaži vreme početka u mesečnom prikazu",
     sync: "Sinhronizuj kalendare sada", sync_err: "Sinhronizacija kalendara nije uspela", l_show_refresh_button: "Prikaži dugme za osvežavanje", l_calendar_sync_minutes: "Sinhronizuj kalendare na svakih … minuta (0 = isključeno)",
+    year: "Godina", l_week_style: "Stil nedeljnog prikaza", o_ws_list: "Lista", o_ws_timeline: "Vremenska linija (sati, kao u Outlook-u)", l_week_hour_start: "Vremenska linija od (sat)", l_week_hour_end: "Vremenska linija do (sat)", l_show_year_view: "Prikaži godišnji prikaz", l_year_start: "Godišnji prikaz počinje", o_ys_jan: "U januaru", o_ys_month: "Od ovog meseca (12 meseci)", l_year_view: "Prikaži u godišnjem prikazu", ed_year_help: "Celodnevni događaji ovog kalendara se prikazuju u godišnjem prikazu. Ako nijedan kalendar nije označen, prikazuju se svi.",
     l_agenda_multiday: "Višednevni termini u Agendi", o_am_every: "Svakog dana", o_am_first: "Samo prvog dana", am_until: "do {d}", am_day: "{n}. dan od {t}",
     l_exclude: "Sakrij termine koji sadrže", l_include: "Prikaži samo termine koji sadrže", l_exclude_all_day: "Sakrij celodnevne termine", ed_exclude_help: "Reči u naslovu, odvojene znakom | – npr. Odmor|odsutan", ed_include_help: "Ostavite prazno za prikaz svega", ed_filtered: "filtrirano", ed_travel: "Vreme putovanja (Waze)", l_origin: "Polazak iz", ed_origin_help: "Uglavnom zone.home. Zahteva integraciju Waze Travel Time (Podešavanja → Uređaji i usluge).", l_region: "Waze region", o_reg_auto: "Automatski", o_reg_eu: "Evropa", o_reg_us: "SAD", o_reg_na: "Severna Amerika", o_reg_il: "Izrael", o_reg_au: "Australija", l_vehicle_type: "Vozilo", o_car: "Automobil", o_taxi: "Taksi", o_motorcycle: "Motocikl", l_hours_ahead: "Za termine u narednih (sati)", l_avoid_toll_roads: "Izbegavaj puteve sa naplatom putarine", l_avoid_ferries: "Izbegavaj trajekte", tt_min: "{n} min.", tt_hm: "{h} č. {m} min.", tt_drive: "{d} vožnje", tt_leave_by: "Krenite u {t}", tt_leave_now: "Krenite odmah",
     ld_todo_pop: "Pojavljuje se kao iskačući prozor preko malog dugmeta u uglu – kalendar koristi sav prostor.", ld_todo_close: "Zatvori iskačući prozor nakon (sekundi)",
@@ -2002,6 +2013,7 @@ const trackList = (sizes, n, fallback) => {
 
 // Starting layout built from the current (classic) settings, so switching to the designer changes nothing visible.
 // To-do lists (#20): the shared `todo_entity` plus each calendar's own `todo` list (one list per person).
+const VIEWS = ["agenda", "week", "month", "planner", "year"];
 const todoLists = (c) => {
   const out = [];
   const add = (entity, cal) => { if (entity && typeof entity === "string" && !out.some((x) => x.entity === entity)) out.push({ entity, cal }); };
@@ -2201,8 +2213,8 @@ class HomeCalendarCard extends HTMLElement {
       const saved = JSON.parse(localStorage.getItem(this._storeKey) || "{}");
       this._hidden = new Set(saved.hidden || []);
     } catch (e) { this._hidden = new Set(); }
-    if (!["agenda", "week", "month", "planner"].includes(this._view) || !this._configured) {
-      this._view = ["agenda", "week", "month", "planner"].includes(this._config.default_view) ? this._config.default_view : "agenda";
+    if (!VIEWS.includes(this._view) || !this._configured || (this._view === "year" && this._config.show_year_view === false && this._config.default_view !== "year")) {
+      this._view = VIEWS.includes(this._config.default_view) ? this._config.default_view : "agenda";
     }
     this._configured = true;
     if (this._built) setTimeout(() => this._ambientTick(), 0);
@@ -2923,6 +2935,12 @@ class HomeCalendarCard extends HTMLElement {
 
   _range() {
     const a = this._anchor;
+    if (this._view === "year") {
+      // a calendar year, or 12 months from the shown month with year_start: month (#25)
+      const start = this._config.year_start === "month" ? new Date(a.getFullYear(), a.getMonth(), 1) : new Date(a.getFullYear(), 0, 1);
+      const end = new Date(start.getFullYear(), start.getMonth() + 12, 1);
+      return { start, end, days: Math.round((end - start) / 864e5) };
+    }
     if (this._view === "month" && this._monthWeeks()) {
       // month_weeks: a rolling grid of N weeks from the week start, or from today / the shown day with month_start: today
       const n = this._monthWeeks() * 7;
@@ -3483,6 +3501,12 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _rangeLabel() {
+    if (this._view === "year") {
+      const { start, end } = this._range();
+      if (start.getMonth() === 0) return String(start.getFullYear());
+      const f = this._fmt({ month: "short", year: "numeric" });
+      return `${f.format(start)} – ${f.format(addDays(end, -1))}`;
+    }
     if (this._view === "month" && !this._monthWeeks()) return this._fmt({ month: "long", year: "numeric" }).format(this._anchor);
     const { start, end } = this._range();
     const last = addDays(end, -1);
@@ -3622,7 +3646,7 @@ class HomeCalendarCard extends HTMLElement {
 
   // Going dark or into the screensaver: show today again in the default view.
   _ambientEnter() {
-    const def = ["agenda", "week", "month", "planner"].includes(this._config.default_view) ? this._config.default_view : "agenda";
+    const def = VIEWS.includes(this._config.default_view) ? this._config.default_view : "agenda";
     if (!sameDay(this._anchor, new Date()) || this._view !== def) {
       this._anchor = startOfDay(new Date());
       this._view = def;
@@ -3891,6 +3915,9 @@ class HomeCalendarCard extends HTMLElement {
     this.style.setProperty("--cd-scale", String(pct(this._config.countdown_size, 0.5, 1.5)));
     this.style.setProperty("--ev-scale", String(pct(this._config.event_size, 0.8, 1.6)));
     this._inner.classList.toggle("has-todo", hasTodo(this._config));
+    // Timeline week switches to the list week on narrow cards (phones)
+    if (fromResize && this._view === "week" && this._config.week_style === "timeline" && this._tlWide !== undefined
+      && this._tlWide !== (this._main?.clientWidth || this.clientWidth || 9999) >= 600) this._render();
     if (this._gridOn()) {
       const bp = clampInt(this._config.grid.phone_breakpoint, 200, 2000, 600);
       const w = this.clientWidth || 9999;
@@ -3953,7 +3980,8 @@ class HomeCalendarCard extends HTMLElement {
     this._applyLayout();
     if (this._todoKey === null || this._todoKey === undefined || this._hass) this._buildTodo();
     const c = this._config;
-    const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? this._renderWeek() : this._view === "planner" ? this._renderPlanner() : this._renderAgenda();
+    const body = this._view === "month" ? this._renderMonth() : this._view === "week" ? (this._timeline() ? this._renderTimeline() : this._renderWeek())
+      : this._view === "planner" ? this._renderPlanner() : this._view === "year" ? this._renderYear() : this._renderAgenda();
     const maxH = c.max_height ? ` style="max-height:${esc(c.max_height)};overflow:auto"` : "";
     if (this._gridOn()) { this._renderGrid(body, maxH); return; }
     if (this._inner.classList.contains("lg")) this._leaveGrid();
@@ -4045,7 +4073,7 @@ class HomeCalendarCard extends HTMLElement {
         .find((a) => !hit(a)) || null;
     }
     const editing = this._inEditor();
-    const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")], ["planner", this._t("planner")]];
+    const views = this._viewList();
     const canAdd = c.allow_add !== false && this._writable().length > 0;
     const parts = {
       date: () => `<div class="title-block"><div class="eyebrow">${esc(c.title || this._fmt({ weekday: "long" }).format(new Date()))}</div><div class="big">${esc(c.title
@@ -4188,7 +4216,7 @@ class HomeCalendarCard extends HTMLElement {
   }
 
   _renderToolbar() {
-    const views = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")], ["planner", this._t("planner")]];
+    const views = this._viewList();
     const canAdd = this._config.allow_add !== false && this._writable().length > 0;
     const showViews = this._config.show_view_selector !== false;
     const showNav = this._config.show_date_navigation !== false;
@@ -4375,6 +4403,131 @@ class HomeCalendarCard extends HTMLElement {
     }
     out += wb.bars.map((b) => this._barHtml(b, "wbar", `--a:${b.a};--n:${b.b - b.a + 1}`)).join("");
     if (wb.lanes) requestAnimationFrame(() => this._placeWeekBars());
+    return out + `</div>`;
+  }
+
+  _viewList() {
+    const v = [["agenda", this._t("agenda")], ["week", this._t("week")], ["month", this._t("month")], ["planner", this._t("planner")]];
+    if (this._config.show_year_view !== false) v.push(["year", this._t("year")]);
+    return v;
+  }
+
+  _timeline() {
+    if (this._config.week_style !== "timeline") return false;
+    this._tlWide = !this._isPhone && (this._main?.clientWidth || this.clientWidth || 9999) >= 600;
+    return this._tlWide;
+  }
+
+  // Timeline week (#24): hours down the side, events as blocks as tall as they last, overlaps side by side.
+  _renderTimeline() {
+    const { start } = this._range();
+    const today = dayKey(new Date());
+    const days = [...Array(7)].map((_, i) => addDays(start, i));
+    const clampH = (v, dflt) => { const n = Math.round(Number(v)); return Number.isFinite(n) && v !== "" && v != null ? Math.min(24, Math.max(0, n)) : dflt; };
+    let h0 = clampH(this._config.week_hour_start, 7);
+    let h1 = clampH(this._config.week_hour_end, 22);
+    if (h1 <= h0) h1 = Math.min(24, h0 + 1);
+    // timed events, as minutes within each day
+    const cols = days.map((d) => {
+      const next = addDays(d, 1);
+      return this._onDay(d).filter((ev) => !ev.allDay).map((ev) => {
+        const sm = ev.start <= d ? 0 : (ev.start - d) / 6e4;
+        const em = ev.end >= next ? 1440 : Math.max(sm + 15, (ev.end - d) / 6e4);
+        return { ev, sm, em, starts: ev.start >= d, ends: ev.end <= next };
+      });
+    });
+    // widen the hours to fit events that start/end that day; pieces of overnight events outside the hours are pinned to the edge
+    cols.flat().forEach(({ sm, em, starts, ends }) => {
+      if (starts) { h0 = Math.min(h0, Math.floor(sm / 60)); if (sm >= h1 * 60) h1 = Math.min(24, Math.floor(sm / 60) + 1); }
+      if (ends) h1 = Math.max(h1, Math.min(24, Math.ceil(em / 60)));
+    });
+    const span = (h1 - h0) * 60;
+    const pct = (m) => ((m - h0 * 60) / span) * 100;
+    // all-day strip: all-day events as bars across the week
+    const seen = new Map();
+    days.forEach((d, i) => this._onDay(d).filter((ev) => ev.allDay).forEach((ev) => {
+      const sg = seen.get(ev.id) || { ev, a: i, b: i, cl: ev.start < start, cr: false };
+      sg.b = i; seen.set(ev.id, sg);
+    }));
+    const wkEnd = addDays(start, 7);
+    seen.forEach((sg) => { sg.cr = sg.ev.end > wkEnd; });
+    const segs = [...seen.values()].sort((x, y) => x.a - y.a || (y.b - y.a) - (x.b - x.a) || x.ev.summary.localeCompare(y.ev.summary));
+    const lanes = this._barLanes(segs, 99);
+    const label = (h) => esc(this._time(new Date(2000, 0, 1, h, 0)));
+    const now = new Date();
+    const nowM = now.getHours() * 60 + now.getMinutes();
+    const canAdd = this._config.allow_add !== false && this._writable().length > 0;
+    let out = `<div class="tl" style="--tln:${h1 - h0}">
+      <div class="tl-row tl-heads"><div class="tl-gut"></div>${days.map((d) => `
+        <button class="whead tl-day ${dayKey(d) === today ? "is-today" : ""}" data-action="open-day" data-date="${dayKey(d)}">
+          <div class="wd">${esc(this._fmt({ weekday: "short" }).format(d))}</div><div class="dn">${d.getDate()}</div>${this._wxBadge(d, true)}
+        </button>`).join("")}</div>`;
+    if (lanes.bars.length) {
+      out += `<div class="tl-row tl-all" style="grid-template-rows:repeat(${lanes.lanes}, auto)"><div class="tl-gut tl-alllbl" style="grid-row:1 / -1">${esc(this._t("all_day"))}</div>
+        ${lanes.bars.map((b) => this._barHtml(b, "tlbar", `grid-column:${b.a + 2} / span ${b.b - b.a + 1};grid-row:${b.lane + 1}`)).join("")}</div>`;
+    }
+    out += `<div class="tl-row tl-body"><div class="tl-gut tl-hours">${[...Array(h1 - h0)].map((_, i) => `<span style="top:${(i / (h1 - h0)) * 100}%">${label(h0 + i)}</span>`).join("")}</div>`;
+    days.forEach((d, i) => {
+      const items = cols[i].sort((x, y) => x.sm - y.sm || y.em - x.em);
+      // overlap layout: clusters of overlapping events share the column width
+      let cluster = [], cEnd = -1, ends = [];
+      const flush = () => { cluster.forEach((it) => { it.n = ends.length; }); cluster = []; ends = []; };
+      items.forEach((it) => {
+        if (it.sm >= cEnd) { flush(); cEnd = -1; }
+        let k = ends.findIndex((e) => e <= it.sm);
+        if (k < 0) { k = ends.length; ends.push(0); }
+        ends[k] = it.em; it.k = k; cluster.push(it); cEnd = Math.max(cEnd, it.em);
+      });
+      flush();
+      const isToday = dayKey(d) === today;
+      out += `<div class="tl-col ${isToday ? "is-today" : ""} ${canAdd ? "can-add" : ""}" data-action="add-slot" data-date="${dayKey(d)}" data-h0="${h0}" data-h1="${h1}">
+        ${items.map((it) => {
+          const ev = it.ev;
+          let top = pct(Math.min(Math.max(it.sm, h0 * 60), h1 * 60));
+          let h = Math.max(0, pct(Math.min(Math.max(it.em, h0 * 60), h1 * 60)) - top);
+          if (h === 0 && top >= 100) top = 100 - 100 / (h1 - h0) / 2; // spill-over after the hours: a chip at the bottom
+          const tiny = it.em - it.sm < 40 || h < 100 / (h1 - h0) * 0.6; // short or pinned: one line
+          return `<div class="tlev ${ev.end <= now ? "past" : ""} ${tiny ? "tiny" : ""}" style="--c:${esc(ev.cal.color)};top:${top}%;height:${h}%;left:${(it.k / it.n) * 100}%;width:${100 / it.n}%" data-action="open-event" data-id="${ev.id}" title="${esc(`${ev.summary} · ${this._whenText(ev)}`)}">
+            <div class="tlt">${esc(this._time(ev.start < d ? d : ev.start))}${tiny ? "" : ` – ${esc(this._time(ev.end))}`}</div><div class="tls">${this._typeIcon(ev) ? `<ha-icon icon="${esc(this._typeIcon(ev))}"></ha-icon>` : ""}${esc(ev.summary)}</div>
+          </div>`;
+        }).join("")}
+        ${isToday && nowM >= h0 * 60 && nowM <= h1 * 60 ? `<div class="tl-now" style="top:${pct(nowM)}%"></div>` : ""}
+      </div>`;
+    });
+    return out + `</div></div>`;
+  }
+
+  // Year view (#25): months side by side, days 1–31 down, all-day events as coloured blocks – like a printed holiday planner.
+  _yearCal(c) { return this._calendars.some((x) => x.year_view === true) ? c.year_view === true : true; }
+
+  _renderYear() {
+    const { start } = this._range();
+    const today = dayKey(new Date());
+    const months = [...Array(12)].map((_, i) => new Date(start.getFullYear(), start.getMonth() + i, 1));
+    const wd = this._fmt({ weekday: "short" });
+    const mf = this._fmt({ month: "short" });
+    const yf = this._fmt({ month: "short", year: "2-digit" });
+    const crossYear = start.getMonth() !== 0;
+    let out = `<div class="year">${months.map((m, i) => `<div class="yhead" style="grid-column:${i + 1}">${esc(crossYear && (i === 0 || m.getMonth() === 0) ? yf.format(m) : mf.format(m))}</div>`).join("")}`;
+    months.forEach((m, mi) => {
+      const dim = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+      for (let day = 1; day <= 31; day++) {
+        if (day > dim) { out += `<div class="ycell ynone" style="grid-column:${mi + 1};grid-row:${day + 1}"></div>`; continue; }
+        const d = new Date(m.getFullYear(), m.getMonth(), day);
+        const k = dayKey(d);
+        const we = d.getDay() === 0 || d.getDay() === 6;
+        const evs = this._onDay(d).filter((ev) => this._yearCal(ev.cal) && (ev.allDay || ev.end - ev.start >= 864e5))
+          .sort((x, y) => x.start - y.start || (y.end - y.start) - (x.end - x.start) || x.summary.localeCompare(y.summary));
+        const segs = evs.slice(0, 3).map((ev) => {
+          const first = sameDay(ev.start, d) || day === 1 || ev.start < d && sameDay(d, start);
+          return `<span class="yseg ${first ? "first" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">${first && evs.length < 3 ? esc(ev.summary) : ""}</span>`;
+        }).join("");
+        out += `<div class="ycell ${we ? "we" : ""} ${k === today ? "today" : ""} ${evs.length ? "has" : ""}" style="grid-column:${mi + 1};grid-row:${day + 1}" data-action="open-day" data-date="${k}">
+          <span class="yd">${day}</span><span class="yw">${esc(wd.format(d).replace(/\.$/, "").slice(0, 2))}</span>
+          ${segs ? `<span class="ysegs">${segs}${evs.length > 3 ? `<span class="ymore">+${evs.length - 3}</span>` : ""}</span>` : ""}
+        </div>`;
+      }
+    });
     return out + `</div>`;
   }
 
@@ -4675,6 +4828,8 @@ class HomeCalendarCard extends HTMLElement {
     let s;
     if (ev) {
       s = new Date(ev.start);
+    } else if (date && (date.getHours() || date.getMinutes())) {
+      s = new Date(date); // a time slot tapped in the Timeline week (#24)
     } else if (date && !sameDay(date, now)) {
       s = new Date(date);
       s.setHours(9, 0, 0, 0);
@@ -5031,7 +5186,8 @@ class HomeCalendarCard extends HTMLElement {
       case "prev":
       case "next": {
         const dir = action === "next" ? 1 : -1;
-        if (this._view === "month" && this._monthWeeks()) this._anchor = addDays(this._config.month_start === "today" ? this._anchor : this._startOfWeek(this._anchor), this._monthWeeks() * 7 * dir);
+        if (this._view === "year") this._anchor = new Date(this._anchor.getFullYear() + dir, this._anchor.getMonth(), 1);
+        else if (this._view === "month" && this._monthWeeks()) this._anchor = addDays(this._config.month_start === "today" ? this._anchor : this._startOfWeek(this._anchor), this._monthWeeks() * 7 * dir);
         else if (this._view === "month") this._anchor = new Date(this._anchor.getFullYear(), this._anchor.getMonth() + dir, 1);
         else if (this._view === "week") this._anchor = addDays(this._anchor, 7 * dir);
         else if (this._view === "planner") this._anchor = addDays(this._config.planner_start === "today" ? this._anchor : this._startOfWeek(this._anchor), this._plannerDays() * dir);
@@ -5046,6 +5202,17 @@ class HomeCalendarCard extends HTMLElement {
       case "sync":
         this._syncNow(true);
         break;
+      case "add-slot": {
+        // Timeline week: tapping an empty slot adds an event at that time (rounded to 30 min)
+        if (e.target !== el || this._config.allow_add === false || !this._writable().length) break;
+        const r = el.getBoundingClientRect();
+        const h0 = Number(el.dataset.h0), h1 = Number(el.dataset.h1);
+        const mins = Math.round(((e.clientY - r.top) / r.height) * (h1 - h0) * 2) * 30 + h0 * 60;
+        const d = parseDate(el.dataset.date);
+        d.setHours(0, Math.max(h0 * 60, Math.min(h1 * 60 - 30, mins)), 0, 0);
+        this._openAdd(d);
+        break;
+      }
       case "toggle-group": {
         const g = el.dataset.group;
         const members = this._calendars.filter((x) => String(x.group || "").trim() === g);
@@ -5547,6 +5714,57 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 dialog { border: none; padding: 0; border-radius: 22px; width: min(460px, calc(100vw - 24px)); max-height: min(720px, calc(100vh - 32px));
   background: var(--hcc-bg); color: var(--hcc-text); box-shadow: 0 24px 70px rgba(0,0,0,.35); overflow: hidden; }
 dialog[open] { display: flex; flex-direction: column; animation: pop .18s ease-out; }
+/* Timeline week (#24) */
+.tl { display: flex; flex-direction: column; gap: 6px; min-height: 0; }
+.tl-row { display: grid; grid-template-columns: 52px repeat(7, minmax(0, 1fr)); gap: 0 4px; }
+.tl-day { margin: 0; }
+.tl-all { row-gap: 3px; align-items: center; }
+.tl-alllbl { font-size: .72rem; color: var(--hcc-muted); text-align: right; padding-right: 6px; align-self: center; }
+.tlbar { display: flex; align-items: center; gap: 4px; min-width: 0; overflow: hidden; padding: 2px 8px; border-radius: 6px; font-size: .78rem; font-weight: 600;
+  background: var(--c); color: #fff; cursor: pointer; white-space: nowrap; }
+.tlbar span { overflow: hidden; text-overflow: ellipsis; }
+.tlbar ha-icon { --mdc-icon-size: 14px; flex: none; }
+.tlbar.ban { background: color-mix(in srgb, var(--c) 22%, transparent); color: var(--hcc-text); }
+.tlbar.cl { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.tlbar.cr { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.tlbar.past { opacity: .55; }
+.tl-body { height: calc(var(--tln) * 44px); }
+:host([layout="fill"]) .tl, :host([layout="fullscreen"]) .tl { height: 100%; }
+:host([layout="fill"]) .tl-body, :host([layout="fullscreen"]) .tl-body { height: auto; flex: 1 1 auto; min-height: calc(var(--tln) * 26px); }
+.tl-hours { position: relative; }
+.tl-hours span { position: absolute; right: 6px; transform: translateY(-50%); font-size: .7rem; color: var(--hcc-muted); white-space: nowrap; }
+.tl-hours span:first-child { transform: none; }
+.tl-col { position: relative; border-radius: 8px; background: var(--hcc-surface, rgba(127,127,127,.06));
+  background-image: repeating-linear-gradient(to bottom, var(--hcc-line) 0 1px, transparent 1px calc(100% / var(--tln))); }
+.tl-col.can-add { cursor: copy; }
+.tl-col.is-today { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--hcc-accent) 55%, transparent); }
+.tlev { position: absolute; box-sizing: border-box; padding: 0 1px; min-height: 18px; cursor: pointer; }
+.tlev > div { overflow: hidden; }
+.tlev { display: flex; flex-direction: column; }
+.tlev::before { content: ""; position: absolute; inset: 1px; border-radius: 6px; background: color-mix(in srgb, var(--c) 18%, var(--hcc-card, #fff)); border-left: 3px solid var(--c); z-index: -1; }
+.tlev { z-index: 1; padding: 3px 5px 2px 8px; font-size: .78rem; line-height: 1.2; }
+.tlev .tlt { font-size: .7rem; color: var(--hcc-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tlev .tls { font-weight: 600; color: var(--hcc-text); }
+.tlev .tls ha-icon { --mdc-icon-size: 13px; margin-right: 3px; vertical-align: -2px; }
+.tlev.tiny { flex-direction: row; gap: 5px; align-items: center; padding-top: 0; padding-bottom: 0; white-space: nowrap; }
+.tlev.past { opacity: .55; }
+.tl-now { position: absolute; left: 0; right: 0; height: 2px; background: #ef4444; z-index: 2; pointer-events: none; }
+.tl-now::before { content: ""; position: absolute; left: -4px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: #ef4444; }
+/* Year view (#25) */
+.year { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto repeat(31, minmax(20px, auto)); gap: 1px 4px; }
+:host([layout="fill"]) .year, :host([layout="fullscreen"]) .year { height: 100%; grid-template-rows: auto repeat(31, minmax(14px, 1fr)); }
+.yhead { text-align: center; font-weight: 700; font-size: .85rem; padding: 2px 0 4px; text-transform: capitalize; }
+.ycell { display: flex; align-items: center; gap: 4px; min-width: 0; padding: 0 4px; border-radius: 4px; font-size: .72rem; cursor: pointer; background: var(--hcc-surface, rgba(127,127,127,.05)); overflow: hidden; }
+.ycell.we { background: color-mix(in srgb, var(--hcc-muted) 16%, transparent); }
+.ycell.today { box-shadow: inset 0 0 0 1.5px var(--hcc-accent); }
+.ycell.today .yd { color: var(--hcc-accent); }
+.ycell.ynone { background: transparent; cursor: default; }
+.yd { flex: none; width: 1.5em; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.yw { flex: none; width: 1.7em; color: var(--hcc-muted); text-transform: capitalize; }
+.ysegs { display: flex; flex: 1 1 auto; min-width: 0; align-self: stretch; gap: 2px; padding: 2px 0; }
+.yseg { flex: 1 1 0; min-width: 0; border-radius: 3px; background: var(--c); color: #fff; font-size: .68rem; font-weight: 600; line-height: 1.5; padding: 0 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ymore { flex: none; font-size: .65rem; color: var(--hcc-muted); align-self: center; }
+@container (max-width: 700px) { .year { overflow-x: auto; min-width: 0; } .year { grid-template-columns: repeat(12, minmax(64px, 1fr)); } }
 .icon.sync.spin ha-icon { animation: hcc-spin .9s linear infinite; }
 @keyframes hcc-spin { to { transform: rotate(360deg); } }
 @keyframes pop { from { transform: translateY(10px) scale(.98); opacity: 0; } }
@@ -5929,14 +6147,14 @@ const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, 
 const TRAVEL_DEFAULTS = { enabled: false, origin: "zone.home", region: "auto", vehicle_type: "car", hours_ahead: 12, avoid_toll_roads: false, avoid_ferries: false };
 // editor defaults that are not written to YAML until changed
 const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
-  clock_format: "auto", show_view_selector: true, show_date_navigation: true, show_refresh_button: true, calendar_sync_minutes: 0, event_time_position: "above", show_event_location: true,
+  clock_format: "auto", show_view_selector: true, show_date_navigation: true, show_refresh_button: true, calendar_sync_minutes: 0, week_style: "list", week_hour_start: 7, week_hour_end: 22, show_year_view: true, year_start: "january", event_time_position: "above", show_event_location: true,
   show_event_calendar: true, multiday_bars: true, agenda_multiday: "every", todo_show_empty: true, planner_days: 7, planner_start: "week", month_start: "week", week_start: "week", agenda_date: "both" };
 const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "todo_title", "todo_position", "todo_autohide",
   "todo_lists", "todo_group_by", "todo_show_empty", "todo_days_ahead", "todo_calendar", "todo_show_completed", "todo_completed_days",
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile", "month_show_time",
   "sections", "show_view_selector", "show_date_navigation", "show_refresh_button", "calendar_sync_minutes", "agenda_date", "agenda_multiday", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
-  "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
+  "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "week_style", "week_hour_start", "week_hour_end", "show_year_view", "year_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t, hasGrid = false) => {
   const o = (value, key) => ({ value, label: t(key) });
@@ -5963,7 +6181,7 @@ const generalSchema = (t, hasGrid = false) => {
       { name: "todo_completed_days", selector: { number: { min: 1, max: 60, step: 1, mode: "box" } } },
     ] },
     { type: "grid", name: "", schema: [
-      { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month"), o("planner", "planner")] } } },
+      { name: "default_view", selector: { select: { mode: "dropdown", options: [o("agenda", "agenda"), o("week", "week"), o("month", "month"), o("planner", "planner"), o("year", "year")] } } },
       { name: "days_to_show", selector: { number: { min: 1, max: 31, mode: "box" } } },
       { name: "show_week_numbers", selector: { boolean: {} } },
       { name: "multiday_bars", selector: { boolean: {} } },
@@ -5972,6 +6190,11 @@ const generalSchema = (t, hasGrid = false) => {
       { name: "month_weeks", selector: { number: { min: 1, max: 6, mode: "box" } } },
       { name: "month_start", selector: { select: { mode: "dropdown", options: [o("week", "o_pl_week"), o("today", "o_pl_today")] } } },
       { name: "week_start", selector: { select: { mode: "dropdown", options: [o("week", "o_pl_week"), o("today", "o_pl_today")] } } },
+      { name: "week_style", selector: { select: { mode: "dropdown", options: [o("list", "o_ws_list"), o("timeline", "o_ws_timeline")] } } },
+      { name: "week_hour_start", selector: { number: { min: 0, max: 23, mode: "box" } } },
+      { name: "week_hour_end", selector: { number: { min: 1, max: 24, mode: "box" } } },
+      { name: "show_year_view", selector: { boolean: {} } },
+      { name: "year_start", selector: { select: { mode: "dropdown", options: [o("january", "o_ys_jan"), o("month", "o_ys_month")] } } },
       { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [o("monday", "o_monday"), o("sunday", "o_sunday"), o("saturday", "o_saturday")] } } },
       { name: "time_format", selector: { select: { mode: "dropdown", options: [o("auto", "o_tf_auto"), o("24h", "o_24h"), o("12h", "o_12h")] } } },
     ] },
@@ -6070,6 +6293,7 @@ const calSchema = (t) => {
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
     { name: "todo", selector: { entity: { domain: "todo" } } },
+    { name: "year_view", selector: { boolean: {} } },
     { type: "grid", name: "", schema: [
       { name: "exclude", selector: { text: {} } },
       { name: "include", selector: { text: {} } },
@@ -6857,12 +7081,13 @@ class HomeCalendarCardEditor extends HTMLElement {
       const c = cals[i];
       const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column === false ? "side" : c.planner_column === "group" ? "group" : "own",
         exclude: Array.isArray(c.exclude) ? c.exclude.join("|") : c.exclude || "", include: Array.isArray(c.include) ? c.include.join("|") : c.include || "",
-        exclude_all_day: c.exclude_all_day === true, todo: c.todo || "" },
+        exclude_all_day: c.exclude_all_day === true, todo: c.todo || "", year_view: c.year_view === true },
         (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),
         (s) => {
           if (s.name === "group") return this._t("ed_group_help");
           if (s.name === "planner_column") return this._t("ed_planner_help");
           if (s.name === "todo") return this._t("ed_todo_help");
+          if (s.name === "year_view") return this._t("ed_year_help");
           if (s.name === "exclude") return this._t("ed_exclude_help");
           if (s.name === "include") return this._t("ed_include_help");
           if (s.name !== "name") return undefined;
@@ -6881,6 +7106,7 @@ class HomeCalendarCardEditor extends HTMLElement {
         else delete list[i].planner_column;
         if (list[i].exclude_all_day !== true) delete list[i].exclude_all_day;
         if (!list[i].todo) delete list[i].todo;
+        if (list[i].year_view !== true) delete list[i].year_view;
         this._emit({ ...this._config, calendars: list });
         const head = this.shadowRoot.querySelector(`.cal[data-i="${i}"] .ch-txt`);
         if (head) head.innerHTML = this._headHtml(list[i]);

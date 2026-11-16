@@ -38,7 +38,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🔁 **Rolling views** – Month view as the next few weeks and Week view from today, so what's coming up is always on screen
 - 🔍 **Calendar filters** – hide events by words in the title (e.g. colleagues' holidays in a work calendar), show only matching events, or hide all-day events
 - 🚗 **Travel time** – live drive time and "leave by" for upcoming events with a location, from Home Assistant's Waze Travel Time integration
-- 📅 **Four views** – Agenda (grouped by day), Week (7 columns, stacks on phones), Month (grid, dots on phones) and Planner (a column per person, like a printed family planner)
+- 📅 **Five views** – Agenda (grouped by day), Week (7 columns, or an Outlook-style hour timeline), Month (grid, dots on phones), Planner (a column per person, like a printed family planner) and Year (a whole-year holiday planner)
 - 🌦️ **Weather built in** – current conditions in the header, daily icon, high/low and rain chance on each day, forecast shown when you add an event
 - ➕ **Add events** – title, **event type** dropdown, **repeat** dropdown, calendar picker (colour-coded chips), all-day toggle, start/end, location, description
 - 🏷️ **Event types** – Standard, Holiday, Birthday, Anniversary, Work event and DHS out of the box (fully customisable), each with its own icon and behaviour
@@ -205,7 +205,7 @@ max_height: 640px
 | `theme` | `auto` \| `nordic` \| `sunset` \| `forest` \| `midnight` \| `graphite` | `auto` | Colour scheme – see *Themes* |
 | `language` | `auto` \| `en` \| `pl` \| `es` | `auto` | Card language – `auto` follows your Home Assistant profile |
 | `title` | string | – | Shown above the date in the header |
-| `default_view` | `agenda` \| `week` \| `month` \| `planner` | `agenda` | View shown when the dashboard loads |
+| `default_view` | `agenda` \| `week` \| `month` \| `planner` \| `year` | `agenda` | View shown when the dashboard loads |
 | `days_to_show` | number | `7` | Number of days in Agenda view |
 | `first_day_of_week` | `monday` \| `sunday` \| `saturday` | `monday` | Start of week in Week and Month views |
 | `show_week_numbers` | boolean | `false` | ISO week numbers – a slim column in Month view and *Week 43* in Week and Planner – see *Week numbers* |
@@ -240,6 +240,10 @@ max_height: 640px
 | `allow_delete` | boolean | `true` | Show the **Delete** button on events (turn off for a shared wall screen) |
 | `max_events_per_day` | number | `3` | Events listed per day in Month view before "+N" |
 | `week_start` | `week` \| `today` | `week` | Week view starts at the start of the week, or today (7 days from today) |
+| `week_style` | `list` \| `timeline` | `list` | Week view as day columns, or an hour timeline with events sized by duration – see *Timeline week* |
+| `week_hour_start` / `week_hour_end` | number | `7` / `22` | Hours shown in the Timeline week (it widens automatically for earlier or later events) |
+| `show_year_view` | boolean | `true` | Show the **Year** view button – see *Year view* |
+| `year_start` | `january` \| `month` | `january` | Year view shows the calendar year, or 12 months from the current month |
 | `month_weeks` | number | – | Month view shows a rolling grid of this many weeks (1–6) instead of the calendar month; ‹ › move by that many weeks |
 | `month_start` | `week` \| `today` | `week` | With `month_weeks`: the grid starts at the start of the week, or today (no past days) |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
@@ -262,6 +266,7 @@ max_height: 640px
 | `exclude` | text | – | Hide this calendar's events whose title contains any of these words, separated by `\|` – see *Calendar filters* |
 | `include` | text | – | Only show this calendar's events whose title contains one of these words |
 | `exclude_all_day` | boolean | `false` | Hide this calendar's all-day events |
+| `year_view` | boolean | `false` | Show this calendar's all-day events in the Year view. If no calendar has it, all are shown – see *Year view* |
 | `todo` | to-do entity | – | This person's own to-do list – see *One list per person* |
 | `match_in` | list | `[title]` | Where `exclude`/`include` look: `title`, `description`, `location` |
 | `planner_column` | Planner view: `true` (default) – its own column; `group` – shares one column with the other calendars of its `group` (e.g. *Kids*); `false` – its events show next to the date instead, handy for a shared Family calendar |
@@ -720,6 +725,51 @@ calendars:
 
 **How many days** – `planner_days: 10` shows 10 days instead of 7. `planner_start: today` starts with today at the top (no past days) instead of the start of the week, and ‹ › move by the number of days shown. Both are in the visual editor. Thanks to @ManicGTI for the idea ([#13](https://github.com/mimikm/Home-Calendar-Card/issues/13)).
 - **Event size** (see *Appearance*) makes the boxes taller and the text bigger.
+
+### Timeline week (hours, like Outlook)
+
+Set **Week view style** to **Timeline** (`week_style: timeline`) to see the week as an hour grid: each event is a block as tall as it lasts, and events that overlap sit side by side – so you can spot clashes and free time at a glance.
+
+![Timeline week](images/timeline-week.png)
+
+```yaml
+week_style: timeline
+week_hour_start: 7     # first hour shown
+week_hour_end: 22      # last hour shown
+```
+
+- **All-day events** (trips, birthdays, holidays) sit in a strip at the top, spanning their days.
+- The hours **widen automatically** if an event starts earlier or ends later. The part of an overnight event that falls outside the hours is pinned to the top or bottom edge.
+- A red line marks **now**; today's column is outlined.
+- **Tap an empty slot** to add an event at that time (rounded to the half hour).
+- On phones the week switches back to the list layout, as there's no room for 7 hour columns.
+
+<sub>Requested by [@oliverlinsenmaier](https://github.com/oliverlinsenmaier) in [#24](https://github.com/mimikm/Home-Calendar-Card/issues/24).</sub>
+
+### Year view (holiday planner)
+
+The **Year** view shows the whole year like a printed holiday planner: months side by side, days 1–31 down the page, and all-day events – school holidays, vacations, birthdays – as coloured blocks. Weekends are shaded and today is outlined.
+
+![Year view](images/year-view.png)
+
+Choose which calendars appear with **Show in Year view** in each calendar's settings, e.g. only *School holidays*, *Vacation* and *Birthdays*. If no calendar is ticked, all-day events from every calendar are shown. Timed appointments never appear here.
+
+```yaml
+year_start: january      # or "month" for the next 12 months from now
+calendars:
+  - entity: calendar.school_holidays
+    year_view: true
+  - entity: calendar.vacation
+    year_view: true
+  - entity: calendar.family        # not in the Year view
+```
+
+- Each block is labelled on its first day (and again at the top of each month).
+- Tap a day to see everything on it, or a block to open the event. ‹ › move a year at a time.
+- On phones the year scrolls sideways.
+- Hide the button with `show_year_view: false`.
+
+<sub>Requested by [@oliverlinsenmaier](https://github.com/oliverlinsenmaier) in [#25](https://github.com/mimikm/Home-Calendar-Card/issues/25).</sub>
 
 ### Wall display (permanent desktop / tablet)
 
