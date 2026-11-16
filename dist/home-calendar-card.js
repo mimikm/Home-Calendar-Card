@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.1-beta.1";
+const CARD_VERSION = "1.20.1-beta.2";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -5721,11 +5721,12 @@ dialog[open] { display: flex; flex-direction: column; animation: pop .18s ease-o
 .tl-all { row-gap: 3px; align-items: center; }
 .tl-alllbl { font-size: .72rem; color: var(--hcc-muted); text-align: right; padding-right: 6px; align-self: center; }
 .tlbar { display: flex; align-items: center; gap: 4px; min-width: 0; overflow: hidden; padding: 2px 8px; border-radius: 6px; font-size: .78rem; font-weight: 600;
-  background: var(--c); color: #fff; cursor: pointer; white-space: nowrap; }
+  background: color-mix(in srgb, var(--c) 18%, var(--hcc-card, #fff)); border-left: 3px solid var(--c); color: var(--hcc-text); cursor: pointer; white-space: nowrap; box-sizing: border-box; }
+.tlbar ha-icon { color: var(--c); }
 .tlbar span { overflow: hidden; text-overflow: ellipsis; }
 .tlbar ha-icon { --mdc-icon-size: 14px; flex: none; }
-.tlbar.ban { background: color-mix(in srgb, var(--c) 22%, transparent); color: var(--hcc-text); }
-.tlbar.cl { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.tlbar.ban { background: color-mix(in srgb, var(--c) 10%, var(--hcc-card, #fff)); border-left-style: dashed; }
+.tlbar.cl { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left-width: 0; }
 .tlbar.cr { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 .tlbar.past { opacity: .55; }
 .tl-body { height: calc(var(--tln) * 44px); }
