@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.1";
+const CARD_VERSION = "1.20.2-beta.1";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -116,6 +116,7 @@ const I18N = {
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
     l_todo_lists: "More lists as tabs (e.g. shopping)", ed_todo_lists_help: "Each list gets its own tab in the to-do block. Set a title or icon in YAML.",
     l_month_show_time: "Show start time in Month view",
+    ed_types: "Event types", ed_types_sub: "Types you can pick when adding an event or for a whole calendar. Rename, re-icon or remove the built-in ones, or add your own.", ed_add_type: "Add type", ed_new_type: "New type…", ed_new_type_help: "Its events get this type's icon and style. You can change it later under Event types.", ed_create_type: "Create type", l_type_name: "Name", l_type_icon: "Icon", l_type_all_day: "All day by default", l_type_countdown: "Countdown card", o_st_normal: "Normal", o_st_banner: "Holiday banner", o_st_birthday: "Birthday (turns X)", o_st_anniversary: "Anniversary (years)", o_st_nameday: "Name day", ed_type_style_help: "A holiday banner, birthday, anniversary or name-day calendar isn't a person: no Planner column.", ed_note2: "Countdowns are set in the code editor – see the README.",
     sync: "Sync calendars now", sync_err: "Couldn't sync the calendars", l_show_refresh_button: "Show refresh button", l_calendar_sync_minutes: "Sync calendars every … minutes (0 = off)",
     year: "Year", l_week_style: "Week view style", o_ws_list: "List", o_ws_timeline: "Timeline (hours, like Outlook)", l_week_hour_start: "Timeline from (hour)", l_week_hour_end: "Timeline to (hour)", l_show_year_view: "Show Year view", l_year_start: "Year view starts", o_ys_jan: "In January", o_ys_month: "This month (next 12 months)", l_year_view: "Show in Year view", ed_year_help: "Its all-day events appear in the Year view. If no calendar is ticked, all are shown.",
     l_agenda_multiday: "Multi-day events in Agenda", o_am_every: "Every day", o_am_first: "First day only", am_until: "until {d}", am_day: "day {n} of {t}",
@@ -191,6 +192,7 @@ const I18N = {
     l_todo_show_empty: "Pokaż osoby z pustą własną listą", tg_empty: "Nic do zrobienia",
     l_todo_lists: "Kolejne listy jako karty (np. zakupy)", ed_todo_lists_help: "Każda lista ma własną kartę w bloku zadań. Tytuł lub ikonę ustawisz w YAML.",
     l_month_show_time: "Pokaż godzinę rozpoczęcia w widoku miesiąca",
+    ed_types: "Typy wydarzeń", ed_types_sub: "Typy do wyboru przy dodawaniu wydarzenia lub dla całego kalendarza. Zmień nazwę lub ikonę wbudowanych, usuń je albo dodaj własne.", ed_add_type: "Dodaj typ", ed_new_type: "Nowy typ…", ed_new_type_help: "Jego wydarzenia dostaną ikonę i styl tego typu. Zmienisz to później w sekcji Typy wydarzeń.", ed_create_type: "Utwórz typ", l_type_name: "Nazwa", l_type_icon: "Ikona", l_type_all_day: "Domyślnie całodniowe", l_type_countdown: "Karta odliczania", o_st_normal: "Zwykły", o_st_banner: "Baner urlopowy", o_st_birthday: "Urodziny (kończy X)", o_st_anniversary: "Rocznica (lata)", o_st_nameday: "Imieniny", ed_type_style_help: "Kalendarz z banerem, urodzinami, rocznicami lub imieninami nie jest osobą: nie ma kolumny w Planerze.", ed_note2: "Odliczania ustawia się w edytorze kodu – zobacz README.",
     sync: "Synchronizuj kalendarze teraz", sync_err: "Nie udało się zsynchronizować kalendarzy", l_show_refresh_button: "Pokaż przycisk odświeżania", l_calendar_sync_minutes: "Synchronizuj kalendarze co … minut (0 = wył.)",
     year: "Rok", l_week_style: "Styl widoku tygodnia", o_ws_list: "Lista", o_ws_timeline: "Oś czasu (godziny, jak w Outlooku)", l_week_hour_start: "Oś czasu od (godzina)", l_week_hour_end: "Oś czasu do (godziny)", l_show_year_view: "Pokaż widok roku", l_year_start: "Widok roku zaczyna się", o_ys_jan: "W styczniu", o_ys_month: "Od bieżącego miesiąca (12 miesięcy)", l_year_view: "Pokaż w widoku roku", ed_year_help: "Jego wydarzenia całodniowe pojawią się w widoku roku. Gdy żaden kalendarz nie jest zaznaczony, widać wszystkie.",
     l_agenda_multiday: "Wydarzenia wielodniowe w Agendzie", o_am_every: "Każdego dnia", o_am_first: "Tylko pierwszego dnia", am_until: "do {d}", am_day: "dzień {n} z {t}",
@@ -265,6 +267,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar personas con su lista vacía", tg_empty: "Nada pendiente",
     l_todo_lists: "Más listas como pestañas (p. ej. compra)", ed_todo_lists_help: "Cada lista tiene su propia pestaña en el bloque de tareas. El título o el icono se ajustan en YAML.",
     l_month_show_time: "Mostrar la hora de inicio en la vista Mes",
+    ed_types: "Tipos de evento", ed_types_sub: "Tipos que puedes elegir al añadir un evento o para todo un calendario. Cambia el nombre o el icono de los integrados, quítalos o añade los tuyos.", ed_add_type: "Añadir tipo", ed_new_type: "Nuevo tipo…", ed_new_type_help: "Sus eventos tendrán el icono y el estilo de este tipo. Puedes cambiarlo luego en Tipos de evento.", ed_create_type: "Crear tipo", l_type_name: "Nombre", l_type_icon: "Icono", l_type_all_day: "Todo el día por defecto", l_type_countdown: "Tarjeta de cuenta atrás", o_st_normal: "Normal", o_st_banner: "Banner de vacaciones", o_st_birthday: "Cumpleaños (cumple X)", o_st_anniversary: "Aniversario (años)", o_st_nameday: "Onomástica", ed_type_style_help: "Un calendario de vacaciones, cumpleaños, aniversarios u onomásticas no es una persona: no tiene columna en el Planificador.", ed_note2: "Las cuentas atrás se configuran en el editor de código; consulta el README.",
     sync: "Sincronizar calendarios ahora", sync_err: "No se pudieron sincronizar los calendarios", l_show_refresh_button: "Mostrar botón de actualizar", l_calendar_sync_minutes: "Sincronizar calendarios cada … minutos (0 = no)",
     year: "Año", l_week_style: "Estilo de la vista Semana", o_ws_list: "Lista", o_ws_timeline: "Línea de tiempo (horas, como Outlook)", l_week_hour_start: "Línea de tiempo desde (hora)", l_week_hour_end: "Línea de tiempo hasta (hora)", l_show_year_view: "Mostrar vista Año", l_year_start: "La vista Año empieza", o_ys_jan: "En enero", o_ys_month: "Este mes (próximos 12 meses)", l_year_view: "Mostrar en la vista Año", ed_year_help: "Sus eventos de todo el día aparecen en la vista Año. Si no marcas ningún calendario, se muestran todos.",
     l_agenda_multiday: "Eventos de varios días en la Agenda", o_am_every: "Cada día", o_am_first: "Solo el primer día", am_until: "hasta el {d}", am_day: "día {n} de {t}",
@@ -339,6 +342,7 @@ const I18N = {
     l_todo_show_empty: "Mostra le persone con la propria lista vuota", tg_empty: "Niente da fare",
     l_todo_lists: "Altre liste come schede (es. spesa)", ed_todo_lists_help: "Ogni lista ha la sua scheda nel blocco delle cose da fare. Titolo o icona si impostano in YAML.",
     l_month_show_time: "Mostra l'ora di inizio nella vista Mese",
+    ed_types: "Tipi di evento", ed_types_sub: "Tipi da scegliere quando aggiungi un evento o per un intero calendario. Rinomina, cambia icona o rimuovi quelli predefiniti, oppure aggiungi i tuoi.", ed_add_type: "Aggiungi tipo", ed_new_type: "Nuovo tipo…", ed_new_type_help: "I suoi eventi avranno l'icona e lo stile di questo tipo. Puoi cambiarlo poi in Tipi di evento.", ed_create_type: "Crea tipo", l_type_name: "Nome", l_type_icon: "Icona", l_type_all_day: "Tutto il giorno di default", l_type_countdown: "Scheda conto alla rovescia", o_st_normal: "Normale", o_st_banner: "Banner vacanza", o_st_birthday: "Compleanno (compie X)", o_st_anniversary: "Anniversario (anni)", o_st_nameday: "Onomastico", ed_type_style_help: "Un calendario di vacanze, compleanni, anniversari od onomastici non è una persona: niente colonna nel Planner.", ed_note2: "I conti alla rovescia si impostano nell'editor di codice – vedi il README.",
     sync: "Sincronizza ora i calendari", sync_err: "Impossibile sincronizzare i calendari", l_show_refresh_button: "Mostra il pulsante di aggiornamento", l_calendar_sync_minutes: "Sincronizza i calendari ogni … minuti (0 = mai)",
     year: "Anno", l_week_style: "Stile della vista Settimana", o_ws_list: "Elenco", o_ws_timeline: "Linea temporale (ore, come Outlook)", l_week_hour_start: "Linea temporale dalle (ora)", l_week_hour_end: "Linea temporale fino alle (ora)", l_show_year_view: "Mostra la vista Anno", l_year_start: "La vista Anno inizia", o_ys_jan: "A gennaio", o_ys_month: "Da questo mese (12 mesi)", l_year_view: "Mostra nella vista Anno", ed_year_help: "I suoi eventi di tutto il giorno compaiono nella vista Anno. Se nessun calendario è selezionato, compaiono tutti.",
     l_agenda_multiday: "Eventi di più giorni nell'Agenda", o_am_every: "Ogni giorno", o_am_first: "Solo il primo giorno", am_until: "fino al {d}", am_day: "giorno {n} di {t}",
@@ -589,6 +593,7 @@ const I18N = {
     l_todo_show_empty: "Personen met een lege eigen lijst tonen", tg_empty: "Niets te doen",
     l_todo_lists: "Meer lijsten als tabbladen (bijv. boodschappen)", ed_todo_lists_help: "Elke lijst krijgt een eigen tabblad in het takenblok. Titel of pictogram stel je in YAML in.",
     l_month_show_time: "Begintijd tonen in de maandweergave",
+    ed_types: "Soorten afspraken", ed_types_sub: "Soorten om te kiezen bij een nieuwe afspraak of voor een hele agenda. Geef de ingebouwde een andere naam of pictogram, verwijder ze of voeg je eigen toe.", ed_add_type: "Soort toevoegen", ed_new_type: "Nieuwe soort…", ed_new_type_help: "De afspraken krijgen het pictogram en de stijl van deze soort. Je kunt dit later wijzigen onder Soorten afspraken.", ed_create_type: "Soort maken", l_type_name: "Naam", l_type_icon: "Pictogram", l_type_all_day: "Standaard hele dag", l_type_countdown: "Aftelkaart", o_st_normal: "Normaal", o_st_banner: "Vakantiebanner", o_st_birthday: "Verjaardag (wordt X)", o_st_anniversary: "Jubileum (jaren)", o_st_nameday: "Naamdag", ed_type_style_help: "Een agenda met vakanties, verjaardagen, jubilea of naamdagen is geen persoon: geen kolom in de Planner.", ed_note2: "Aftellers stel je in de code-editor in – zie de README.",
     sync: "Agenda's nu synchroniseren", sync_err: "De agenda's konden niet worden gesynchroniseerd", l_show_refresh_button: "Vernieuwknop tonen", l_calendar_sync_minutes: "Agenda's elke … minuten synchroniseren (0 = uit)",
     year: "Jaar", l_week_style: "Stijl van de weekweergave", o_ws_list: "Lijst", o_ws_timeline: "Tijdlijn (uren, zoals Outlook)", l_week_hour_start: "Tijdlijn vanaf (uur)", l_week_hour_end: "Tijdlijn tot (uur)", l_show_year_view: "Jaarweergave tonen", l_year_start: "Jaarweergave begint", o_ys_jan: "In januari", o_ys_month: "Deze maand (komende 12 maanden)", l_year_view: "Tonen in de jaarweergave", ed_year_help: "De hele-dag-afspraken verschijnen in de jaarweergave. Als er geen agenda is aangevinkt, worden ze allemaal getoond.",
     l_agenda_multiday: "Meerdaagse afspraken in de Agenda", o_am_every: "Elke dag", o_am_first: "Alleen de eerste dag", am_until: "tot {d}", am_day: "dag {n} van {t}",
@@ -839,6 +844,7 @@ const I18N = {
     l_todo_show_empty: "Personen mit leerer eigener Liste anzeigen", tg_empty: "Nichts zu tun",
     l_todo_lists: "Weitere Listen als Tabs (z. B. Einkauf)", ed_todo_lists_help: "Jede Liste bekommt einen eigenen Tab im Aufgabenblock. Titel oder Symbol in YAML festlegen.",
     l_month_show_time: "Startzeit in der Monatsansicht anzeigen",
+    ed_types: "Terminarten", ed_types_sub: "Arten zur Auswahl beim Hinzufügen eines Termins oder für einen ganzen Kalender. Integrierte umbenennen, Symbol ändern oder entfernen – oder eigene hinzufügen.", ed_add_type: "Art hinzufügen", ed_new_type: "Neue Art…", ed_new_type_help: "Seine Termine bekommen Symbol und Stil dieser Art. Später unter Terminarten änderbar.", ed_create_type: "Art erstellen", l_type_name: "Name", l_type_icon: "Symbol", l_type_all_day: "Standardmäßig ganztägig", l_type_countdown: "Countdown-Karte", o_st_normal: "Normal", o_st_banner: "Urlaubsbanner", o_st_birthday: "Geburtstag (wird X)", o_st_anniversary: "Jahrestag (Jahre)", o_st_nameday: "Namenstag", ed_type_style_help: "Ein Kalender mit Urlaub, Geburtstagen, Jahrestagen oder Namenstagen ist keine Person: keine Spalte im Planer.", ed_note2: "Countdowns werden im Code-Editor eingestellt – siehe README.",
     sync: "Kalender jetzt synchronisieren", sync_err: "Kalender konnten nicht synchronisiert werden", l_show_refresh_button: "Aktualisieren-Schaltfläche anzeigen", l_calendar_sync_minutes: "Kalender alle … Minuten synchronisieren (0 = aus)",
     year: "Jahr", l_week_style: "Stil der Wochenansicht", o_ws_list: "Liste", o_ws_timeline: "Zeitleiste (Stunden, wie Outlook)", l_week_hour_start: "Zeitleiste ab (Uhr)", l_week_hour_end: "Zeitleiste bis (Uhr)", l_show_year_view: "Jahresansicht anzeigen", l_year_start: "Jahresansicht beginnt", o_ys_jan: "Im Januar", o_ys_month: "Diesen Monat (nächste 12 Monate)", l_year_view: "In der Jahresansicht anzeigen", ed_year_help: "Ganztägige Termine dieses Kalenders erscheinen in der Jahresansicht. Ist kein Kalender ausgewählt, werden alle angezeigt.",
     l_agenda_multiday: "Mehrtägige Termine in der Agenda", o_am_every: "Jeden Tag", o_am_first: "Nur am ersten Tag", am_until: "bis {d}", am_day: "Tag {n} von {t}",
@@ -1089,6 +1095,7 @@ const I18N = {
     l_todo_show_empty: "Üres saját listájú személyek megjelenítése", tg_empty: "Nincs teendő",
     l_todo_lists: "További listák fülként (pl. bevásárlás)", ed_todo_lists_help: "Minden lista saját fület kap a teendők blokkban. A címet vagy ikont YAML-ben lehet megadni.",
     l_month_show_time: "Kezdési idő megjelenítése a havi nézetben",
+    ed_types: "Eseménytípusok", ed_types_sub: "Választható típusok új eseményhez vagy egy egész naptárhoz. A beépítettek átnevezhetők, ikonjuk módosítható, törölhetők, vagy adj hozzá sajátot.", ed_add_type: "Típus hozzáadása", ed_new_type: "Új típus…", ed_new_type_help: "Eseményei megkapják ennek a típusnak az ikonját és stílusát. Később az Eseménytípusoknál módosítható.", ed_create_type: "Típus létrehozása", l_type_name: "Név", l_type_icon: "Ikon", l_type_all_day: "Alapból egész napos", l_type_countdown: "Visszaszámláló kártya", o_st_normal: "Normál", o_st_banner: "Szabadság szalag", o_st_birthday: "Születésnap (betölti X)", o_st_anniversary: "Évforduló (évek)", o_st_nameday: "Névnap", ed_type_style_help: "A szabadság-, születésnap-, évforduló- vagy névnapnaptár nem személy: nincs oszlopa a Tervezőben.", ed_note2: "A visszaszámlálások a kódszerkesztőben állíthatók – lásd a README-t.",
     sync: "Naptárak szinkronizálása most", sync_err: "Nem sikerült szinkronizálni a naptárakat", l_show_refresh_button: "Frissítés gomb megjelenítése", l_calendar_sync_minutes: "Naptárak szinkronizálása … percenként (0 = ki)",
     year: "Év", l_week_style: "Heti nézet stílusa", o_ws_list: "Lista", o_ws_timeline: "Idővonal (órák, mint az Outlookban)", l_week_hour_start: "Idővonal kezdete (óra)", l_week_hour_end: "Idővonal vége (óra)", l_show_year_view: "Éves nézet megjelenítése", l_year_start: "Az éves nézet kezdete", o_ys_jan: "Januárban", o_ys_month: "Ebben a hónapban (következő 12 hónap)", l_year_view: "Megjelenítés az éves nézetben", ed_year_help: "Az egész napos eseményei megjelennek az éves nézetben. Ha egy naptár sincs bejelölve, mind látszik.",
     l_agenda_multiday: "Többnapos események a Napirendben", o_am_every: "Minden nap", o_am_first: "Csak az első napon", am_until: "{d}-ig", am_day: "{n}. nap / {t}",
@@ -1339,6 +1346,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar pessoas com a própria lista vazia", tg_empty: "Nada a fazer",
     l_todo_lists: "Mais listas como abas (ex.: compras)", ed_todo_lists_help: "Cada lista ganha sua própria aba no bloco de tarefas. Título ou ícone podem ser definidos no YAML.",
     l_month_show_time: "Mostrar horário de início na visão Mês",
+    ed_types: "Tipos de evento", ed_types_sub: "Tipos para escolher ao adicionar um evento ou para uma agenda inteira. Renomeie, troque o ícone ou remova os embutidos, ou adicione os seus.", ed_add_type: "Adicionar tipo", ed_new_type: "Novo tipo…", ed_new_type_help: "Os eventos dela recebem o ícone e o estilo deste tipo. Dá para mudar depois em Tipos de evento.", ed_create_type: "Criar tipo", l_type_name: "Nome", l_type_icon: "Ícone", l_type_all_day: "Dia inteiro por padrão", l_type_countdown: "Cartão de contagem regressiva", o_st_normal: "Normal", o_st_banner: "Faixa de férias", o_st_birthday: "Aniversário (faz X)", o_st_anniversary: "Bodas (anos)", o_st_nameday: "Dia do santo", ed_type_style_help: "Uma agenda de férias, aniversários, bodas ou dias do santo não é uma pessoa: sem coluna no Planejador.", ed_note2: "As contagens regressivas são definidas no editor de código – veja o README.",
     sync: "Sincronizar agendas agora", sync_err: "Não foi possível sincronizar as agendas", l_show_refresh_button: "Mostrar botão de atualizar", l_calendar_sync_minutes: "Sincronizar agendas a cada … minutos (0 = desligado)",
     year: "Ano", l_week_style: "Estilo da visão Semana", o_ws_list: "Lista", o_ws_timeline: "Linha do tempo (horas, como no Outlook)", l_week_hour_start: "Linha do tempo a partir de (hora)", l_week_hour_end: "Linha do tempo até (hora)", l_show_year_view: "Mostrar visão Ano", l_year_start: "A visão Ano começa", o_ys_jan: "Em janeiro", o_ys_month: "Neste mês (próximos 12 meses)", l_year_view: "Mostrar na visão Ano", ed_year_help: "Os eventos de dia inteiro desta agenda aparecem na visão Ano. Se nenhuma estiver marcada, todas aparecem.",
     l_agenda_multiday: "Eventos de vários dias na Agenda", o_am_every: "Todos os dias", o_am_first: "Só no primeiro dia", am_until: "até {d}", am_day: "dia {n} de {t}",
@@ -1414,6 +1422,7 @@ const I18N = {
     l_todo_show_empty: "Прикажи особе са празном сопственом листом", tg_empty: "Нема задатака",
     l_todo_lists: "Још листа као картице (нпр. куповина)", ed_todo_lists_help: "Свака листа добија своју картицу у блоку задатака. Наслов или иконица се подешавају у YAML-у.",
     l_month_show_time: "Прикажи време почетка у месечном приказу",
+    ed_types: "Типови догађаја", ed_types_sub: "Типови за избор при додавању догађаја или за цео календар. Преименуј, промени иконицу или уклони уграђене, или додај своје.", ed_add_type: "Додај тип", ed_new_type: "Нови тип…", ed_new_type_help: "Његови догађаји добијају иконицу и стил овог типа. Можеш то касније да промениш у Типовима догађаја.", ed_create_type: "Направи тип", l_type_name: "Назив", l_type_icon: "Иконица", l_type_all_day: "Подразумевано целодневно", l_type_countdown: "Картица одбројавања", o_st_normal: "Обично", o_st_banner: "Трака одмора", o_st_birthday: "Рођендан (пуни X)", o_st_anniversary: "Годишњица (године)", o_st_nameday: "Имендан", ed_type_style_help: "Календар одмора, рођендана, годишњица или имендана није особа: нема колону у Планеру.", ed_note2: "Одбројавања се подешавају у уређивачу кода – погледај README.",
     sync: "Синхронизуј календаре сада", sync_err: "Синхронизација календара није успела", l_show_refresh_button: "Прикажи дугме за освежавање", l_calendar_sync_minutes: "Синхронизуј календаре на сваких … минута (0 = искључено)",
     year: "Година", l_week_style: "Стил недељног приказа", o_ws_list: "Листа", o_ws_timeline: "Временска линија (сати, као у Outlook-у)", l_week_hour_start: "Временска линија од (сат)", l_week_hour_end: "Временска линија до (сат)", l_show_year_view: "Прикажи годишњи приказ", l_year_start: "Годишњи приказ почиње", o_ys_jan: "У јануару", o_ys_month: "Од овог месеца (12 месеци)", l_year_view: "Прикажи у годишњем приказу", ed_year_help: "Целодневни догађаји овог календара се приказују у годишњем приказу. Ако ниједан календар није означен, приказују се сви.",
     l_agenda_multiday: "Вишедневни термини у Агенди", o_am_every: "Сваког дана", o_am_first: "Само првог дана", am_until: "до {d}", am_day: "{n}. дан од {t}",
@@ -1664,6 +1673,7 @@ const I18N = {
     l_todo_show_empty: "Prikaži osobe sa praznom sopstvenom listom", tg_empty: "Nema zadataka",
     l_todo_lists: "Još lista kao kartice (npr. kupovina)", ed_todo_lists_help: "Svaka lista dobija svoju karticu u bloku zadataka. Naslov ili ikonica se podešavaju u YAML-u.",
     l_month_show_time: "Prikaži vreme početka u mesečnom prikazu",
+    ed_types: "Tipovi događaja", ed_types_sub: "Tipovi za izbor pri dodavanju događaja ili za ceo kalendar. Preimenuj, promeni ikonicu ili ukloni ugrađene, ili dodaj svoje.", ed_add_type: "Dodaj tip", ed_new_type: "Novi tip…", ed_new_type_help: "Njegovi događaji dobijaju ikonicu i stil ovog tipa. Možeš to kasnije da promeniš u Tipovima događaja.", ed_create_type: "Napravi tip", l_type_name: "Naziv", l_type_icon: "Ikonica", l_type_all_day: "Podrazumevano celodnevno", l_type_countdown: "Kartica odbrojavanja", o_st_normal: "Obično", o_st_banner: "Traka odmora", o_st_birthday: "Rođendan (puni X)", o_st_anniversary: "Godišnjica (godine)", o_st_nameday: "Imendan", ed_type_style_help: "Kalendar odmora, rođendana, godišnjica ili imendana nije osoba: nema kolonu u Planeru.", ed_note2: "Odbrojavanja se podešavaju u uređivaču koda – pogledaj README.",
     sync: "Sinhronizuj kalendare sada", sync_err: "Sinhronizacija kalendara nije uspela", l_show_refresh_button: "Prikaži dugme za osvežavanje", l_calendar_sync_minutes: "Sinhronizuj kalendare na svakih … minuta (0 = isključeno)",
     year: "Godina", l_week_style: "Stil nedeljnog prikaza", o_ws_list: "Lista", o_ws_timeline: "Vremenska linija (sati, kao u Outlook-u)", l_week_hour_start: "Vremenska linija od (sat)", l_week_hour_end: "Vremenska linija do (sat)", l_show_year_view: "Prikaži godišnji prikaz", l_year_start: "Godišnji prikaz počinje", o_ys_jan: "U januaru", o_ys_month: "Od ovog meseca (12 meseci)", l_year_view: "Prikaži u godišnjem prikazu", ed_year_help: "Celodnevni događaji ovog kalendara se prikazuju u godišnjem prikazu. Ako nijedan kalendar nije označen, prikazuju se svi.",
     l_agenda_multiday: "Višednevni termini u Agendi", o_am_every: "Svakog dana", o_am_first: "Samo prvog dana", am_until: "do {d}", am_day: "{n}. dan od {t}",
@@ -6352,6 +6362,33 @@ const generalSchema = (t, hasGrid = false) => {
     ] },
   ];
 };
+// Event types editor (1.20.2): one form per type
+const TYPE_STYLES = [["normal", "o_st_normal"], ["banner", "o_st_banner"], ["birthday", "o_st_birthday"], ["anniversary", "o_st_anniversary"], ["nameday", "o_st_nameday"]];
+const TYPE_REPEATS = [["none", "rep_none"], ["daily", "rep_daily"], ["weekly", "rep_weekly"], ["fortnightly", "rep_2weeks"], ["monthly", "rep_monthly"], ["yearly", "rep_yearly"]];
+const typeSchema = (t, short = false) => {
+  const o = ([value, key]) => ({ value, label: t(key) });
+  const base = [
+    { name: "name", selector: { text: {} } },
+    { name: "icon", selector: { icon: {} } },
+    { name: "style", selector: { select: { mode: "dropdown", options: TYPE_STYLES.map(o) } } },
+  ];
+  if (short) return base;
+  return [...base,
+    { name: "repeat", selector: { select: { mode: "dropdown", options: TYPE_REPEATS.map(o) } } },
+    { type: "grid", name: "", schema: [
+      { name: "all_day", selector: { boolean: {} } },
+      { name: "countdown", selector: { boolean: {} } },
+    ] },
+  ];
+};
+const TYPE_LABELS = { name: "l_type_name", icon: "l_type_icon", style: "l_style", repeat: "repeat", all_day: "l_type_all_day", countdown: "l_type_countdown" };
+const slugId = (name, taken) => {
+  const base = String(name || "type").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "type";
+  let id = base; let n = 2;
+  while (taken.has(id)) id = `${base}_${n++}`;
+  return id;
+};
+
 const calSchema = (t, extraTypes = []) => {
   const o = (value, key) => ({ value, label: t(key) });
   return [
@@ -6363,7 +6400,8 @@ const calSchema = (t, extraTypes = []) => {
       { name: "person", selector: { entity: { domain: "person" } } },
       { name: "group", selector: { text: {} } },
       { name: "type", selector: { select: { mode: "dropdown", options: [o("events", "o_events"), o("birthday", "o_birthdays"),
-        o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays"), ...extraTypes] } } },
+        o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays"), ...extraTypes,
+        { value: "__new__", label: `＋ ${t("ed_new_type")}` }] } } },
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
     { name: "planner_title_prefix", selector: { text: {} } },
@@ -7015,6 +7053,13 @@ const EDITOR_STYLES = `
 .ib:hover { background: rgba(127,127,127,.15); }
 .ib:disabled { opacity: .3; cursor: default; background: none; }
 .ib ha-icon { --mdc-icon-size: 20px; }
+.tico { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; flex: none; background: var(--secondary-background-color, rgba(127,127,127,.12)); color: var(--primary-text-color); }
+.tico ha-icon { --mdc-icon-size: 18px; }
+.newtype { margin: 12px 0 4px; padding: 12px; border-radius: 12px; border: 1px dashed var(--primary-color); background: color-mix(in srgb, var(--primary-color) 6%, transparent); }
+.newtype.err { border-color: var(--error-color, #db4437); }
+.nt-h { font-weight: 600; margin-bottom: 2px; }
+.nt-sub { font-size: .8rem; color: var(--secondary-text-color); margin-bottom: 8px; }
+.nt-btns { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 8px; }
 .addcal { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--primary-color);
   background: none; color: var(--primary-color); font: inherit; font-weight: 600; cursor: pointer; }
 .addcal:hover { background: color-mix(in srgb, var(--primary-color) 10%, transparent); }
@@ -7025,10 +7070,73 @@ class HomeCalendarCardEditor extends HTMLElement {
   // event types a calendar can be set to, besides the five built-in calendar types
   _customCalTypes() {
     const builtin = new Set(["standard", "holiday", "birthday", "anniversary", "nameday"]);
-    const list = Array.isArray(this._config?.event_types) && this._config.event_types.length ? this._config.event_types : DEFAULT_TYPES;
-    return list.map((x) => (typeof x === "string" ? DEFAULT_TYPES.find((d) => d.id === x) || { id: x } : x))
-      .filter((x) => x && x.id && !builtin.has(String(x.id).toLowerCase()))
-      .map((x) => ({ value: String(x.id).toLowerCase().replace(/[^a-z0-9_-]+/g, "_"), label: `${x.name || x.id} (${this._t("type").toLowerCase()})` }));
+    return this._typeList().filter((x) => !builtin.has(x.id))
+      .map((x) => ({ value: x.id, label: `${this._typeName(x)} (${this._t("type").toLowerCase()})` }));
+  }
+
+  // the event types as the editor works with them: [{ id, name?, icon?, style?, ... }]
+  _typeList() {
+    const src = Array.isArray(this._config?.event_types) && this._config.event_types.length ? this._config.event_types : DEFAULT_TYPES.map((d) => d.id);
+    return src.map((x) => {
+      const o = typeof x === "string" ? { id: x } : { ...x };
+      o.id = String(o.id || o.name || "").toLowerCase().replace(/[^a-z0-9_-]+/g, "_");
+      return o;
+    }).filter((o) => o.id);
+  }
+
+  _typeFull(o) { return { ...(DEFAULT_TYPES.find((d) => d.id === o.id) || { icon: "mdi:tag-outline" }), ...o }; }
+
+  _typeName(o) {
+    if (o.name) return o.name;
+    const k = `type_${o.id}`;
+    const tx = this._t(k);
+    return tx !== k ? tx : o.id;
+  }
+
+  // store compactly: built-in types without changes stay a plain id; the default list removes event_types
+  _typesOut(list) {
+    const out = list.map((o) => {
+      const d = DEFAULT_TYPES.find((x) => x.id === o.id) || {};
+      const keep = Object.entries(o).filter(([k, v]) => k !== "id" && v !== undefined && v !== null
+        && !(v === "" && !d[k]) && !(d[k] !== undefined && d[k] === v) && !(v === false && !d[k]));
+      return keep.length ? { id: o.id, ...Object.fromEntries(keep) } : o.id;
+    });
+    return JSON.stringify(out) === JSON.stringify(DEFAULT_TYPES.map((x) => x.id)) ? null : out;
+  }
+
+  _saveTypes(list, extra = {}, rerender = true) {
+    const next = { ...this._config, ...extra };
+    const out = this._typesOut(list);
+    if (out) next.event_types = out; else delete next.event_types;
+    this._emit(next, rerender);
+  }
+
+  // form data <-> type entry
+  _typeData(o) {
+    const f = this._typeFull(o);
+    return { name: this._typeName(o), icon: f.icon || "", style: f.style || "normal", repeat: f.repeat || "none", all_day: !!f.all_day, countdown: !!f.countdown };
+  }
+
+  _typeFromData(o, v) {
+    const d = DEFAULT_TYPES.find((x) => x.id === o.id) || {};
+    const n = { ...o };
+    const name = String(v.name ?? "").trim();
+    // a built-in type keeps its translated name unless you change it
+    if (!name || (!o.name && name === this._typeName({ id: o.id }))) delete n.name; else n.name = name;
+    n.icon = v.icon || undefined;
+    n.style = v.style && v.style !== "normal" ? v.style : (d.style ? "" : undefined);
+    n.repeat = v.repeat && v.repeat !== "none" ? v.repeat : (d.repeat ? "" : undefined);
+    n.all_day = !!v.all_day;
+    n.countdown = !!v.countdown;
+    Object.keys(n).forEach((k) => { if (n[k] === undefined) delete n[k]; });
+    return n;
+  }
+
+  _typeHead(o) {
+    const f = this._typeFull(o);
+    const st = TYPE_STYLES.find(([v]) => v === (f.style || "normal"));
+    return `<div class="ch-name"><span class="ch-n">${esc(this._typeName(o))}</span></div>
+      <div class="ch-sub">#${esc(o.id)}${f.style ? ` · ${esc(this._t(st ? st[1] : "o_st_normal"))}` : ""}${f.countdown ? ` · ${esc(this._t("l_type_countdown"))}` : ""}</div>`;
   }
 
   constructor() {
@@ -7114,6 +7222,9 @@ class HomeCalendarCardEditor extends HTMLElement {
     const pal = themePalette(this._config.theme);
     [...this._openCals].forEach((k) => { if (k >= cals.length) this._openCals.delete(k); }); // config edited elsewhere
     this._forms = [];
+    const types = this._typeList();
+    this._openTypes = this._openTypes || new Set();
+    [...this._openTypes].forEach((k) => { if (k >= types.length) this._openTypes.delete(k); });
     this.shadowRoot.innerHTML = `<style>${EDITOR_STYLES}</style>
       <div class="sec">
         <div class="sec-head ${this._themeOpen ? "open" : ""}" data-act="toggle-theme">
@@ -7151,13 +7262,38 @@ class HomeCalendarCardEditor extends HTMLElement {
         <button class="addcal" data-act="add"><ha-icon icon="mdi:plus"></ha-icon>${esc(this._t("ed_add_cal"))}</button>
       </div>
       <div class="sec">
+        <div class="sec-head ${this._typesOpen ? "open" : ""}" data-act="toggle-types">
+          <div class="h">${esc(this._t("ed_types"))}<span class="count">(${types.length})</span></div>
+          <span class="cur">${types.slice(0, 5).map((o) => `<ha-icon icon="${esc(this._typeFull(o).icon || "mdi:calendar-blank-outline")}"></ha-icon>`).join("")}</span>
+          <ha-icon class="chev" icon="mdi:chevron-down"></ha-icon>
+        </div>
+        ${this._typesOpen ? `<div class="sub">${esc(this._t("ed_types_sub"))}</div>
+        <div class="cals types">${types.map((o, i) => {
+          const open = this._openTypes.has(i);
+          return `<div class="cal ${open ? "open" : ""}" data-ti="${i}">
+            <div class="cal-head" data-act="ttoggle" data-i="${i}" title="${esc(this._t(open ? "ed_collapse" : "ed_expand"))}">
+              <span class="tico"><ha-icon icon="${esc(this._typeFull(o).icon || "mdi:calendar-blank-outline")}"></ha-icon></span>
+              <div class="ch-txt">${this._typeHead(o)}</div>
+              <div class="btns">
+                <button class="ib" data-act="tup" data-i="${i}" title="${esc(this._t("ed_up"))}" ${i === 0 ? "disabled" : ""}><ha-icon icon="mdi:arrow-up"></ha-icon></button>
+                <button class="ib" data-act="tdown" data-i="${i}" title="${esc(this._t("ed_down"))}" ${i === types.length - 1 ? "disabled" : ""}><ha-icon icon="mdi:arrow-down"></ha-icon></button>
+                <button class="ib" data-act="tdel" data-i="${i}" title="${esc(this._t("ed_remove"))}" ${o.id === "standard" ? "disabled" : ""}><ha-icon icon="mdi:delete-outline"></ha-icon></button>
+              </div>
+              <ha-icon class="chev" icon="mdi:chevron-down"></ha-icon>
+            </div>
+            ${open ? `<div class="cal-body"><div class="tslot" data-i="${i}"></div></div>` : ""}
+          </div>`;
+        }).join("")}</div>
+        <button class="addcal" data-act="tadd"><ha-icon icon="mdi:plus"></ha-icon>${esc(this._t("ed_add_type"))}</button>` : ""}
+      </div>
+      <div class="sec">
         <div class="h">${esc(this._t("ld_title"))}${this._config.grid ? `<span class="count">${esc(this._t("ld_on"))}</span>` : ""}</div>
         <div class="slot-layout"></div>
       </div>
       <div class="sec">
         <div class="h">${esc(this._t("ed_display"))}</div>
         <div class="slot-general"></div>
-        <div class="note">${esc(this._t("ed_note"))}</div>
+        <div class="note">${esc(this._t("ed_note2"))}</div>
       </div>`;
 
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
@@ -7182,6 +7318,13 @@ class HomeCalendarCardEditor extends HTMLElement {
         });
       f.addEventListener("value-changed", (ev) => {
         ev.stopPropagation();
+        if (ev.detail.value.type === "__new__") {
+          // "＋ New type…" in the Type dropdown: create a type right here for this calendar
+          this._newTypeFor = i;
+          this._newTypeData = { name: "", icon: "mdi:tag-outline", style: "normal" };
+          this._render();
+          return;
+        }
         f.data = ev.detail.value; // keep the form in sync, since we don't rebuild it
         const list = this._cals();
         list[i] = { ...list[i], ...ev.detail.value };
@@ -7198,6 +7341,49 @@ class HomeCalendarCardEditor extends HTMLElement {
         if (head) head.innerHTML = this._headHtml(list[i]);
       });
       slot.appendChild(f);
+      if (this._newTypeFor === i) {
+        const box = document.createElement("div");
+        box.className = "newtype";
+        box.innerHTML = `<div class="nt-h">${esc(this._t("ed_new_type"))}</div><div class="nt-sub">${esc(this._t("ed_new_type_help"))}</div><div class="nt-form"></div>
+          <div class="nt-btns"><button class="linkbtn" data-act="tcancel">${esc(this._t("cancel"))}</button>
+          <button class="addcal" data-act="tcreate" data-i="${i}"><ha-icon icon="mdi:check"></ha-icon>${esc(this._t("ed_create_type"))}</button></div>`;
+        const nf = this._makeForm(typeSchema((k) => this._t(k), true), this._newTypeData, (s) => this._t(TYPE_LABELS[s.name] || s.name));
+        nf.addEventListener("value-changed", (ev) => { ev.stopPropagation(); this._newTypeData = ev.detail.value; nf.data = ev.detail.value; });
+        box.querySelector(".nt-form").appendChild(nf);
+        slot.appendChild(box);
+      }
+    });
+
+    // event types: one form per open type
+    this.shadowRoot.querySelectorAll(".tslot").forEach((slot) => {
+      const i = Number(slot.dataset.i);
+      const tf = this._makeForm(typeSchema((k) => this._t(k)), this._typeData(types[i]), (s) => this._t(TYPE_LABELS[s.name] || s.name),
+        (s) => (s.name === "style" ? this._t("ed_type_style_help") : undefined));
+      tf.addEventListener("value-changed", (ev) => {
+        ev.stopPropagation();
+        tf.data = ev.detail.value;
+        const list = this._typeList();
+        const oldId = list[i].id;
+        list[i] = this._typeFromData(list[i], ev.detail.value);
+        let extra = {};
+        // a type added in this session takes its tag from its name (#school_holidays, not #new_type)
+        if (this._freshTypes?.has(oldId) && list[i].name) {
+          const id = slugId(list[i].name, new Set(list.filter((_, k) => k !== i).map((x) => x.id)));
+          if (id !== oldId) {
+            list[i].id = id;
+            this._freshTypes.delete(oldId); this._freshTypes.add(id);
+            const cals = this._cals();
+            if (cals.some((c) => c.type === oldId)) extra = { calendars: cals.map((c) => (c.type === oldId ? { ...c, type: id } : c)) };
+          }
+        }
+        this._saveTypes(list, extra, false);
+        const row = this.shadowRoot.querySelector(`.cal[data-ti="${i}"]`);
+        if (row) {
+          row.querySelector(".ch-txt").innerHTML = this._typeHead(list[i]);
+          row.querySelector(".tico ha-icon")?.setAttribute("icon", this._typeFull(list[i]).icon || "mdi:calendar-blank-outline");
+        }
+      });
+      slot.appendChild(tf);
     });
 
     const lay = document.createElement("home-calendar-card-layout");
@@ -7273,8 +7459,9 @@ class HomeCalendarCardEditor extends HTMLElement {
     const st = c.entity && this._hass?.states[c.entity];
     const ps = c.person && this._hass?.states[c.person];
     const name = c.name || ps?.attributes?.friendly_name || st?.attributes?.friendly_name || (c.entity ? c.entity.replace(/^calendar\./, "") : "");
-    const typeKey = { events: "o_events", birthday: "o_birthdays", anniversary: "o_anniversaries", nameday: "o_namedays", holiday: "o_holidays" }[c.type || "events"] || "o_events";
-    const typeTxt = this._t(typeKey).replace(/\s*\(.*\)\s*$/, "");
+    const typeKey = { events: "o_events", birthday: "o_birthdays", anniversary: "o_anniversaries", nameday: "o_namedays", holiday: "o_holidays" }[c.type || "events"];
+    const custom = !typeKey && this._typeList().find((x) => x.id === String(c.type).toLowerCase().replace(/[^a-z0-9_-]+/g, "_"));
+    const typeTxt = custom ? this._typeName(custom) : this._t(typeKey || "o_events").replace(/\s*\(.*\)\s*$/, "");
     const pic = ps?.attributes?.entity_picture;
     const missing = c.entity && this._hass && !st;
     return `<div class="ch-name ${name ? "" : "missing"}">${pic ? `<img class="ch-av" src="${esc(pic)}" alt="">` : ""}<span class="ch-n">${esc(name || this._t("ed_new_cal"))}</span></div>
@@ -7301,7 +7488,57 @@ class HomeCalendarCardEditor extends HTMLElement {
     return f;
   }
 
+  _typeAction(b) {
+    const act = b.dataset.act;
+    const i = Number(b.dataset.i);
+    const types = this._typeList();
+    const open = this._openTypes;
+    const reopen = (from, to) => { const had = open.has(from); open.delete(from); if (had) open.add(to); };
+    switch (act) {
+      case "toggle-types": this._typesOpen = !this._typesOpen; this._render(); return true;
+      case "ttoggle": if (open.has(i)) open.delete(i); else open.add(i); this._render(); return true;
+      case "tadd": {
+        const taken = new Set(types.map((x) => x.id));
+        const name = this._t("ed_new_type").replace(/[….]+$/, "");
+        const id = slugId(name, taken);
+        (this._freshTypes = this._freshTypes || new Set()).add(id);
+        types.push({ id, name, icon: "mdi:tag-outline" });
+        open.add(types.length - 1);
+        this._saveTypes(types);
+        return true;
+      }
+      case "tdel": {
+        if (types[i]?.id === "standard") return true;
+        types.splice(i, 1);
+        const kept = [...open].filter((k) => k !== i).map((k) => (k > i ? k - 1 : k));
+        open.clear(); kept.forEach((k) => open.add(k));
+        this._saveTypes(types);
+        return true;
+      }
+      case "tup": if (i > 0) { [types[i - 1], types[i]] = [types[i], types[i - 1]]; const a = open.has(i - 1), c = open.has(i); open.delete(i - 1); open.delete(i); if (a) open.add(i); if (c) open.add(i - 1); this._saveTypes(types); } return true;
+      case "tdown": if (i < types.length - 1) { [types[i + 1], types[i]] = [types[i], types[i + 1]]; const a = open.has(i), c = open.has(i + 1); open.delete(i); open.delete(i + 1); if (a) open.add(i + 1); if (c) open.add(i); this._saveTypes(types); } return true;
+      case "tcancel": this._newTypeFor = null; this._render(); return true;
+      case "tcreate": {
+        const v = this._newTypeData || {};
+        const name = String(v.name || "").trim();
+        if (!name) { this.shadowRoot.querySelector(".newtype")?.classList.add("err"); return true; }
+        const id = slugId(name, new Set(types.map((x) => x.id)));
+        const nt = { id, name };
+        if (v.icon) nt.icon = v.icon;
+        if (v.style && v.style !== "normal") { nt.style = v.style; nt.all_day = true; if (v.style !== "banner") nt.repeat = "yearly"; }
+        types.push(nt);
+        const cals = this._cals();
+        if (cals[i]) cals[i] = { ...cals[i], type: id };
+        this._newTypeFor = null;
+        this._saveTypes(types, { calendars: cals });
+        return true;
+      }
+      default: return false;
+    }
+  }
+
   _action(b) {
+    if (this._typeAction(b)) return;
     const list = this._cals();
     const i = Number(b.dataset.i);
     const open = this._openCals;

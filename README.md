@@ -411,7 +411,11 @@ When adding an event you pick a **Type** from a dropdown. The built-in types are
 
 **How it's stored:** calendars in Home Assistant don't have a "type" field, so the card adds a tag such as `#work` to the end of the event's description. The card hides the tag and shows the icon instead. This also works the other way round – type `#holiday`, `#birthday`, `#work` or `#dhs` into the description (or title) of an event in Google or Apple Calendar and the card will pick it up.
 
-**Customise the list** with `event_types`. Built-in types keep their defaults, so you only need to set what you want to change, and you can add your own:
+**Customise the list in the visual editor** – open **Event types** to rename a type, give it another icon, change its style, switch on a countdown, reorder the list, remove the ones you don't use (e.g. *DHS*) or **Add type**. A type you add takes its tag from its name, e.g. *School holidays* → `#school_holidays`.
+
+Need a new type for one calendar? Open the calendar, pick **＋ New type…** in its **Type** dropdown, give it a name, icon and style, and **Create type** – it's added to the list and set on that calendar in one go.
+
+The same in YAML with `event_types` – built-in types keep their defaults, so you only need to set what you want to change, and you can add your own:
 
 ```yaml
 event_types:
@@ -1051,14 +1055,14 @@ theme: midnight
 
 ### Visual editor
 
-Everything except countdowns and custom event types can be set in the visual editor:
+Everything except countdowns can be set in the visual editor:
 
 - **Theme** – shows the current theme; tap it to open the preview tiles and pick another
 - **Calendars** – each calendar is a compact row showing its colour, name (with the person's photo), entity and type. **Tap a row** to open its settings: pick the entity, give it a **display name**, link a **person** for their photo and set the **calendar type** (Events, Birthdays, Anniversaries, Imieniny, Holidays). Tap the colour dot to change its **colour** without opening the row. Reorder with the arrows, remove with the bin, add more with **Add calendar** (new calendars open straight away). **Expand all / Collapse all** when you have many
 - A calendar whose entity no longer exists is shown with its entity in red
 - **Display** – title, weather, default view, week start, time format and more
 
-Countdowns and `event_types` are kept when you use the visual editor – edit them in the code editor.
+Countdowns are kept when you use the visual editor – edit them in the code editor.
 
 ## Using it
 
