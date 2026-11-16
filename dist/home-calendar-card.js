@@ -2206,6 +2206,8 @@ class HomeCalendarCard extends HTMLElement {
         const t = String(o.type || "events").toLowerCase();
         o.type = t.startsWith("birthday") ? "birthday" : t.startsWith("holiday") ? "holiday" : t.startsWith("anniversar") ? "anniversary"
           : (t.startsWith("nameday") || t.startsWith("imieniny")) ? "nameday" : "events";
+        // any other value may be an event type id (built-in or from event_types) – resolved below once the types are known
+        o._rawType = o.type === "events" && !["events", "event", "standard", ""].includes(t) ? t : null;
         // icon_rules: [{ match: "glass|bottle", icon: "mdi:bottle-wine" }] – icon by title keyword ("|" = or). Thanks @wit3 (PR #5)
         // Calendar filters: exclude / include ("word|other words", case-insensitive), exclude_all_day, match_in
         const words = (v) => (Array.isArray(v) ? v.join("|") : String(v ?? "")).toLowerCase().split("|").map((w) => w.trim()).filter(Boolean);
@@ -2223,7 +2225,7 @@ class HomeCalendarCard extends HTMLElement {
     // Rebind cached events before the immediate render. Match source/filter
     // identity rather than position so reordering cannot swap people's events.
     const key = (c) => JSON.stringify([c.entity, c._incl, c._excl, c._matchIn,
-      !!c.exclude_all_day, c.type, !!c.private]);
+      !!c.exclude_all_day, c._rawType || c.type, !!c.private]);
     const available = new Map();
     this._calendars.forEach((c) => {
       const k = key(c);
@@ -2236,6 +2238,17 @@ class HomeCalendarCard extends HTMLElement {
       return cal ? [{ ...ev, cal }] : [];
     });
     const defs = Object.fromEntries(DEFAULT_TYPES.map((t) => [t.id, t]));
+    const resolveCalTypes = () => this._calendars.forEach((c) => {
+      // a calendar typed with an event type: all its events get that type; banner/birthday-style types are not people
+      delete c.etype;
+      if (!c._rawType) return;
+      const want = c._rawType.replace(/[^a-z0-9_-]+/g, "_");
+      const ty = this._types.find((x) => x.id === want);
+      if (!ty) return;
+      c.etype = ty.id;
+      const special = { banner: "holiday", birthday: "birthday", anniversary: "anniversary", nameday: "nameday" }[ty.style];
+      if (special) c.type = special;
+    });
     this._configTypes = Array.isArray(config.event_types) && config.event_types.length > 0;
     this._types = Array.isArray(config.event_types) && config.event_types.length
       ? config.event_types.map((t) => {
@@ -2244,6 +2257,7 @@ class HomeCalendarCard extends HTMLElement {
         return { ...(defs[o.id] || { name: o.id, icon: "mdi:tag-outline" }), ...o, customName: o.name };
       }).filter((t) => t.id)
       : DEFAULT_TYPES.map((t) => ({ ...t }));
+    resolveCalTypes();
     this._storeKey = "home-calendar-card:" + this._calendars.map((c) => c.entity).join(",");
     try {
       const saved = JSON.parse(localStorage.getItem(this._storeKey) || "{}");
@@ -3150,7 +3164,7 @@ class HomeCalendarCard extends HTMLElement {
     let summary = strip(e.summary);
     const title = summary;
     const description = strip(e.description);
-    const typeId = tagged || (["birthday", "holiday", "anniversary", "nameday"].includes(cal.type) ? cal.type : "standard");
+    const typeId = tagged || cal.etype || (["birthday", "holiday", "anniversary", "nameday"].includes(cal.type) ? cal.type : "standard");
     let age = null;
     if (["birthday", "anniversary"].includes(this._typeById(typeId).style)) {
       const m = `${summary} ${description}`.match(/\b(19\d{2}|20\d{2})\b/);
@@ -3388,6 +3402,7 @@ class HomeCalendarCard extends HTMLElement {
       const ini = this._calName(cal).split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
       return `<span class="av ${cls}" ${style}>${esc(ini)}</span>`;
     }
+    if (cal.etype && cal.type !== "events" && this._typeById(cal.etype).icon) return `<span class="av ${cls}" ${style}><ha-icon icon="${esc(this._typeById(cal.etype).icon)}"></ha-icon></span>`;
     if (cal.type === "birthday") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:cake-variant"></ha-icon></span>`;
     if (cal.type === "anniversary") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:heart"></ha-icon></span>`;
     if (cal.type === "nameday") return `<span class="av ${cls}" ${style}><ha-icon icon="mdi:flower-tulip"></ha-icon></span>`;
@@ -4702,14 +4717,20 @@ class HomeCalendarCard extends HTMLElement {
       }
       const evs = this._eventsOn(d).filter((ev) => !inBar.has(ev.id));
       const f = this._forecast[dayKey(d)];
-      const hol = this._holidaysOn(d)[0];
-      const holLabel = this._holidaysOn(d).find((ev) => !inBar.has(ev.id));
-      const more = evs.length - max;
-      out += `<div class="mcell ${!this._monthWeeks() && d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${list && dayKey(d) === this._mSelKey() ? "msel" : ""} ${hol ? "has-hol" : ""}" style="grid-area:${r} / ${c};${hol ? `--hol:${esc(hol.cal.color)}` : ""}" data-action="open-day" data-date="${dayKey(d)}">
+      const hols = this._holidaysOn(d);
+      const hol = hols[0];
+      // every holiday not drawn as a bar gets its own label – several holiday calendars no longer hide each other
+      const holLabels = hols.filter((ev) => !inBar.has(ev.id));
+      const maxEv = Math.max(1, max - Math.max(0, holLabels.length - 1));
+      const more = evs.length - maxEv;
+      // the day tint is shared between up to 3 holiday colours
+      const tints = [...new Set(hols.map((ev) => ev.cal.color))].slice(0, 3);
+      const tintCss = tints.length > 1 ? `--holbg:linear-gradient(135deg, ${tints.map((col, k) => `color-mix(in srgb, ${esc(col)} 14%, transparent) ${(k * 100) / tints.length}% ${((k + 1) * 100) / tints.length}%`).join(", ")});` : "";
+      out += `<div class="mcell ${!this._monthWeeks() && d.getMonth() !== month ? "other" : ""} ${dayKey(d) === today ? "is-today" : ""} ${list && dayKey(d) === this._mSelKey() ? "msel" : ""} ${hol ? "has-hol" : ""} ${tintCss ? "multi-hol" : ""}" style="grid-area:${r} / ${c};${hol ? `--hol:${esc(hol.cal.color)};` : ""}${tintCss}" data-action="open-day" data-date="${dayKey(d)}">
         <div class="mtop"><span class="mdn">${d.getDate()}</span>${f ? `<span class="mwx"><ha-icon icon="${wxIcon(f.condition)}" style="color:${wxColor(f.condition)}"></ha-icon><b>${round(f.temperature)}°</b></span>` : ""}</div>
         ${rowBars.lanes ? `<div class="mlanes" style="--lanes:${rowBars.lanes}"></div>` : ""}
-        ${holLabel ? `<div class="mhol" style="--c:${esc(holLabel.cal.color)}" title="${esc(holLabel.summary)}">${esc(holLabel.summary)}</div>` : ""}
-        <div class="mevs">${evs.slice(0, max).map((ev) => `
+        ${holLabels.map((ev) => `<div class="mhol" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">${esc(ev.summary)}</div>`).join("")}
+        <div class="mevs">${evs.slice(0, maxEv).map((ev) => `
           <div class="mev ${ev.allDay && !this._isBday(ev) ? "allday" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">
             ${this._typeIcon(ev) ? `<ha-icon class="mcake" icon="${esc(this._typeIcon(ev))}"></ha-icon>` : `<span class="mdot"></span>`}${this._config.month_show_time && !ev.allDay && sameDay(ev.start, d) ? `<span class="mtime">${esc(this._time(ev.start))}</span>` : ""}<span class="mtxt">${esc(ev.summary)}</span>
           </div>`).join("")}
@@ -5544,7 +5565,9 @@ ha-icon { --mdc-icon-size: 18px; display: inline-flex; flex: none; }
 .pbar ha-icon { --mdc-icon-size: 12px; transform: rotate(90deg); }
 .pcell { padding-right: calc(6px + var(--pl, 0) * 24px * var(--ev-scale, 1)) !important; }
 .mcell.has-hol { background: color-mix(in srgb, var(--hol) 12%, transparent); }
-.mhol { font-size: .62rem; font-weight: 700; padding: 0 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 75%, var(--hcc-text)); }
+.mcell.multi-hol { background: var(--holbg); }
+.mhol { font-size: .62rem; font-weight: 700; padding: 0 3px 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 75%, var(--hcc-text));
+  border-left: 2px solid var(--c); margin: 1px 0; cursor: pointer; }
 .mcake { --mdc-icon-size: 11px; color: var(--c); }
 .ev-cal { display: flex; align-items: center; gap: 6px; }
 
@@ -6329,7 +6352,7 @@ const generalSchema = (t, hasGrid = false) => {
     ] },
   ];
 };
-const calSchema = (t) => {
+const calSchema = (t, extraTypes = []) => {
   const o = (value, key) => ({ value, label: t(key) });
   return [
     { type: "grid", name: "", schema: [
@@ -6340,7 +6363,7 @@ const calSchema = (t) => {
       { name: "person", selector: { entity: { domain: "person" } } },
       { name: "group", selector: { text: {} } },
       { name: "type", selector: { select: { mode: "dropdown", options: [o("events", "o_events"), o("birthday", "o_birthdays"),
-        o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays")] } } },
+        o("anniversary", "o_anniversaries"), o("nameday", "o_namedays"), o("holiday", "o_holidays"), ...extraTypes] } } },
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
     { name: "planner_title_prefix", selector: { text: {} } },
@@ -6999,6 +7022,15 @@ const EDITOR_STYLES = `
 `;
 
 class HomeCalendarCardEditor extends HTMLElement {
+  // event types a calendar can be set to, besides the five built-in calendar types
+  _customCalTypes() {
+    const builtin = new Set(["standard", "holiday", "birthday", "anniversary", "nameday"]);
+    const list = Array.isArray(this._config?.event_types) && this._config.event_types.length ? this._config.event_types : DEFAULT_TYPES;
+    return list.map((x) => (typeof x === "string" ? DEFAULT_TYPES.find((d) => d.id === x) || { id: x } : x))
+      .filter((x) => x && x.id && !builtin.has(String(x.id).toLowerCase()))
+      .map((x) => ({ value: String(x.id).toLowerCase().replace(/[^a-z0-9_-]+/g, "_"), label: `${x.name || x.id} (${this._t("type").toLowerCase()})` }));
+  }
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -7131,7 +7163,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     this.shadowRoot.querySelectorAll(".slot").forEach((slot) => {
       const i = Number(slot.dataset.i);
       const c = cals[i];
-      const f = this._makeForm(calSchema((k) => this._t(k)), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type || "events", planner_column: c.planner_column === false ? "side" : c.planner_column === "group" ? "group" : "own",
+      const f = this._makeForm(calSchema((k) => this._t(k), this._customCalTypes()), { entity: c.entity || "", name: c.name || "", person: c.person || "", group: c.group || "", type: c.type ? String(c.type).toLowerCase().replace(/[^a-z0-9_-]+/g, "_") : "events", planner_column: c.planner_column === false ? "side" : c.planner_column === "group" ? "group" : "own",
         exclude: Array.isArray(c.exclude) ? c.exclude.join("|") : c.exclude || "", include: Array.isArray(c.include) ? c.include.join("|") : c.include || "",
         exclude_all_day: c.exclude_all_day === true, todo: c.todo || "", year_view: c.year_view === true },
         (s) => this._t(`l_${s.name === "type" ? "type" : s.name}`),

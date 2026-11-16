@@ -259,7 +259,7 @@ max_height: 640px
 | `person` | A `person.*` entity – shows their profile picture (or initials) on chips and events |
 | `picture` | Image URL to use instead of a person's picture, e.g. `/local/kids.png` |
 | `icon` | MDI icon shown as the badge when there's no picture, e.g. `mdi:human-child` |
-| `type` | `events` (default), `birthday`, `anniversary`, `nameday` or `holiday` |
+| `type` | `events` (default), `birthday`, `anniversary`, `nameday`, `holiday` – or any event type `id`, including your own – see *Calendar types* |
 | `private` | `true` – every event in this calendar shows as "Private" with only its time – see *Private events* |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
 | `icon_rules` | List of `match` / `icon` pairs that give events an icon from words in their title – see *Icons by title* |
@@ -445,6 +445,36 @@ default_event_type: standard
 | `countdown_limit` | Only the next N events of this type get a card (birthdays default to `2`) |
 | `countdown_days` | Only events within this many days get a card (default: the card's `countdown_days`, 365) |
 | `countdown_calendars` | `true` to also count down events from calendars of this type, not just tagged events (on by default for birthdays and anniversaries) |
+
+### Calendar types (your own)
+
+Every calendar has a **Type** – *Events*, *Birthdays*, *Anniversaries*, *Name days* or *Holidays*. You can also set a calendar to **any event type, including your own**, so a whole calendar gets that type's icon and style – no `#tags` needed:
+
+```yaml
+event_types:
+  - standard
+  - holiday
+  - birthday
+  - work
+  - id: school
+    name: School holidays
+    icon: mdi:school
+    style: banner          # shown like a holiday
+    all_day: true
+calendars:
+  - entity: calendar.family
+  - entity: calendar.school_holidays
+    type: school           # every event becomes a "School holidays" banner with the school icon
+  - entity: calendar.dad_work
+    type: work             # Dad's events get the briefcase icon
+```
+
+- Your types appear in the calendar's **Type** dropdown in the visual editor.
+- A type with `style: banner`, `birthday`, `anniversary` or `nameday` works like the matching built-in calendar type: it's **not a person**, so it gets no Planner column and isn't offered in the to-do person buttons.
+- Any other type (like `work`) keeps the calendar as a person, and only adds the icon to its events.
+- A `#tag` on a single event still wins over the calendar's type.
+
+**Several holiday calendars** (school holidays, public holidays, vacations…) no longer hide each other: in **Month view** every holiday gets its own label in its calendar's colour, and the day is tinted with all of their colours.
 
 ### Week numbers
 
