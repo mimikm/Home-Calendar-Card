@@ -3,8 +3,10 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const source = readFileSync(new URL("../dist/home-calendar-card.js", import.meta.url), "utf8");
+const parserSource = source.slice(source.indexOf("function titlePersons("), source.indexOf("\nconst DEFAULT_COLORS"));
+const parsePersons = new Function(`${parserSource}; return titlePersons;`)();
 const titleMethod = source.slice(source.indexOf("  _plannerTitle(ev) {"), source.indexOf("  _renderPlanner() {"));
-const plannerTitle = new Function(`return ({${titleMethod}})._plannerTitle;`)();
+const plannerTitle = new Function("titlePersons", `return ({${titleMethod}})._plannerTitle;`)(parsePersons);
 const configMethod = source.slice(source.indexOf("  setConfig(config) {"), source.indexOf("  set hass(hass) {"));
 const setConfig = new Function("todoLists", "fixCalEntry", "themePalette", "DEFAULT_TYPES", "VIEWS", "startOfDay", "localStorage",
   `return ({${configMethod}}).setConfig;`)(
@@ -103,4 +105,21 @@ test("planner strips only a complete leading prefix without mutating source even
     assert.equal(ev.summary, summary);
   }
   assert.equal(plannerTitle({ summary: "Lea Klavier", cal: {} }), "Lea Klavier");
+});
+
+test("name assignments rebind safely and changed name registries discard stale events", () => {
+  const board = { _render() {}, _unsubscribeWeather() {} };
+  const update = (names, people) => setConfig.call(board, {
+    title_persons: names,
+    calendars: people.map(name => ({
+      entity: "calendar.family", name, title_person: name,
+    })),
+  });
+  update(["Mia", "Ben"], ["Mia", "Ben"]);
+  board._events = board._calendars.map(cal => ({ cal, summary: cal.name }));
+  update(["Mia", "Ben"], ["Ben", "Mia"]);
+  assert.equal(board._events.length, 2);
+  assert.equal(board._events[0].cal.name, "Mia");
+  update(["Mia", "Ben", "Alex"], ["Ben", "Mia"]);
+  assert.equal(board._events.length, 0);
 });

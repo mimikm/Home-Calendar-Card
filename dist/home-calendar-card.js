@@ -10,6 +10,30 @@
 
 const CARD_VERSION = "1.20.2-beta.2";
 
+// Literal, complete names at the start only; longest names take precedence.
+function titlePersons(summary, configured) {
+  const original = String(summary || "");
+  const names = [...new Set((Array.isArray(configured) ? configured : [])
+    .map(n => String(n).trim()).filter(Boolean))].sort((a, b) => b.length - a.length);
+  const match = text => names.find(name =>
+    text.toLowerCase().startsWith(name.toLowerCase()) &&
+    !/^[\p{L}\p{N}_]/u.test(text.slice(name.length)));
+  let rest = original.trimStart();
+  const persons = [];
+  let name = match(rest);
+  while (name) {
+    persons.push(name.toLowerCase());
+    rest = rest.slice(name.length);
+    const separator = rest.match(/^\s*(?:(?:,|&|\+)\s*(?:und\s+|and\s+)?|(?:und|and)\s+)/iu);
+    if (!separator) break;
+    const next = rest.slice(separator[0].length);
+    name = match(next);
+    if (!name) break;
+    rest = next;
+  }
+  return { persons: [...new Set(persons)], title: persons.length ? rest.replace(/^[\s:–—-]+/u, "") || original : original };
+}
+
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
 const WX_ICON = {
@@ -109,6 +133,9 @@ const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "
 // The UI language follows Home Assistant (or `language:` in the card config).
 const I18N = {
   en: {
+    l_title_persons: "Names recognized at the start of event titles",
+    l_title_person: "Assigned name (or unmatched for remaining events)",
+    l_planner_hide_person_prefix: "Hide leading name list in Planner",
     l_planner_title_prefix: "Hide this title prefix in Planner",
     ed_planner_title_prefix_help: "Display only, e.g. Lea: Piano → Piano. Original titles are kept.",
     l_multiday_bars: "Multi-day events as one bar",
@@ -842,6 +869,9 @@ const I18N = {
     ed_media_help: "bijv. media-source://media_source/local/photos – leeg laten voor een schermbeveiliging met alleen een klok",
   },
   de: {
+    l_title_persons: "Namen am Anfang von Termintiteln",
+    l_title_person: "Zugeordneter Name (oder unmatched für übrige Termine)",
+    l_planner_hide_person_prefix: "Führende Namensliste im Planer ausblenden",
     l_planner_title_prefix: "Diesen Titelanfang im Planer ausblenden",
     ed_planner_title_prefix_help: "Nur die Anzeige, z. B. Lea: Klavier → Klavier. Originaltitel bleiben erhalten.",
     l_multiday_bars: "Mehrtägige Termine als ein Balken",
@@ -2221,6 +2251,7 @@ class HomeCalendarCard extends HTMLElement {
       .map(fixCalEntry)
       .map((c, i) => {
         const o = typeof c === "string" ? { entity: c } : { ...c };
+        o._titlePersonsKey = o.title_person ? JSON.stringify(config.title_persons || []) : null;
         const pal = themePalette(config.theme);
         o.color = o.color || pal[i % pal.length];
         const t = String(o.type || "events").toLowerCase();
@@ -2245,7 +2276,7 @@ class HomeCalendarCard extends HTMLElement {
     // Rebind cached events before the immediate render. Match source/filter
     // identity rather than position so reordering cannot swap people's events.
     const key = (c) => JSON.stringify([c.entity, c._incl, c._excl, c._matchIn,
-      !!c.exclude_all_day, c._rawType || c.type, !!c.private]);
+      !!c.exclude_all_day, c._rawType || c.type, !!c.private, c.title_person, c._titlePersonsKey]);
     const available = new Map();
     this._calendars.forEach((c) => {
       const k = key(c);
@@ -3158,6 +3189,11 @@ class HomeCalendarCard extends HTMLElement {
   // Calendar filters: false = leave this event out of the card (it stays in Home Assistant).
   _keep(e, cal) {
     if (!cal) return true;
+    if (cal.title_person) {
+      const { persons } = titlePersons(e.summary, this._config.title_persons);
+      const person = String(cal.title_person).trim().toLowerCase();
+      if (person === "unmatched" ? persons.length > 0 : !persons.includes(person)) return false;
+    }
     if (cal.exclude_all_day && e?.start?.date) return false;
     if (!cal._excl?.length && !cal._incl?.length) return true;
     const text = cal._matchIn.map((k) => (k === "title" ? e.summary : e[k]) || "").join(" \n ").toLowerCase();
@@ -4640,6 +4676,9 @@ class HomeCalendarCard extends HTMLElement {
 
   // Display-only: never change the event used by the details/edit dialog.
   _plannerTitle(ev) {
+    if (!ev.private && ev.cal.planner_hide_person_prefix) {
+      return titlePersons(ev.summary, this._config.title_persons).title;
+    }
     const prefix = String(ev.cal.planner_title_prefix || "").trim();
     const title = ev.summary;
     if (!prefix || ev.private) return title;
@@ -6255,6 +6294,7 @@ const generalSchema = (t, hasGrid = false) => {
   return [
     { type: "grid", name: "", schema: [
       { name: "title", selector: { text: {} } },
+      { name: "title_persons", selector: { text: { multiple: true } } },
       { name: "language", selector: { select: { mode: "dropdown", options: [o("auto", "o_lang_auto"),
         ...Object.entries(LANGS).map(([value, label]) => ({ value, label }))] } } },
     ] },
@@ -6415,6 +6455,8 @@ const calSchema = (t, extraTypes = []) => {
     ] },
     { name: "planner_column", selector: { select: { mode: "dropdown", options: [o("own", "o_pc_own"), o("group", "o_pc_group"), o("side", "o_pc_side")] } } },
     { name: "planner_title_prefix", selector: { text: {} } },
+    { name: "title_person", selector: { text: {} } },
+    { name: "planner_hide_person_prefix", selector: { boolean: {} } },
     { name: "todo", selector: { entity: { domain: "todo" } } },
     { name: "year_view", selector: { boolean: {} } },
     { type: "grid", name: "", schema: [
