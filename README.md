@@ -576,12 +576,21 @@ travel_time:
   hours_ahead: 12          # only events starting in the next 12 hours
   avoid_toll_roads: false
   avoid_ferries: false
+  geocode: true            # look up addresses with OpenStreetMap – see below
 ```
 
 - Events show e.g. **🚗 25 min**. An hour before you need to go it says **25 min · Leave by 18:35**, and when it's time it turns red: **Leave now**.
 - Tap the event for the drive time, distance and leave-by time.
 - Shown in Agenda view, the phone Month list and the event pop-up. Only timed events with a location get it – not all-day or private events.
 - Each place is looked up again every 10 minutes (`refresh`), so the times follow the traffic. Places Waze can't find (e.g. *Grandma's*) are skipped – use a real address in the event's location.
+
+**Addresses not working any more?** Home Assistant's Waze integration [stopped turning addresses into coordinates](https://github.com/home-assistant/core/issues/191329), so only coordinates (e.g. `51.5007,-0.1246`) work there now. Turn on **Look up addresses with OpenStreetMap** (`geocode: true`) and the card finds each address's coordinates first, using the free OpenStreetMap geocoder – no account or API key needed.
+
+- Each address is looked up once and remembered in the browser for 30 days, so it's only a handful of lookups.
+- It's off by default because it sends your events' locations to [OpenStreetMap](https://nominatim.org/) (only the location text – nothing else).
+- Locations that are already coordinates are used as they are.
+
+<sub>Address lookup requested by [@dannybean](https://github.com/dannybean) in [#28](https://github.com/mimikm/Home-Calendar-Card/issues/28).</sub>
 
 <sub>Requested by [@dannybean](https://github.com/dannybean) in [#10](https://github.com/mimikm/Home-Calendar-Card/issues/10).</sub>
 
@@ -691,6 +700,15 @@ todo_lists:
 - `todo_entity` is optional here too: with only `todo_lists`, the first list opens straight away (no tabs if there's just one).
 
 <sub>Requested by [@koderthomas](https://github.com/koderthomas) in [#21](https://github.com/mimikm/Home-Calendar-Card/issues/21).</sub>
+
+### Adding an event to several calendars
+
+Swimming for both kids? In **Add event**, tap **Several** next to *Calendar*, then tap each calendar (or person) it's for – a ✓ marks the chosen ones. **Save** creates the event in each of them.
+
+- Each calendar gets its **own copy**, as Google and Apple don't share one event between calendars – editing or deleting later changes one copy at a time.
+- If one calendar can't take it (e.g. read-only), the others are still added and the card tells you which failed; **Save** again retries only those.
+
+<sub>Requested by [@tjorgekaiser](https://github.com/tjorgekaiser) in [#29](https://github.com/mimikm/Home-Calendar-Card/issues/29).</sub>
 
 ### Editing events
 

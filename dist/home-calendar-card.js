@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.2-beta.2";
+const CARD_VERSION = "1.20.2-beta.3";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -116,6 +116,7 @@ const I18N = {
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
     l_todo_lists: "More lists as tabs (e.g. shopping)", ed_todo_lists_help: "Each list gets its own tab in the to-do block. Set a title or icon in YAML.",
     l_month_show_time: "Show start time in Month view",
+    l_geocode: "Look up addresses with OpenStreetMap", ed_geocode_help: "Waze no longer finds addresses itself. This sends event locations to OpenStreetMap (free, no key) to get their coordinates.", multi_sel: "Several", added_n: "Added “{t}” to {n} calendars", err_some: "Couldn't add it to: {c}",
     ed_backup: "Backup & restore", ed_backup_sub: "Save this card's settings to a file, or load them back – before big changes, or to copy the card to another dashboard.", ed_bk_download: "Download backup", ed_bk_copy: "Copy", ed_bk_copied: "Copied", ed_bk_restore: "Restore from file", ed_bk_confirm: "Replace the current settings with this backup ({d}, {n} calendars)?", ed_bk_replace: "Replace", ed_bk_done: "Settings restored – press Save to keep them.", ed_bk_bad: "This file isn't a Home Calendar Card backup.",
     ed_types: "Event types", ed_types_sub: "Types you can pick when adding an event or for a whole calendar. Rename, re-icon or remove the built-in ones, or add your own.", ed_add_type: "Add type", ed_new_type: "New type…", ed_new_type_help: "Its events get this type's icon and style. You can change it later under Event types.", ed_create_type: "Create type", l_type_name: "Name", l_type_icon: "Icon", l_type_all_day: "All day by default", l_type_countdown: "Countdown card", o_st_normal: "Normal", o_st_banner: "Holiday banner", o_st_birthday: "Birthday (turns X)", o_st_anniversary: "Anniversary (years)", o_st_nameday: "Name day", ed_type_style_help: "A holiday banner, birthday, anniversary or name-day calendar isn't a person: no Planner column.", ed_note2: "Countdowns are set in the code editor – see the README.",
     sync: "Sync calendars now", sync_err: "Couldn't sync the calendars", l_show_refresh_button: "Show refresh button", l_calendar_sync_minutes: "Sync calendars every … minutes (0 = off)",
@@ -193,6 +194,7 @@ const I18N = {
     l_todo_show_empty: "Pokaż osoby z pustą własną listą", tg_empty: "Nic do zrobienia",
     l_todo_lists: "Kolejne listy jako karty (np. zakupy)", ed_todo_lists_help: "Każda lista ma własną kartę w bloku zadań. Tytuł lub ikonę ustawisz w YAML.",
     l_month_show_time: "Pokaż godzinę rozpoczęcia w widoku miesiąca",
+    l_geocode: "Wyszukuj adresy w OpenStreetMap", ed_geocode_help: "Waze nie wyszukuje już adresów samodzielnie. Lokalizacje wydarzeń są wysyłane do OpenStreetMap (bezpłatnie, bez klucza), aby ustalić ich współrzędne.", multi_sel: "Kilka", added_n: "Dodano „{t}” do {n} kalendarzy", err_some: "Nie udało się dodać do: {c}",
     ed_backup: "Kopia zapasowa", ed_backup_sub: "Zapisz ustawienia tej karty do pliku albo wczytaj je z powrotem – przed większymi zmianami albo żeby skopiować kartę na inny pulpit.", ed_bk_download: "Pobierz kopię", ed_bk_copy: "Kopiuj", ed_bk_copied: "Skopiowano", ed_bk_restore: "Przywróć z pliku", ed_bk_confirm: "Zastąpić obecne ustawienia tą kopią ({d}, kalendarze: {n})?", ed_bk_replace: "Zastąp", ed_bk_done: "Ustawienia przywrócone – naciśnij Zapisz, żeby je zachować.", ed_bk_bad: "Ten plik nie jest kopią zapasową Home Calendar Card.",
     ed_types: "Typy wydarzeń", ed_types_sub: "Typy do wyboru przy dodawaniu wydarzenia lub dla całego kalendarza. Zmień nazwę lub ikonę wbudowanych, usuń je albo dodaj własne.", ed_add_type: "Dodaj typ", ed_new_type: "Nowy typ…", ed_new_type_help: "Jego wydarzenia dostaną ikonę i styl tego typu. Zmienisz to później w sekcji Typy wydarzeń.", ed_create_type: "Utwórz typ", l_type_name: "Nazwa", l_type_icon: "Ikona", l_type_all_day: "Domyślnie całodniowe", l_type_countdown: "Karta odliczania", o_st_normal: "Zwykły", o_st_banner: "Baner urlopowy", o_st_birthday: "Urodziny (kończy X)", o_st_anniversary: "Rocznica (lata)", o_st_nameday: "Imieniny", ed_type_style_help: "Kalendarz z banerem, urodzinami, rocznicami lub imieninami nie jest osobą: nie ma kolumny w Planerze.", ed_note2: "Odliczania ustawia się w edytorze kodu – zobacz README.",
     sync: "Synchronizuj kalendarze teraz", sync_err: "Nie udało się zsynchronizować kalendarzy", l_show_refresh_button: "Pokaż przycisk odświeżania", l_calendar_sync_minutes: "Synchronizuj kalendarze co … minut (0 = wył.)",
@@ -269,6 +271,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar personas con su lista vacía", tg_empty: "Nada pendiente",
     l_todo_lists: "Más listas como pestañas (p. ej. compra)", ed_todo_lists_help: "Cada lista tiene su propia pestaña en el bloque de tareas. El título o el icono se ajustan en YAML.",
     l_month_show_time: "Mostrar la hora de inicio en la vista Mes",
+    l_geocode: "Buscar direcciones con OpenStreetMap", ed_geocode_help: "Waze ya no encuentra direcciones por sí mismo. Esto envía la ubicación de los eventos a OpenStreetMap (gratis, sin clave) para obtener sus coordenadas.", multi_sel: "Varios", added_n: "«{t}» añadido a {n} calendarios", err_some: "No se pudo añadir a: {c}",
     ed_backup: "Copia de seguridad", ed_backup_sub: "Guarda los ajustes de esta tarjeta en un archivo o vuelve a cargarlos: antes de grandes cambios o para copiar la tarjeta a otro panel.", ed_bk_download: "Descargar copia", ed_bk_copy: "Copiar", ed_bk_copied: "Copiado", ed_bk_restore: "Restaurar desde archivo", ed_bk_confirm: "¿Sustituir los ajustes actuales por esta copia ({d}, {n} calendarios)?", ed_bk_replace: "Sustituir", ed_bk_done: "Ajustes restaurados: pulsa Guardar para conservarlos.", ed_bk_bad: "Este archivo no es una copia de Home Calendar Card.",
     ed_types: "Tipos de evento", ed_types_sub: "Tipos que puedes elegir al añadir un evento o para todo un calendario. Cambia el nombre o el icono de los integrados, quítalos o añade los tuyos.", ed_add_type: "Añadir tipo", ed_new_type: "Nuevo tipo…", ed_new_type_help: "Sus eventos tendrán el icono y el estilo de este tipo. Puedes cambiarlo luego en Tipos de evento.", ed_create_type: "Crear tipo", l_type_name: "Nombre", l_type_icon: "Icono", l_type_all_day: "Todo el día por defecto", l_type_countdown: "Tarjeta de cuenta atrás", o_st_normal: "Normal", o_st_banner: "Banner de vacaciones", o_st_birthday: "Cumpleaños (cumple X)", o_st_anniversary: "Aniversario (años)", o_st_nameday: "Onomástica", ed_type_style_help: "Un calendario de vacaciones, cumpleaños, aniversarios u onomásticas no es una persona: no tiene columna en el Planificador.", ed_note2: "Las cuentas atrás se configuran en el editor de código; consulta el README.",
     sync: "Sincronizar calendarios ahora", sync_err: "No se pudieron sincronizar los calendarios", l_show_refresh_button: "Mostrar botón de actualizar", l_calendar_sync_minutes: "Sincronizar calendarios cada … minutos (0 = no)",
@@ -345,6 +348,7 @@ const I18N = {
     l_todo_show_empty: "Mostra le persone con la propria lista vuota", tg_empty: "Niente da fare",
     l_todo_lists: "Altre liste come schede (es. spesa)", ed_todo_lists_help: "Ogni lista ha la sua scheda nel blocco delle cose da fare. Titolo o icona si impostano in YAML.",
     l_month_show_time: "Mostra l'ora di inizio nella vista Mese",
+    l_geocode: "Cerca gli indirizzi con OpenStreetMap", ed_geocode_help: "Waze non trova più gli indirizzi da solo. I luoghi degli eventi vengono inviati a OpenStreetMap (gratis, senza chiave) per ottenerne le coordinate.", multi_sel: "Più calendari", added_n: "“{t}” aggiunto a {n} calendari", err_some: "Impossibile aggiungere a: {c}",
     ed_backup: "Backup e ripristino", ed_backup_sub: "Salva le impostazioni di questa card in un file o ricaricale: prima di grandi modifiche o per copiare la card su un'altra dashboard.", ed_bk_download: "Scarica backup", ed_bk_copy: "Copia", ed_bk_copied: "Copiato", ed_bk_restore: "Ripristina da file", ed_bk_confirm: "Sostituire le impostazioni attuali con questo backup ({d}, {n} calendari)?", ed_bk_replace: "Sostituisci", ed_bk_done: "Impostazioni ripristinate: premi Salva per mantenerle.", ed_bk_bad: "Questo file non è un backup di Home Calendar Card.",
     ed_types: "Tipi di evento", ed_types_sub: "Tipi da scegliere quando aggiungi un evento o per un intero calendario. Rinomina, cambia icona o rimuovi quelli predefiniti, oppure aggiungi i tuoi.", ed_add_type: "Aggiungi tipo", ed_new_type: "Nuovo tipo…", ed_new_type_help: "I suoi eventi avranno l'icona e lo stile di questo tipo. Puoi cambiarlo poi in Tipi di evento.", ed_create_type: "Crea tipo", l_type_name: "Nome", l_type_icon: "Icona", l_type_all_day: "Tutto il giorno di default", l_type_countdown: "Scheda conto alla rovescia", o_st_normal: "Normale", o_st_banner: "Banner vacanza", o_st_birthday: "Compleanno (compie X)", o_st_anniversary: "Anniversario (anni)", o_st_nameday: "Onomastico", ed_type_style_help: "Un calendario di vacanze, compleanni, anniversari od onomastici non è una persona: niente colonna nel Planner.", ed_note2: "I conti alla rovescia si impostano nell'editor di codice – vedi il README.",
     sync: "Sincronizza ora i calendari", sync_err: "Impossibile sincronizzare i calendari", l_show_refresh_button: "Mostra il pulsante di aggiornamento", l_calendar_sync_minutes: "Sincronizza i calendari ogni … minuti (0 = mai)",
@@ -597,6 +601,7 @@ const I18N = {
     l_todo_show_empty: "Personen met een lege eigen lijst tonen", tg_empty: "Niets te doen",
     l_todo_lists: "Meer lijsten als tabbladen (bijv. boodschappen)", ed_todo_lists_help: "Elke lijst krijgt een eigen tabblad in het takenblok. Titel of pictogram stel je in YAML in.",
     l_month_show_time: "Begintijd tonen in de maandweergave",
+    l_geocode: "Adressen opzoeken met OpenStreetMap", ed_geocode_help: "Waze vindt adressen niet meer zelf. Locaties van afspraken worden naar OpenStreetMap gestuurd (gratis, geen sleutel) om de coördinaten op te halen.", multi_sel: "Meerdere", added_n: "“{t}” toegevoegd aan {n} agenda's", err_some: "Kon niet toevoegen aan: {c}",
     ed_backup: "Back-up en herstel", ed_backup_sub: "Bewaar de instellingen van deze kaart in een bestand of laad ze terug – vóór grote wijzigingen of om de kaart naar een ander dashboard te kopiëren.", ed_bk_download: "Back-up downloaden", ed_bk_copy: "Kopiëren", ed_bk_copied: "Gekopieerd", ed_bk_restore: "Herstellen uit bestand", ed_bk_confirm: "De huidige instellingen vervangen door deze back-up ({d}, {n} agenda's)?", ed_bk_replace: "Vervangen", ed_bk_done: "Instellingen hersteld – druk op Opslaan om ze te bewaren.", ed_bk_bad: "Dit bestand is geen back-up van Home Calendar Card.",
     ed_types: "Soorten afspraken", ed_types_sub: "Soorten om te kiezen bij een nieuwe afspraak of voor een hele agenda. Geef de ingebouwde een andere naam of pictogram, verwijder ze of voeg je eigen toe.", ed_add_type: "Soort toevoegen", ed_new_type: "Nieuwe soort…", ed_new_type_help: "De afspraken krijgen het pictogram en de stijl van deze soort. Je kunt dit later wijzigen onder Soorten afspraken.", ed_create_type: "Soort maken", l_type_name: "Naam", l_type_icon: "Pictogram", l_type_all_day: "Standaard hele dag", l_type_countdown: "Aftelkaart", o_st_normal: "Normaal", o_st_banner: "Vakantiebanner", o_st_birthday: "Verjaardag (wordt X)", o_st_anniversary: "Jubileum (jaren)", o_st_nameday: "Naamdag", ed_type_style_help: "Een agenda met vakanties, verjaardagen, jubilea of naamdagen is geen persoon: geen kolom in de Planner.", ed_note2: "Aftellers stel je in de code-editor in – zie de README.",
     sync: "Agenda's nu synchroniseren", sync_err: "De agenda's konden niet worden gesynchroniseerd", l_show_refresh_button: "Vernieuwknop tonen", l_calendar_sync_minutes: "Agenda's elke … minuten synchroniseren (0 = uit)",
@@ -849,6 +854,7 @@ const I18N = {
     l_todo_show_empty: "Personen mit leerer eigener Liste anzeigen", tg_empty: "Nichts zu tun",
     l_todo_lists: "Weitere Listen als Tabs (z. B. Einkauf)", ed_todo_lists_help: "Jede Liste bekommt einen eigenen Tab im Aufgabenblock. Titel oder Symbol in YAML festlegen.",
     l_month_show_time: "Startzeit in der Monatsansicht anzeigen",
+    l_geocode: "Adressen mit OpenStreetMap suchen", ed_geocode_help: "Waze findet Adressen nicht mehr selbst. Terminorte werden an OpenStreetMap gesendet (kostenlos, ohne Schlüssel), um ihre Koordinaten zu ermitteln.", multi_sel: "Mehrere", added_n: "„{t}“ zu {n} Kalendern hinzugefügt", err_some: "Konnte nicht hinzugefügt werden zu: {c}",
     ed_backup: "Sichern & Wiederherstellen", ed_backup_sub: "Einstellungen dieser Karte in einer Datei sichern oder wieder laden – vor größeren Änderungen oder um die Karte auf ein anderes Dashboard zu übernehmen.", ed_bk_download: "Sicherung herunterladen", ed_bk_copy: "Kopieren", ed_bk_copied: "Kopiert", ed_bk_restore: "Aus Datei wiederherstellen", ed_bk_confirm: "Aktuelle Einstellungen durch diese Sicherung ersetzen ({d}, {n} Kalender)?", ed_bk_replace: "Ersetzen", ed_bk_done: "Einstellungen wiederhergestellt – zum Übernehmen Speichern drücken.", ed_bk_bad: "Diese Datei ist keine Home-Calendar-Card-Sicherung.",
     ed_types: "Terminarten", ed_types_sub: "Arten zur Auswahl beim Hinzufügen eines Termins oder für einen ganzen Kalender. Integrierte umbenennen, Symbol ändern oder entfernen – oder eigene hinzufügen.", ed_add_type: "Art hinzufügen", ed_new_type: "Neue Art…", ed_new_type_help: "Seine Termine bekommen Symbol und Stil dieser Art. Später unter Terminarten änderbar.", ed_create_type: "Art erstellen", l_type_name: "Name", l_type_icon: "Symbol", l_type_all_day: "Standardmäßig ganztägig", l_type_countdown: "Countdown-Karte", o_st_normal: "Normal", o_st_banner: "Urlaubsbanner", o_st_birthday: "Geburtstag (wird X)", o_st_anniversary: "Jahrestag (Jahre)", o_st_nameday: "Namenstag", ed_type_style_help: "Ein Kalender mit Urlaub, Geburtstagen, Jahrestagen oder Namenstagen ist keine Person: keine Spalte im Planer.", ed_note2: "Countdowns werden im Code-Editor eingestellt – siehe README.",
     sync: "Kalender jetzt synchronisieren", sync_err: "Kalender konnten nicht synchronisiert werden", l_show_refresh_button: "Aktualisieren-Schaltfläche anzeigen", l_calendar_sync_minutes: "Kalender alle … Minuten synchronisieren (0 = aus)",
@@ -1101,6 +1107,7 @@ const I18N = {
     l_todo_show_empty: "Üres saját listájú személyek megjelenítése", tg_empty: "Nincs teendő",
     l_todo_lists: "További listák fülként (pl. bevásárlás)", ed_todo_lists_help: "Minden lista saját fület kap a teendők blokkban. A címet vagy ikont YAML-ben lehet megadni.",
     l_month_show_time: "Kezdési idő megjelenítése a havi nézetben",
+    l_geocode: "Címek keresése OpenStreetMappel", ed_geocode_help: "A Waze már nem keresi meg a címeket. Az események helyszíneit az OpenStreetMap kapja meg (ingyenes, kulcs nélkül) a koordináták meghatározásához.", multi_sel: "Több", added_n: "„{t}” hozzáadva {n} naptárhoz", err_some: "Nem sikerült hozzáadni ide: {c}",
     ed_backup: "Mentés és visszaállítás", ed_backup_sub: "Mentsd fájlba a kártya beállításait, vagy töltsd vissza őket – nagyobb módosítás előtt, vagy hogy a kártyát egy másik műszerfalra másold.", ed_bk_download: "Mentés letöltése", ed_bk_copy: "Másolás", ed_bk_copied: "Másolva", ed_bk_restore: "Visszaállítás fájlból", ed_bk_confirm: "Lecseréled a jelenlegi beállításokat erre a mentésre ({d}, {n} naptár)?", ed_bk_replace: "Csere", ed_bk_done: "Beállítások visszaállítva – a megtartáshoz nyomd meg a Mentést.", ed_bk_bad: "Ez a fájl nem Home Calendar Card mentés.",
     ed_types: "Eseménytípusok", ed_types_sub: "Választható típusok új eseményhez vagy egy egész naptárhoz. A beépítettek átnevezhetők, ikonjuk módosítható, törölhetők, vagy adj hozzá sajátot.", ed_add_type: "Típus hozzáadása", ed_new_type: "Új típus…", ed_new_type_help: "Eseményei megkapják ennek a típusnak az ikonját és stílusát. Később az Eseménytípusoknál módosítható.", ed_create_type: "Típus létrehozása", l_type_name: "Név", l_type_icon: "Ikon", l_type_all_day: "Alapból egész napos", l_type_countdown: "Visszaszámláló kártya", o_st_normal: "Normál", o_st_banner: "Szabadság szalag", o_st_birthday: "Születésnap (betölti X)", o_st_anniversary: "Évforduló (évek)", o_st_nameday: "Névnap", ed_type_style_help: "A szabadság-, születésnap-, évforduló- vagy névnapnaptár nem személy: nincs oszlopa a Tervezőben.", ed_note2: "A visszaszámlálások a kódszerkesztőben állíthatók – lásd a README-t.",
     sync: "Naptárak szinkronizálása most", sync_err: "Nem sikerült szinkronizálni a naptárakat", l_show_refresh_button: "Frissítés gomb megjelenítése", l_calendar_sync_minutes: "Naptárak szinkronizálása … percenként (0 = ki)",
@@ -1353,6 +1360,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar pessoas com a própria lista vazia", tg_empty: "Nada a fazer",
     l_todo_lists: "Mais listas como abas (ex.: compras)", ed_todo_lists_help: "Cada lista ganha sua própria aba no bloco de tarefas. Título ou ícone podem ser definidos no YAML.",
     l_month_show_time: "Mostrar horário de início na visão Mês",
+    l_geocode: "Buscar endereços com o OpenStreetMap", ed_geocode_help: "O Waze não encontra mais endereços sozinho. Os locais dos eventos são enviados ao OpenStreetMap (grátis, sem chave) para obter as coordenadas.", multi_sel: "Várias", added_n: "“{t}” adicionado a {n} agendas", err_some: "Não foi possível adicionar a: {c}",
     ed_backup: "Backup e restauração", ed_backup_sub: "Salve as configurações deste cartão em um arquivo ou carregue-as de volta – antes de grandes mudanças ou para copiar o cartão para outro painel.", ed_bk_download: "Baixar backup", ed_bk_copy: "Copiar", ed_bk_copied: "Copiado", ed_bk_restore: "Restaurar de arquivo", ed_bk_confirm: "Substituir as configurações atuais por este backup ({d}, {n} agendas)?", ed_bk_replace: "Substituir", ed_bk_done: "Configurações restauradas – toque em Salvar para mantê-las.", ed_bk_bad: "Este arquivo não é um backup do Home Calendar Card.",
     ed_types: "Tipos de evento", ed_types_sub: "Tipos para escolher ao adicionar um evento ou para uma agenda inteira. Renomeie, troque o ícone ou remova os embutidos, ou adicione os seus.", ed_add_type: "Adicionar tipo", ed_new_type: "Novo tipo…", ed_new_type_help: "Os eventos dela recebem o ícone e o estilo deste tipo. Dá para mudar depois em Tipos de evento.", ed_create_type: "Criar tipo", l_type_name: "Nome", l_type_icon: "Ícone", l_type_all_day: "Dia inteiro por padrão", l_type_countdown: "Cartão de contagem regressiva", o_st_normal: "Normal", o_st_banner: "Faixa de férias", o_st_birthday: "Aniversário (faz X)", o_st_anniversary: "Bodas (anos)", o_st_nameday: "Dia do santo", ed_type_style_help: "Uma agenda de férias, aniversários, bodas ou dias do santo não é uma pessoa: sem coluna no Planejador.", ed_note2: "As contagens regressivas são definidas no editor de código – veja o README.",
     sync: "Sincronizar agendas agora", sync_err: "Não foi possível sincronizar as agendas", l_show_refresh_button: "Mostrar botão de atualizar", l_calendar_sync_minutes: "Sincronizar agendas a cada … minutos (0 = desligado)",
@@ -1430,6 +1438,7 @@ const I18N = {
     l_todo_show_empty: "Прикажи особе са празном сопственом листом", tg_empty: "Нема задатака",
     l_todo_lists: "Још листа као картице (нпр. куповина)", ed_todo_lists_help: "Свака листа добија своју картицу у блоку задатака. Наслов или иконица се подешавају у YAML-у.",
     l_month_show_time: "Прикажи време почетка у месечном приказу",
+    l_geocode: "Тражи адресе преко OpenStreetMap-а", ed_geocode_help: "Waze више сам не проналази адресе. Локације догађаја се шаљу OpenStreetMap-у (бесплатно, без кључа) да би се добиле координате.", multi_sel: "Више", added_n: "„{t}” додат у {n} календара", err_some: "Није додато у: {c}",
     ed_backup: "Резервна копија", ed_backup_sub: "Сачувај подешавања ове картице у фајл или их врати – пре већих измена или да копираш картицу на другу контролну таблу.", ed_bk_download: "Преузми копију", ed_bk_copy: "Копирај", ed_bk_copied: "Копирано", ed_bk_restore: "Врати из фајла", ed_bk_confirm: "Заменити тренутна подешавања овом копијом ({d}, календара: {n})?", ed_bk_replace: "Замени", ed_bk_done: "Подешавања враћена – притисни Сачувај да их задржиш.", ed_bk_bad: "Овај фајл није резервна копија Home Calendar Card-а.",
     ed_types: "Типови догађаја", ed_types_sub: "Типови за избор при додавању догађаја или за цео календар. Преименуј, промени иконицу или уклони уграђене, или додај своје.", ed_add_type: "Додај тип", ed_new_type: "Нови тип…", ed_new_type_help: "Његови догађаји добијају иконицу и стил овог типа. Можеш то касније да промениш у Типовима догађаја.", ed_create_type: "Направи тип", l_type_name: "Назив", l_type_icon: "Иконица", l_type_all_day: "Подразумевано целодневно", l_type_countdown: "Картица одбројавања", o_st_normal: "Обично", o_st_banner: "Трака одмора", o_st_birthday: "Рођендан (пуни X)", o_st_anniversary: "Годишњица (године)", o_st_nameday: "Имендан", ed_type_style_help: "Календар одмора, рођендана, годишњица или имендана није особа: нема колону у Планеру.", ed_note2: "Одбројавања се подешавају у уређивачу кода – погледај README.",
     sync: "Синхронизуј календаре сада", sync_err: "Синхронизација календара није успела", l_show_refresh_button: "Прикажи дугме за освежавање", l_calendar_sync_minutes: "Синхронизуј календаре на сваких … минута (0 = искључено)",
@@ -1682,6 +1691,7 @@ const I18N = {
     l_todo_show_empty: "Prikaži osobe sa praznom sopstvenom listom", tg_empty: "Nema zadataka",
     l_todo_lists: "Još lista kao kartice (npr. kupovina)", ed_todo_lists_help: "Svaka lista dobija svoju karticu u bloku zadataka. Naslov ili ikonica se podešavaju u YAML-u.",
     l_month_show_time: "Prikaži vreme početka u mesečnom prikazu",
+    l_geocode: "Traži adrese preko OpenStreetMap-a", ed_geocode_help: "Waze više sam ne pronalazi adrese. Lokacije događaja se šalju OpenStreetMap-u (besplatno, bez ključa) da bi se dobile koordinate.", multi_sel: "Više", added_n: "„{t}” dodat u {n} kalendara", err_some: "Nije dodato u: {c}",
     ed_backup: "Rezervna kopija", ed_backup_sub: "Sačuvaj podešavanja ove kartice u fajl ili ih vrati – pre većih izmena ili da kopiraš karticu na drugu kontrolnu tablu.", ed_bk_download: "Preuzmi kopiju", ed_bk_copy: "Kopiraj", ed_bk_copied: "Kopirano", ed_bk_restore: "Vrati iz fajla", ed_bk_confirm: "Zameniti trenutna podešavanja ovom kopijom ({d}, kalendara: {n})?", ed_bk_replace: "Zameni", ed_bk_done: "Podešavanja vraćena – pritisni Sačuvaj da ih zadržiš.", ed_bk_bad: "Ovaj fajl nije rezervna kopija Home Calendar Card-a.",
     ed_types: "Tipovi događaja", ed_types_sub: "Tipovi za izbor pri dodavanju događaja ili za ceo kalendar. Preimenuj, promeni ikonicu ili ukloni ugrađene, ili dodaj svoje.", ed_add_type: "Dodaj tip", ed_new_type: "Novi tip…", ed_new_type_help: "Njegovi događaji dobijaju ikonicu i stil ovog tipa. Možeš to kasnije da promeniš u Tipovima događaja.", ed_create_type: "Napravi tip", l_type_name: "Naziv", l_type_icon: "Ikonica", l_type_all_day: "Podrazumevano celodnevno", l_type_countdown: "Kartica odbrojavanja", o_st_normal: "Obično", o_st_banner: "Traka odmora", o_st_birthday: "Rođendan (puni X)", o_st_anniversary: "Godišnjica (godine)", o_st_nameday: "Imendan", ed_type_style_help: "Kalendar odmora, rođendana, godišnjica ili imendana nije osoba: nema kolonu u Planeru.", ed_note2: "Odbrojavanja se podešavaju u uređivaču koda – pogledaj README.",
     sync: "Sinhronizuj kalendare sada", sync_err: "Sinhronizacija kalendara nije uspela", l_show_refresh_button: "Prikaži dugme za osvežavanje", l_calendar_sync_minutes: "Sinhronizuj kalendare na svakih … minuta (0 = isključeno)",
@@ -3086,7 +3096,38 @@ class HomeCalendarCard extends HTMLElement {
       avoid_toll_roads: o.avoid_toll_roads === true,
       avoid_ferries: o.avoid_ferries === true,
       avoid_subscription_roads: o.avoid_subscription_roads === true,
+      geocode: o.geocode === true,
     };
+  }
+
+  // #28: Waze in HA no longer turns addresses into coordinates, so (opt-in) look them up with OpenStreetMap.
+  async _travelDest(loc, t) {
+    if (/^\s*-?\d{1,3}(\.\d+)?\s*,\s*-?\d{1,3}(\.\d+)?\s*$/.test(loc) || !t.geocode) return loc;
+    const KEY = "hcc-geo-v1";
+    if (!this._geo) { try { this._geo = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { this._geo = {}; } }
+    const hit = this._geo[loc];
+    const fresh = hit && Date.now() - hit.at < (hit.c ? 30 : 7) * 864e5;
+    if (fresh) return hit.c;
+    // Nominatim allows one request per second
+    const wait = (this._geoLast || 0) + 1100 - Date.now();
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+    this._geoLast = Date.now();
+    let c = null;
+    try {
+      const lang = this._hass?.locale?.language || this._hass?.language || "en";
+      const r = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=${encodeURIComponent(lang)}&q=${encodeURIComponent(loc)}`, { headers: { Accept: "application/json" } });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const j = await r.json();
+      if (j?.[0]?.lat && j?.[0]?.lon) c = `${Number(j[0].lat).toFixed(6)},${Number(j[0].lon).toFixed(6)}`;
+    } catch (e) {
+      console.warn("home-calendar-card: address lookup failed for", loc, e?.message || e);
+      return null; // network trouble: don't cache, try again next round
+    }
+    this._geo[loc] = { c, at: Date.now() };
+    const keys = Object.keys(this._geo);
+    if (keys.length > 300) keys.sort((a, b) => this._geo[a].at - this._geo[b].at).slice(0, keys.length - 300).forEach((k) => delete this._geo[k]);
+    try { localStorage.setItem(KEY, JSON.stringify(this._geo)); } catch (e) { /* storage full or blocked */ }
+    return c;
   }
 
   _travelAvailable() { return !!this._hass?.services?.waze_travel_time?.get_travel_times; }
@@ -3103,7 +3144,7 @@ class HomeCalendarCard extends HTMLElement {
     const t = this._travelCfg();
     if (!t || !this._hass || !this._travelAvailable() || this._travelBusy) return;
     this._travel = this._travel || new Map();
-    const key = JSON.stringify([t.origin, t.region, t.vehicle_type, t.units, t.avoid_toll_roads, t.avoid_ferries, t.avoid_subscription_roads]);
+    const key = JSON.stringify([t.origin, t.region, t.vehicle_type, t.units, t.avoid_toll_roads, t.avoid_ferries, t.avoid_subscription_roads, t.geocode]);
     if (key !== this._travelKey) { this._travel.clear(); this._travelKey = key; }
     const todo = [...new Set((this._events || []).filter((ev) => this._travelEvent(ev)).map((ev) => ev.location.trim()))]
       .filter((loc) => {
@@ -3117,8 +3158,10 @@ class HomeCalendarCard extends HTMLElement {
     let changed = false;
     for (const loc of todo) {
       try {
+        const dest = await this._travelDest(loc, t);
+        if (!dest) { this._travel.set(loc, { err: true, at: Date.now() }); changed = true; continue; }
         const res = await this._hass.callWS({ type: "call_service", domain: "waze_travel_time", service: "get_travel_times", return_response: true,
-          service_data: { origin: t.origin, destination: loc, region: t.region, vehicle_type: t.vehicle_type, units: t.units, realtime: true,
+          service_data: { origin: t.origin, destination: dest, region: t.region, vehicle_type: t.vehicle_type, units: t.units, realtime: true,
             avoid_toll_roads: t.avoid_toll_roads, avoid_ferries: t.avoid_ferries, avoid_subscription_roads: t.avoid_subscription_roads } });
         const routes = (res?.response?.routes || []).filter((r) => Number(r.duration) > 0);
         const best = routes.sort((a, b) => a.duration - b.duration)[0];
@@ -4906,6 +4949,8 @@ class HomeCalendarCard extends HTMLElement {
 
   _openForm(date, ev, presetCal) {
     this._editEv = ev || null;
+    this._multiAdd = false;
+    this._addCals = new Set();
     let cals = this._writable();
     if (ev) {
       // Repeating events can only be changed in place; one-off events can also move to another calendar
@@ -4962,9 +5007,9 @@ class HomeCalendarCard extends HTMLElement {
           </label>
         </div>
         <div>
-          <div class="lbl">${esc(this._t("calendar"))}</div>
-          <div class="cal-pick">${cals.map((c) => `
-            <button type="button" class="chip ${c.entity === this._addCal ? "sel" : ""}" style="--c:${esc(c.color)}" data-action="pick-cal" data-entity="${esc(c.entity)}">
+          <div class="lbl">${esc(this._t("calendar"))}${!ev && cals.length > 1 ? `<button type="button" class="multi-tg ${this._multiAdd ? "on" : ""}" data-action="multi-cal" aria-pressed="${!!this._multiAdd}"><ha-icon icon="mdi:checkbox-multiple-marked-outline"></ha-icon>${esc(this._t("multi_sel"))}</button>` : ""}</div>
+          <div class="cal-pick ${this._multiAdd && !ev ? "multi" : ""}">${cals.map((c) => `
+            <button type="button" class="chip ${(this._multiAdd && !ev ? this._addCals.has(c.entity) : c.entity === this._addCal) ? "sel" : ""}" style="--c:${esc(c.color)}" data-action="pick-cal" data-entity="${esc(c.entity)}">
               ${this._avatar(c, "sm") || `<span class="dot"></span>`}${esc(this._calName(c))}
             </button>`).join("")}</div>
         </div>
@@ -5114,6 +5159,8 @@ class HomeCalendarCard extends HTMLElement {
     const btn = this._q('[data-action="save"]');
     btn.disabled = true;
     btn.textContent = this._t("saving");
+    const targets = this._multiAdd && this._addCals?.size > 1 ? [...this._addCals] : [this._addCal];
+    if (targets.length > 1) return this._createInMany(targets, { title, allDay, sd, ed, data, rrule }, btn);
     try {
       if (rrule) {
         // Repeating events go through the websocket API, which supports RRULE.
@@ -5139,6 +5186,39 @@ class HomeCalendarCard extends HTMLElement {
       btn.disabled = false;
       btn.textContent = this._t("save");
       this._setFormError(err?.message || this._t("err_create"));
+    }
+  }
+
+  // #29: the same new event in several calendars (each calendar keeps its own copy)
+  async _createInMany(targets, f, btn) {
+    const failed = [];
+    const failedEnts = [];
+    for (const ent of targets) {
+      try {
+        if (f.rrule) await this._hass.callWS({ type: "calendar/event/create", entity_id: ent, event: this._eventPayload(f, f.rrule) });
+        else await this._hass.callService("calendar", "create_event", f.data, { entity_id: ent });
+      } catch (err) {
+        const cal = this._calendars.find((c) => c.entity === ent);
+        failed.push(`${cal ? this._calName(cal) : ent}${err?.message ? ` (${err.message})` : ""}`);
+        failedEnts.push(ent);
+      }
+    }
+    const ok = targets.length - failed.length;
+    if (!failed.length) this._closeDialog();
+    else {
+      btn.disabled = false;
+      btn.textContent = this._t("save");
+      this._setFormError(this._t("err_some", { c: failed.join(", ") }));
+      // Save again retries only the calendars that failed – no duplicates in the others
+      this._addCals = new Set(failedEnts);
+      this._addCal = failedEnts[0];
+      this._dlg?.querySelectorAll(".cal-pick .chip").forEach((c) => c.classList.toggle("sel", this._addCals.has(c.dataset.entity)));
+    }
+    if (ok) {
+      if (!failed.length) this._toast(this._t("added_n", { t: f.title, n: ok }));
+      this._fetchEvents();
+      this._fetchCountdowns();
+      setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(); }, 4000);
     }
   }
 
@@ -5355,7 +5435,27 @@ class HomeCalendarCard extends HTMLElement {
         else { this._view = "agenda"; this._anchor = startOfDay(new Date(t)); this._fetchEvents(); }
         break;
       }
+      case "multi-cal": {
+        // #29: add one event to several calendars
+        this._multiAdd = !this._multiAdd;
+        this._addCals = new Set([this._addCal]);
+        el.classList.toggle("on", this._multiAdd);
+        el.setAttribute("aria-pressed", String(this._multiAdd));
+        const pick = this._dlg.querySelector(".cal-pick");
+        pick.classList.toggle("multi", this._multiAdd);
+        pick.querySelectorAll(".chip").forEach((c) => c.classList.toggle("sel", c.dataset.entity === this._addCal));
+        break;
+      }
       case "pick-cal": {
+        if (this._multiAdd && !this._editEv) {
+          const ent = el.dataset.entity;
+          if (this._addCals.has(ent) && this._addCals.size > 1) this._addCals.delete(ent); else this._addCals.add(ent);
+          if (!this._addCals.has(this._addCal)) this._addCal = [...this._addCals][0];
+          this._dlg.querySelectorAll(".cal-pick .chip").forEach((c) => c.classList.toggle("sel", this._addCals.has(c.dataset.entity)));
+          const cal0 = this._calendars.find((c) => c.entity === this._addCal);
+          if (cal0) this._q(".form").style.setProperty("--c", cal0.color);
+          break;
+        }
         this._addCal = el.dataset.entity;
         this._dlg.querySelectorAll(".cal-pick .chip").forEach((c) => c.classList.toggle("sel", c === el));
         const cal = this._calendars.find((c) => c.entity === this._addCal);
@@ -5859,6 +5959,11 @@ dialog[open] { display: flex; flex-direction: column; animation: pop .18s ease-o
 .yseg { flex: 1 1 0; min-width: 0; border-radius: 3px; background: var(--c); color: #fff; font-size: .68rem; font-weight: 600; line-height: 1.5; padding: 0 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .ymore { flex: none; font-size: .65rem; color: var(--hcc-muted); align-self: center; }
 @container (max-width: 700px) { .year { overflow-x: auto; min-width: 0; } .year { grid-template-columns: repeat(12, minmax(64px, 1fr)); } }
+.multi-tg { margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--hcc-line);
+  background: transparent; color: var(--hcc-muted); font: inherit; font-size: .72rem; font-weight: 600; cursor: pointer; vertical-align: middle; text-transform: none; letter-spacing: 0; }
+.multi-tg ha-icon { --mdc-icon-size: 14px; }
+.multi-tg.on { background: var(--hcc-accent); border-color: var(--hcc-accent); color: #fff; }
+.cal-pick.multi .chip.sel::after { content: "✓"; margin-left: 4px; font-weight: 700; }
 .icon.sync.spin ha-icon { animation: hcc-spin .9s linear infinite; }
 @keyframes hcc-spin { to { transform: rotate(360deg); } }
 @keyframes pop { from { transform: translateY(10px) scale(.98); opacity: 0; } }
@@ -6238,7 +6343,7 @@ ha-card { container: hcc / inline-size; }
 // Editor forms are built per language. `t(key)` translates, `o(value, key)` makes a dropdown option.
 const NIGHT_DEFAULTS = { enabled: false, style: "clock", start: "22:00", end: "06:30", brightness: 30, wake_seconds: 60 };
 const SAVER_DEFAULTS = { enabled: false, after: 5, interval: 20, shuffle: true, show_info: true };
-const TRAVEL_DEFAULTS = { enabled: false, origin: "zone.home", region: "auto", vehicle_type: "car", hours_ahead: 12, avoid_toll_roads: false, avoid_ferries: false };
+const TRAVEL_DEFAULTS = { enabled: false, origin: "zone.home", region: "auto", vehicle_type: "car", hours_ahead: 12, avoid_toll_roads: false, avoid_ferries: false, geocode: false };
 // editor defaults that are not written to YAML until changed
 const LOOK_DEFAULTS = { countdown_style: "cards", countdown_size: 100, event_size: 100, month_mobile: "list", show_clock: false, clock_seconds: true,
   clock_format: "auto", show_view_selector: true, show_date_navigation: true, show_refresh_button: true, calendar_sync_minutes: 0, week_style: "list", week_hour_start: 7, week_hour_end: 22, show_year_view: true, year_start: "january", event_time_position: "above", show_event_location: true,
@@ -6359,6 +6464,7 @@ const generalSchema = (t, hasGrid = false) => {
         { name: "avoid_toll_roads", selector: { boolean: {} } },
         { name: "avoid_ferries", selector: { boolean: {} } },
       ] },
+      { name: "geocode", selector: { boolean: {} } },
     ] },
     { type: "expandable", name: "screensaver", title: t("ed_saver"), icon: "mdi:image-multiple", schema: [
       { type: "grid", name: "", schema: [
@@ -7440,7 +7546,7 @@ class HomeCalendarCardEditor extends HTMLElement {
       night_mode: { ...NIGHT_DEFAULTS, ...this._objCfg(this._config.night_mode) },
       travel_time: { ...TRAVEL_DEFAULTS, ...(this._config.travel_time ? { enabled: true } : {}), ...this._objCfg(this._config.travel_time) },
       screensaver: { ...SAVER_DEFAULTS, ...this._objCfg(this._config.screensaver) },
-    }, (s) => this._t(`l_${s.name}`), (s) => (s.name === "media" ? this._t("ed_media_help") : s.name === "origin" ? this._t("ed_origin_help") : s.name === "todo_lists" ? this._t("ed_todo_lists_help") : undefined));
+    }, (s) => this._t(`l_${s.name}`), (s) => (s.name === "media" ? this._t("ed_media_help") : s.name === "origin" ? this._t("ed_origin_help") : s.name === "geocode" ? this._t("ed_geocode_help") : s.name === "todo_lists" ? this._t("ed_todo_lists_help") : undefined));
     gen.addEventListener("value-changed", (ev) => {
       ev.stopPropagation();
       gen.data = ev.detail.value;
