@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.2-beta.4";
+const CARD_VERSION = "1.20.2-beta.5";
 
 // Literal, complete names at the start only; longest names take precedence.
 function titlePersons(summary, configured) {
@@ -127,7 +127,7 @@ const DONE_BY_RE = /^\s*Done by:\s*(.+?)(?:\s*\((\d{4}-\d{2}-\d{2})(?:[ T](\d{2}
 const DONE_BY_LINE_RE = /\n?^\s*Done by:.*$/gmi;
 const TAG_RE = /(^|\s)#([\p{L}\p{N}_-]+)(?=\s|$)/giu;
 // "#private" (or a translation) hides an event's details on the screen – it shows as "Private" with its time.
-const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "privato", "privata", "prive", "priv", "privat", "privatno", "приватно"];
+const PRIVATE_TAGS = ["private", "prywatne", "prywatny", "privado", "privada", "privato", "privata", "prive", "priv", "privat", "privatno", "приватно", "privé"];
 
 // ------------------------------------------------------------------ translations
 // The UI language follows Home Assistant (or `language:` in the card config).
@@ -2011,6 +2011,9 @@ const I18N = {
     ed_media_help: "npr. media-source://media_source/local/photos – ostavite prazno za čuvar ekrana koji prikazuje samo sat",
   },  
   fr: {
+    l_title_persons: "Noms reconnus au début des titres d’événements", l_title_person: "Attribution par nom",
+    o_title_person_none: "Pas d’attribution par nom", o_title_person_unmatched: "Tous les autres événements",
+    l_planner_hide_person_prefix: "Masquer les noms en début de titre dans le Planning",
     l_planner_title_prefix: "Masquer ce préfixe de titre dans le Planning",
     ed_planner_title_prefix_help: "Affichage uniquement, ex. Léa : Piano → Piano. Les titres d’origine sont conservés.",
     l_multiday_bars: "Événements de plusieurs jours en une seule barre",
@@ -2145,7 +2148,7 @@ const NUM = {
   pt: { days: (n) => (n === 1 ? "dia" : "dias"), turns: (n) => `faz ${n} ${n === 1 ? "ano" : "anos"}`, ord: (n) => `${n}º`, anniv: (n) => `${n}º aniversário` },
   sr: { days: (n) => (srDani(n) === 0 ? "дан" : "дана"), turns: (n) => `пуни ${n} ${srGodine(n)}`, ord: (n) => `${n}.`, anniv: (n) => `${n}. годишњица` },
   "sr-Latn": { days: (n) => (srDani(n) === 0 ? "dan" : "dana"), turns: (n) => `puni ${n} ${srGodina(n)}`, ord: (n) => `${n}.`, anniv: (n) => `${n}. godišnjica` },
-  fr: { days: (n) => (n < 2 ? "jour" : "jours"), turns: (n) => `a ${n} ${n < 2 ? "an" : "ans"}`, ord: (n) => (n === 1 ? "1er" : `${n}e`), anniv: (n) => (n === 1 ? "1er anniversaire" : `${n}e anniversaire`) },
+  fr: { days: (n) => (n < 2 ? "jour" : "jours"), turns: (n) => `aura ${n} ${n < 2 ? "an" : "ans"}`, ord: (n) => (n === 1 ? "1er" : `${n}e`), anniv: (n) => (n === 1 ? "1er anniversaire" : `${n}e anniversaire`) },
 };
 
 
@@ -2165,7 +2168,10 @@ const TYPE_ALIASES = {
   odmor: "holiday", одмор: "holiday",
   bolovanje: "holiday", боловање: "holiday",
   posao: "work", посао: "work",
-  imendan: "nameday", имендан: "nameday"
+  imendan: "nameday", имендан: "nameday",
+
+  // French
+  anniversaire: "birthday", vacances: "holiday", conges: "holiday", congés: "holiday", travail: "work", fete: "nameday", fête: "nameday",
 };
 
 

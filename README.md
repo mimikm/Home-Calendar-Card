@@ -57,7 +57,7 @@ A clean, modern calendar card for Home Assistant. Shows your **Google**, **Apple
 - 🎨 **5 colour themes** – Nordic, Sunset, Forest, Midnight and Graphite, or follow your HA theme (light and dark)
 - 🛠️ **Visual editor** – theme picker, and a calendar list where you can rename each calendar, set its colour, link a person and choose its type
 - 🌙 **Night mode & screensaver** for always-on screens – a dim night clock on a schedule (wake by touch or motion sensor) and a family-photo slideshow with clock, weather and next event when idle
-- 🌍 **10 languages** – English, Polish, Spanish, German, Italian, Dutch, Hungarian, Portuguese (Brazil) and Serbian (Cyrillic and Latin); card and visual editor follow your Home Assistant language
+- 🌍 **11 languages** – English, Polish, Spanish, German, French, Italian, Dutch, Hungarian, Portuguese (Brazil) and Serbian (Cyrillic and Latin); card and visual editor follow your Home Assistant language
 - 🔒 **Private events** – tick *Private* and the wall screen shows only "Private" and the time
 - 🕐 **Clock** – a big clock with seconds in the header for wall displays, 24h or 12h
 - 🔍 **Appearance controls** – hide or shrink countdowns (compact one-line style, size slider) and enlarge day boxes and events with a slider
@@ -1179,12 +1179,13 @@ The card and its visual editor are available in:
 | Nederlands | `nl` |
 | Magyar | `hu` |
 | Português (Brasil) | `pt` – thanks to [@DiogoAbu](https://github.com/DiogoAbu) ([#17](https://github.com/mimikm/Home-Calendar-Card/pull/17)) |
+| Français | `fr` – thanks to [@James31830](https://github.com/James31830) ([#30](https://github.com/mimikm/Home-Calendar-Card/pull/30)) |
 | Српски | `sr` – thanks to [@cpmarexel2f](https://github.com/cpmarexel2f) ([#18](https://github.com/mimikm/Home-Calendar-Card/pull/18)) |
 | Srpski (latinica) | `sr-Latn` – thanks to [@cpmarexel2f](https://github.com/cpmarexel2f) ([#18](https://github.com/mimikm/Home-Calendar-Card/pull/18)) |
 
 The language follows your Home Assistant profile automatically. Set `language: pl`, `language: sr`, or `language: sr-Latn` (or pick it in the visual editor) to force one. Dates, weekdays and month names always use your language's normal format.
 
-**Name days 🌷** – the **Name day** type is available in every language (*imieniny*, *névnap*, *onomastico*, *Namenstag*, *naamdag*, *onomástica*, *dia do santo*, *имендан / imendan*). Name days repeat every year, get their own gold countdown colour, and the next two appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#nameday` (or a translation below). A whole calendar of name days can be set to *Calendar type: Name days* in the editor.
+**Name days 🌷** – the **Name day** type is available in every language (*imieniny*, *névnap*, *onomastico*, *Namenstag*, *naamdag*, *onomástica*, *dia do santo*, *fête*, *имендан / imendan*). Name days repeat every year, get their own gold countdown colour, and the next two appear as countdown cards. Add one from the card, or tag an event in Google/Apple Calendar with `#nameday` (or a translation below). A whole calendar of name days can be set to *Calendar type: Name days* in the editor.
 
 You can also type these tags in Google or Apple Calendar instead of the English ones (no accents needed):
 
@@ -1197,13 +1198,14 @@ You can also type these tags in Google or Apple Calendar instead of the English 
 | Nederlands | `#verjaardag` | `#jubileum` | `#vakantie` | `#werk` | `#naamdag` | `#prive` |
 | Magyar | `#szuletesnap`, `#szulinap` | `#evfordulo` | `#szabadsag` | `#munka` | `#nevnap` | `#privat` |
 | Português | `#niver` | `#bodas` | `#ferias`, `#feriado` | `#trabalho` | `#onomastico`, `#santo` | `#privado` |
+| Français | `#anniversaire` | – | `#vacances`, `#conges` | `#travail` | `#fete` | `#prive`, `#privé` |
 | Српски | `#рођендан`, `#рођ` | `#годишњица` | `#одмор`, `#боловање` | `#посао` | `#имендан` | `#приватно` |
 | Srpski (latinica) | `#rođendan`, `#rođ` | `#godišnjica` | `#odmor`, `#bolovanje` | `#posao` | `#imendan` | `#privatno` |
 
 
 In Portuguese `#aniversario` would mean a birthday, but the tag already means *Anniversary* in Spanish and Italian, so use `#niver` for birthdays.
 
-**🙏 Help us improve the translations.** German, Italian, Dutch, Hungarian, Portuguese and Serbian are new, and some wording may sound odd to a native speaker. If you spot something, please [open an issue](https://github.com/mimikm/Home-Calendar-Card/issues) or a pull request with the better wording – every fix is welcome. The texts are in the `I18N` section at the top of `home-calendar-card.js`.
+**🙏 Help us improve the translations.** German, French, Italian, Dutch, Hungarian, Portuguese and Serbian are new, and some wording may sound odd to a native speaker. If you spot something, please [open an issue](https://github.com/mimikm/Home-Calendar-Card/issues) or a pull request with the better wording – every fix is welcome. The texts are in the `I18N` section at the top of `home-calendar-card.js`.
 
 Your own `event_types` names, calendar names and `todo_title` are shown exactly as you write them.
 
