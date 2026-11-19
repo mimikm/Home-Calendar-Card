@@ -737,8 +737,65 @@ The Delete button only appears for calendars whose Home Assistant integration su
 
 ### Planner view (a column per person)
 
-One shared calendar can also supply separate columns. List the entity once per
-person with a different `include` filter:
+#### Recommended: split a shared family calendar by leading names
+
+For precise assignment rather than substring matching, optionally configure
+`title_persons` on the card and `title_person` on each calendar entry:
+
+```yaml
+type: custom:home-calendar-card
+default_view: planner
+planner_start: today
+planner_days: 5
+show_calendar_chips: false
+title_persons: [Alex, Ben, Mia]
+calendars:
+  - entity: calendar.family
+    name: Alex
+    title_person: Alex
+    planner_hide_person_prefix: true
+  - entity: calendar.family
+    name: Ben
+    title_person: Ben
+    planner_hide_person_prefix: true
+  - entity: calendar.family
+    name: Mia
+    title_person: Mia
+    planner_hide_person_prefix: true
+  - entity: calendar.family
+    name: Family
+    title_person: unmatched
+```
+
+Only complete configured names at the start are recognized, ignoring case and
+leading whitespace. A leading list may join names using `und`, `and`, `i`,
+`y`, `e`, `en`, `és`, `и`, `et`, `&`, `+` or commas.
+`Alex und Ben at the park` appears in both columns; with
+`planner_hide_person_prefix` both display `at the park`. `Alex macadamia workshop`
+belongs only to Alex, not Mia (even though “macadamia” contains “mia”).
+`Miriam` and `Visit Mia` match nobody.
+`unmatched` is reserved for entries showing events with no recognized name.
+The list stops when activity text starts: `Alex drives Ben` belongs only to
+Alex. Unknown names are not inferred.
+
+Assignment applies in every view and combines with existing include/exclude
+filters. Display cleanup applies only in Planner (including multi-day bars);
+source events, tooltips, editing and other views keep the original title.
+Empty cleaned titles retain the original. Private events are not rewritten.
+The settings are available in the visual editor in all ten supported languages.
+Enter recognized names above the calendar list, then select a name or
+“Everything else” in each calendar entry. Select “No name assignment” to
+disable name-based filtering for an entry.
+Existing `include`, `exclude` and `planner_title_prefix` behavior is unchanged;
+the name-list cleanup takes precedence when enabled. New events still need the
+leading names entered manually. Visibility toggles remain entity-based.
+
+#### Simple alternative: substring filters and a display prefix
+
+For basic setups, list the shared entity once per person with a different
+`include` filter. These filters match anywhere in the title and can therefore
+produce unintended substring matches. Prefer leading-name assignment for
+reliable person matching and events involving multiple people.
 
 ```yaml
 type: custom:home-calendar-card
