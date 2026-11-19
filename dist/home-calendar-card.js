@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.2-beta.3";
+const CARD_VERSION = "1.20.2-beta.4";
 
 const DEFAULT_COLORS = ["#4285F4", "#EA4335", "#34A853", "#F9AB00", "#A142F4", "#24C1E0", "#F06292", "#FF7043"];
 
@@ -3103,32 +3103,60 @@ class HomeCalendarCard extends HTMLElement {
   // #28: Waze in HA no longer turns addresses into coordinates, so (opt-in) look them up with OpenStreetMap.
   async _travelDest(loc, t) {
     if (/^\s*-?\d{1,3}(\.\d+)?\s*,\s*-?\d{1,3}(\.\d+)?\s*$/.test(loc) || !t.geocode) return loc;
-    const KEY = "hcc-geo-v1";
-    if (!this._geo) { try { this._geo = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { this._geo = {}; } }
-    const hit = this._geo[loc];
-    const fresh = hit && Date.now() - hit.at < (hit.c ? 30 : 7) * 864e5;
-    if (fresh) return hit.c;
-    // Nominatim allows one request per second
-    const wait = (this._geoLast || 0) + 1100 - Date.now();
-    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
-    this._geoLast = Date.now();
-    let c = null;
-    try {
-      const lang = this._hass?.locale?.language || this._hass?.language || "en";
-      const r = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=${encodeURIComponent(lang)}&q=${encodeURIComponent(loc)}`, { headers: { Accept: "application/json" } });
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      const j = await r.json();
-      if (j?.[0]?.lat && j?.[0]?.lon) c = `${Number(j[0].lat).toFixed(6)},${Number(j[0].lon).toFixed(6)}`;
-    } catch (e) {
-      console.warn("home-calendar-card: address lookup failed for", loc, e?.message || e);
-      return null; // network trouble: don't cache, try again next round
+    const KEY = "hcc-geo-v2"; // v2: retries with simpler forms of the address (beta.4)
+    if (!this._geo) {
+      try { this._geo = JSON.parse(localStorage.getItem(KEY) || "{}"); localStorage.removeItem("hcc-geo-v1"); } catch (e) { this._geo = {}; }
     }
+    const hit = this._geo[loc];
+    if (hit && Date.now() - hit.at < (hit.c ? 30 : 3) * 864e5) return hit.c;
+    let c = null;
+    let used = null;
+    for (const q of this._geoCandidates(loc)) {
+      let r;
+      try { r = await this._geoQuery(q); } catch (e) {
+        console.warn(`home-calendar-card: address lookup failed (${e?.message || e}) for "${loc}" – will try again later`);
+        return null; // network trouble or blocked: don't remember it
+      }
+      if (r) { c = r; used = q; break; }
+    }
+    if (c) console.info(`home-calendar-card: travel – "${loc}"${used !== loc ? ` (as "${used}")` : ""} → ${c}`);
+    else console.warn(`home-calendar-card: travel – OpenStreetMap couldn't find "${loc}" – no travel time for it`);
     this._geo[loc] = { c, at: Date.now() };
     const keys = Object.keys(this._geo);
     if (keys.length > 300) keys.sort((a, b) => this._geo[a].at - this._geo[b].at).slice(0, keys.length - 300).forEach((k) => delete this._geo[k]);
     try { localStorage.setItem(KEY, JSON.stringify(this._geo)); } catch (e) { /* storage full or blocked */ }
     return c;
   }
+
+  // Calendar apps often store "Business name, 123 Main St, Suite 4, City, ST 12345, USA" – OpenStreetMap
+  // finds the plain street address more reliably, so try simpler forms when the full text finds nothing.
+  _geoCandidates(loc) {
+    const clean = (x) => x.replace(/\s*\n+\s*/g, ", ").replace(/\s{2,}/g, " ").replace(/^[\s,]+|[\s,]+$/g, "");
+    const out = [clean(loc)];
+    const parts = out[0].split(",").map((x) => x.trim()).filter(Boolean);
+    const noUnit = (arr) => arr.filter((x) => !/^(suite|ste\.?|unit|apt\.?|apartment|flat|floor|fl\.?|room|rm\.?|building|bldg\.?|#)\s*\S*/i.test(x))
+      .map((x) => x.replace(/\s+(suite|ste\.?|unit|apt\.?|#)\s*[\w-]+$/i, ""));
+    const noCountry = (arr) => arr.filter((x) => !/^(usa|u\.s\.a\.|united states( of america)?|us|uk|united kingdom|great britain|canada|australia|deutschland|germany|polska|poland|españa|spain|italia|italy|nederland|netherlands|magyarország|hungary|brasil|brazil|srbija|србија|serbia)$/i.test(x));
+    // the first part looks like a name (no digits) and an address follows: drop it
+    const startsWithName = parts.length >= 3 && !/\d/.test(parts[0]) && /\d/.test(parts.slice(1).join(" "));
+    const base = startsWithName ? parts.slice(1) : parts;
+    out.push(base.join(", "));
+    out.push(noCountry(noUnit(base)).join(", "));
+    return [...new Set(out.filter((x) => x && x.length > 3))].slice(0, 3);
+  }
+
+  async _geoQuery(q) {
+    // Nominatim allows one request per second
+    const wait = (this._geoLast || 0) + 1100 - Date.now();
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+    this._geoLast = Date.now();
+    const lang = this._hass?.locale?.language || this._hass?.language || "en";
+    const r = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=${encodeURIComponent(lang)}&q=${encodeURIComponent(q)}`, { headers: { Accept: "application/json" } });
+    if (!r.ok) throw new Error(`OpenStreetMap HTTP ${r.status}`);
+    const j = await r.json();
+    return j?.[0]?.lat && j?.[0]?.lon ? `${Number(j[0].lat).toFixed(6)},${Number(j[0].lon).toFixed(6)}` : null;
+  }
+
 
   _travelAvailable() { return !!this._hass?.services?.waze_travel_time?.get_travel_times; }
 
@@ -3153,6 +3181,11 @@ class HomeCalendarCard extends HTMLElement {
         const age = Date.now() - c.at;
         return force || (c.err ? age > 60 * 60e3 : age > t.refresh * 60e3); // failed lookups are retried after an hour
       }).slice(0, 8);
+    const n = (this._events || []).filter((ev) => this._travelEvent(ev)).length;
+    if (n !== this._travelLogN) {
+      this._travelLogN = n;
+      console.info(`home-calendar-card: travel – ${n} event(s) with a location in the next ${t.hours} h${t.geocode ? " (address lookup on)" : ""}`);
+    }
     if (!todo.length) return;
     this._travelBusy = true;
     let changed = false;
@@ -3165,9 +3198,10 @@ class HomeCalendarCard extends HTMLElement {
             avoid_toll_roads: t.avoid_toll_roads, avoid_ferries: t.avoid_ferries, avoid_subscription_roads: t.avoid_subscription_roads } });
         const routes = (res?.response?.routes || []).filter((r) => Number(r.duration) > 0);
         const best = routes.sort((a, b) => a.duration - b.duration)[0];
+        if (!best) console.warn(`home-calendar-card: travel – Waze found no route to "${loc}"${dest !== loc ? ` (${dest})` : ""}`);
         this._travel.set(loc, best ? { min: Number(best.duration), dist: Number(best.distance), at: Date.now() } : { err: true, at: Date.now() });
       } catch (e) {
-        console.warn("home-calendar-card: travel time failed for", loc, e?.message || e);
+        console.warn(`home-calendar-card: travel – Waze error for "${loc}": ${e?.message || e?.code || e}`);
         this._travel.set(loc, { err: true, at: Date.now() });
       }
       changed = true;

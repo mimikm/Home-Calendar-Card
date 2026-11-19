@@ -589,6 +589,8 @@ travel_time:
 - Each address is looked up once and remembered in the browser for 30 days, so it's only a handful of lookups.
 - It's off by default because it sends your events' locations to [OpenStreetMap](https://nominatim.org/) (only the location text – nothing else).
 - Locations that are already coordinates are used as they are.
+- Calendar apps often save a place as *"Starbucks, 123 Main St, Suite 200, Springfield, IL 62701, USA"*. If the full text isn't found, the card tries again without the business name, then without the suite/unit and country.
+- **Not working?** Remember the chip only shows for events in the next `hours_ahead` hours (12 by default). Open your browser's console (F12) – the card writes lines starting with `home-calendar-card: travel` saying which addresses were found, which weren't, and any error from Waze.
 
 <sub>Address lookup requested by [@dannybean](https://github.com/dannybean) in [#28](https://github.com/mimikm/Home-Calendar-Card/issues/28).</sub>
 
