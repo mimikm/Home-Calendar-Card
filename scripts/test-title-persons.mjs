@@ -12,13 +12,50 @@ const display = extract("  _plannerTitle(ev) {", "  _renderPlanner() {", "_plann
 const names = ["Alex", "Ben", "Mia"];
 
 test("recognizes complete leading names and supported separators", () => {
-  for (const separator of [" und ", " and ", " & ", " + ", ", "]) {
+  for (const separator of [
+    " und ", " and ", " i ", " y ", " e ", " en ", " és ", " и ", " et ",
+    " & ", " + ", ", ", ", and ", ", und ", ", и ",
+  ]) {
     const result = titlePersons(`Alex${separator}Ben at the park`, names);
     assert.deepEqual(result.persons, ["alex", "ben"]);
     assert.equal(result.title, "at the park");
   }
   assert.deepEqual(titlePersons(" mia, Ben und Alex: Swimming", names),
     { persons: ["mia", "ben", "alex"], title: "Swimming" });
+});
+
+test("joining words require another configured complete name", () => {
+  for (const word of ["und", "and", "i", "y", "e", "en", "és", "и", "et"]) {
+    const title = `Alex ${word} Benjamin at the park`;
+    assert.deepEqual(titlePersons(title, names), {
+      persons: ["alex"], title: `${word} Benjamin at the park`,
+    });
+  }
+});
+
+const schemaSource = source.slice(source.indexOf("const calSchema ="), source.indexOf("/* ============================================================ layout designer"));
+const schema = new Function(`${schemaSource}; return calSchema;`)();
+
+test("assignment dropdown includes disabled, configured, fallback and saved values", () => {
+  const options = (configured, current) => schema(k => k, [], configured, current)
+    .find(field => field.name === "title_person").selector.select.options;
+  assert.deepEqual(options(["Alex", " Ben ", "Alex", ""], "").map(o => o.value),
+    ["", "Alex", "Ben", "unmatched"]);
+  assert.deepEqual(options(["Alex"], "Mia").map(o => o.value),
+    ["", "Alex", "Mia", "unmatched"]);
+  assert.deepEqual(options(undefined, "unmatched").map(o => o.value), ["", "unmatched"]);
+  assert.equal(keep.call({ _config: {} }, { summary: "Anything" },
+    { title_person: "", _incl: [], _excl: [], _matchIn: ["title"] }), true);
+});
+
+test("all ten languages translate the assignment fields and dropdown labels", () => {
+  const translations = new Function(`${source.slice(source.indexOf("const I18N ="), source.indexOf("const LANGS ="))}; return I18N;`)();
+  for (const language of ["en", "de", "pl", "es", "it", "nl", "hu", "pt", "sr", "sr-Latn"]) {
+    for (const key of ["l_title_persons", "l_title_person", "o_title_person_none",
+      "o_title_person_unmatched", "l_planner_hide_person_prefix"]) {
+      assert.ok(translations[language][key], `${language}: ${key}`);
+    }
+  }
 });
 
 test("does not match substrings or names in activity text", () => {

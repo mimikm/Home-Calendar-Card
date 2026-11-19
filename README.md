@@ -717,7 +717,7 @@ The Delete button only appears for calendars whose Home Assistant integration su
 
 ### Planner view (a column per person)
 
-#### Assigning a shared calendar by leading names
+#### Recommended: split a shared family calendar by leading names
 
 For precise assignment rather than substring matching, optionally configure
 `title_persons` on the card and `title_person` on each calendar entry:
@@ -748,8 +748,9 @@ calendars:
 ```
 
 Only complete configured names at the start are recognized, ignoring case and
-leading whitespace. A leading list may join names using `und`, `and`, `&`, `+`
-or commas. `Alex und Ben at the park` appears in both columns; with
+leading whitespace. A leading list may join names using `und`, `and`, `i`,
+`y`, `e`, `en`, `és`, `и`, `et`, `&`, `+` or commas.
+`Alex und Ben at the park` appears in both columns; with
 `planner_hide_person_prefix` both display `at the park`. `Alex macadamia workshop`
 belongs only to Alex, not Mia (even though “macadamia” contains “mia”).
 `Miriam` and `Visit Mia` match nobody.
@@ -761,13 +762,20 @@ Assignment applies in every view and combines with existing include/exclude
 filters. Display cleanup applies only in Planner (including multi-day bars);
 source events, tooltips, editing and other views keep the original title.
 Empty cleaned titles retain the original. Private events are not rewritten.
-The new settings are available in the visual editor (English/German labels).
+The settings are available in the visual editor in all ten supported languages.
+Enter recognized names above the calendar list, then select a name or
+“Everything else” in each calendar entry. Select “No name assignment” to
+disable name-based filtering for an entry.
 Existing `include`, `exclude` and `planner_title_prefix` behavior is unchanged;
 the name-list cleanup takes precedence when enabled. New events still need the
 leading names entered manually. Visibility toggles remain entity-based.
 
-One shared calendar can also supply separate columns. List the entity once per
-person with a different `include` filter:
+#### Simple alternative: substring filters and a display prefix
+
+For basic setups, list the shared entity once per person with a different
+`include` filter. These filters match anywhere in the title and can therefore
+produce unintended substring matches. Prefer leading-name assignment for
+reliable person matching and events involving multiple people.
 
 ```yaml
 type: custom:home-calendar-card
