@@ -2743,7 +2743,7 @@ class HomeCalendarCard extends HTMLElement {
     // people you can add a task for: everyone with the shared list, otherwise those with their own list
     const people = tab.id ? [] : this._todoPeople().filter((c) => shared || lists.some((l) => l.cal === c));
     const o = this._todoOpts();
-    const key = JSON.stringify([tab.id, tabs.map((t) => [t.id, t.title, t.icon]), lists.map((l) => [l.entity, l.cal?.entity, this._features(l.entity)]), this._config.todo_title, this._config.todo_autohide, o, people.map((c) => [c.entity, this._calName(c), c.color])]);
+    const key = JSON.stringify([tab.id, tabs.map((t) => [t.id, t.title, t.icon]), lists.map((l) => [l.entity, l.cal?.entity, this._features(l.entity)]), this._config.todo_title, this._config.todo_autohide, this._config.allow_add_tasks, o, people.map((c) => [c.entity, this._calName(c), c.color])]);
     if (key === this._todoKey) return;
     this._todoKey = key;
     box.hidden = false;
@@ -2752,7 +2752,7 @@ class HomeCalendarCard extends HTMLElement {
     }
     const can = (bits) => lists.some((l) => !this._hass || !this._hass.states[l.entity] || (this._features(l.entity) & bits));
     const canDue = can(16 | 32);
-    const canAdd = can(1);
+    const canAdd = this._config.allow_add_tasks !== false && can(1);
     const chip = (entity, label, color, av) => `<button type="button" class="chip ${this._todoWho === entity ? "sel" : ""}" style="--c:${esc(color)}" data-action="todo-who" data-entity="${esc(entity)}">${av || `<span class="dot"></span>`}${esc(label)}</button>`;
     box.innerHTML = `
       <div class="todo-head" ${this._todoAutohide() ? `data-action="todo-toggle" role="button" title="${esc(this._t("todo_toggle"))}"` : ""}>
