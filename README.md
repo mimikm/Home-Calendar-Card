@@ -248,7 +248,7 @@ max_height: 640px
 | `month_start` | `week` \| `today` | `week` | With `month_weeks`: the grid starts at the start of the week, or today (no past days) |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
 | `refresh_interval` | minutes | `5` | How often events are re-fetched |
-| `allow_add_tasks` | boolean | `true` | Show the *Add a task…* box under the to-do list. `false` hides it; the tasks stay visible and can still be ticked off |
+| `allow_add_tasks` | boolean | `true` | Show the *Add a task…* box under the to-do list. `false` hides it; the tasks stay visible and can still be ticked off. Also in the visual editor. Thanks [@360coolp](https://github.com/360coolp) ([#31](https://github.com/mimikm/Home-Calendar-Card/pull/31)) |
 
 ### Calendar options
 
