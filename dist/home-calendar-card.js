@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.2";
+const CARD_VERSION = "1.20.3-beta.1";
 
 // Literal, complete names at the start only; longest names take precedence.
 function titlePersons(summary, configured) {
@@ -2487,11 +2487,11 @@ class HomeCalendarCard extends HTMLElement {
     if (this._hass) {
       this._subscribeWeather();
       this._subscribeTodo();
-      this._fetchEvents();
-      this._fetchCountdowns();
+      this._configFetch();
     }
     this._render();
   }
+
 
   set hass(hass) {
     const old = this._hass;
@@ -2500,8 +2500,8 @@ class HomeCalendarCard extends HTMLElement {
     if (!old) {
       this._subscribeWeather();
       this._subscribeTodo();
-      this._fetchEvents();
-      this._fetchCountdowns();
+      this._evKey = undefined;
+      this._configFetch();
       this._render();
       return;
     }
@@ -3230,6 +3230,41 @@ class HomeCalendarCard extends HTMLElement {
     return { start: a, end: addDays(a, n), days: n };
   }
 
+  // #32: the visual editor calls setConfig on every keystroke. Re-read calendars only when something that
+  // affects them changed, and only once typing pauses; countdowns only when a countdown setting changed.
+  _configFetch() {
+    const c = this._config;
+    const cals = JSON.stringify(this._calendars.map((x) => [x.entity, x._incl, x._excl, x._matchIn, x.exclude_all_day, x.type, x.etype, x.title_person, x.private]));
+    const evKey = JSON.stringify([cals, c.title_persons, c.event_types, c.days_to_show, c.default_view, c.month_weeks, c.month_start, c.week_start, c.planner_days, c.planner_start, c.year_start, c.first_day_of_week]);
+    const cdKey = JSON.stringify([cals, c.countdowns, c.countdown_days, c.countdown_scan_days, c.event_types, c.max_countdowns]);
+    const first = this._evKey === undefined;
+    const evChanged = evKey !== this._evKey;
+    const cdChanged = cdKey !== this._cdKey;
+    this._evKey = evKey; this._cdKey = cdKey;
+    clearTimeout(this._cfgFetchTimer);
+    if (first) { this._fetchEvents(); this._fetchCountdowns(); return; }
+    if (!evChanged && !cdChanged) return;
+    this._cfgFetchTimer = setTimeout(() => {
+      if (evChanged) this._fetchEvents();
+      if (cdChanged) this._fetchCountdowns(true);
+    }, 800);
+  }
+
+  // #32: read calendars through a small queue – at most 2 requests to Home Assistant at a time,
+  // so a dashboard with many (or heavy, repeating-event) calendars never hits HA with a burst.
+  _calGet(ent, start, end) {
+    const run = () => this._hass.callApi("GET", `calendars/${ent}?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
+    this._calQ = this._calQ || { active: 0, wait: [] };
+    const q = this._calQ;
+    return new Promise((resolve, reject) => {
+      const go = () => {
+        q.active++;
+        run().then(resolve, reject).finally(() => { q.active--; const next = q.wait.shift(); if (next) next(); });
+      };
+      if (q.active < 2) go(); else q.wait.push(go);
+    });
+  }
+
   async _fetchEvents() {
     if (!this._hass || !this._config) return;
     const id = ++this._fetchId;
@@ -3237,11 +3272,12 @@ class HomeCalendarCard extends HTMLElement {
     this._loading = true;
     this._render();
     const errors = [];
+    const once = {}; // one request per calendar, even when it's listed several times (one entry per person)
     const lists = await Promise.all(this._calendars.map(async (cal) => {
       if (!this._hass.states[cal.entity]) { errors.push(`${cal.entity} not found`); return []; }
       try {
-        const res = await this._hass.callApi("GET",
-          `calendars/${cal.entity}?start=${encodeURIComponent(start.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
+        once[cal.entity] = once[cal.entity] || this._calGet(cal.entity, start, end);
+        const res = await once[cal.entity];
         return (res || []).filter((e) => this._keep(e, cal)).map((e) => this._normalize(e, cal));
       } catch (e) {
         errors.push(`${cal.entity}: ${e?.body?.message || e?.message || "could not load events"}`);
@@ -3552,21 +3588,31 @@ class HomeCalendarCard extends HTMLElement {
 
   /* ------------------------------------------------------------ countdowns */
 
-  async _fetchCountdowns() {
+  async _fetchCountdowns(force = false) {
     const list = (this._config?.countdowns || []).map((c) => (typeof c === "string" ? { calendar: c } : { ...c }));
     const cdTypes = (this._types || []).filter((t) => t.countdown).map((t) => t.id);
     if ((!list.length && !cdTypes.length) || !this._hass) { this._countdowns = []; return; }
     const id = (this._cdId = (this._cdId || 0) + 1);
     const now = new Date();
     const today = startOfDay(now);
-    const end = addDays(today, Math.max(7, Number(this._config.countdown_days) || 365));
-    const cache = {};
+    // #32: a full-year scan only where countdowns are likely (birthday/holiday-type calendars and the ones
+    // listed under `countdowns:`); ordinary calendars are scanned `countdown_scan_days` (60) ahead for #tags.
+    // Results are kept for an hour – countdowns rarely change, and ⟳ or adding an event refreshes them.
+    const full = Math.max(7, Number(this._config.countdown_days) || 365);
+    const scan = Math.min(full, Math.max(7, Number(this._config.countdown_scan_days) || 60));
+    const listed = new Set(list.map((c) => c.calendar).filter(Boolean));
+    const daysFor = (ent) => (listed.has(ent) || this._calendars.some((c) => c.entity === ent && c.type !== "events") ? full : scan);
+    if (force || !this._cdCache || this._cdCache.day !== dayKey(today)) this._cdCache = { day: dayKey(today), m: {} };
+    const C = this._cdCache.m;
     const look = (ent) => {
-      if (!cache[ent]) {
-        cache[ent] = this._hass.callApi("GET",
-          `calendars/${ent}?start=${encodeURIComponent(today.toISOString())}&end=${encodeURIComponent(end.toISOString())}`);
-      }
-      return cache[ent];
+      const days = daysFor(ent);
+      const k = `${ent}|${days}`;
+      const hit = C[k];
+      if (hit && Date.now() - hit.at < 3600e3) return hit.p;
+      const p = this._calGet(ent, today, addDays(today, days));
+      C[k] = { at: Date.now(), p };
+      p.catch(() => { if (C[k]?.p === p) delete C[k]; }); // don't keep failures
+      return p;
     };
     const out = await Promise.all(list.map(async (cd) => {
       const cal = this._calendars.find((c) => c.entity === cd.calendar);
@@ -4669,7 +4715,7 @@ class HomeCalendarCard extends HTMLElement {
       this._syncing = false;
       this.shadowRoot?.querySelectorAll(".icon.sync").forEach((b) => b.classList.remove("spin"));
       this._fetchEvents();
-      this._fetchCountdowns();
+      this._fetchCountdowns(true);
       this._fetchTodoCal();
     }
   }
@@ -5402,8 +5448,8 @@ class HomeCalendarCard extends HTMLElement {
       this._toast(this._t("added", { t: title }));
       // Some integrations (e.g. CalDAV) take a moment before the new event is listed.
       this._fetchEvents();
-      this._fetchCountdowns();
-      setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(); }, 4000);
+      this._fetchCountdowns(true);
+      setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(true); }, 4000);
     } catch (err) {
       btn.disabled = false;
       btn.textContent = this._t("save");
@@ -5439,8 +5485,8 @@ class HomeCalendarCard extends HTMLElement {
     if (ok) {
       if (!failed.length) this._toast(this._t("added_n", { t: f.title, n: ok }));
       this._fetchEvents();
-      this._fetchCountdowns();
-      setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(); }, 4000);
+      this._fetchCountdowns(true);
+      setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(true); }, 4000);
     }
   }
 
@@ -5499,8 +5545,8 @@ class HomeCalendarCard extends HTMLElement {
       const cal = this._calendars.find((c) => c.entity === this._addCal);
       this._toast(moving ? this._t("moved", { t: f.title, c: this._calName(cal) }) : this._t("saved", { t: f.title }));
       this._fetchEvents();
-      this._fetchCountdowns();
-      setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(); }, 4000);
+      this._fetchCountdowns(true);
+      setTimeout(() => { this._fetchEvents(); this._fetchCountdowns(true); }, 4000);
     } catch (err) {
       if (this._q(".edit-confirm")) this._restoreFormFoot();
       busy(false);
@@ -5533,7 +5579,7 @@ class HomeCalendarCard extends HTMLElement {
         : scope === "future" ? this._t("deleted_from", { t: ev.summary, d: this._fmt({ day: "numeric", month: "short" }).format(ev.start) })
           : this._t("deleted", { t: ev.summary }));
       this._fetchEvents();
-      this._fetchCountdowns();
+      this._fetchCountdowns(true);
     } catch (err) {
       this._dlg.querySelectorAll('[data-action^="delete"]').forEach((b) => { b.disabled = false; });
       this._setFormError(err?.message || this._t("err_delete"));

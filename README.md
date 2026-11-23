@@ -172,7 +172,8 @@ max_height: 640px
 |---|---|---|---|
 | `calendars` | list | **required** | Calendar entity IDs, or objects – see *Calendar options* |
 | `countdowns` | list | – | Countdown cards shown under the header – see *Countdowns* |
-| `countdown_days` | number | `365` | How far ahead calendar-based countdowns look |
+| `countdown_days` | number | `365` | How far ahead countdowns look in birthday/holiday-type calendars and the ones listed under `countdowns` |
+| `countdown_scan_days` | number | `60` | How far ahead ordinary event calendars are checked for countdown tags like `#holiday` (kept short to keep Home Assistant light) |
 | `max_countdowns` | number | `8` | Maximum countdown cards shown |
 | `show_countdowns` | boolean | `true` | Show the countdown strip – see *Appearance* |
 | `countdown_style` | `cards` \| `compact` | `cards` | `compact` = one slim row of pills |
@@ -247,7 +248,7 @@ max_height: 640px
 | `month_weeks` | number | – | Month view shows a rolling grid of this many weeks (1–6) instead of the calendar month; ‹ › move by that many weeks |
 | `month_start` | `week` \| `today` | `week` | With `month_weeks`: the grid starts at the start of the week, or today (no past days) |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
-| `refresh_interval` | minutes | `5` | How often events are re-fetched |
+| `refresh_interval` | minutes | `5` | How often events are re-fetched (countdowns are refreshed hourly, or straight away with ⟳ or after you add or change an event) |
 | `allow_add_tasks` | boolean | `true` | Show the *Add a task…* box under the to-do list. `false` hides it; the tasks stay visible and can still be ticked off. Also in the visual editor. Thanks [@360coolp](https://github.com/360coolp) ([#31](https://github.com/mimikm/Home-Calendar-Card/pull/31)) |
 
 ### Calendar options
@@ -1236,6 +1237,8 @@ Both use Home Assistant's `homeassistant.update_entity` action, which tells the 
 <sub>Requested by [@xzyriel](https://github.com/xzyriel) in [#23](https://github.com/mimikm/Home-Calendar-Card/issues/23).</sub>
 
 ## Troubleshooting
+
+- **Home Assistant slow or restarting with big calendars** – fixed in v1.20.3. The card now asks Home Assistant for much less: calendars are read two at a time, a calendar listed several times is read once, countdowns are cached for an hour and only birthday/holiday-type calendars are scanned a full year ahead, and the visual editor waits until you stop typing. If it's still heavy, lower `countdown_days` / `countdown_scan_days`.
 
 - **No weather on days** – your weather entity must support a *daily* forecast. Hourly-only providers will show the current conditions in the header only.
 - **"Event" button missing** – none of the configured calendars support creating events. Check the calendar's integration.
