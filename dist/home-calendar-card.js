@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.3-beta.1";
+const CARD_VERSION = "1.20.3-beta.2";
 
 // Literal, complete names at the start only; longest names take precedence.
 function titlePersons(summary, configured) {
@@ -2403,7 +2403,6 @@ class HomeCalendarCard extends HTMLElement {
     this._config = {
       default_view: "agenda", days_to_show: 7, first_day_of_week: "monday", time_format: "auto",
       show_empty_days: false, show_header: true, show_calendar_chips: true, allow_add: true,
-      refresh_interval: 5,
       ...config,
     };
     this._calendars = config.calendars
@@ -2532,7 +2531,7 @@ class HomeCalendarCard extends HTMLElement {
   connectedCallback() {
     this._today = dayKey(new Date());
     this._onResize = () => { cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(() => { this._applyLayout(true); this._placeWeekBars(); }); };
-    this._onVis = () => this._keepAwake();
+    this._onVis = () => { this._keepAwake(); if (!document.hidden) this._refreshTick(); };
     window.addEventListener("resize", this._onResize);
     if (window.ResizeObserver && !this._ro) { this._ro = new ResizeObserver(() => { if (this._gridOn()) this._onResize(); }); this._ro.observe(this); }
     document.addEventListener("visibilitychange", this._onVis);
@@ -2552,8 +2551,10 @@ class HomeCalendarCard extends HTMLElement {
       }
       this._render();
     }, 60 * 1000);
-    const mins = Math.max(1, Number(this._config?.refresh_interval) || 5);
-    this._refresh = setInterval(() => { this._fetchEvents(); this._fetchCountdowns(); this._fetchTodoCal(); }, mins * 60 * 1000);
+    // checked every minute: refresh when refresh_interval has passed – but not while the page is hidden
+    // (screen off / another tab); it catches up as soon as the page is visible again (#32)
+    this._lastRefresh = Date.now();
+    this._refresh = setInterval(() => this._refreshTick(), 60 * 1000);
     this._startSyncTimer();
     clearInterval(this._travelTimer);
     this._travelTimer = setInterval(() => this._updateTravel(), 60 * 1000); // re-checks every minute; each place is refreshed after `refresh` minutes
@@ -3235,8 +3236,8 @@ class HomeCalendarCard extends HTMLElement {
   _configFetch() {
     const c = this._config;
     const cals = JSON.stringify(this._calendars.map((x) => [x.entity, x._incl, x._excl, x._matchIn, x.exclude_all_day, x.type, x.etype, x.title_person, x.private]));
-    const evKey = JSON.stringify([cals, c.title_persons, c.event_types, c.days_to_show, c.default_view, c.month_weeks, c.month_start, c.week_start, c.planner_days, c.planner_start, c.year_start, c.first_day_of_week]);
-    const cdKey = JSON.stringify([cals, c.countdowns, c.countdown_days, c.countdown_scan_days, c.event_types, c.max_countdowns]);
+    const evKey = JSON.stringify([cals, c.title_persons, c.event_types, c.days_to_show, c.default_view, c.month_weeks, c.month_start, c.week_start, c.planner_days, c.planner_start, c.year_start, c.first_day_of_week, (this._calendars || []).map((x) => x.year_view)]);
+    const cdKey = JSON.stringify([cals, c.countdowns, c.countdown_days, c.countdown_scan_days, c.event_types, c.max_countdowns, c.show_countdowns]);
     const first = this._evKey === undefined;
     const evChanged = evKey !== this._evKey;
     const cdChanged = cdKey !== this._cdKey;
@@ -3265,15 +3266,25 @@ class HomeCalendarCard extends HTMLElement {
     });
   }
 
-  async _fetchEvents() {
+  // force = false (switching views, ‹ ›, Today): reuse events already loaded when they cover the new range,
+  // instead of asking Home Assistant again (#32). Refreshes, changes and ⟳ always fetch.
+  async _fetchEvents(force = true) {
     if (!this._hass || !this._config) return;
-    const id = ++this._fetchId;
     const { start, end } = this._range();
+    // Year view: only the calendars shown there (#32 – a year of every calendar is heavy)
+    const cals = this._view === "year" ? this._calendars.filter((c) => this._yearCal(c)) : this._calendars;
+    const ents = [...new Set(cals.map((c) => c.entity))];
+    const L = this._loaded;
+    if (!force && L && start >= L.start && end <= L.end && ents.every((e) => L.ents.has(e)) && Date.now() - L.at < this._refreshMs()) {
+      this._render();
+      return;
+    }
+    const id = ++this._fetchId;
     this._loading = true;
     this._render();
     const errors = [];
     const once = {}; // one request per calendar, even when it's listed several times (one entry per person)
-    const lists = await Promise.all(this._calendars.map(async (cal) => {
+    const lists = await Promise.all(cals.map(async (cal) => {
       if (!this._hass.states[cal.entity]) { errors.push(`${cal.entity} not found`); return []; }
       try {
         once[cal.entity] = once[cal.entity] || this._calGet(cal.entity, start, end);
@@ -3285,6 +3296,7 @@ class HomeCalendarCard extends HTMLElement {
       }
     }));
     if (id !== this._fetchId) return; // a newer fetch superseded this one
+    this._loaded = errors.length ? null : { start, end, ents: new Set(ents), at: Date.now() };
     this._events = lists.flat().sort((a, b) => (b.allDay - a.allDay) || (a.start - b.start) || a.summary.localeCompare(b.summary));
     this._error = errors.length ? errors.join(" · ") : null;
     this._loading = false;
@@ -3591,7 +3603,7 @@ class HomeCalendarCard extends HTMLElement {
   async _fetchCountdowns(force = false) {
     const list = (this._config?.countdowns || []).map((c) => (typeof c === "string" ? { calendar: c } : { ...c }));
     const cdTypes = (this._types || []).filter((t) => t.countdown).map((t) => t.id);
-    if ((!list.length && !cdTypes.length) || !this._hass) { this._countdowns = []; return; }
+    if ((!list.length && !cdTypes.length) || !this._hass || this._config.show_countdowns === false) { this._countdowns = []; return; }
     const id = (this._cdId = (this._cdId || 0) + 1);
     const now = new Date();
     const today = startOfDay(now);
@@ -4029,7 +4041,7 @@ class HomeCalendarCard extends HTMLElement {
     if (!sameDay(this._anchor, new Date()) || this._view !== def) {
       this._anchor = startOfDay(new Date());
       this._view = def;
-      this._fetchEvents();
+      this._fetchEvents(false);
     }
     this._fetchAmbient();
   }
@@ -4681,13 +4693,31 @@ class HomeCalendarCard extends HTMLElement {
     </div>`;
   }
 
+  // refresh_interval (minutes); default 5, or 15 when a calendar uses CalDAV (iCloud etc.) – HA only syncs
+  // those about every 15 minutes, and each read is heavy on small machines (#32)
+  _refreshMs() {
+    const set = Number(this._config?.refresh_interval);
+    if (set > 0) return Math.max(1, set) * 60e3;
+    const caldav = this._calendars?.some((c) => this._hass?.entities?.[c.entity]?.platform === "caldav");
+    return (caldav ? 15 : 5) * 60e3;
+  }
+
+  _refreshTick() {
+    if (document.hidden || !this._hass || !this._config) return;
+    if (Date.now() - (this._lastRefresh || 0) < this._refreshMs()) return;
+    this._lastRefresh = Date.now();
+    this._fetchEvents();
+    this._fetchCountdowns();
+    this._fetchTodoCal();
+  }
+
   // optional: ask HA to sync its calendars with Google/iCloud every N minutes (#23)
   _startSyncTimer() {
     clearInterval(this._syncTimer);
     this._syncTimer = null;
     const sync = Number(this._config?.calendar_sync_minutes) || 0;
     this._syncEvery = sync;
-    if (sync > 0 && this.isConnected) this._syncTimer = setInterval(() => this._syncNow(false), Math.max(5, sync) * 60 * 1000);
+    if (sync > 0 && this.isConnected) this._syncTimer = setInterval(() => { if (!document.hidden) this._syncNow(false); }, Math.max(5, sync) * 60 * 1000);
   }
 
   // ⟳ button (#23): HA only syncs Google/CalDAV calendars every ~15 min, so ask it to sync now
@@ -5619,7 +5649,7 @@ class HomeCalendarCard extends HTMLElement {
       case "view":
         if (this._view !== el.dataset.view) {
           this._view = el.dataset.view;
-          this._fetchEvents();
+          this._fetchEvents(false);
         }
         break;
       case "prev":
@@ -5631,12 +5661,12 @@ class HomeCalendarCard extends HTMLElement {
         else if (this._view === "week") this._anchor = addDays(this._anchor, 7 * dir);
         else if (this._view === "planner") this._anchor = addDays(this._config.planner_start === "today" ? this._anchor : this._startOfWeek(this._anchor), this._plannerDays() * dir);
         else this._anchor = addDays(this._anchor, (Math.max(1, Number(this._config.days_to_show) || 7)) * dir);
-        this._fetchEvents();
+        this._fetchEvents(false);
         break;
       }
       case "today":
         this._anchor = startOfDay(new Date());
-        this._fetchEvents();
+        this._fetchEvents(false);
         break;
       case "sync":
         this._syncNow(true);
@@ -5700,7 +5730,7 @@ class HomeCalendarCard extends HTMLElement {
         const t = Number(el.dataset.start);
         const ev = this._events.find((x) => x.start.getTime() === t && x.summary === el.dataset.name);
         if (ev) this._openEvent(ev);
-        else { this._view = "agenda"; this._anchor = startOfDay(new Date(t)); this._fetchEvents(); }
+        else { this._view = "agenda"; this._anchor = startOfDay(new Date(t)); this._fetchEvents(false); }
         break;
       }
       case "multi-cal": {

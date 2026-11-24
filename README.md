@@ -248,7 +248,7 @@ max_height: 640px
 | `month_weeks` | number | – | Month view shows a rolling grid of this many weeks (1–6) instead of the calendar month; ‹ › move by that many weeks |
 | `month_start` | `week` \| `today` | `week` | With `month_weeks`: the grid starts at the start of the week, or today (no past days) |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
-| `refresh_interval` | minutes | `5` | How often events are re-fetched (countdowns are refreshed hourly, or straight away with ⟳ or after you add or change an event) |
+| `refresh_interval` | minutes | `5` (`15` with CalDAV/iCloud) | How often events are re-fetched. Paused while the screen or tab is hidden. Countdowns are refreshed hourly, or straight away with ⟳ or after you add or change an event |
 | `allow_add_tasks` | boolean | `true` | Show the *Add a task…* box under the to-do list. `false` hides it; the tasks stay visible and can still be ticked off. Also in the visual editor. Thanks [@360coolp](https://github.com/360coolp) ([#31](https://github.com/mimikm/Home-Calendar-Card/pull/31)) |
 
 ### Calendar options
@@ -1238,7 +1238,7 @@ Both use Home Assistant's `homeassistant.update_entity` action, which tells the 
 
 ## Troubleshooting
 
-- **Home Assistant slow or restarting with big calendars** – fixed in v1.20.3. The card now asks Home Assistant for much less: calendars are read two at a time, a calendar listed several times is read once, countdowns are cached for an hour and only birthday/holiday-type calendars are scanned a full year ahead, and the visual editor waits until you stop typing. If it's still heavy, lower `countdown_days` / `countdown_scan_days`.
+- **Home Assistant slow or restarting with big calendars** – fixed in v1.20.3. The card now asks Home Assistant for much less: calendars are read two at a time, a calendar listed several times is read once, countdowns are cached for an hour and only birthday/holiday-type calendars are scanned a full year ahead, and the visual editor waits until you stop typing. Since v1.20.3 it also reuses events it has already loaded when you switch views, the Year view only reads calendars ticked *Show in Year view*, hidden countdowns aren't fetched, refreshing pauses while the screen is off, and CalDAV/iCloud calendars refresh every 15 minutes. On a small machine (e.g. a Raspberry Pi / Home Assistant Yellow) with CalDAV, you can go further with `refresh_interval: 15`, `countdown_scan_days: 14`, `countdown_days: 60`, `month_weeks: 3` or `show_year_view: false`.
 
 - **No weather on days** – your weather entity must support a *daily* forecast. Hourly-only providers will show the current conditions in the header only.
 - **"Event" button missing** – none of the configured calendars support creating events. Check the calendar's integration.
