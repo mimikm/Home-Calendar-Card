@@ -213,6 +213,7 @@ max_height: 640px
 | `multiday_bars` | boolean | `true` | All-day events lasting 2+ days show as one continuous bar – see *Multi-day events* |
 | `time_format` | `auto` \| `24h` \| `12h` | `auto` | `auto` follows your HA user profile |
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
+| `hide_past_events` | boolean | `false` | Hide today's events once they're over – ongoing, upcoming and all-day events stay. Handy on wall displays. Requested by [@kornelremete](https://github.com/kornelremete) in [#36](https://github.com/mimikm/Home-Calendar-Card/issues/36) |
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
 | `grid` | object | – | Your own grid layout from the Layout designer – see *Layout designer* |
@@ -244,7 +245,7 @@ max_height: 640px
 | `week_style` | `list` \| `timeline` | `list` | Week view as day columns, or an hour timeline with events sized by duration – see *Timeline week* |
 | `week_hour_start` / `week_hour_end` | number | `7` / `22` | Hours shown in the Timeline week (it widens automatically for earlier or later events) |
 | `show_year_view` | boolean | `true` | Show the **Year** view button – see *Year view* |
-| `year_start` | `january` \| `month` | `january` | Year view shows the calendar year, or 12 months from the current month |
+| `year_start` | `january` \| `half` \| `month` | `january` | Year view shows the calendar year, this half-year and the next (Jul–Jun in the second half of the year, Jan–Dec in the first), or 12 months from the current month |
 | `month_weeks` | number | – | Month view shows a rolling grid of this many weeks (1–6) instead of the calendar month; ‹ › move by that many weeks |
 | `month_start` | `week` \| `today` | `week` | With `month_weeks`: the grid starts at the start of the week, or today (no past days) |
 | `max_height` | CSS size | – | Makes the event area scroll, e.g. `600px` |
@@ -451,6 +452,9 @@ default_event_type: standard
 | `countdown_limit` | Only the next N events of this type get a card (birthdays default to `2`) |
 | `countdown_days` | Only events within this many days get a card (default: the card's `countdown_days`, 365) |
 | `countdown_calendars` | `true` to also count down events from calendars of this type, not just tagged events (on by default for birthdays and anniversaries) |
+| `hide_name` | `true` to show only the icon on events of this type, e.g. *🎂 Heino* instead of *Birthday · Heino* (the age stays, e.g. *turns 70*). Also *Only the icon on events* in the visual editor. Requested by [@oliverlinsenmaier](https://github.com/oliverlinsenmaier) in [#33](https://github.com/mimikm/Home-Calendar-Card/issues/33) |
+
+**Tip:** to get a birthday icon on events without making a calendar a "birthday calendar" (no countdowns, keeps its Planner column), create your own type in **Event types** – e.g. *Birthday (icon)* with the cake icon and *Normal* style – and set the calendar's **Type** to it, or turn off **Countdown** on the Birthday type.
 
 ### Calendar types (your own)
 
@@ -906,7 +910,7 @@ The **Year** view shows the whole year like a printed holiday planner: months si
 Choose which calendars appear with **Show in Year view** in each calendar's settings, e.g. only *School holidays*, *Vacation* and *Birthdays*. If no calendar is ticked, all-day events from every calendar are shown. Timed appointments never appear here.
 
 ```yaml
-year_start: january      # or "month" for the next 12 months from now
+year_start: january      # "half" = this half-year and the next, "month" = the next 12 months
 calendars:
   - entity: calendar.school_holidays
     year_view: true
@@ -915,12 +919,14 @@ calendars:
   - entity: calendar.family        # not in the Year view
 ```
 
-- Each block is labelled on its first day (and again at the top of each month).
+- **Multi-day events are one continuous bar** down the month, staying in the same place for their whole length (up to 3 side by side, then *+N*). Each bar is labelled on its first day and again at the top of each month.
+- **Holiday-banner calendars tint the days** in their colour instead of drawing a bar (several holidays share the tint), labelled on their first day – like a printed school-holiday plan.
+- `year_start: half` shows this half-year and the next: July–June from July to December, and January–December from January to June.
 - Tap a day to see everything on it, or a block to open the event. ‹ › move a year at a time.
 - On phones the year scrolls sideways.
 - Hide the button with `show_year_view: false`.
 
-<sub>Requested by [@oliverlinsenmaier](https://github.com/oliverlinsenmaier) in [#25](https://github.com/mimikm/Home-Calendar-Card/issues/25).</sub>
+<sub>Requested by [@oliverlinsenmaier](https://github.com/oliverlinsenmaier) in [#25](https://github.com/mimikm/Home-Calendar-Card/issues/25), with continuous bars and the half-year option in [#35](https://github.com/mimikm/Home-Calendar-Card/issues/35) and [#34](https://github.com/mimikm/Home-Calendar-Card/issues/34).</sub>
 
 ### Wall display (permanent desktop / tablet)
 

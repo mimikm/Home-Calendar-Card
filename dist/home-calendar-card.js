@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.3-beta.2";
+const CARD_VERSION = "1.20.3-beta.3";
 
 // Literal, complete names at the start only; longest names take precedence.
 function titlePersons(summary, configured) {
@@ -145,6 +145,7 @@ const I18N = {
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
     l_todo_lists: "More lists as tabs (e.g. shopping)", ed_todo_lists_help: "Each list gets its own tab in the to-do block. Set a title or icon in YAML.",
     l_month_show_time: "Show start time in Month view",
+    o_ys_half: "Half-year (this and the next six months)", l_type_hide_name: "Only the icon on events (no type name)", l_hide_past_events: "Hide today's events once they're over",
     l_allow_add_tasks: "Show the “Add a task” box",
     l_geocode: "Look up addresses with OpenStreetMap", ed_geocode_help: "Waze no longer finds addresses itself. This sends event locations to OpenStreetMap (free, no key) to get their coordinates.", multi_sel: "Several", added_n: "Added “{t}” to {n} calendars", err_some: "Couldn't add it to: {c}",
     ed_backup: "Backup & restore", ed_backup_sub: "Save this card's settings to a file, or load them back – before big changes, or to copy the card to another dashboard.", ed_bk_download: "Download backup", ed_bk_copy: "Copy", ed_bk_copied: "Copied", ed_bk_restore: "Restore from file", ed_bk_confirm: "Replace the current settings with this backup ({d}, {n} calendars)?", ed_bk_replace: "Replace", ed_bk_done: "Settings restored – press Save to keep them.", ed_bk_bad: "This file isn't a Home Calendar Card backup.",
@@ -229,6 +230,7 @@ const I18N = {
     l_todo_show_empty: "Pokaż osoby z pustą własną listą", tg_empty: "Nic do zrobienia",
     l_todo_lists: "Kolejne listy jako karty (np. zakupy)", ed_todo_lists_help: "Każda lista ma własną kartę w bloku zadań. Tytuł lub ikonę ustawisz w YAML.",
     l_month_show_time: "Pokaż godzinę rozpoczęcia w widoku miesiąca",
+    o_ys_half: "Półrocze (bieżące i następne)", l_type_hide_name: "Tylko ikona przy wydarzeniach (bez nazwy typu)", l_hide_past_events: "Ukryj dzisiejsze wydarzenia, które już się skończyły",
     l_allow_add_tasks: "Pokaż pole „Dodaj zadanie”",
     l_geocode: "Wyszukuj adresy w OpenStreetMap", ed_geocode_help: "Waze nie wyszukuje już adresów samodzielnie. Lokalizacje wydarzeń są wysyłane do OpenStreetMap (bezpłatnie, bez klucza), aby ustalić ich współrzędne.", multi_sel: "Kilka", added_n: "Dodano „{t}” do {n} kalendarzy", err_some: "Nie udało się dodać do: {c}",
     ed_backup: "Kopia zapasowa", ed_backup_sub: "Zapisz ustawienia tej karty do pliku albo wczytaj je z powrotem – przed większymi zmianami albo żeby skopiować kartę na inny pulpit.", ed_bk_download: "Pobierz kopię", ed_bk_copy: "Kopiuj", ed_bk_copied: "Skopiowano", ed_bk_restore: "Przywróć z pliku", ed_bk_confirm: "Zastąpić obecne ustawienia tą kopią ({d}, kalendarze: {n})?", ed_bk_replace: "Zastąp", ed_bk_done: "Ustawienia przywrócone – naciśnij Zapisz, żeby je zachować.", ed_bk_bad: "Ten plik nie jest kopią zapasową Home Calendar Card.",
@@ -312,6 +314,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar personas con su lista vacía", tg_empty: "Nada pendiente",
     l_todo_lists: "Más listas como pestañas (p. ej. compra)", ed_todo_lists_help: "Cada lista tiene su propia pestaña en el bloque de tareas. El título o el icono se ajustan en YAML.",
     l_month_show_time: "Mostrar la hora de inicio en la vista Mes",
+    o_ys_half: "Semestre (este y el siguiente)", l_type_hide_name: "Solo el icono en los eventos (sin el nombre del tipo)", l_hide_past_events: "Ocultar los eventos de hoy que ya han terminado",
     l_allow_add_tasks: "Mostrar el cuadro «Añadir tarea»",
     l_geocode: "Buscar direcciones con OpenStreetMap", ed_geocode_help: "Waze ya no encuentra direcciones por sí mismo. Esto envía la ubicación de los eventos a OpenStreetMap (gratis, sin clave) para obtener sus coordenadas.", multi_sel: "Varios", added_n: "«{t}» añadido a {n} calendarios", err_some: "No se pudo añadir a: {c}",
     ed_backup: "Copia de seguridad", ed_backup_sub: "Guarda los ajustes de esta tarjeta en un archivo o vuelve a cargarlos: antes de grandes cambios o para copiar la tarjeta a otro panel.", ed_bk_download: "Descargar copia", ed_bk_copy: "Copiar", ed_bk_copied: "Copiado", ed_bk_restore: "Restaurar desde archivo", ed_bk_confirm: "¿Sustituir los ajustes actuales por esta copia ({d}, {n} calendarios)?", ed_bk_replace: "Sustituir", ed_bk_done: "Ajustes restaurados: pulsa Guardar para conservarlos.", ed_bk_bad: "Este archivo no es una copia de Home Calendar Card.",
@@ -395,6 +398,7 @@ const I18N = {
     l_todo_show_empty: "Mostra le persone con la propria lista vuota", tg_empty: "Niente da fare",
     l_todo_lists: "Altre liste come schede (es. spesa)", ed_todo_lists_help: "Ogni lista ha la sua scheda nel blocco delle cose da fare. Titolo o icona si impostano in YAML.",
     l_month_show_time: "Mostra l'ora di inizio nella vista Mese",
+    o_ys_half: "Semestre (questo e il successivo)", l_type_hide_name: "Solo l'icona sugli eventi (senza nome del tipo)", l_hide_past_events: "Nascondi gli eventi di oggi già finiti",
     l_allow_add_tasks: "Mostra la casella “Aggiungi attività”",
     l_geocode: "Cerca gli indirizzi con OpenStreetMap", ed_geocode_help: "Waze non trova più gli indirizzi da solo. I luoghi degli eventi vengono inviati a OpenStreetMap (gratis, senza chiave) per ottenerne le coordinate.", multi_sel: "Più calendari", added_n: "“{t}” aggiunto a {n} calendari", err_some: "Impossibile aggiungere a: {c}",
     ed_backup: "Backup e ripristino", ed_backup_sub: "Salva le impostazioni di questa card in un file o ricaricale: prima di grandi modifiche o per copiare la card su un'altra dashboard.", ed_bk_download: "Scarica backup", ed_bk_copy: "Copia", ed_bk_copied: "Copiato", ed_bk_restore: "Ripristina da file", ed_bk_confirm: "Sostituire le impostazioni attuali con questo backup ({d}, {n} calendari)?", ed_bk_replace: "Sostituisci", ed_bk_done: "Impostazioni ripristinate: premi Salva per mantenerle.", ed_bk_bad: "Questo file non è un backup di Home Calendar Card.",
@@ -654,6 +658,7 @@ const I18N = {
     l_todo_show_empty: "Personen met een lege eigen lijst tonen", tg_empty: "Niets te doen",
     l_todo_lists: "Meer lijsten als tabbladen (bijv. boodschappen)", ed_todo_lists_help: "Elke lijst krijgt een eigen tabblad in het takenblok. Titel of pictogram stel je in YAML in.",
     l_month_show_time: "Begintijd tonen in de maandweergave",
+    o_ys_half: "Halfjaar (dit en het volgende)", l_type_hide_name: "Alleen het pictogram bij afspraken (zonder soortnaam)", l_hide_past_events: "Afspraken van vandaag verbergen zodra ze voorbij zijn",
     l_allow_add_tasks: "Vak ‘Taak toevoegen’ tonen",
     l_geocode: "Adressen opzoeken met OpenStreetMap", ed_geocode_help: "Waze vindt adressen niet meer zelf. Locaties van afspraken worden naar OpenStreetMap gestuurd (gratis, geen sleutel) om de coördinaten op te halen.", multi_sel: "Meerdere", added_n: "“{t}” toegevoegd aan {n} agenda's", err_some: "Kon niet toevoegen aan: {c}",
     ed_backup: "Back-up en herstel", ed_backup_sub: "Bewaar de instellingen van deze kaart in een bestand of laad ze terug – vóór grote wijzigingen of om de kaart naar een ander dashboard te kopiëren.", ed_bk_download: "Back-up downloaden", ed_bk_copy: "Kopiëren", ed_bk_copied: "Gekopieerd", ed_bk_restore: "Herstellen uit bestand", ed_bk_confirm: "De huidige instellingen vervangen door deze back-up ({d}, {n} agenda's)?", ed_bk_replace: "Vervangen", ed_bk_done: "Instellingen hersteld – druk op Opslaan om ze te bewaren.", ed_bk_bad: "Dit bestand is geen back-up van Home Calendar Card.",
@@ -913,6 +918,7 @@ const I18N = {
     l_todo_show_empty: "Personen mit leerer eigener Liste anzeigen", tg_empty: "Nichts zu tun",
     l_todo_lists: "Weitere Listen als Tabs (z. B. Einkauf)", ed_todo_lists_help: "Jede Liste bekommt einen eigenen Tab im Aufgabenblock. Titel oder Symbol in YAML festlegen.",
     l_month_show_time: "Startzeit in der Monatsansicht anzeigen",
+    o_ys_half: "Halbjahr (dieses und das nächste)", l_type_hide_name: "Nur das Symbol an Terminen (ohne Artname)", l_hide_past_events: "Heutige Termine ausblenden, sobald sie vorbei sind",
     l_allow_add_tasks: "Feld „Aufgabe hinzufügen“ anzeigen",
     l_geocode: "Adressen mit OpenStreetMap suchen", ed_geocode_help: "Waze findet Adressen nicht mehr selbst. Terminorte werden an OpenStreetMap gesendet (kostenlos, ohne Schlüssel), um ihre Koordinaten zu ermitteln.", multi_sel: "Mehrere", added_n: "„{t}“ zu {n} Kalendern hinzugefügt", err_some: "Konnte nicht hinzugefügt werden zu: {c}",
     ed_backup: "Sichern & Wiederherstellen", ed_backup_sub: "Einstellungen dieser Karte in einer Datei sichern oder wieder laden – vor größeren Änderungen oder um die Karte auf ein anderes Dashboard zu übernehmen.", ed_bk_download: "Sicherung herunterladen", ed_bk_copy: "Kopieren", ed_bk_copied: "Kopiert", ed_bk_restore: "Aus Datei wiederherstellen", ed_bk_confirm: "Aktuelle Einstellungen durch diese Sicherung ersetzen ({d}, {n} Kalender)?", ed_bk_replace: "Ersetzen", ed_bk_done: "Einstellungen wiederhergestellt – zum Übernehmen Speichern drücken.", ed_bk_bad: "Diese Datei ist keine Home-Calendar-Card-Sicherung.",
@@ -1172,6 +1178,7 @@ const I18N = {
     l_todo_show_empty: "Üres saját listájú személyek megjelenítése", tg_empty: "Nincs teendő",
     l_todo_lists: "További listák fülként (pl. bevásárlás)", ed_todo_lists_help: "Minden lista saját fület kap a teendők blokkban. A címet vagy ikont YAML-ben lehet megadni.",
     l_month_show_time: "Kezdési idő megjelenítése a havi nézetben",
+    o_ys_half: "Félév (ez és a következő)", l_type_hide_name: "Csak az ikon az eseményeknél (típusnév nélkül)", l_hide_past_events: "A mai, már véget ért események elrejtése",
     l_allow_add_tasks: "„Teendő hozzáadása” mező megjelenítése",
     l_geocode: "Címek keresése OpenStreetMappel", ed_geocode_help: "A Waze már nem keresi meg a címeket. Az események helyszíneit az OpenStreetMap kapja meg (ingyenes, kulcs nélkül) a koordináták meghatározásához.", multi_sel: "Több", added_n: "„{t}” hozzáadva {n} naptárhoz", err_some: "Nem sikerült hozzáadni ide: {c}",
     ed_backup: "Mentés és visszaállítás", ed_backup_sub: "Mentsd fájlba a kártya beállításait, vagy töltsd vissza őket – nagyobb módosítás előtt, vagy hogy a kártyát egy másik műszerfalra másold.", ed_bk_download: "Mentés letöltése", ed_bk_copy: "Másolás", ed_bk_copied: "Másolva", ed_bk_restore: "Visszaállítás fájlból", ed_bk_confirm: "Lecseréled a jelenlegi beállításokat erre a mentésre ({d}, {n} naptár)?", ed_bk_replace: "Csere", ed_bk_done: "Beállítások visszaállítva – a megtartáshoz nyomd meg a Mentést.", ed_bk_bad: "Ez a fájl nem Home Calendar Card mentés.",
@@ -1431,6 +1438,7 @@ const I18N = {
     l_todo_show_empty: "Mostrar pessoas com a própria lista vazia", tg_empty: "Nada a fazer",
     l_todo_lists: "Mais listas como abas (ex.: compras)", ed_todo_lists_help: "Cada lista ganha sua própria aba no bloco de tarefas. Título ou ícone podem ser definidos no YAML.",
     l_month_show_time: "Mostrar horário de início na visão Mês",
+    o_ys_half: "Semestre (este e o próximo)", l_type_hide_name: "Só o ícone nos eventos (sem o nome do tipo)", l_hide_past_events: "Ocultar os eventos de hoje que já terminaram",
     l_allow_add_tasks: "Mostrar a caixa “Adicionar tarefa”",
     l_geocode: "Buscar endereços com o OpenStreetMap", ed_geocode_help: "O Waze não encontra mais endereços sozinho. Os locais dos eventos são enviados ao OpenStreetMap (grátis, sem chave) para obter as coordenadas.", multi_sel: "Várias", added_n: "“{t}” adicionado a {n} agendas", err_some: "Não foi possível adicionar a: {c}",
     ed_backup: "Backup e restauração", ed_backup_sub: "Salve as configurações deste cartão em um arquivo ou carregue-as de volta – antes de grandes mudanças ou para copiar o cartão para outro painel.", ed_bk_download: "Baixar backup", ed_bk_copy: "Copiar", ed_bk_copied: "Copiado", ed_bk_restore: "Restaurar de arquivo", ed_bk_confirm: "Substituir as configurações atuais por este backup ({d}, {n} agendas)?", ed_bk_replace: "Substituir", ed_bk_done: "Configurações restauradas – toque em Salvar para mantê-las.", ed_bk_bad: "Este arquivo não é um backup do Home Calendar Card.",
@@ -1515,6 +1523,7 @@ const I18N = {
     l_todo_show_empty: "Прикажи особе са празном сопственом листом", tg_empty: "Нема задатака",
     l_todo_lists: "Још листа као картице (нпр. куповина)", ed_todo_lists_help: "Свака листа добија своју картицу у блоку задатака. Наслов или иконица се подешавају у YAML-у.",
     l_month_show_time: "Прикажи време почетка у месечном приказу",
+    o_ys_half: "Полугодиште (ово и следеће)", l_type_hide_name: "Само иконица на догађајима (без назива типа)", l_hide_past_events: "Сакриј данашње догађаје када прођу",
     l_allow_add_tasks: "Прикажи поље „Додај задатак”",
     l_geocode: "Тражи адресе преко OpenStreetMap-а", ed_geocode_help: "Waze више сам не проналази адресе. Локације догађаја се шаљу OpenStreetMap-у (бесплатно, без кључа) да би се добиле координате.", multi_sel: "Више", added_n: "„{t}” додат у {n} календара", err_some: "Није додато у: {c}",
     ed_backup: "Резервна копија", ed_backup_sub: "Сачувај подешавања ове картице у фајл или их врати – пре већих измена или да копираш картицу на другу контролну таблу.", ed_bk_download: "Преузми копију", ed_bk_copy: "Копирај", ed_bk_copied: "Копирано", ed_bk_restore: "Врати из фајла", ed_bk_confirm: "Заменити тренутна подешавања овом копијом ({d}, календара: {n})?", ed_bk_replace: "Замени", ed_bk_done: "Подешавања враћена – притисни Сачувај да их задржиш.", ed_bk_bad: "Овај фајл није резервна копија Home Calendar Card-а.",
@@ -1774,6 +1783,7 @@ const I18N = {
     l_todo_show_empty: "Prikaži osobe sa praznom sopstvenom listom", tg_empty: "Nema zadataka",
     l_todo_lists: "Još lista kao kartice (npr. kupovina)", ed_todo_lists_help: "Svaka lista dobija svoju karticu u bloku zadataka. Naslov ili ikonica se podešavaju u YAML-u.",
     l_month_show_time: "Prikaži vreme početka u mesečnom prikazu",
+    o_ys_half: "Polugodište (ovo i sledeće)", l_type_hide_name: "Samo ikonica na događajima (bez naziva tipa)", l_hide_past_events: "Sakrij današnje događaje kada prođu",
     l_allow_add_tasks: "Prikaži polje „Dodaj zadatak”",
     l_geocode: "Traži adrese preko OpenStreetMap-a", ed_geocode_help: "Waze više sam ne pronalazi adrese. Lokacije događaja se šalju OpenStreetMap-u (besplatno, bez ključa) da bi se dobile koordinate.", multi_sel: "Više", added_n: "„{t}” dodat u {n} kalendara", err_some: "Nije dodato u: {c}",
     ed_backup: "Rezervna kopija", ed_backup_sub: "Sačuvaj podešavanja ove kartice u fajl ili ih vrati – pre većih izmena ili da kopiraš karticu na drugu kontrolnu tablu.", ed_bk_download: "Preuzmi kopiju", ed_bk_copy: "Kopiraj", ed_bk_copied: "Kopirano", ed_bk_restore: "Vrati iz fajla", ed_bk_confirm: "Zameniti trenutna podešavanja ovom kopijom ({d}, kalendara: {n})?", ed_bk_replace: "Zameni", ed_bk_done: "Podešavanja vraćena – pritisni Sačuvaj da ih zadržiš.", ed_bk_bad: "Ovaj fajl nije rezervna kopija Home Calendar Card-a.",
@@ -2031,6 +2041,7 @@ const I18N = {
     l_todo_show_empty: "Afficher les personnes dont la liste est vide", tg_empty: "Rien à faire",
     l_todo_lists: "Autres listes en onglets (ex. courses)", ed_todo_lists_help: "Chaque liste a son propre onglet dans le bloc des tâches. Définissez un titre ou une icône en YAML.",
     l_month_show_time: "Afficher l’heure de début dans la vue Mois",
+    o_ys_half: "Semestre (celui-ci et le suivant)", l_type_hide_name: "Seulement l’icône sur les événements (sans le nom du type)", l_hide_past_events: "Masquer les événements d’aujourd’hui une fois terminés",
     l_allow_add_tasks: "Afficher la zone « Ajouter une tâche »", 
     added_n: "« {t} » ajouté à {n} calendriers", err_some: "Impossible de l’ajouter à : {c}", multi_sel: "Plusieurs",
     ed_backup: "Sauvegarde et restauration", ed_backup_sub: "Enregistrez les réglages de cette carte dans un fichier, ou rechargez-les – avant de gros changements, ou pour copier la carte vers un autre tableau de bord.",
@@ -3198,7 +3209,10 @@ class HomeCalendarCard extends HTMLElement {
     const a = this._anchor;
     if (this._view === "year") {
       // a calendar year, or 12 months from the shown month with year_start: month (#25)
-      const start = this._config.year_start === "month" ? new Date(a.getFullYear(), a.getMonth(), 1) : new Date(a.getFullYear(), 0, 1);
+      // year_start: january | month (next 12 months) | half (#34: this half-year and the next – Jul–Jun or Jan–Dec)
+      const ys = this._config.year_start;
+      const start = ys === "month" ? new Date(a.getFullYear(), a.getMonth(), 1)
+        : ys === "half" ? new Date(a.getFullYear(), a.getMonth() < 6 ? 0 : 6, 1) : new Date(a.getFullYear(), 0, 1);
       const end = new Date(start.getFullYear(), start.getMonth() + 12, 1);
       return { start, end, days: Math.round((end - start) / 864e5) };
     }
@@ -3519,7 +3533,11 @@ class HomeCalendarCard extends HTMLElement {
   _onDay(day) {
     const s = startOfDay(day);
     const e = addDays(s, 1);
+    // #36: hide_past_events – today's timed events disappear once they're over (the card redraws every minute)
+    const now = new Date();
+    const hidePast = this._config.hide_past_events === true && sameDay(s, now);
     return this._events.filter((ev) => !this._hidden.has(ev.cal.entity)
+      && !(hidePast && !ev.allDay && ev.end <= now)
       && ev.start < e
       && (ev.end > s || (ev.end.getTime() === ev.start.getTime() && ev.start >= s)));
   }
@@ -3582,6 +3600,11 @@ class HomeCalendarCard extends HTMLElement {
   _yearlyLabel(ev, short = false) {
     const anniv = this._ty(ev).style === "anniversary";
     const style = this._ty(ev).style;
+    // #33: hide_name – show only the icon (and the age / years, if known) instead of "Birthday"
+    if (this._ty(ev).hide_name) {
+      if (short || !ev.age || style === "nameday") return "";
+      return anniv ? this._n().ord(ev.age) : this._n().turns(ev.age);
+    }
     const name = this._t(style === "nameday" ? "nameday" : anniv ? "anniversary" : "birthday");
     if (short || !ev.age || style === "nameday") return name;
     return anniv ? this._n().anniv(ev.age) : `${name} · ${this._n().turns(ev.age)}`;
@@ -4917,23 +4940,58 @@ class HomeCalendarCard extends HTMLElement {
     const mf = this._fmt({ month: "short" });
     const yf = this._fmt({ month: "short", year: "2-digit" });
     const crossYear = start.getMonth() !== 0;
+    const LANES = 3;
     let out = `<div class="year">${months.map((m, i) => `<div class="yhead" style="grid-column:${i + 1}">${esc(crossYear && (i === 0 || m.getMonth() === 0) ? yf.format(m) : mf.format(m))}</div>`).join("")}`;
     months.forEach((m, mi) => {
       const dim = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+      const mStart = new Date(m.getFullYear(), m.getMonth(), 1);
+      const mEnd = new Date(m.getFullYear(), m.getMonth(), dim + 1);
+      // #35: each event keeps one lane for its whole stay in this month, so it reads as one continuous bar.
+      // Holiday-banner types tint the days instead (like Month view) and are labelled on their first day.
+      const all = this._events.filter((ev) => !this._hidden.has(ev.cal.entity) && this._yearCal(ev.cal)
+        && (ev.allDay || ev.end - ev.start >= 864e5) && ev.start < mEnd && ev.end > mStart);
+      const dayIdx = (d) => Math.round((startOfDay(d) - mStart) / 864e5) + 1; // 1-based day of month
+      const span = (ev) => {
+        const a = Math.max(1, dayIdx(ev.start));
+        const lastDay = ev.allDay ? addDays(ev.end, -1) : (ev.end.getHours() || ev.end.getMinutes() ? ev.end : addDays(ev.end, -1));
+        return [a, Math.min(dim, Math.max(a, dayIdx(lastDay)))];
+      };
+      const banners = all.filter((ev) => this._isBanner(ev)).map((ev) => ({ ev, s: span(ev) }));
+      const bars = all.filter((ev) => !this._isBanner(ev)).map((ev) => ({ ev, s: span(ev) }))
+        .sort((x, y) => x.s[0] - y.s[0] || (y.s[1] - y.s[0]) - (x.s[1] - x.s[0]) || x.ev.summary.localeCompare(y.ev.summary));
+      const laneEnd = [];
+      const over = {};
+      bars.forEach((b) => {
+        let k = laneEnd.findIndex((e) => e < b.s[0]);
+        if (k < 0 && laneEnd.length < LANES) { k = laneEnd.length; laneEnd.push(0); }
+        if (k < 0) { for (let x = b.s[0]; x <= b.s[1]; x++) over[x] = (over[x] || 0) + 1; return; }
+        laneEnd[k] = b.s[1]; b.lane = k;
+      });
+      const lanes = laneEnd.length;
       for (let day = 1; day <= 31; day++) {
         if (day > dim) { out += `<div class="ycell ynone" style="grid-column:${mi + 1};grid-row:${day + 1}"></div>`; continue; }
         const d = new Date(m.getFullYear(), m.getMonth(), day);
         const k = dayKey(d);
         const we = d.getDay() === 0 || d.getDay() === 6;
-        const evs = this._onDay(d).filter((ev) => this._yearCal(ev.cal) && (ev.allDay || ev.end - ev.start >= 864e5))
-          .sort((x, y) => x.start - y.start || (y.end - y.start) - (x.end - x.start) || x.summary.localeCompare(y.summary));
-        const segs = evs.slice(0, 3).map((ev) => {
-          const first = sameDay(ev.start, d) || day === 1 || ev.start < d && sameDay(d, start);
-          return `<span class="yseg ${first ? "first" : ""}" style="--c:${esc(ev.cal.color)}" data-action="open-event" data-id="${ev.id}" title="${esc(ev.summary)}">${first && evs.length < 3 ? esc(ev.summary) : ""}</span>`;
-        }).join("");
-        out += `<div class="ycell ${we ? "we" : ""} ${k === today ? "today" : ""} ${evs.length ? "has" : ""}" style="grid-column:${mi + 1};grid-row:${day + 1}" data-action="open-day" data-date="${k}">
+        const hols = banners.filter((b) => b.s[0] <= day && b.s[1] >= day);
+        const tints = [...new Set(hols.map((b) => b.ev.cal.color))].slice(0, 3);
+        const bg = tints.length === 1 ? `--holbg:color-mix(in srgb, ${esc(tints[0])} 22%, transparent);`
+          : tints.length > 1 ? `--holbg:linear-gradient(135deg, ${tints.map((c, i) => `color-mix(in srgb, ${esc(c)} 22%, transparent) ${(i * 100) / tints.length}% ${((i + 1) * 100) / tints.length}%`).join(", ")});` : "";
+        const holLabel = hols.find((b) => b.s[0] === day || day === 1);
+        let segs = "";
+        for (let ln = 0; ln < lanes; ln++) {
+          const b = bars.find((x) => x.lane === ln && x.s[0] <= day && x.s[1] >= day);
+          if (!b) { segs += `<span class="yseg empty"></span>`; continue; }
+          const top = b.s[0] === day;
+          const bot = b.s[1] === day;
+          const label = top || day === 1;
+          segs += `<span class="yseg ${top ? "top" : ""} ${bot ? "bot" : ""} ${b.ev.start < mStart && day === 1 ? "cont" : ""}" style="--c:${esc(b.ev.cal.color)}" data-action="open-event" data-id="${b.ev.id}" title="${esc(`${b.ev.summary} · ${this._whenText(b.ev)}`)}">${label ? esc(b.ev.summary) : ""}</span>`;
+        }
+        out += `<div class="ycell ${we ? "we" : ""} ${k === today ? "today" : ""} ${hols.length ? "yhd" : ""}" style="grid-column:${mi + 1};grid-row:${day + 1};${bg}" data-action="open-day" data-date="${k}">
           <span class="yd">${day}</span><span class="yw">${esc(wd.format(d).replace(/\.$/, "").slice(0, 2))}</span>
-          ${segs ? `<span class="ysegs">${segs}${evs.length > 3 ? `<span class="ymore">+${evs.length - 3}</span>` : ""}</span>` : ""}
+          ${holLabel ? `<span class="yhol" style="--c:${esc(holLabel.ev.cal.color)}" data-action="open-event" data-id="${holLabel.ev.id}" title="${esc(holLabel.ev.summary)}">${esc(holLabel.ev.summary)}</span>` : ""}
+          ${lanes ? `<span class="ysegs" style="--yl:${lanes}">${segs}</span>` : ""}
+          ${over[day] ? `<span class="ymore">+${over[day]}</span>` : ""}
         </div>`;
       }
     });
@@ -6243,18 +6301,26 @@ dialog[open] { display: flex; flex-direction: column; animation: pop .18s ease-o
 .tl-now { position: absolute; left: 0; right: 0; height: 2px; background: #ef4444; z-index: 2; pointer-events: none; }
 .tl-now::before { content: ""; position: absolute; left: -4px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: #ef4444; }
 /* Year view (#25) */
-.year { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto repeat(31, minmax(20px, auto)); gap: 1px 4px; }
+.year { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto repeat(31, minmax(20px, auto)); gap: 0 4px; }
 :host([layout="fill"]) .year, :host([layout="fullscreen"]) .year { height: 100%; grid-template-rows: auto repeat(31, minmax(14px, 1fr)); }
 .yhead { text-align: center; font-weight: 700; font-size: .85rem; padding: 2px 0 4px; text-transform: capitalize; }
-.ycell { display: flex; align-items: center; gap: 4px; min-width: 0; padding: 0 4px; border-radius: 4px; font-size: .72rem; cursor: pointer; background: var(--hcc-surface, rgba(127,127,127,.05)); overflow: hidden; }
+.ycell { position: relative; display: flex; align-items: center; gap: 4px; min-width: 0; padding: 0 0 0 4px; font-size: .72rem; cursor: pointer;
+  background: var(--hcc-surface, rgba(127,127,127,.05)); border-bottom: 1px solid color-mix(in srgb, var(--hcc-line) 60%, transparent); overflow: hidden; }
+.ycell.yhd { background: var(--holbg); }
+.yhol { flex: 0 1 auto; min-width: 0; font-size: .62rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 75%, var(--hcc-text)); cursor: pointer; }
 .ycell.we { background: color-mix(in srgb, var(--hcc-muted) 16%, transparent); }
+.ycell.we.yhd { background: linear-gradient(color-mix(in srgb, var(--hcc-muted) 12%, transparent), color-mix(in srgb, var(--hcc-muted) 12%, transparent)), var(--holbg); }
 .ycell.today { box-shadow: inset 0 0 0 1.5px var(--hcc-accent); }
 .ycell.today .yd { color: var(--hcc-accent); }
 .ycell.ynone { background: transparent; cursor: default; }
 .yd { flex: none; width: 1.5em; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
 .yw { flex: none; width: 1.7em; color: var(--hcc-muted); text-transform: capitalize; }
-.ysegs { display: flex; flex: 1 1 auto; min-width: 0; align-self: stretch; gap: 2px; padding: 2px 0; }
-.yseg { flex: 1 1 0; min-width: 0; border-radius: 3px; background: var(--c); color: #fff; font-size: .68rem; font-weight: 600; line-height: 1.5; padding: 0 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ysegs { display: flex; flex: 1 1 auto; min-width: 0; align-self: stretch; gap: 2px; margin-bottom: -1px; }
+.yseg { flex: 1 1 0; min-width: 0; background: var(--c); color: #fff; font-size: .66rem; font-weight: 600; line-height: 1.6; padding: 0 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.yseg.empty { background: transparent; }
+.yseg.top { border-top-left-radius: 4px; border-top-right-radius: 4px; margin-top: 1px; }
+.yseg.bot { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; margin-bottom: 2px; }
+.yseg.cont { opacity: .9; }
 .ymore { flex: none; font-size: .65rem; color: var(--hcc-muted); align-self: center; }
 @container (max-width: 700px) { .year { overflow-x: auto; min-width: 0; } .year { grid-template-columns: repeat(12, minmax(64px, 1fr)); } }
 .multi-tg { margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--hcc-line);
@@ -6651,7 +6717,7 @@ const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "tod
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile", "month_show_time",
   "sections", "show_view_selector", "show_date_navigation", "show_refresh_button", "calendar_sync_minutes", "agenda_date", "agenda_multiday", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
-  "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "week_style", "week_hour_start", "week_hour_end", "show_year_view", "year_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
+  "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "week_style", "week_hour_start", "week_hour_end", "show_year_view", "hide_past_events", "year_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t, hasGrid = false) => {
   const o = (value, key) => ({ value, label: t(key) });
@@ -6691,8 +6757,9 @@ const generalSchema = (t, hasGrid = false) => {
       { name: "week_style", selector: { select: { mode: "dropdown", options: [o("list", "o_ws_list"), o("timeline", "o_ws_timeline")] } } },
       { name: "week_hour_start", selector: { number: { min: 0, max: 23, mode: "box" } } },
       { name: "week_hour_end", selector: { number: { min: 1, max: 24, mode: "box" } } },
+      { name: "hide_past_events", selector: { boolean: {} } },
       { name: "show_year_view", selector: { boolean: {} } },
-      { name: "year_start", selector: { select: { mode: "dropdown", options: [o("january", "o_ys_jan"), o("month", "o_ys_month")] } } },
+      { name: "year_start", selector: { select: { mode: "dropdown", options: [o("january", "o_ys_jan"), o("half", "o_ys_half"), o("month", "o_ys_month")] } } },
       { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [o("monday", "o_monday"), o("sunday", "o_sunday"), o("saturday", "o_saturday")] } } },
       { name: "time_format", selector: { select: { mode: "dropdown", options: [o("auto", "o_tf_auto"), o("24h", "o_24h"), o("12h", "o_12h")] } } },
     ] },
@@ -6793,10 +6860,11 @@ const typeSchema = (t, short = false) => {
     { type: "grid", name: "", schema: [
       { name: "all_day", selector: { boolean: {} } },
       { name: "countdown", selector: { boolean: {} } },
+      { name: "hide_name", selector: { boolean: {} } },
     ] },
   ];
 };
-const TYPE_LABELS = { name: "l_type_name", icon: "l_type_icon", style: "l_style", repeat: "repeat", all_day: "l_type_all_day", countdown: "l_type_countdown" };
+const TYPE_LABELS = { name: "l_type_name", icon: "l_type_icon", style: "l_style", repeat: "repeat", all_day: "l_type_all_day", countdown: "l_type_countdown", hide_name: "l_type_hide_name" };
 const slugId = (name, taken) => {
   const base = String(name || "type").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "type";
   let id = base; let n = 2;
@@ -7545,7 +7613,7 @@ class HomeCalendarCardEditor extends HTMLElement {
   // form data <-> type entry
   _typeData(o) {
     const f = this._typeFull(o);
-    return { name: this._typeName(o), icon: f.icon || "", style: f.style || "normal", repeat: f.repeat || "none", all_day: !!f.all_day, countdown: !!f.countdown };
+    return { name: this._typeName(o), icon: f.icon || "", style: f.style || "normal", repeat: f.repeat || "none", all_day: !!f.all_day, countdown: !!f.countdown, hide_name: !!f.hide_name };
   }
 
   _typeFromData(o, v) {
@@ -7559,6 +7627,7 @@ class HomeCalendarCardEditor extends HTMLElement {
     n.repeat = v.repeat && v.repeat !== "none" ? v.repeat : (d.repeat ? "" : undefined);
     n.all_day = !!v.all_day;
     n.countdown = !!v.countdown;
+    n.hide_name = v.hide_name ? true : undefined;
     Object.keys(n).forEach((k) => { if (n[k] === undefined) delete n[k]; });
     return n;
   }
