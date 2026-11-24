@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.3-beta.3";
+const CARD_VERSION = "1.20.3-beta.4";
 
 // Literal, complete names at the start only; longest names take precedence.
 function titlePersons(summary, configured) {
@@ -3516,6 +3516,10 @@ class HomeCalendarCard extends HTMLElement {
       if (a > 0 && a < 130) age = a;
       summary = summary.replace(/\s*[([]?\b(19|20)\d{2}\b[)\]]?/, "").trim() || summary;
     }
+    // #33: types with hide_name also drop their word from the title – "Geburtstag Test" / "Test's birthday" → "Test"
+    // (display only: editing keeps the original title)
+    const tyNow = this._typeById(typeId);
+    if (tyNow.hide_name) summary = this._stripTypeWord(summary, tyNow) || summary;
     const hay = `${title} ${summary}`.toLowerCase();
     const ruleIcon = (cal._iconRules || []).find((r) => r.words.some((w) => hay.includes(w)))?.icon || "";
     const ev = {
@@ -3596,6 +3600,44 @@ class HomeCalendarCard extends HTMLElement {
 
   // Birthdays and anniversaries: all-day, yearly, with an age/years count.
   _isBday(ev) { return ["birthday", "anniversary", "nameday"].includes(this._ty(ev).style); }
+
+  _typeWords(ty) {
+    this._twCache = this._twCache || {};
+    const key = `${ty.id}|${ty.customName || ty.name || ""}|${ty.style || ""}`;
+    if (this._twCache[key]) return this._twCache[key];
+    const words = new Set([ty.id, ty.customName, ty.name].filter(Boolean).map((w) => String(w).toLowerCase().replace(/_/g, " ")));
+    const langs = Object.values(I18N);
+    const KIND = { birthday: ["birthday", "type_birthday"], anniversary: ["anniversary", "type_anniversary"], nameday: ["nameday", "type_nameday"] };
+    // which built-in kind is this? its style, or a name/id that is (or contains) a birthday / anniversary / name-day word
+    let kind = KIND[ty.style] ? ty.style : null;
+    if (!kind) {
+      for (const [k, keys] of Object.entries(KIND)) {
+        const all = langs.flatMap((L) => keys.map((x) => String(L[x] || "").toLowerCase())).filter(Boolean)
+          .concat(Object.entries(TYPE_ALIASES).filter(([, v]) => v === k).map(([a]) => a), [k]);
+        if ([...words].some((w) => all.some((x) => w.includes(x)))) { kind = k; break; }
+      }
+    }
+    if (kind) {
+      langs.forEach((L) => KIND[kind].forEach((x) => L[x] && words.add(String(L[x]).toLowerCase())));
+      Object.entries(TYPE_ALIASES).forEach(([a, v]) => { if (v === kind) words.add(a); });
+      words.add(kind);
+    }
+    const list = [...words].filter((w) => w.length > 1).sort((a, b) => b.length - a.length)
+      .map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    this._twCache[key] = list;
+    return list;
+  }
+
+  _stripTypeWord(text, ty) {
+    const list = this._typeWords(ty);
+    if (!list.length) return text;
+    const alt = list.join("|");
+    const B = "(?![\\p{L}\\p{N}])";
+    let t = String(text).replace(new RegExp(`^\\s*(?:${alt})${B}(?:\\s+(?:von|of|de|di|van|od|z))?[\\s:–—·-]*`, "iu"), "");
+    t = t.replace(new RegExp(`(?:['’]s)?[\\s:–—·-]*(?<![\\p{L}\\p{N}])(?:${alt})\\s*[!.]*\\s*$`, "iu"), "");
+    t = t.replace(new RegExp(`^(.*?)\\s+(?:ma|hat|har|has|fête son|fait)\\s*$`, "iu"), "$1"); // "Test hat" left over from "Test hat Geburtstag"
+    return t.trim();
+  }
 
   _yearlyLabel(ev, short = false) {
     const anniv = this._ty(ev).style === "anniversary";
@@ -6315,7 +6357,7 @@ dialog[open] { display: flex; flex-direction: column; animation: pop .18s ease-o
 .ycell.ynone { background: transparent; cursor: default; }
 .yd { flex: none; width: 1.5em; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
 .yw { flex: none; width: 1.7em; color: var(--hcc-muted); text-transform: capitalize; }
-.ysegs { display: flex; flex: 1 1 auto; min-width: 0; align-self: stretch; gap: 2px; margin-bottom: -1px; }
+.ysegs { display: flex; flex: 0 0 calc(var(--yl) * 30%); max-width: 66%; margin-left: auto; min-width: 0; align-self: stretch; gap: 2px; margin-bottom: -1px; }
 .yseg { flex: 1 1 0; min-width: 0; background: var(--c); color: #fff; font-size: .66rem; font-weight: 600; line-height: 1.6; padding: 0 3px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .yseg.empty { background: transparent; }
 .yseg.top { border-top-left-radius: 4px; border-top-right-radius: 4px; margin-top: 1px; }

@@ -452,7 +452,7 @@ default_event_type: standard
 | `countdown_limit` | Only the next N events of this type get a card (birthdays default to `2`) |
 | `countdown_days` | Only events within this many days get a card (default: the card's `countdown_days`, 365) |
 | `countdown_calendars` | `true` to also count down events from calendars of this type, not just tagged events (on by default for birthdays and anniversaries) |
-| `hide_name` | `true` to show only the icon on events of this type, e.g. *🎂 Heino* instead of *Birthday · Heino* (the age stays, e.g. *turns 70*). Also *Only the icon on events* in the visual editor. Requested by [@oliverlinsenmaier](https://github.com/oliverlinsenmaier) in [#33](https://github.com/mimikm/Home-Calendar-Card/issues/33) |
+| `hide_name` | `true` to show only the icon on events of this type, e.g. *🎂 Heino* instead of *Birthday · Heino* (the age stays, e.g. *turns 70*). It also removes the type's word from titles – *Geburtstag Heino*, *Heino's birthday* or *Urodziny Heino* all show as *🎂 Heino* (editing keeps the full title). Also *Only the icon on events* in the visual editor. Requested by [@oliverlinsenmaier](https://github.com/oliverlinsenmaier) in [#33](https://github.com/mimikm/Home-Calendar-Card/issues/33) |
 
 **Tip:** to get a birthday icon on events without making a calendar a "birthday calendar" (no countdowns, keeps its Planner column), create your own type in **Event types** – e.g. *Birthday (icon)* with the cake icon and *Normal* style – and set the calendar's **Type** to it, or turn off **Countdown** on the Birthday type.
 
