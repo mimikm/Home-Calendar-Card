@@ -145,7 +145,7 @@ const I18N = {
     l_todo_show_empty: "Show people with an empty own list", tg_empty: "Nothing to do",
     l_todo_lists: "More lists as tabs (e.g. shopping)", ed_todo_lists_help: "Each list gets its own tab in the to-do block. Set a title or icon in YAML.",
     l_month_show_time: "Show start time in Month view",
-    o_ys_half: "Half-year (this and the next six months)", l_type_hide_name: "Only the icon on events (no type name)", l_hide_past_events: "Hide today's events once they're over",
+    o_ys_half: "Half-year (this and the next six months)", l_type_hide_name: "Only the icon on events (no type name)", l_hide_past_events: "Hide today's events once they're over", l_combine_duplicates: "Show events with the same name only once",
     l_allow_add_tasks: "Show the “Add a task” box",
     l_geocode: "Look up addresses with OpenStreetMap", ed_geocode_help: "Waze no longer finds addresses itself. This sends event locations to OpenStreetMap (free, no key) to get their coordinates.", multi_sel: "Several", added_n: "Added “{t}” to {n} calendars", err_some: "Couldn't add it to: {c}",
     ed_backup: "Backup & restore", ed_backup_sub: "Save this card's settings to a file, or load them back – before big changes, or to copy the card to another dashboard.", ed_bk_download: "Download backup", ed_bk_copy: "Copy", ed_bk_copied: "Copied", ed_bk_restore: "Restore from file", ed_bk_confirm: "Replace the current settings with this backup ({d}, {n} calendars)?", ed_bk_replace: "Replace", ed_bk_done: "Settings restored – press Save to keep them.", ed_bk_bad: "This file isn't a Home Calendar Card backup.",
@@ -3540,10 +3540,24 @@ class HomeCalendarCard extends HTMLElement {
     // #36: hide_past_events – today's timed events disappear once they're over (the card redraws every minute)
     const now = new Date();
     const hidePast = this._config.hide_past_events === true && sameDay(s, now);
-    return this._events.filter((ev) => !this._hidden.has(ev.cal.entity)
+    return this._dedupe(this._events.filter((ev) => !this._hidden.has(ev.cal.entity)
       && !(hidePast && !ev.allDay && ev.end <= now)
       && ev.start < e
-      && (ev.end > s || (ev.end.getTime() === ev.start.getTime() && ev.start >= s)));
+      && (ev.end > s || (ev.end.getTime() === ev.start.getTime() && ev.start >= s))));
+  }
+
+  // combine_duplicates: events with the same name (case-insensitive) and the same start are shown once –
+  // e.g. one family event that sits in several people's calendars. The first copy wins (list is already sorted).
+  _dedupe(list) {
+    if (this._config.combine_duplicates !== true) return list;
+    const seen = new Set();
+    return list.filter((ev) => {
+      const name = String(ev.real?.summary ?? ev.summary).trim().toLowerCase(); // private events: use the real title
+      const k = `${name}|${ev.allDay}|${ev.start.getTime()}`;
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
   }
 
   _typeById(id, strict = false) {
@@ -3567,7 +3581,7 @@ class HomeCalendarCard extends HTMLElement {
   _barSegs(start, n, filter) {
     const end = addDays(start, n);
     const idx = (d) => Math.round((startOfDay(d) - start) / 864e5);
-    return (this._events || []).filter((ev) => !this._hidden.has(ev.cal.entity) && this._isMulti(ev) && ev.start < end && ev.end > start && (!filter || filter(ev)))
+    return this._dedupe((this._events || []).filter((ev) => !this._hidden.has(ev.cal.entity) && this._isMulti(ev) && ev.start < end && ev.end > start && (!filter || filter(ev))))
       .map((ev) => {
         const a = idx(ev.start);
         const b = idx(addDays(ev.end, -1));
@@ -4990,8 +5004,8 @@ class HomeCalendarCard extends HTMLElement {
       const mEnd = new Date(m.getFullYear(), m.getMonth(), dim + 1);
       // #35: each event keeps one lane for its whole stay in this month, so it reads as one continuous bar.
       // Holiday-banner types tint the days instead (like Month view) and are labelled on their first day.
-      const all = this._events.filter((ev) => !this._hidden.has(ev.cal.entity) && this._yearCal(ev.cal)
-        && (ev.allDay || ev.end - ev.start >= 864e5) && ev.start < mEnd && ev.end > mStart);
+      const all = this._dedupe(this._events.filter((ev) => !this._hidden.has(ev.cal.entity) && this._yearCal(ev.cal)
+        && (ev.allDay || ev.end - ev.start >= 864e5) && ev.start < mEnd && ev.end > mStart));
       const dayIdx = (d) => Math.round((startOfDay(d) - mStart) / 864e5) + 1; // 1-based day of month
       const span = (ev) => {
         const a = Math.max(1, dayIdx(ev.start));
@@ -6759,7 +6773,7 @@ const GENERAL_KEYS = ["title", "language", "weather_entity", "todo_entity", "tod
   "show_countdowns", "countdown_style", "countdown_size", "event_size", "show_calendar_chips", "month_mobile", "month_show_time",
   "sections", "show_view_selector", "show_date_navigation", "show_refresh_button", "calendar_sync_minutes", "agenda_date", "agenda_multiday", "event_time_position", "show_event_location", "show_event_calendar",
   "show_clock", "clock_seconds", "clock_format",
-  "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "week_style", "week_hour_start", "week_hour_end", "show_year_view", "hide_past_events", "year_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
+  "default_view", "days_to_show", "show_week_numbers", "multiday_bars", "planner_days", "planner_start", "month_weeks", "month_start", "week_start", "week_style", "week_hour_start", "week_hour_end", "show_year_view", "hide_past_events", "combine_duplicates", "year_start", "first_day_of_week", "time_format", "layout", "keep_awake", "show_header", "allow_add",
   "allow_edit", "allow_delete", "show_empty_days", "max_height"];
 const generalSchema = (t, hasGrid = false) => {
   const o = (value, key) => ({ value, label: t(key) });
@@ -6800,6 +6814,7 @@ const generalSchema = (t, hasGrid = false) => {
       { name: "week_hour_start", selector: { number: { min: 0, max: 23, mode: "box" } } },
       { name: "week_hour_end", selector: { number: { min: 1, max: 24, mode: "box" } } },
       { name: "hide_past_events", selector: { boolean: {} } },
+      { name: "combine_duplicates", selector: { boolean: {} } },
       { name: "show_year_view", selector: { boolean: {} } },
       { name: "year_start", selector: { select: { mode: "dropdown", options: [o("january", "o_ys_jan"), o("half", "o_ys_half"), o("month", "o_ys_month")] } } },
       { name: "first_day_of_week", selector: { select: { mode: "dropdown", options: [o("monday", "o_monday"), o("sunday", "o_sunday"), o("saturday", "o_saturday")] } } },
