@@ -214,7 +214,7 @@ max_height: 640px
 | `time_format` | `auto` \| `24h` \| `12h` | `auto` | `auto` follows your HA user profile |
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
 | `hide_past_events` | boolean | `false` | Hide today's events once they're over – ongoing, upcoming and all-day events stay. Handy on wall displays. Requested by [@kornelremete](https://github.com/kornelremete) in [#36](https://github.com/mimikm/Home-Calendar-Card/issues/36) |
-| `combine_duplicates` | boolean | `false` | Show events with the same name and start time only once – handy when one event is in several people's calendars. The first calendar's copy (color, chip) is shown. |
+| `combine_duplicates` | boolean | `false` | Show events with the same name and start time only once – handy when one event is in several people's calendars. The first calendar's copy (color, chip) is shown. In the Planner view each person still keeps their own copy in their column. |
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
 | `grid` | object | – | Your own grid layout from the Layout designer – see *Layout designer* |
@@ -904,7 +904,7 @@ week_hour_end: 22      # last hour shown
 
 ### Year view (holiday planner)
 
-The **Year** view shows the whole year like a printed holiday planner: months side by side, days 1–31 down the page, and all-day events – school holidays, vacations, birthdays – as coloured blocks. Weekends are shaded and today is outlined.
+The **Year** view shows the whole year like a printed holiday planner: months side by side, days 1–31 down the page, and all-day events – vacations, camps, birthdays – as thin coloured bars running down the days, with the name written along the bar. Holiday-type calendars (e.g. school holidays) tint the days instead and show their name on the first day. Weekends are shaded and today is outlined. Up to three bars sit side by side in a month; if more overlap, the day shows **+N**.
 
 ![Year view](images/year-view.png)
 

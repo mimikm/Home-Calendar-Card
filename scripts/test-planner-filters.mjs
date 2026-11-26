@@ -46,6 +46,7 @@ test("planner keeps filtered entries of one entity in their own columns and side
     _avatar: () => "",
     _calName: cal => cal.name,
     _eventsOn: () => events,
+    _dedupe: list => list,
     _holidaysOn: () => [],
     _wxBadge: () => "",
     _holidayTags: () => "",
