@@ -214,6 +214,7 @@ max_height: 640px
 | `time_format` | `auto` \| `24h` \| `12h` | `auto` | `auto` follows your HA user profile |
 | `show_empty_days` | boolean | `false` | Show days with no events in Agenda view (today is always shown) |
 | `hide_past_events` | boolean | `false` | Hide today's events once they're over – ongoing, upcoming and all-day events stay. Handy on wall displays. Requested by [@kornelremete](https://github.com/kornelremete) in [#36](https://github.com/mimikm/Home-Calendar-Card/issues/36) |
+| `combine_duplicates` | boolean | `false` | Show events with the same name and start time only once – handy when one event is in several people's calendars. The first calendar's copy (color, chip) is shown. |
 | `show_header` | boolean | `true` | Show the big date and current weather |
 | `show_calendar_chips` | boolean | `true` | Show the calendar show/hide chips |
 | `grid` | object | – | Your own grid layout from the Layout designer – see *Layout designer* |
