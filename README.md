@@ -266,7 +266,7 @@ max_height: 640px
 | `type` | `events` (default), `birthday`, `anniversary`, `nameday`, `holiday` – or any event type `id`, including your own – see *Calendar types* |
 | `private` | `true` – every event in this calendar shows as "Private" with only its time – see *Private events* |
 | `group` | Group name, e.g. `Kids`. Calendars with the same group share one button – see *Calendar groups* |
-| `icon_rules` | List of `match` / `icon` pairs that give events an icon from words in their title – see *Icons by title* |
+| `icon_rules` | List of `match` / `icon` (and optional `type`) rules that give events an icon – or a type – from words in their title – see *Icons by title* |
 | `exclude` | text | – | Hide this calendar's events whose title contains any of these words, separated by `\|` – see *Calendar filters* |
 | `include` | text | – | Only show this calendar's events whose title contains one of these words |
 | `exclude_all_day` | boolean | `false` | Hide this calendar's all-day events |
@@ -321,6 +321,16 @@ calendars:
         icon: mdi:leaf
       - match: "general"
         icon: mdi:trash-can
+```
+
+A rule can also set the **event type** – handy when birthdays sit in a normal family calendar. The event then counts as a birthday everywhere (cake icon, age, countdown, Year view), and with *Only the icon on events* (`hide_name: true`) "Geburtstag Test" shows as **🎂 Test**:
+
+```yaml
+calendars:
+  - entity: calendar.family
+    icon_rules:
+      - match: "geburtstag|birthday"
+        type: birthday           # any built-in or custom type id; icon is optional
 ```
 
 - Matching ignores upper/lower case and finds the word anywhere in the title (`glass` matches *Glass collection*).

@@ -8,7 +8,7 @@
  * https://github.com/mimikm/Home-Calendar-Card
  */
 
-const CARD_VERSION = "1.20.3-beta.5";
+const CARD_VERSION = "1.20.3-beta.6";
 
 // Literal, complete names at the start only; longest names take precedence.
 function titlePersons(summary, configured) {
@@ -2437,8 +2437,8 @@ class HomeCalendarCard extends HTMLElement {
         o._matchIn = ["title", "description", "location"].filter((k) => mi.map((x) => String(x).toLowerCase()).includes(k));
         if (!o._matchIn.length) o._matchIn = ["title"];
         o._iconRules = (Array.isArray(o.icon_rules) ? o.icon_rules : [])
-          .map((r) => ({ words: String(r?.match || "").toLowerCase().split("|").map((w) => w.trim()).filter(Boolean), icon: r?.icon }))
-          .filter((r) => r.words.length && r.icon);
+          .map((r) => ({ words: String(r?.match || "").toLowerCase().split("|").map((w) => w.trim()).filter(Boolean), icon: r?.icon || "", type: String(r?.type || "").trim().toLowerCase() }))
+          .filter((r) => r.words.length && (r.icon || r.type));
         return o;
       })
       .filter((c) => c.entity);
@@ -3508,7 +3508,10 @@ class HomeCalendarCard extends HTMLElement {
     let summary = strip(e.summary);
     const title = summary;
     const description = strip(e.description);
-    const typeId = tagged || cal.etype || (["birthday", "holiday", "anniversary", "nameday"].includes(cal.type) ? cal.type : "standard");
+    // #33: icon_rules can also set the type – { match: "Geburtstag", type: birthday } – for birthdays mixed into another calendar
+    const rule = (cal._iconRules || []).find((r) => r.type && r.words.some((w) => title.toLowerCase().includes(w)));
+    const ruleType = rule?.type ? this._typeById(rule.type, true)?.id : null;
+    const typeId = tagged || ruleType || cal.etype || (["birthday", "holiday", "anniversary", "nameday"].includes(cal.type) ? cal.type : "standard");
     let age = null;
     if (["birthday", "anniversary"].includes(this._typeById(typeId).style)) {
       const m = `${summary} ${description}`.match(/\b(19\d{2}|20\d{2})\b/);
@@ -3521,7 +3524,7 @@ class HomeCalendarCard extends HTMLElement {
     const tyNow = this._typeById(typeId);
     if (tyNow.hide_name) summary = this._stripTypeWord(summary, tyNow) || summary;
     const hay = `${title} ${summary}`.toLowerCase();
-    const ruleIcon = (cal._iconRules || []).find((r) => r.words.some((w) => hay.includes(w)))?.icon || "";
+    const ruleIcon = (cal._iconRules || []).find((r) => r.icon && r.words.some((w) => hay.includes(w)))?.icon || "";
     const ev = {
       age, type: typeId, tagged: !!tagged, title, ruleIcon,
       id: `e${++EV_SEQ}`, summary: summary || "(No title)", description,
